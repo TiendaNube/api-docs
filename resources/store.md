@@ -57,7 +57,7 @@ Receive a single Store.
   "blog": null,
   "business_id": null,
   "business_name": null,
-  "contact_email": "contact@pokestore.com"
+  "contact_email": "contact@pokestore.com",
   "country": "BR",
   "created_at": "2013-01-01T05:12:51-03:00",
   "customer_accounts": "optional",
