@@ -165,7 +165,9 @@ Receive a single Script
 
 ### POST /scripts
 
-Create a new Script
+Create a new Script.
+
+__A Script will only appear in checkout if the src starts with 'https://' in order not to break the SSL lock.__
 
 #### POST /scripts
 
