@@ -6,7 +6,9 @@ This is a REST-style API that uses JSON for serialization and OAuth 2 for authen
 Making a request
 ----------------
 
-All URLs start with `https://api.tiendanube.com/v1/123456` or `https://api.nuvemshop.com.br/v1/123456`. **SSL only**. The path is prefixed with the store id and the API version. If we change the API in backward-incompatible ways, we'll bump the version marker and maintain stable support for the old URLs.
+All URLs start with `https://api.tiendanube.com/v1/{store_id}` or `https://api.nuvemshop.com.br/v1/{store_id}`. **SSL only**. The path is prefixed with the store id and the API version. If we change the API in backward-incompatible ways, we'll bump the version marker and maintain stable support for the old URLs.
+
+So if you want to access the store with id 123456 via the API the url will be `https://api.tiendanube.com/v1/123456` or `https://api.nuvemshop.com.br/v1/123456`.
 
 To make a request for all the store's products you would do the following in curl:
 
