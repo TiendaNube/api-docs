@@ -264,7 +264,6 @@ Create a new Customer
 
 ```json
 {
-  "customer": {
     "name": "First Last",
     "email": "first.last@example.com",
     "addresses": [
@@ -281,7 +280,6 @@ Create a new Customer
     ],
     "send_email_invite": true,
     "password": "mysupersecretpassword"
-  }
 }
 ```
 
