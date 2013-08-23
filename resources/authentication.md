@@ -1,3 +1,48 @@
+We provide authorization and user authentication by a restricted form of OAuth 2. In a glance:
+- The only grant type we support is the "authorization code" one.
+- Our access tokens don't expire. They become invalid only after you get a new one, or if the user uninstalls your app.
+- Along with the access token we provide an `user_id`, which is the ID of the store. Note this is fundamental: you need it for making requests to our API. It is also useful for autenticating app users on your website (see User authentication).
+
+Introduction
+------------
+
+When creating an app, you have to select the scopes it needs and set a redirection URL.
+The scopes specify the resources for which the app is asking authorization of its users (see Scopes).
+The redirection URL is used as part of the authorization flow (see below).
+
+Authorization flow
+------------------
+
+The authorization flow is pretty standard, except for the first step:
+
+1- The user, from his TiendaNube/NuvemShop admin, clicks on a button to install your app. Or, alternatively, he goes to https://www.tiendanube.com/apps/(app_id)/authorize (if he is not logged in, he is prompted to do so).
+2- He is redirected to a page where he has to authorize the scopes your app needs (if he has already did it, this step is skipped).
+3- He is redirected to your app's redirection URL with an authorization code.
+4- Using your app's credentials and the authorization code, you can obtain an access token by making a POST request to https://www.tiendanube.com/apps/authorize/token.
+
+Note: Any URL in the tiendanube.com domain can be replaced for an identical one in the nuvemshop.com.br domain.
+
+### Example of last steps
+
+Asume that your app has:
+- id = 555
+- redirection URL = https://www.example.com/
+- scopes = read_orders, write_products
+- client_id = 01234
+- client_secret = 56789
+
+An user gets redirected to https://www.example.com/?code=666.
+You do:
+```curl https://www.tiendanube.com/apps/authorize/token --data 'client_id=01234&client_secret=56789&grant_type=authorization_code&code=666'```
+and receive:
+```json
+{
+	"access_token":"61181d08b7e328d256736hdcb671c3ce50b8af5",
+	"token_type":"bearer",
+	"scope":"read_orders,write_products",
+	"user_id":"777"
+}```
+
 Scopes
 ------
 
@@ -20,8 +65,14 @@ The available scopes for the API are:
     - Customer
 * read_orders / write_orders
     - Order
-* read_scripts / write_scripts
+* write_scripts
     - Script
 
 
+User authentication
+-------------------
+
+If you need your app's users to be able to login on your website, you can reuse the Authorization flow for this purpose:
+- The login button should be a link to https://www.tiendanube.com/apps/(app_id)/authorize.
+- You can login the user having the ID you receive with the new access token.
 
