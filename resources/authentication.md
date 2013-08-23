@@ -18,7 +18,7 @@ The authorization flow is pretty standard, except for the first step:
 1. The user, from his TiendaNube/NuvemShop admin, clicks on a button to install your app. Or, alternatively, he goes to https://www.tiendanube.com/apps/(app_id)/authorize (if he is not logged in, he is prompted to do so).
 2. He is redirected to a page where he has to authorize the scopes your app needs (if he has already did it, this step is skipped).
 3. He is redirected to your app's redirection URL with an authorization code.
-4. Using your app's credentials (`client_id` and `client_secret`) and the authorization code, you can obtain an access token by making a POST request to https://www.tiendanube.com/apps/authorize/token. (Don't forget to also send `grant_type=authorization_code`).
+4. Using your app's credentials and the authorization code, you can obtain an access token by making a POST request to https://www.tiendanube.com/apps/authorize/token. (Don't forget to also send `grant_type=authorization_code`, see the example below).
 
 Note: Any of these URLs in the tiendanube.com domain can be replaced for identical ones in the nuvemshop.com.br domain.
 
@@ -28,7 +28,6 @@ Asume that your app has:
 - id = 555
 - redirection URL = https://www.example.com/
 - scopes = `read_orders`, `write_products`
-- client_id = 01234
 - client_secret = 56789
 
 1. User with ID 777 goes to https://www.tiendanube.com/apps/555/authorize
@@ -36,7 +35,7 @@ Asume that your app has:
 3. He gets redirected to https://www.example.com/?code=666.
 4. Then you do:
 
-> curl https://www.tiendanube.com/apps/authorize/token --data 'client_id=01234&client_secret=56789&grant_type=authorization_code&code=666'
+> curl https://www.tiendanube.com/apps/authorize/token --data 'client_id=555&client_secret=56789&grant_type=authorization_code&code=666'
 
 and receive:
 
