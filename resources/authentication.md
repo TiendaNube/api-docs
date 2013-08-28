@@ -1,7 +1,7 @@
 We provide authorization and user authentication by a restricted form of OAuth 2. In a glance:
 - The only grant type we support is the "authorization code" one.
 - Our access tokens don't expire. They become invalid only after you get a new one, or if the user uninstalls your app.
-- Along with the access token we provide an `user_id`, which is the ID of the store. Note this is fundamental: you need it for making requests to our API. It is also useful for authenticating app users on your website (see User authentication).
+- Along with the access token we provide an `user_id`, which is the ID of the store. This is key: you need it for making requests to our API. It is also useful for authenticating app users on your website (see User authentication).
 
 Introduction
 ------------
@@ -16,7 +16,7 @@ Authorization flow
 The authorization flow is pretty standard, except for the first step:
 
 1. The user, from his TiendaNube/NuvemShop admin, clicks on a button to install your app. Or, alternatively, he goes to https://www.tiendanube.com/apps/(app_id)/authorize (if he is not logged in, he is prompted to do so).
-2. He is redirected to a page where he has to authorize the scopes your app needs (if he has already did it, this step is skipped).
+2. He is redirected to a page where he has to authorize the scopes your app needs (if he has already done it, this step is skipped).
 3. He is redirected to your app's redirection URL with an authorization code.
 4. Using your app's credentials and the authorization code, you can obtain an access token by making a POST request to https://www.tiendanube.com/apps/authorize/token. (Don't forget to also send `grant_type=authorization_code`, see the example below).
 
@@ -51,7 +51,7 @@ and receive:
 Scopes
 ------
 
-Apps should only ask access scopes they need. If an app only needs to read products, it should only ask for the `read_products` scope.
+Apps should only ask for the access scopes they need. If an app only needs to read products, it should only ask for the `read_products` scope.
 
 __If you ask for any write scope, the read scope is implied.__
 
