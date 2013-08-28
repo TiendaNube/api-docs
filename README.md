@@ -26,7 +26,7 @@ To create something, you have to include the `Content-Type` header and the JSON 
 curl -H 'Authentication: bearer ACCESS_TOKEN ' \
   -H 'Content-Type: application/json' \
   -H 'User-Agent: MyApp (name@email.com)' \
-  -d '{ "name": "My new product" }' \
+  -d '{ "name": {"es": "My new product"} }' \
   https://api.tiendanube.com/v1/123456/products
 ```
 
