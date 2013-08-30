@@ -33,9 +33,9 @@ curl -H 'Authentication: bearer ACCESS_TOKEN ' \
 Authentication
 --------------
 
-If you're making a public integration, you must use OAuth 2. This allows users to authorize your application to use Tienda Nube/Nuvem Shop on their behalf.
+We follow the OAuth 2 framework for letting users authorize your application to use Tienda Nube/Nuvem Shop on their behalf. Quite briefly, when a user installs it you can obtain an access token (a secret string denoting your rights over his store), which you have to include in the header of every request (as shown in the above example).
 
-Read the [authentication guide](https://github.com/tiendanube/api-docs/blob/master/resources/authentication.md) to get started (Coming Soon).
+Read the [authentication guide](https://github.com/tiendanube/api-docs/blob/master/resources/authentication.md) to get started.
 
 
 Identify your app
@@ -45,7 +45,7 @@ In every API request, you must include a `User-Agent` header with the name of yo
 
     User-Agent: Super app (http://superapp.com/contact)
     or
-    User-Agent: Awesome app (awesome@app.com) 
+    User-Agent: Awesome app (awesome@app.com)
 
 If you don't supply this header, you will get a `400 Bad Request` response.
 
@@ -94,7 +94,7 @@ Content-Length: 47
 Server errors
 -------------
 
-If Tienda Nube/Nuvem Shop is having trouble, you might see a 5xx error. `500` means that the app is entirely down, but you might also see `502 Bad Gateway`, `503 Service Unavailable`, or `504 Gateway Timeout`. It's your responsibility in all of these cases to retry your request later. 
+If Tienda Nube/Nuvem Shop is having trouble, you might see a 5xx error. `500` means that the app is entirely down, but you might also see `502 Bad Gateway`, `503 Service Unavailable`, or `504 Gateway Timeout`. It's your responsibility in all of these cases to retry your request later.
 
 
 Rate limiting
