@@ -25,17 +25,19 @@ Note: Any of these URLs in the tiendanube.com domain can be replaced for identic
 #### Example
 
 Asume that your app has:
-- id = 555
+- id = 123
 - redirection URL = https://www.example.com/
 - scopes = `read_orders`, `write_products`
-- client_secret = 56789
+- client_secret = abcdef
 
-1. User with ID 777 goes to https://www.tiendanube.com/apps/555/authorize
+1. Store with ID 789 goes to https://www.tiendanube.com/apps/123/authorize?state=csrf-code
 2. User accepts.
-3. He gets redirected to https://www.example.com/?code=666.
+3. He gets redirected to https://www.example.com/?code=xyz&state=csrf-code.
 4. Then you do:
 
-> curl https://www.tiendanube.com/apps/authorize/token --data 'client_id=555&client_secret=56789&grant_type=authorization_code&code=666'
+```sh
+curl https://www.tiendanube.com/apps/authorize/token --data 'client_id=123&client_secret=abcdef&grant_type=authorization_code&code=xyz'
+```
 
 and receive:
 
@@ -44,7 +46,7 @@ and receive:
 	"access_token":"61181d08b7e328d256736hdcb671c3ce50b8af5",
 	"token_type":"bearer",
 	"scope":"read_orders,write_products",
-	"user_id":"777"
+	"user_id":"789"
 }
 ```
 
