@@ -201,7 +201,7 @@ X-Main-Language: es
 
 ```json
 {
-    "id": 114352,
+    "id": 1234,
     "name": {
         "es": "Nombre de la Categoría",
         "pt": "Nome da Categoria"
