@@ -178,6 +178,74 @@ Access-Control-Allow-Methods: GET, POST, PUT, DELETE
 Access-Control-Allow-Origin: *
 ```
 
+Languages and Internationalization
+----------------------------------
+Stores can potentially have multiple languages. This means that some properties of the Product and Category endpoints will be objects detailing the value for each language.
+
+For example,
+
+```shell
+curl -H 'Authentication: bearer ACCESS_TOKEN ' \
+  -H 'User-Agent: MyApp (name@email.com)' \
+  -D - \
+  https://api.tiendanube.com/v1/123456/categories/1234
+```
+
+```
+HTTP/1.1 200 OK
+Date: Thu, 05 Sep 2013 18:18:22 GMT
+Content-Type: application/json; charset=UTF-8
+Content-Length: 376
+X-Main-Language: es
+```
+
+```json
+{
+    "id": 114352,
+    "name": {
+        "es": "Nombre de la Categoría",
+        "pt": "Nome da Categoria"
+    },
+    "description": {
+        "es": "",
+        "pt": ""
+    },
+    "handle": {
+        "es": "nombre-de-la-categoria",
+        "pt": "nome-da-categoria"
+    },
+    "parent": null,
+    "subcategories": [
+
+    ],
+    "created_at": "2013-09-05T17:59:19+0000",
+    "updated_at": "2013-09-05T17:59:19+0000"
+}
+```
+
+The properties affected by internationalization will always be an object, even if there is only one language active. If you only care about the main language, you can obtain its code by reading the `X-Main-Language` header.
+
+
+When POSTing or PUTing data you can provide an object with a value for each language:
+
+```shell
+curl -H 'Authentication: bearer ACCESS_TOKEN ' \
+  -H 'Content-Type: application/json' \
+  -H 'User-Agent: MyApp (name@email.com)' \
+  -d '{ "name": {"es": "Ejemplo", "pt": "Exemplo"} }' \
+  https://api.tiendanube.com/v1/123456/products
+```
+
+Or you can simply provide a string value, which will be applied to all languages:
+
+```shell
+curl -H 'Authentication: bearer ACCESS_TOKEN ' \
+  -H 'Content-Type: application/json' \
+  -H 'User-Agent: MyApp (name@email.com)' \
+  -d '{ "name": "Example" }' \
+  https://api.tiendanube.com/v1/123456/products
+```
+
 API resources
 -----------------
 
