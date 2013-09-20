@@ -294,7 +294,7 @@ Modify an existing Product Variant
 
 Remove a Product Variant
 
-#### DELETE /products/1234/images/112
+#### DELETE /products/1234/variants/112
 
 `HTTP/1.1 200 OK`
 
