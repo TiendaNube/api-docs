@@ -40,7 +40,7 @@ var myAppJavaScript = function($){
 
 if ((typeof jQuery === 'undefined') || (parseFloat(jQuery.fn.jquery) < 1.7)) {
   loadScript('//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js', function(){
-    jQuery1101 = jQuery.noConflict(true);
+    var jQuery1101 = jQuery.noConflict(true);
     myAppJavaScript(jQuery1101);
   });
 } else {
