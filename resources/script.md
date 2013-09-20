@@ -9,6 +9,9 @@ You should have the following things into consideration:
 
 * Another applications may be installed and can include other JavaScript in addition to yours.
 
+* When we include your script in the store, we will send a `store` parameter with the store id (e.g. `<script type="text/javascript" src="http://myapp.com/new.js?store=1234"></script>`). 
+
+
 Ideally, your javascript should be inside a closure to avoid any conflict:
 
 ```javascript
