@@ -35,7 +35,7 @@ var myAppJavaScript = function($){
      $ in this scope references the jQuery object we'll use.
      Don't use 'jQuery', or 'jQuery191', here. Use the dollar sign
      that was passed as argument.*/
-  $('body').append('<p>I'm using jQuery version '+$.fn.jquery+'</p>');
+  $('body').append("<p>I'm using jQuery version "+$.fn.jquery+'</p>');
 };
 
 if ((typeof jQuery === 'undefined') || (parseFloat(jQuery.fn.jquery) < 1.7)) {
