@@ -69,7 +69,7 @@ Receive a list of all Product Variants for a given product.
     },
     {
       "id": 112,
-      "promotional_price": "19.00"
+      "promotional_price": "19.00",
       "created_at": "2013-01-03T09:11:51-03:00",
       "depth": null,
       "height": null,
@@ -89,7 +89,7 @@ Receive a list of all Product Variants for a given product.
     },
     {
       "id": 133,
-      "promotional_price": "19.00"
+      "promotional_price": "19.00",
       "created_at": "2013-01-03T09:11:51-03:00",
       "depth": null,
       "height": null,
@@ -118,7 +118,7 @@ Receive a list of all Product Variants for a given product.
 [
     {
       "id": 112,
-      "promotional_price": "19.00"
+      "promotional_price": "19.00",
       "created_at": "2013-01-03T09:11:51-03:00",
       "depth": null,
       "height": null,
@@ -138,7 +138,7 @@ Receive a list of all Product Variants for a given product.
     },
     {
       "id": 133,
-      "promotional_price": "19.00"
+      "promotional_price": "19.00",
       "created_at": "2013-01-03T09:11:51-03:00",
       "depth": null,
       "height": null,
@@ -174,7 +174,7 @@ Receive a single Product Variant
 ```json
 {
       "id": 112,
-      "promotional_price": "19.00"
+      "promotional_price": "19.00",
       "created_at": "2013-01-03T09:11:51-03:00",
       "depth": null,
       "height": null,
@@ -245,7 +245,7 @@ Modify an existing Product Variant
 ```json
 {
       "id": 144,
-      "promotional_price": "19.00"
+      "promotional_price": "19.00",
       "created_at": "2013-01-03T09:11:51-03:00",
       "depth": null,
       "height": null,
@@ -270,7 +270,7 @@ Modify an existing Product Variant
 ```json
 {
       "id": 144,
-      "promotional_price": "19.00"
+      "promotional_price": "19.00",
       "created_at": "2013-01-03T09:11:51-03:00",
       "depth": null,
       "height": null,
