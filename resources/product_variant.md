@@ -49,7 +49,7 @@ Receive a list of all Product Variants for a given product.
 [
     {
       "id": 101,
-      "promotional_price": "19.00"
+      "promotional_price": "19.00",
       "created_at": "2013-01-03T09:11:51-03:00",
       "depth": null,
       "height": null,
