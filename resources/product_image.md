@@ -1,7 +1,12 @@
 Product Image
 =============
 
-Product images could well be the single most important design aspect of any store. Without the ability to touch, hold, smell, taste or otherwise handle the products they are interested in, potential customers have only images to interact with. 
+Product images could well be the single most important design aspect of any store. Without the ability to touch, hold, smell, taste or otherwise handle the products they are interested in, potential customers have only images to interact with.
+
+The product images have the following restrictions:
+
+* Must weight less than 10MB
+* Must be in one of the following formats: .gif, .jpg, .png
 
 Properties
 ----------
