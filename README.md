@@ -100,7 +100,7 @@ If Tienda Nube/Nuvem Shop is having trouble, you might see a 5xx error. `500` me
 Rate limiting
 -------------
 
-You can perform up to 500 requests per 1 hour period from the same access_token to the same store. If you exceed this limit, you'll get a [429 Too Many Requests](http://tools.ietf.org/html/draft-nottingham-http-new-status-02#section-4) response for subsequent requests. We use the following headers to provide information:
+You can perform up to 500 requests per 5 minutes period from the same app to the same store. If you exceed this limit, you'll get a [429 Too Many Requests](http://tools.ietf.org/html/draft-nottingham-http-new-status-02#section-4) response for subsequent requests. We use the following headers to provide information:
 
 * `X-Rate-Limit-Limit` : Total requests that con be done in a given period.
 * `X-Rate-Limit-Remaining` : Remaining requests in the current period.
