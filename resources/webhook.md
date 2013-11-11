@@ -32,7 +32,7 @@ Webhooks will be sent __only once__ (for now) to the url defined.
 Endpoints
 ---------
 
-### GET /webhook
+### GET /webhooks
 
 Receive a list of all Webhooks for your application.
 
