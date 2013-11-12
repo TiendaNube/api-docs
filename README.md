@@ -264,3 +264,5 @@ Help us make it better
 ----------------------
 
 Please tell us how we can make the API better. If you have a specific feature request or if you found a bug, please use GitHub issues. Feel free to fork these docs and send a pull request with improvements.
+
+To talk with us about the API, feel free to write to <mailto:api@tiendanube.com>.
