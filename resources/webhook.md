@@ -5,7 +5,7 @@ A Webhook is a tool that allows you to receive a notification for a certain even
 
 | Category       | Events                                                                                           |
 | -------------- | ------------------------------------------------------------------------------------------------ |
-| App            | uninstalled (Coming Soon)                                                                        |
+| App            | uninstalled                                                                        |
 | Category       | created/updated/deleted                                                                          |
 | Order          | created/updated/paid/fulfilled/cancelled                                                         |
 | Product        | created/updated/deleted                                                                          | 
