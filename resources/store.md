@@ -26,12 +26,13 @@ Properties
 | business_name     | Business name of the company who owns the store                                               |
 | customer_accounts | "optional" if the customer is allowed to checkout as guest. "mandatory" if not.               |
 | plan_name         | Name of the Tienda Nube/Nuvem Shop's plan the store is on                                     |
-| country           | Store's country in [ISO 3166-1 format](http://en.wikipedia.org/wiki/ISO_3166-1)                                                                              |
+| country           | Store's country in [ISO 3166-1 format](http://en.wikipedia.org/wiki/ISO_3166-1)               |
 | languages         | Store available languages with its currency and whether or not is active                      |
 | domains           | List of store's domains                                                                       |
 | original_domain   | Original `tiendanube.com` or `nuvemshop.com.br` domain for the Store                          |
 | main_language     | Store's main language                                                                         |
-| main_currency     | Store's main currency in [ISO 4217 format](http://en.wikipedia.org/wiki/ISO_4217)                                                                         |
+| main_currency     | Store's main currency in [ISO 4217 format](http://en.wikipedia.org/wiki/ISO_4217)             |
+| admin_language    | Store's admin language                                                                        |
 | created_at        | Date when the Store was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)   | 
 
 Endpoints
@@ -54,6 +55,7 @@ Receive a single Store.
 ```json
 {
   "address": null,
+  "admin_language": "pt",
   "blog": null,
   "business_id": null,
   "business_name": null,
