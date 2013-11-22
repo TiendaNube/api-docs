@@ -29,6 +29,31 @@ Properties
 
 Webhooks will be sent __only once__ (for now) to the url defined.
 
+### Parameters
+
+When doing the POST request, all webhooks will send the following parameters:
+
+* __store_id__: Store from where the event originated
+* __event__: Event's name (product/created, product/updated, etc.)
+
+Also, every webhook will send custom parameters, as follows:
+
+#### app/uninstalled
+
+* __id__: App's id
+
+#### category/created - category/updated - category/deleted
+
+* __id__: Category's id
+
+#### order/created - order/updated - order/paid - order/fulfilled - order/cancelled
+
+* __id__: Order's id
+
+#### product/created - product/updated - product/deleted
+
+* __id__: Product's id
+
 Endpoints
 ---------
 
