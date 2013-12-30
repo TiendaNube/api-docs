@@ -84,7 +84,7 @@ Receive a list of all Orders.
       "weight": "2.00",
       "updated_at": "2008-01-10T11:00:00-05:00",
       "number": 101,
-      "discount_codes": [
+      "coupon": [
         {
           "code": "SUPERDISCOUNT"
         }
@@ -197,7 +197,7 @@ Receive a single Order
     "weight": "2.00",
     "updated_at": "2008-01-10T11:00:00-05:00",
     "number": 101,
-    "discount_codes": [
+    "coupon": [
       {
         "code": "SUPERDISCOUNT"
       }
@@ -291,7 +291,7 @@ Close an Order
     "weight": "2.00",
     "updated_at": "2008-01-10T11:00:00-05:00",
     "number": 101,
-    "discount_codes": [
+    "coupon": [
       {
         "code": "SUPERDISCOUNT"
       }
@@ -385,7 +385,7 @@ Re-open a closed Order
     "weight": "2.00",
     "updated_at": "2008-01-10T11:00:00-05:00",
     "number": 101,
-    "discount_codes": [
+    "coupon": [
       {
         "code": "SUPERDISCOUNT"
       }
@@ -485,7 +485,7 @@ Cancel an Order
     "weight": "2.00",
     "updated_at": "2008-01-10T11:00:00-05:00",
     "number": 101,
-    "discount_codes": [
+    "coupon": [
       {
         "code": "SUPERDISCOUNT"
       }
@@ -585,7 +585,7 @@ Change the Order's owner_note (the only value you can modify through the API)
     "weight": "2.00",
     "updated_at": "2008-01-10T11:00:00-05:00",
     "number": 101,
-    "discount_codes": [
+    "coupon": [
       {
         "code": "SUPERDISCOUNT"
       }
