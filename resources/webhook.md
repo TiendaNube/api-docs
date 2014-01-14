@@ -29,6 +29,31 @@ Properties
 
 Webhooks will be sent __only once__ (for now) to the url defined.
 
+### Verifying a webhook
+
+Webhooks created through the API can be verified by calculating a digital signature.
+
+Each Webhook request includes a X-Linkedstore-HMAC-SHA256 header which is generated using the app's secret, along with the data sent in the request.
+
+__Note that some frameworks will change the header to HTTP_X_LINKEDSTORE_HMAC_SHA256__.
+
+See PHP example below:
+
+```php
+<?php
+
+define('SECRET', 'secret');
+
+function verify_webhook($data, $hmac_header) {
+  return $hmac_header == hash_hmac('sha256', $data, APP_SECRET);
+}
+
+$hmac_header = $_SERVER['HTTP_X_LINKEDSTORE_HMAC_SHA256'];
+$data = file_get_contents('php://input');
+$verified = verify_webhook($data, $hmac_header);
+echo 'Webhook verified: ' . var_export($verified, true);
+```
+
 ### Parameters
 
 When doing the POST request, all webhooks will send the following parameters:
