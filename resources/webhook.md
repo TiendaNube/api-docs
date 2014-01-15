@@ -56,7 +56,7 @@ echo 'Webhook verified: ' . var_export($verified, true);
 
 ### Parameters
 
-When doing the POST request, all webhooks will send the following parameters:
+When doing the POST request, all webhooks will send the following parameters in JSON format:
 
 * __store_id__: Store from where the event originated
 * __event__: Event's name (product/created, product/updated, etc.)
@@ -78,6 +78,17 @@ Also, every webhook will send custom parameters, as follows:
 #### product/created - product/updated - product/deleted
 
 * __id__: Product's id
+ 
+#### Example webhook content
+
+```javascript
+{
+  'store_id':123,
+  'event':'product/created',
+  'id':1948209
+}
+```
+
 
 Endpoints
 ---------
