@@ -260,6 +260,14 @@ API resources
 * [Webhook](https://github.com/tiendanube/api-docs/blob/master/resources/webhook.md)
 
 
+Front-end integration
+---------------------
+
+When using [scripts](https://github.com/tiendanube/api-docs/blob/master/resources/script.md) to integrate your app with the storefront, you may want to bind yourself to certain events or access related objects.
+
+While support for this is still being improved, there is one single event you may bind yourself to: `LS.registerOnChangeVariant(callback)` where `callback` is a function that receives a single argument, a `variant`, that contains information about the chosen product variant. In particular, `variant.element` contains a string detailing a jQuery selector that you may use in order to obtain a container for the chosen variant's form; this is important when working with themes that have a "quick shop" feature, such as LinkedMan or LinkedWoman, as there may be more than one product form present in a page.
+
+
 Help us make it better
 ----------------------
 
