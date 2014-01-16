@@ -246,6 +246,26 @@ curl -H 'Authentication: bearer ACCESS_TOKEN ' \
   https://api.tiendanube.com/v1/123456/products
 ```
 
+Front-end integration
+---------------------
+
+When using [scripts](https://github.com/tiendanube/api-docs/blob/master/resources/script.md) to integrate your app with the storefront, you may want to bind yourself to certain events or access related objects.
+
+While support for this is still being improved, there is one single event you may bind yourself to: `LS.registerOnChangeVariant(callback)` where `callback` is a function that receives a single argument, a `variant`, that contains information about the chosen product variant. In particular, `variant.element` contains a string detailing a jQuery selector that you may use in order to obtain a container for the chosen variant's form; this is important when working with themes that have a "quick shop" feature, such as LinkedMan or LinkedWoman, as there may be more than one product form present in a page.
+
+
+Suspension of API access due to lack of payment
+-----------------------------------------------
+
+Being a monthly subscription service, it's possible that a store will not renew its service. In this case, the store will go offline and the API will be inaccessible. The API will also be inaccessible if it has a recurring price and it's not paid in time.
+
+In either case, all API calls will return a `402 Payment Required` response, [Scripts](https://github.com/tiendanube/api-docs/blob/master/resources/script.md) will not be included and [Webhooks](https://github.com/tiendanube/api-docs/blob/master/resources/webhook.md) will not be called.
+
+Once the required payment is made, the API becomes accessible again.
+
+If your app needs to know when access to the API is suspended or resumed, you can register to the `app/suspended` and `app/resumed` events using a Webhook.
+
+
 API resources
 -----------------
 
@@ -259,13 +279,6 @@ API resources
 * [Script](https://github.com/tiendanube/api-docs/blob/master/resources/script.md)
 * [Webhook](https://github.com/tiendanube/api-docs/blob/master/resources/webhook.md)
 
-
-Front-end integration
----------------------
-
-When using [scripts](https://github.com/tiendanube/api-docs/blob/master/resources/script.md) to integrate your app with the storefront, you may want to bind yourself to certain events or access related objects.
-
-While support for this is still being improved, there is one single event you may bind yourself to: `LS.registerOnChangeVariant(callback)` where `callback` is a function that receives a single argument, a `variant`, that contains information about the chosen product variant. In particular, `variant.element` contains a string detailing a jQuery selector that you may use in order to obtain a container for the chosen variant's form; this is important when working with themes that have a "quick shop" feature, such as LinkedMan or LinkedWoman, as there may be more than one product form present in a page.
 
 
 Help us make it better
