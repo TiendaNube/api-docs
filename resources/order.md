@@ -34,7 +34,7 @@ Properties
 Endpoints
 ---------
 
-### GET /Orders
+### GET /orders
 
 Receive a list of all Orders.
 
