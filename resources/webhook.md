@@ -5,12 +5,14 @@ A Webhook is a tool that allows you to receive a notification for a certain even
 
 | Category       | Events                                                                                           |
 | -------------- | ------------------------------------------------------------------------------------------------ |
-| App            | uninstalled                                                                        |
+| App            | uninstalled/suspended/resumed                                                                    |
 | Category       | created/updated/deleted                                                                          |
 | Order          | created/updated/paid/fulfilled/cancelled                                                         |
 | Product        | created/updated/deleted                                                                          | 
 
 To register for the product created event, for example, you should send `product/created` in the event field.
+
+The `app/suspended` and `app/resumed` events refer to the [suspension of API access due to lack of payment](https://github.com/TiendaNube/api-docs/#suspension-of-api-access-due-to-lack-of-payment).
 
 You are not allowed to use a localhost/tiendanube/nuvemshop domain for webhooks.
 
