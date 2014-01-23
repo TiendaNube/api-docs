@@ -9,7 +9,7 @@ Where do I start?
 Want to get started with API integration? Here's a quick check list:
 
 1. Register as a partner in [Tienda Nube](http://www.tiendanube.com/partners) or [Nuvem Shop](http://www.nuvemshop.com.br/parceiros).
-2. Create your app in the Apps section.
+2. Once inside your partner's admin panel, go to the "Apps" section and create your app.
 3. Read up on [how to authenticate](#authentication) your app with us.
 4. Read the API docs to understand what you can do with your app.
 
