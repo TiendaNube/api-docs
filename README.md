@@ -3,6 +3,16 @@ Tienda Nube/Nuvem Shop API
 
 This is a REST-style API that uses JSON for serialization and OAuth 2 for authentication.
 
+Where do I start?
+----------------
+
+Want to get started with API integration? Here's a quick check list:
+
+1. Register as a partner in [Tienda Nube](http://www.tiendanube.com/partners) or [Nuvem Shop](http://www.nuvemshop.com.br/parceiros).
+2. Create your app in the Apps section.
+3. Read up on [how to authenticate](#authentication) your app with us.
+4. Read the API docs to understand what you can do with your app.
+
 Making a request
 ----------------
 
