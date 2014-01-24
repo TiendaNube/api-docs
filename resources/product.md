@@ -31,8 +31,8 @@ Receive a list of all Products.
 | Parameter      | Explanation                                                                                      |
 | -------------- | ------------------------------------------------------------------------------------------------ |
 | since_id       | Restrict results to after the specified ID                                                       |
-| language       | Specify search language (required when serching for handle)                                      |
-| q              | Show Products containing q in their names or descriptions                                        |
+| language       | Specify search language                                                                          |
+| q              | Search Products containing the given text in their names or descriptions                         |
 | handle         | Show Products with a given URL                                                                   |
 | category_id    | Show Products with a given category                                                              |
 | published      | Show Products by published status. Valid values are "true" or "false"                            |
