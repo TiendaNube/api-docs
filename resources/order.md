@@ -20,6 +20,7 @@ Properties
 | total            | Total price of the order including shipping and discounts                                        |
 | total_usd        | Total price of the order in US dollars                                                           |
 | currency         | The total spent's currency in [ISO 4217 format](http://en.wikipedia.org/wiki/ISO_4217)           |
+| language         | Order's language used by the customer during the checkout process                                |
 | gateway          | The payment gateway used                                                                         |
 | shipping         | The shipping method used                                                                         |
 | shipping_address | The customer's shipping address where the order will be shipped                                  |
@@ -67,6 +68,7 @@ Receive a list of all Orders.
       "gateway": "paypal",
       "id": 450789469,
       "landing_site": "http://www.example.com?source=abc",
+      "language": "en",
       "location_id": null,
       "name": "#1001",
       "note": null,
@@ -180,6 +182,7 @@ Receive a single Order
     "gateway": "paypal",
     "id": 450789469,
     "landing_site": "http://www.example.com?source=abc",
+    "language": "en",
     "location_id": null,
     "name": "#1001",
     "note": null,
@@ -274,6 +277,7 @@ Close an Order
     "gateway": "paypal",
     "id": 450789469,
     "landing_site": "http://www.example.com?source=abc",
+    "language": "en",
     "location_id": null,
     "name": "#1001",
     "note": null,
@@ -368,6 +372,7 @@ Re-open a closed Order
     "gateway": "paypal",
     "id": 450789469,
     "landing_site": "http://www.example.com?source=abc",
+    "language": "en",
     "location_id": null,
     "name": "#1001",
     "note": null,
@@ -468,6 +473,7 @@ Cancel an Order
     "gateway": "paypal",
     "id": 450789469,
     "landing_site": "http://www.example.com?source=abc",
+    "language": "en",
     "location_id": null,
     "name": "#1001",
     "note": null,
@@ -568,6 +574,7 @@ Change the Order's owner_note (the only value you can modify through the API)
     "gateway": "paypal",
     "id": 450789469,
     "landing_site": "http://www.example.com?source=abc",
+    "language": "en",
     "location_id": null,
     "name": "#1001",
     "note": null,
