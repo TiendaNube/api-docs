@@ -11,6 +11,7 @@ Properties
 | id                   | The unique numeric identifier for the Customer                                               |
 | name                 | Name of the Customer                                                                         |
 | email                | E-mail of the Customer                                                                       |
+| phone                | Phone number of the customer (not necessarily the same as the address's phone)               |
 | identification       | Customer's identification (in Brazil for example, it would be the CPF/CNPJ)                  |
 | note                 | Store owner's notes about the customer                                                       |
 | default_address      | Default address of the Customer                                                              |
@@ -56,6 +57,7 @@ Receive a list of all Customers.
       "last_order_id": 9001,
       "name": "John Doe",
       "note": null,
+      "phone": null,
       "total_spent": "89.00",
       "total_spent_currency": "USD",
       "updated_at": "2013-03-11T09:14:11-03:00",
@@ -100,6 +102,7 @@ Receive a list of all Customers.
       "last_order_id": null,
       "name": "Zé Ninguém",
       "note": null,
+      "phone": "392502584",
       "total_spent": "0.00",
       "total_spent_currency": "USD",
       "updated_at": "2013-04-08T11:11:51-03:00",
@@ -153,6 +156,7 @@ Receive a list of all Customers.
       "last_order_id": 9001,
       "name": "John Doe",
       "note": null,
+      "phone": null,
       "total_spent": "89.00",
       "total_spent_currency": "USD",
       "updated_at": "2013-03-11T09:14:11-03:00",
@@ -213,6 +217,7 @@ Receive a single Customer
   "last_order_id": 9001,
   "name": "John Doe",
   "note": null,
+  "phone": null,
   "total_spent": "89.00",
   "total_spent_currency": "USD",
   "updated_at": "2013-03-11T09:14:11-03:00",
@@ -347,6 +352,7 @@ Modify an existing Customer
   "last_order_id": 9001,
   "name": "John Doe",
   "note": null,
+  "phone": "911",
   "total_spent": "89.00",
   "total_spent_currency": "USD",
   "updated_at": "2013-03-11T09:14:11-03:00",
@@ -396,6 +402,7 @@ Modify an existing Customer
   "last_order_id": 9001,
   "name": "John Doe",
   "note": null,
+  "phone": "911",
   "total_spent": "89.00",
   "total_spent_currency": "USD",
   "updated_at": "2013-06-01T09:14:11-03:00",
