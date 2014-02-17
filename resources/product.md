@@ -609,7 +609,7 @@ Modify an existing Product
        "height": null,
        "values": [
            {
-               "en": Large"
+               "en": "Large"
            }
        ],
        "price": "25.00",
