@@ -10,9 +10,10 @@ Properties
 | ----------------- | --------------------------------------------------------------------------------------------- |
 | id                | The unique numeric identifier for the Store                                                   |
 | name              | List of the names of the Store, in every language supported by the store                      |
-| descripton        | List of the descriptions of the Store, in every language supported by the store               |
+| description       | List of the descriptions of the Store, in every language supported by the store               |
 | type              | Store type. Examples are "clothing", "sports", "electronic"                                   |
 | email             | Store owner's e-mail                                                                          |
+| logo              | Store logo URL, starting with // (or null if it has no logo)                                  |
 | contact_email     | Store's contact e-mail                                                                        |
 | facebook          | Store's Facebook URL                                                                          |
 | twitter           | Store's Twitter URL                                                                           |
@@ -91,6 +92,7 @@ Receive a single Store.
       "active": true
     }
   },
+  "logo": "//d26lpennugtm8s.cloudfront.net/stores/046/themes/common/logo-ff622335866ee56df3bceed2e9d41469.png",
   "main_currency": "BRL",
   "main_language": "pt",
   "name": {
