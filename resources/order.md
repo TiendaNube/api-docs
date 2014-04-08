@@ -11,7 +11,7 @@ Properties
 | id               | The unique numeric identifier for the Order. It's different from `number`                        |
 | token            | Specifies the location of the Order                                                              |
 | number           | Unique numberc identifier for an Order used by the shop owner and customers. It's sequential and starts at 100 |
-| customer         | Customer that purchase this Order                                                                |
+| customer         | Customer that purchased this Order. Only given if the 'read_customers' scope is set for the app  |
 | note             | Customer's note about the order                                                                  |
 | owner_note       | Store owner's note about the order                                                               |
 | coupon           | List of coupons applied to the order                                                             |
