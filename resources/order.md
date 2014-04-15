@@ -24,6 +24,7 @@ Properties
 | gateway          | The payment gateway used                                                                         |
 | shipping         | The shipping method used                                                                         |
 | shipping_address | The customer's shipping address where the order will be shipped                                  |
+| shipping_tracking_number | The shipping tracking number for the order. This may be null if not available.           |
 | weight           | Order's total weight, in kilograms                                                               |
 | status           | Order's status. Possible values are "open", "closed" or "cancelled"                              |
 | payment_status   | Order's payment status. Possible values are "authorized", "pending", "paid", "abandoned", "refunded" or "voided" |
@@ -77,6 +78,7 @@ Receive a list of all Orders.
       "payment_status": "pending",
       "shipping": "ups",
       "shipping_status": "unshipped",
+      "shipping_tracking_number": null,
       "status": "open",
       "subtotal": "38.00",
       "token": "898544a54283414238f74cd08f0efd3916f74b75",
@@ -191,6 +193,7 @@ Receive a single Order
     "payment_status": "pending",
     "shipping": "ups",
     "shipping_status": "unshipped",
+    "shipping_tracking_number": null,
     "status": "open",
     "subtotal": "38.00",
     "token": "898544a54283414238f74cd08f0efd3916f74b75",
@@ -286,6 +289,7 @@ Close an Order
     "payment_status": "pending",
     "shipping": "ups",
     "shipping_status": "unshipped",
+    "shipping_tracking_number": null,
     "status": "closed",
     "subtotal": "38.00",
     "token": "898544a54283414238f74cd08f0efd3916f74b75",
@@ -381,6 +385,7 @@ Re-open a closed Order
     "payment_status": "pending",
     "shipping": "ups",
     "shipping_status": "unshipped",
+    "shipping_tracking_number": null,
     "status": "open",
     "subtotal": "38.00",
     "token": "898544a54283414238f74cd08f0efd3916f74b75",
@@ -482,6 +487,7 @@ Cancel an Order
     "payment_status": "pending",
     "shipping": "ups",
     "shipping_status": "unshipped",
+    "shipping_tracking_number": null,
     "status": "cancelled",
     "subtotal": "38.00",
     "token": "898544a54283414238f74cd08f0efd3916f74b75",
@@ -583,6 +589,7 @@ Change the Order's owner_note (the only value you can modify through the API)
     "payment_status": "pending",
     "shipping": "ups",
     "shipping_status": "unshipped",
+    "shipping_tracking_number": null,
     "status": "open",
     "subtotal": "38.00",
     "token": "898544a54283414238f74cd08f0efd3916f74b75",
