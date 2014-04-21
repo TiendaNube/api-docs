@@ -66,7 +66,7 @@ All data is sent and received as JSON. Our format is to have no root element and
 
 You'll receive a `415 Unsupported Media Type` response code if you leave out the `Content-Type` header.
 
-Use HTTP caching
+Use HTTP caching (Coming Soon)
 ----------------
 
 You must make use of the HTTP freshness headers to lessen the load on our servers (and increase the speed of your application!). Most requests we return will include an `ETag` or `Last-Modified` header. When you first request a resource, store this value, and then submit them back to us on subsequent requests as `If-None-Match` and `If-Modified-Since`. If the resource hasn't changed, you'll see a `304 Not Modified` response, which saves you the time and bandwidth of sending something you already have.
