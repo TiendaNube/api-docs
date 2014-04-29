@@ -24,11 +24,14 @@ Properties
 | gateway          | The payment gateway used                                                                         |
 | shipping         | The shipping method used                                                                         |
 | shipping_address | The customer's shipping address where the order will be shipped                                  |
-| shipping_tracking_number | The shipping tracking number for the order. This may be null if not available.           |
+| shipping_tracking_number | The shipping tracking number for the order. This may be null if not available            |
+| shipping_min_days | The minimum number of weekdays needed for the order to be delivered                             |
+| shipping_max_days | The maximum number of weekdays needed for the order to be delivered                             |
 | weight           | Order's total weight, in kilograms                                                               |
 | status           | Order's status. Possible values are "open", "closed" or "cancelled"                              |
 | payment_status   | Order's payment status. Possible values are "authorized", "pending", "paid", "abandoned", "refunded" or "voided" |
 | shipping_status  | Order's shipping status. Possible values are "shipped" or "unshipped"                            |
+| shipped_at    | Date when the Order was shipped in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601) |
 | cancel_reason    | Reason why the store owner cancelled an Order. Possible values are "customer", "fraud", "inventory" or "other" |
 | created_at       | Date when the Order was created in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601)      | 
 | updated_at       | Date when the Order was last updated in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601) |
@@ -79,6 +82,8 @@ Receive a list of all Orders.
       "shipping": "ups",
       "shipping_status": "unshipped",
       "shipping_tracking_number": null,
+      "shipping_min_days": 2,
+      "shipping_max_days": 4,
       "status": "open",
       "subtotal": "38.00",
       "token": "898544a54283414238f74cd08f0efd3916f74b75",
@@ -87,6 +92,7 @@ Receive a list of all Orders.
       "price_usd": "58.00",
       "weight": "2.00",
       "updated_at": "2008-01-10T11:00:00-05:00",
+      "shipped_at": "2008-01-10T11:00:00-05:00",
       "number": 101,
       "coupon": [
         {
@@ -194,6 +200,8 @@ Receive a single Order
     "shipping": "ups",
     "shipping_status": "unshipped",
     "shipping_tracking_number": null,
+    "shipping_min_days": 2,
+    "shipping_max_days": 4,
     "status": "open",
     "subtotal": "38.00",
     "token": "898544a54283414238f74cd08f0efd3916f74b75",
@@ -202,6 +210,7 @@ Receive a single Order
     "price_usd": "58.00",
     "weight": "2.00",
     "updated_at": "2008-01-10T11:00:00-05:00",
+    "shipped_at": "2008-01-10T11:00:00-05:00",
     "number": 101,
     "coupon": [
       {
@@ -290,6 +299,8 @@ Close an Order
     "shipping": "ups",
     "shipping_status": "unshipped",
     "shipping_tracking_number": null,
+    "shipping_min_days": 2,
+    "shipping_max_days": 4,
     "status": "closed",
     "subtotal": "38.00",
     "token": "898544a54283414238f74cd08f0efd3916f74b75",
@@ -298,6 +309,7 @@ Close an Order
     "price_usd": "58.00",
     "weight": "2.00",
     "updated_at": "2008-01-10T11:00:00-05:00",
+    "shipped_at": "2008-01-10T11:00:00-05:00",
     "number": 101,
     "coupon": [
       {
@@ -386,6 +398,8 @@ Re-open a closed Order
     "shipping": "ups",
     "shipping_status": "unshipped",
     "shipping_tracking_number": null,
+    "shipping_min_days": 2,
+    "shipping_max_days": 4,
     "status": "open",
     "subtotal": "38.00",
     "token": "898544a54283414238f74cd08f0efd3916f74b75",
@@ -394,6 +408,7 @@ Re-open a closed Order
     "price_usd": "58.00",
     "weight": "2.00",
     "updated_at": "2008-01-10T11:00:00-05:00",
+    "shipped_at": "2008-01-10T11:00:00-05:00",
     "number": 101,
     "coupon": [
       {
@@ -488,6 +503,8 @@ Cancel an Order
     "shipping": "ups",
     "shipping_status": "unshipped",
     "shipping_tracking_number": null,
+    "shipping_min_days": 2,
+    "shipping_max_days": 4,
     "status": "cancelled",
     "subtotal": "38.00",
     "token": "898544a54283414238f74cd08f0efd3916f74b75",
@@ -496,6 +513,7 @@ Cancel an Order
     "price_usd": "58.00",
     "weight": "2.00",
     "updated_at": "2008-01-10T11:00:00-05:00",
+    "shipped_at": "2008-01-10T11:00:00-05:00",
     "number": 101,
     "coupon": [
       {
@@ -590,6 +608,8 @@ Change the Order's owner_note (the only value you can modify through the API)
     "shipping": "ups",
     "shipping_status": "unshipped",
     "shipping_tracking_number": null,
+    "shipping_min_days": 2,
+    "shipping_max_days": 4,
     "status": "open",
     "subtotal": "38.00",
     "token": "898544a54283414238f74cd08f0efd3916f74b75",
@@ -598,6 +618,7 @@ Change the Order's owner_note (the only value you can modify through the API)
     "price_usd": "58.00",
     "weight": "2.00",
     "updated_at": "2008-01-10T11:00:00-05:00",
+    "shipped_at": "2008-01-10T11:00:00-05:00",
     "number": 101,
     "coupon": [
       {
