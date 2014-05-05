@@ -12,7 +12,7 @@ Properties
 | token            | Specifies the location of the Order                                                              |
 | number           | Unique numberc identifier for an Order used by the shop owner and customers. It's sequential and starts at 100 |
 | customer         | [Customer](https://github.com/tiendanube/api-docs/blob/master/resources/customer.md) that purchased this Order. Only given if the 'read_customers' scope is set for the app  |
-| products         | List of the products purchased by the `customer`. Contents are explained below                   |
+| products         | List of the products purchased by the `customer`. Contents are explained below and values hold are the ones corresponding to the time the products were purchased |
 | note             | Customer's note about the order                                                                  |
 | owner_note       | Store owner's note about the order                                                               |
 | coupon           | List of coupons applied to the order                                                             |
@@ -41,10 +41,15 @@ The `product` field has the following contents:
 
 | Property         | Explanation                                                                                      |
 | ---------------- | ------------------------------------------------------------------------------------------------ |
-| product_id       | The unique numeric identifier for the Order. It's different from `number`                        |
-| product_id       | The unique numeric identifier for the Order. It's different from `number`                        |
-| product_id       | The unique numeric identifier for the Order. It's different from `number`                        |
-| product_id       | The unique numeric identifier for the Order. It's different from `number`                        || product_id       | The unique numeric identifier for the Order. It's different from `number`                        |
+| product_id       | [Product](https://github.com/tiendanube/api-docs/blob/master/resources/product.md) purchased     |
+| variant_id       | [Product Variant](https://github.com/tiendanube/api-docs/blob/master/resources/product_variant.md) purchased |
+| name             | Product's name at the time of purchase                                                           |
+| price            | Product's price at the time of purchase                                                          |
+| quantity         | Quantity purchased                                                                               |
+| weight           | Product's weight at the time of purchase                                                         |
+| width            | Product's width at the time of purchase                                                          |
+| height           | Product's height at the time of purchase                                                         |
+| depth            | Product's depth at the time of purchase                                                         |
 
 
 
