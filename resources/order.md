@@ -11,7 +11,8 @@ Properties
 | id               | The unique numeric identifier for the Order. It's different from `number`                        |
 | token            | Specifies the location of the Order                                                              |
 | number           | Unique numberc identifier for an Order used by the shop owner and customers. It's sequential and starts at 100 |
-| customer         | Customer that purchased this Order. Only given if the 'read_customers' scope is set for the app  |
+| customer         | [Customer](https://github.com/tiendanube/api-docs/blob/master/resources/customer.md) that purchased this Order. Only given if the 'read_customers' scope is set for the app  |
+| products         | List of the products purchased by the `customer`. Contents are explained below                   |
 | note             | Customer's note about the order                                                                  |
 | owner_note       | Store owner's note about the order                                                               |
 | coupon           | List of coupons applied to the order                                                             |
@@ -35,6 +36,17 @@ Properties
 | cancel_reason    | Reason why the store owner cancelled an Order. Possible values are "customer", "fraud", "inventory" or "other" |
 | created_at       | Date when the Order was created in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601)      | 
 | updated_at       | Date when the Order was last updated in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601) |
+
+The `product` field has the following contents:
+
+| Property         | Explanation                                                                                      |
+| ---------------- | ------------------------------------------------------------------------------------------------ |
+| product_id       | The unique numeric identifier for the Order. It's different from `number`                        |
+| product_id       | The unique numeric identifier for the Order. It's different from `number`                        |
+| product_id       | The unique numeric identifier for the Order. It's different from `number`                        |
+| product_id       | The unique numeric identifier for the Order. It's different from `number`                        || product_id       | The unique numeric identifier for the Order. It's different from `number`                        |
+
+
 
 Endpoints
 ---------
