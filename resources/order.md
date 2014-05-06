@@ -120,7 +120,6 @@ Receive a list of all Orders.
         {
           "depth": null,
           "height": null,
-          "id": 9912,
           "price": "19.00",
           "product_id": 1234,
           "quantity": 2,
@@ -238,7 +237,6 @@ Receive a single Order
       {
         "depth": null,
         "height": null,
-        "id": 9912,
         "price": "19.00",
         "product_id": 1234,
         "quantity": 2,
@@ -337,7 +335,6 @@ Close an Order
       {
         "depth": null,
         "height": null,
-        "id": 9912,
         "price": "19.00",
         "product_id": 1234,
         "quantity": 2,
@@ -436,7 +433,6 @@ Re-open a closed Order
       {
         "depth": null,
         "height": null,
-        "id": 9912,
         "price": "19.00",
         "product_id": 1234,
         "quantity": 2,
@@ -541,7 +537,6 @@ Cancel an Order
       {
         "depth": null,
         "height": null,
-        "id": 9912,
         "price": "19.00",
         "product_id": 1234,
         "quantity": 2,
@@ -646,7 +641,6 @@ Change the Order's owner_note (the only value you can modify through the API)
       {
         "depth": null,
         "height": null,
-        "id": 9912,
         "price": "19.00",
         "product_id": 1234,
         "quantity": 2,
