@@ -37,7 +37,7 @@ Properties
 | created_at       | Date when the Order was created in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601)      | 
 | updated_at       | Date when the Order was last updated in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601) |
 
-The `product` field has the following contents:
+The `products` field has the following contents:
 
 | Property         | Explanation                                                                                      |
 | ---------------- | ------------------------------------------------------------------------------------------------ |
