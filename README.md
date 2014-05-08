@@ -267,13 +267,13 @@ While support for this is still being improved, there is one single event you ma
 Suspension of API access due to lack of payment
 -----------------------------------------------
 
-Being a monthly subscription service, it's possible that a store will not renew its service. In this case, the store will go offline and the API will be inaccessible. The API will also be inaccessible if it has a recurring price and it's not paid in time.
+Being a monthly subscription service, it's possible that a store will not renew its service. In this case, the store will go offline and the API will be inaccessible. The API will also be inaccessible if the app has a recurring price and it's not paid in time.
 
-In either case, all API calls will return a `402 Payment Required` response, [Scripts](https://github.com/tiendanube/api-docs/blob/master/resources/script.md) will not be included and [Webhooks](https://github.com/tiendanube/api-docs/blob/master/resources/webhook.md) will not be called.
+In either case, all API calls will return a `402 Payment Required` response, [Scripts](https://github.com/tiendanube/api-docs/blob/master/resources/script.md) will not be included and [Webhooks](https://github.com/tiendanube/api-docs/blob/master/resources/webhook.md) will not be called. Please make sure you handle this error code to notify the user that he needs to resume his payment instead of displaying a generic server error.
 
 Once the required payment is made, the API becomes accessible again.
 
-If your app needs to know when access to the API is suspended or resumed, you can register to the `app/suspended` and `app/resumed` events using a Webhook.
+If your app needs to know when access to the API is suspended or resumed (because you may have missed a webhook and want to do a full resync, for example), you can register to the `app/suspended` and `app/resumed` events using a Webhook.
 
 
 API resources
