@@ -15,12 +15,10 @@ Properties
 | start_date                 | Indicates the date from which the coupon is valid.                                                       |
 | end_date      | Indicates the date of overdue of the coupon.                                                              |
 | deleted_at            | Indicates the date of deletion of the coupon. The value is NULL if the coupon is still valid.                                                           |
-| used          | Flag that indicates if the coupon has been used.                           |
 | max_uses | Indicates the max number of times the coupon can be used.       |
 | value        | Indicates the value of the discount                                                          |
 | min_price               | Is a value that indicates the minimun value of the bill for applying the doscount                       |
 | categories               | Is a value that indicates the categories ids (separated by commas) of the store where the discount applies.                       |
-| categories_enabled    | Indicates if categories are sent. Takes the value "categories" or NULL.   |
 
 Endpoints
 ---------
