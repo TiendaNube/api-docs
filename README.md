@@ -288,7 +288,7 @@ API resources
 * [Customer](https://github.com/tiendanube/api-docs/blob/master/resources/customer.md)
 * [Script](https://github.com/tiendanube/api-docs/blob/master/resources/script.md)
 * [Webhook](https://github.com/tiendanube/api-docs/blob/master/resources/webhook.md)
-
+* [Coupons](https://github.com/tiendanube/api-docs/blob/master/resources/coupons.md)
 
 
 Help us make it better
