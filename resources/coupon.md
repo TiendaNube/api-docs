@@ -1,7 +1,7 @@
 Coupons
 ========
 
-A discount coupon is used by our customers to provide discounts in the bills of their own customers.
+A discount coupon is a way for a store to provide discounts for its customers. There are three type of coupons. Percentage, absolute and shipping. The percentage type indicates that the value is a percentage discount. The type absolute indicates that the value is an absolute amount of discount. And finally the type shipping indicates that the discount value is on the shipping.
 
 Properties
 ----------
@@ -10,7 +10,7 @@ Properties
 | -------------------- | -------------------------------------------------------------------------------------------- |
 | id                   | The unique numeric identifier for the coupon.                                                                                                                    |
 | code                | String that identifies the coupon.                                                                       |
-| type                | Type of the coupon. Can take the following values: percentage, absolute or shipping. The percentage type indicates that the value is a percentage discount. The type absolute indicates that the value is an absolute amount of discount. And finally the type shipping indicates that the discount value is on the shipping.               |
+| type                | Type of the coupon. Can take the following values: percentage, absolute or shipping.                |
 | valid       | Flag (true or false) that indicates if the coupon is valid or not.                  |
 | start_date                 | Date from which the coupon is valid.                                                       |
 | end_date      | Date of overdue of the coupon.                                                              |
@@ -33,7 +33,14 @@ Receive a list of all Coupon.
 | min_end_date | The minimum end_date to filter.       |
 | max_start_date | The maximum start_date to filter.      |
 | max_end_date | The maximum end_date to filter.  |
-| valid | Flag (true of false) for filtering the not active coupons.
+| valid | Flag (true of false) for filtering valid coupons.
+| created_at_min | Show Products created after date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))      |
+| created_at_max | Show Products created before date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))     |
+| updated_at_min | Show Products last updated after date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)) |
+| updated_at_max | Show Products last updated before date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))|
+| page           | Page to show                                                                                     |
+| per_page       | Amount of results                                                                                |
+| fields         | Comma-separated list of fields to include in the response                                        |
 
 
 #### GET /coupons
