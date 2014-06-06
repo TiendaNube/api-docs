@@ -52,6 +52,114 @@ if ((typeof jQuery === 'undefined') || (parseFloat(jQuery.fn.jquery) < 1.7)) {
 
 ```
 
+Variables
+---------
+
+We make your life easier by providing a Javascript object (called `LS`) with some common variables.
+
+### Store
+
+```javascript
+var LS = {
+    store : {
+        id : /* Store's id */,
+        url : /* Store's URL */
+    },
+    cart : {
+        subtotal : /* Cart's subtotal in cents */,
+        items : [
+            /* For every cart item we have */
+            {
+                id: /* Product Variant's id */,
+                name: /* Product Variant's name */,
+                unit_price: /* Product Variant's price in cents */,
+                quantity: /* Quantity to be purchased */
+
+            }
+        ]
+    },
+    lang : /* Current language's code (e.g. pt_BR) */,
+    currency : /* Current currency in ISO 4217 format */,
+    country : /* Current currency in ISO 3166-1 format */,
+    customer : /* Current customer id or null if there is no logged-in customer */,
+    theme : {
+        code: /* Current theme's code */,
+        name: /* Current theme's name */
+    }
+}
+
+```
+
+#### Product
+
+If we are on a Product page we add:
+
+```javascript
+LS.product = {
+    id : /* Product's id */,
+    name : /* Product's name */,
+    tags : /* Array of product's tags */
+};
+LS.variants = /* JSON encoded representation of the product variants */;
+```
+
+#### Category
+
+If we are on a Category page we add:
+
+```javascript
+LS.category = {
+    id : /* Category's id */,
+    name : /* Category's name */
+};
+```
+
+### Checkout
+
+The checkout's LS object has only some of the properties:
+
+```javascript
+var LS = {
+    store : {
+        id : /* Store's id */,
+        url : /* Store's URL */
+    },
+    cart : {
+        subtotal : /* Cart's subtotal in cents */,
+        items : [
+            /* For every cart item we have */
+            {
+                id: /* Product Variant's id */,
+                name: /* Product Variant's name */,
+                unit_price: /* Product Variant's price in cents */,
+                quantity: /* Quantity to be purchased */
+
+            }
+        ]
+    },
+    lang : /* Current language's code (e.g. pt_BR) */,
+    currency : /* Current currency in ISO 4217 format */
+}
+```
+
+#### Thank you page
+
+If we are on the thank you page we add:
+
+```javascript
+LS.order = {
+    id : /* Order's id */,
+    number : /* Order's number */,
+    hash : /* Order's hash */,
+    created_at : /* Order's creation date */,
+    coupon : /* Array of coupon codes that apply to this order */,
+    discount : /* Order's discount in cents */,
+    total : /* Order's total in cents */,
+    total_in_usd : /* Order's total in USD in cents */,
+    gateway : /* Payment Gateway's code */
+};
+```
+
 Properties
 ----------
 
