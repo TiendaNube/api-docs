@@ -8,17 +8,17 @@ Properties
 
 | Property             | Explanation                                                                                  |
 | -------------------- | -------------------------------------------------------------------------------------------- |
-| id                   | The unique numeric identifier for the coupon.                                                                                                                    |
-| code                | String that identifies the coupon.                                                                       |
-| type                | Type of the coupon. Can take the following values: percentage, absolute or shipping.                |
-| valid       | Flag (true or false) that indicates if the coupon is valid or not.                  |
-| start_date                 | Date from which the coupon is valid.                                                       |
-| end_date      | Date of overdue of the coupon.                                                              |
-| deleted_at            | Date when the coupon was deleted. The value is NULL if the coupon is still valid.                                                           |
-| max_uses | Max number of times the coupon can be used.       |
-| value        | Value of the discount                                                          |
-| min_price               | Indicates the minimun value of the bill for applying the discount                       |
-| categories               | Field that indicates the categories ids (separated by commas) of the store where the discount applies.                       |
+| id                   | The unique numeric identifier for the coupon.                                                |
+| code                 | String that identifies the coupon.                                                           |
+| type                 | Type of the coupon. Can take the following values: percentage, absolute or shipping.         |
+| valid                | Flag (true or false) that indicates if the coupon is valid or not.                           |
+| start_date           | Date from which the coupon is valid.                                                         |
+| end_date             | Date of overdue of the coupon.                                                               |
+| deleted_at           | Date when the coupon was deleted. The value is NULL if the coupon is still valid.            |
+| max_uses             | Max number of times the coupon can be used.                                                  |
+| value                | Value of the discount                                                                        |
+| min_price            | Indicates the minimun value of the bill for applying the discount                            |
+| categories           | Field that indicates the categories ids (separated by commas) of the store where the discount applies. |
 
 Endpoints
 ---------
@@ -29,11 +29,11 @@ Receive a list of all Coupon.
 
 | Parameter      | Explanation                                                                                      |
 | -------------- | ------------------------------------------------------------------------------------------------ |
-| min_start_date       | The minimum start_date to filter.                                                        |
-| min_end_date | The minimum end_date to filter.       |
-| max_start_date | The maximum start_date to filter.      |
-| max_end_date | The maximum end_date to filter.  |
-| valid | Flag (true of false) for filtering valid coupons.
+| min_start_date | The minimum start_date to filter.                                                                |
+| min_end_date   | The minimum end_date to filter.                                                                  |
+| max_start_date | The maximum start_date to filter.                                                                |
+| max_end_date   | The maximum end_date to filter.                                                                  |
+| valid          | Flag (true of false) for filtering valid coupons.                                                |
 | created_at_min | Show Products created after date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))      |
 | created_at_max | Show Products created before date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))     |
 | updated_at_min | Show Products last updated after date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)) |
@@ -344,8 +344,8 @@ Create a new Coupon
 
 | Parameter                | Explanation                                                                             |
 | ------------------------ | ----------------------------------------------------------------------------------------|
-| code        | The code is required. Must be unique and can contain only alfanumeric characters                              |
-| value                 | The value is mandatory if the type is percentage or absolute                                                                         |
+| code                     | The code is required. Must be unique and can contain only alfanumeric characters        |
+| value                    | The value is mandatory if the type is percentage or absolute                            |
 
 ```json
 {
@@ -356,7 +356,7 @@ Create a new Coupon
     "min_price": 10,
     "categories": null,
     "start_date": "2014-05-08",
-    "end_date": "2014-06-08"}
+    "end_date": "2014-06-08"
 }
 ```
 
