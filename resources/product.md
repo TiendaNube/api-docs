@@ -35,7 +35,10 @@ Receive a list of all Products.
 | q              | Search Products containing the given text in their names or descriptions                         |
 | handle         | Show Products with a given URL                                                                   |
 | category_id    | Show Products with a given category                                                              |
-| published      | Show Products by published status. Valid values are "true" or "false"                            |
+| published      | Show Products by published status. Valid values are "true" or "false"
+|
+| free_shipping  | Show Products by free_shipping status. Valid values are "true" or "false"            
+|                
 | created_at_min | Show Products created after date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))      |
 | created_at_max | Show Products created before date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))     |
 | updated_at_min | Show Products last updated after date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)) |
