@@ -13,6 +13,7 @@ Properties
 | descripton     | List of the descriptions of the Product, as HTML, in every language supported by the store        |
 | handle         | List of the url-friendly strings generated from the Product's names, in every language supported by the store |
 | variants       | List of [Product Variant](https://github.com/tiendanube/api-docs/blob/master/resources/product_variant.md) objects representing the different version of the Product |
+| tags           | Comma-separated tags for the Product                                                              |
 | images         | List of [Product Image](https://github.com/tiendanube/api-docs/blob/master/resources/product_image.md) objects representing the Product's images                 |
 | categories     | List of [Category](https://github.com/tiendanube/api-docs/blob/master/resources/category.md) objects representing the Product's categories             |
 | published      | *true* if the Product is published in the store. *false* if the Product will not show up on the store |
@@ -120,6 +121,7 @@ Receive a list of all Products.
       },
       "published": true,
       "updated_at": "2013-03-11T09:14:11-03:00",
+      "tags": "poke-ball, generation-i",
       "variants": [
         {
          "id": 101,
@@ -285,6 +287,7 @@ Receive a single Product
   },
   "published": true,
   "updated_at": "2013-03-11T09:14:11-03:00",
+  "tags": "poke-ball, generation-i",
   "variants": [
     {
      "id": 101,
@@ -386,6 +389,7 @@ Create a new Product
       "es": "Ultra Ball",
       "pt": "Ultra Ball"
     },
+    "tags": "poke-ball, generation-i",
     "variants": [
         {
             "price": "10.00",
@@ -453,6 +457,7 @@ Create a new Product
     },
     "published": true,
     "created_at": "2013-06-01T12:15:11-03:00",
+    "tags": "poke-ball, generation-i",
     "variants": [
         {
          "id": 101,
@@ -560,6 +565,7 @@ Modify an existing Product
     },
     "published": false,
     "updated_at": "2013-06-01T12:15:11-03:00",
+    "tags": "poke-ball, generation-i",
     "variants": [
       {
        "id": 101,
