@@ -25,6 +25,7 @@ Properties
 | phone             | Store's phone                                                                                 |
 | business_id       | Business identifier (different for each country) of the company who owns the store            |
 | business_name     | Business name of the company who owns the store                                               |
+| business_address  | Business address of the company who owns the store                                            |
 | customer_accounts | "optional" if the customer is allowed to checkout as guest. "mandatory" if not.               |
 | plan_name         | Name of the Tienda Nube/Nuvem Shop's plan the store is on                                     |
 | country           | Store's country in [ISO 3166-1 format](http://en.wikipedia.org/wiki/ISO_3166-1)               |
@@ -60,6 +61,7 @@ Receive a single Store.
   "blog": null,
   "business_id": null,
   "business_name": null,
+  "business_address": null,
   "contact_email": "contact@pokestore.com",
   "country": "BR",
   "created_at": "2013-01-01T05:12:51-03:00",
