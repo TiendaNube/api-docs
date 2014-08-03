@@ -16,6 +16,7 @@ Properties
 | note                 | Store owner's notes about the customer                                                       |
 | default_address      | Default address of the Customer                                                              |
 | addresses            | List of addresses for the Customer                                                           |
+| tags                 | Comma-separated tags for the Customer                                                        |
 | total_spent          | The total amount of money that the Customer has spent at the store                           |
 | total_spent_currency | The total spent's currency in [ISO 4217 format](http://en.wikipedia.org/wiki/ISO_4217)       |
 | last_order_id        | The id of the Customer's last Order                                                          |
@@ -92,11 +93,12 @@ Receive a list of all Customers.
           "updated_at": "2013-03-10T11:13:01-03:00",
           "zipcode": "97475"
         }
-      ]
+      ],
+      "tags": "wholesaler"
     },
     {
       "created_at": "2013-04-07T09:11:51-03:00",
-      "email": "john.doe@example.com",
+      "email": "ze.ninguem@example.com",
       "id": 112,
       "identification": "28776255671",
       "last_order_id": null,
@@ -137,7 +139,8 @@ Receive a list of all Customers.
           "updated_at": "2013-04-08T11:13:01-03:00",
           "zipcode": "05653-070"
         }
-      ]
+      ],
+      "tags": ""
     }
 ]
 ```
@@ -191,7 +194,8 @@ Receive a list of all Customers.
           "updated_at": "2013-03-10T11:13:01-03:00",
           "zipcode": "97475"
         }
-      ]
+      ],
+      "tags": "wholesaler"
     }
 ]
 ```
@@ -252,7 +256,8 @@ Receive a single Customer
       "updated_at": "2013-03-10T11:13:01-03:00",
       "zipcode": "97475"
     }
-  ]
+  ],
+  "tags": "wholesaler"
 }
 ```
 
@@ -284,7 +289,8 @@ Create a new Customer
       }
     ],
     "send_email_invite": true,
-    "password": "mysupersecretpassword"
+    "password": "mysupersecretpassword",
+    "tags": "wholesaler, friend"
 }
 ```
 
@@ -293,13 +299,13 @@ Create a new Customer
 ```json
 {
   "created_at": "2013-06-01T09:11:51-03:00",
-  "email": "john.doe+modified@example.com",
+  "email": "first.last@example.com",
   "id": 101,
   "identification": "28776255670",
-  "last_order_id": 9001,
-  "name": "John Doe",
+  "last_order_id": null,
+  "name": "First Last",
   "note": null,
-  "total_spent": "89.00",
+  "total_spent": "0.00",
   "total_spent_currency": "USD",
   "updated_at": "2013-06-01T09:11:51-03:00",
   "default_address": {
@@ -387,7 +393,8 @@ Modify an existing Customer
       "updated_at": "2013-03-10T11:13:01-03:00",
       "zipcode": "97475"
     }
-  ]
+  ],
+  "tags": "wholesaler, new-tag"
 }
 ```
 
@@ -437,6 +444,7 @@ Modify an existing Customer
       "updated_at": "2013-03-10T11:13:01-03:00",
       "zipcode": "97475"
     }
-  ]
+  ],
+  "tags": "wholesaler, new-tag"
 }
 ```
