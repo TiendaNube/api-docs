@@ -24,12 +24,23 @@ Properties
 | language         | Order's language used by the customer during the checkout process                                |
 | gateway          | The payment gateway used                                                                         |
 | shipping         | The shipping method used                                                                         |
+| shipping_pickup_type | "ship" if the order is going to be shipped; "pickup" if it's going to be picked up from a store branch |
+| shipping_store_branch_name | If order is going to be picked up, shows the store branch name                         |
 | shipping_address | The customer's shipping address where the order will be shipped                                  |
 | shipping_tracking_number | The shipping tracking number for the order. This may be null if not available            |
 | shipping_min_days | The minimum number of weekdays needed for the order to be delivered                             |
 | shipping_max_days | The maximum number of weekdays needed for the order to be delivered                             |
 | shipping_cost_owner   |   The shipping cost the store owner has to pay to the shipping company. |
 | shipping_cost_customer    |     The shipping cost the customer has to pay to the store owner. |
+| billing_address      | Billing address for the order                                                              |
+| billing_number       | Billing number for the order                                                               |
+| billing_floor        | Billing floor for the order                                                                |
+| billing_locality     | Billing locality for the order                                                             |
+| billing_zipcode      | Billing zipcode for the order                                                              |
+| billing_city         | Billing city for the order                                                                 |
+| billing_province     | Billing province for the order                                                             |
+| billing_country      | Billing country code for the order                                                         |
+| extra                | A JSON object containing custom information. Can be set via the API or through custom form fields of name "extra[key]" on the cart's checkout form in the storefront. |
 | weight           | Order's total weight, in kilograms                                                               |
 | status           | Order's status. Possible values are "open", "closed" or "cancelled"                              |
 | payment_status   | Order's payment status. Possible values are "authorized", "pending", "paid", "abandoned", "refunded" or "voided" |
@@ -134,6 +145,21 @@ Receive a list of all Orders.
           "width": null
         }
       ],
+      "billing_address": "Evergreen Terrace",
+      "billing_city": "Springfield",
+      "billing_country": "US",
+      "billing_default": true,
+      "billing_floor": null,
+      "billing_locality": null,
+      "billing_number": "742",
+      "billing_phone": "555-123-0413",
+      "billing_province": "Oregon",
+      "billing_zipcode": "97475",
+      "extra": {
+        "gift-wrap": "deluxe"
+      },
+      "shipping_pickup_type": "ship",
+      "shipping_store_branch_name": null,
       "shipping_address": {
         "address": "Evergreen Terrace",
         "city": "Springfield",
@@ -254,6 +280,21 @@ Receive a single Order
         "width": null
       }
     ],
+    "billing_address": "Evergreen Terrace",
+    "billing_city": "Springfield",
+    "billing_country": "US",
+    "billing_default": true,
+    "billing_floor": null,
+    "billing_locality": null,
+    "billing_number": "742",
+    "billing_phone": "555-123-0413",
+    "billing_province": "Oregon",
+    "billing_zipcode": "97475",
+    "extra": {
+      "gift-wrap": "deluxe"
+    },
+    "shipping_pickup_type": "ship",
+    "shipping_store_branch_name": null,
     "shipping_address": {
       "address": "Evergreen Terrace",
       "city": "Springfield",
@@ -355,6 +396,21 @@ Close an Order
         "width": null
       }
     ],
+    "billing_address": "Evergreen Terrace",
+    "billing_city": "Springfield",
+    "billing_country": "US",
+    "billing_default": true,
+    "billing_floor": null,
+    "billing_locality": null,
+    "billing_number": "742",
+    "billing_phone": "555-123-0413",
+    "billing_province": "Oregon",
+    "billing_zipcode": "97475",
+    "extra": {
+      "gift-wrap": "deluxe"
+    },
+    "shipping_pickup_type": "ship",
+    "shipping_store_branch_name": null,
     "shipping_address": {
       "address": "Evergreen Terrace",
       "city": "Springfield",
@@ -453,6 +509,21 @@ Re-open a closed Order
         "width": null
       }
     ],
+    "billing_address": "Evergreen Terrace",
+    "billing_city": "Springfield",
+    "billing_country": "US",
+    "billing_default": true,
+    "billing_floor": null,
+    "billing_locality": null,
+    "billing_number": "742",
+    "billing_phone": "555-123-0413",
+    "billing_province": "Oregon",
+    "billing_zipcode": "97475",
+    "extra": {
+      "gift-wrap": "deluxe"
+    },
+    "shipping_pickup_type": "ship",
+    "shipping_store_branch_name": null,
     "shipping_address": {
       "address": "Evergreen Terrace",
       "city": "Springfield",
@@ -560,6 +631,21 @@ Cancel an Order
         "width": null
       }
     ],
+    "billing_address": "Evergreen Terrace",
+    "billing_city": "Springfield",
+    "billing_country": "US",
+    "billing_default": true,
+    "billing_floor": null,
+    "billing_locality": null,
+    "billing_number": "742",
+    "billing_phone": "555-123-0413",
+    "billing_province": "Oregon",
+    "billing_zipcode": "97475",
+    "extra": {
+      "gift-wrap": "deluxe"
+    },
+    "shipping_pickup_type": "ship",
+    "shipping_store_branch_name": null,
     "shipping_address": {
       "address": "Evergreen Terrace",
       "city": "Springfield",
@@ -667,6 +753,21 @@ Change the Order's owner_note (the only value you can modify through the API)
         "width": null
       }
     ],
+    "billing_address": "Evergreen Terrace",
+    "billing_city": "Springfield",
+    "billing_country": "US",
+    "billing_default": true,
+    "billing_floor": null,
+    "billing_locality": null,
+    "billing_number": "742",
+    "billing_phone": "555-123-0413",
+    "billing_province": "Oregon",
+    "billing_zipcode": "97475",
+    "extra": {
+      "gift-wrap": "deluxe"
+    },
+    "shipping_pickup_type": "ship",
+    "shipping_store_branch_name": null,
     "shipping_address": {
       "address": "Evergreen Terrace",
       "city": "Springfield",

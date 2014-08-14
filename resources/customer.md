@@ -14,8 +14,17 @@ Properties
 | phone                | Phone number of the customer (not necessarily the same as the address's phone)               |
 | identification       | Customer's identification (in Brazil for example, it would be the CPF/CNPJ)                  |
 | note                 | Store owner's notes about the customer                                                       |
-| default_address      | Default address of the Customer                                                              |
-| addresses            | List of addresses for the Customer                                                           |
+| default_address      | Default shipping address of the Customer                                                     |
+| addresses            | List of shipping addresses for the Customer                                                  |
+| billing_address      | Billing address of the Customer                                                              |
+| billing_number       | Billing number of the Customer                                                               |
+| billing_floor        | Billing floor of the Customer                                                                |
+| billing_locality     | Billing locality of the Customer                                                             |
+| billing_zipcode      | Billing zipcode of the Customer                                                              |
+| billing_city         | Billing city of the Customer                                                                 |
+| billing_province     | Billing province of the Customer                                                             |
+| billing_country      | Billing country code of the Customer                                                         |
+| extra                | A JSON object containing custom information. Can be set via the API or through custom form fields of name "extra[key]" on the Customer's register form in the storefront. |
 | total_spent          | The total amount of money that the Customer has spent at the store                           |
 | total_spent_currency | The total spent's currency in [ISO 4217 format](http://en.wikipedia.org/wiki/ISO_4217)       |
 | last_order_id        | The id of the Customer's last Order                                                          |
@@ -61,6 +70,19 @@ Receive a list of all Customers.
       "total_spent": "89.00",
       "total_spent_currency": "USD",
       "updated_at": "2013-03-11T09:14:11-03:00",
+      "billing_address": "Evergreen Terrace",
+      "billing_city": "Springfield",
+      "billing_country": "US",
+      "billing_floor": null,
+      "billing_locality": null,
+      "billing_number": "742",
+      "billing_phone": "555-123-0413",
+      "billing_province": "Oregon",
+      "billing_zipcode": "97475",
+      "extra": {
+        "number_of_children": "2",
+        "gender": "male"
+      },
       "default_address": {
         "address": "Evergreen Terrace",
         "city": "Springfield",
@@ -106,6 +128,19 @@ Receive a list of all Customers.
       "total_spent": "0.00",
       "total_spent_currency": "USD",
       "updated_at": "2013-04-08T11:11:51-03:00",
+      "billing_address": "Evergreen Terrace",
+      "billing_city": "Springfield",
+      "billing_country": "US",
+      "billing_floor": null,
+      "billing_locality": null,
+      "billing_number": "742",
+      "billing_phone": "555-123-0413",
+      "billing_province": "Oregon",
+      "billing_zipcode": "97475",
+      "extra": {
+        "number_of_children": "2",
+        "gender": "male"
+      },
       "default_address": {
         "address": "Praça Roberto Gomes Pedrosa",
         "city": "São Paulo",
@@ -160,6 +195,19 @@ Receive a list of all Customers.
       "total_spent": "89.00",
       "total_spent_currency": "USD",
       "updated_at": "2013-03-11T09:14:11-03:00",
+      "billing_address": "Evergreen Terrace",
+      "billing_city": "Springfield",
+      "billing_country": "US",
+      "billing_floor": null,
+      "billing_locality": null,
+      "billing_number": "742",
+      "billing_phone": "555-123-0413",
+      "billing_province": "Oregon",
+      "billing_zipcode": "97475",
+      "extra": {
+        "number_of_children": "2",
+        "gender": "male"
+      },
       "default_address": {
         "address": "Evergreen Terrace",
         "city": "Springfield",
@@ -221,6 +269,19 @@ Receive a single Customer
   "total_spent": "89.00",
   "total_spent_currency": "USD",
   "updated_at": "2013-03-11T09:14:11-03:00",
+  "billing_address": "Evergreen Terrace",
+  "billing_city": "Springfield",
+  "billing_country": "US",
+  "billing_floor": null,
+  "billing_locality": null,
+  "billing_number": "742",
+  "billing_phone": "555-123-0413",
+  "billing_province": "Oregon",
+  "billing_zipcode": "97475",
+  "extra": {
+    "number_of_children": "2",
+    "gender": "male"
+  },
   "default_address": {
     "address": "Evergreen Terrace",
     "city": "Springfield",
@@ -302,6 +363,19 @@ Create a new Customer
   "total_spent": "89.00",
   "total_spent_currency": "USD",
   "updated_at": "2013-06-01T09:11:51-03:00",
+  "billing_address": null,
+  "billing_city": null,
+  "billing_country": null,
+  "billing_floor": null,
+  "billing_locality": null,
+  "billing_number": null,
+  "billing_phone": null,
+  "billing_province": null,
+  "billing_zipcode": null,
+  "extra": {
+    "number_of_children": "2",
+    "gender": "male"
+  },
   "default_address": {
     "address": "My Street",
     "city": "My City",
@@ -355,6 +429,19 @@ Modify an existing Customer
   "phone": "911",
   "total_spent": "89.00",
   "total_spent_currency": "USD",
+  "billing_address": "Evergreen Terrace",
+  "billing_city": "Springfield",
+  "billing_country": "US",
+  "billing_floor": null,
+  "billing_locality": null,
+  "billing_number": "742",
+  "billing_phone": "555-123-0413",
+  "billing_province": "Oregon",
+  "billing_zipcode": "97475",
+  "extra": {
+    "number_of_children": "2",
+    "gender": "male"
+  },
   "updated_at": "2013-03-11T09:14:11-03:00",
   "default_address": {
     "address": "Evergreen Terrace",
@@ -406,6 +493,19 @@ Modify an existing Customer
   "total_spent": "89.00",
   "total_spent_currency": "USD",
   "updated_at": "2013-06-01T09:14:11-03:00",
+  "billing_address": "Evergreen Terrace",
+  "billing_city": "Springfield",
+  "billing_country": "US",
+  "billing_floor": null,
+  "billing_locality": null,
+  "billing_number": "742",
+  "billing_phone": "555-123-0413",
+  "billing_province": "Oregon",
+  "billing_zipcode": "97475",
+  "extra": {
+    "number_of_children": "2",
+    "gender": "male"
+  },
   "default_address": {
     "address": "Evergreen Terrace",
     "city": "Springfield",
