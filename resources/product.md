@@ -35,7 +35,10 @@ Receive a list of all Products.
 | q              | Search Products containing the given text in their names or descriptions                         |
 | handle         | Show Products with a given URL                                                                   |
 | category_id    | Show Products with a given category                                                              |
-| published      | Show Products by published status. Valid values are "true" or "false"                            |
+| published      | Show Products by published status. Valid values are "true" or "false"
+|
+| free_shipping  | Show Products by free_shipping status. Valid values are "true" or "false"            
+|                
 | created_at_min | Show Products created after date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))      |
 | created_at_max | Show Products created before date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))     |
 | updated_at_min | Show Products last updated after date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)) |
@@ -119,6 +122,7 @@ Receive a list of all Products.
           "pt": "Master Ball"
       },
       "published": true,
+      "free_shipping": false,
       "updated_at": "2013-03-11T09:14:11-03:00",
       "variants": [
         {
@@ -182,6 +186,169 @@ Receive a list of all Products.
          "width": null
        }
       ]
+    },
+    {
+        "id": 435407,
+        "name": {
+            "es": "Cambiate por favor",
+            "en": "OG add image action"
+        },
+        "description": {
+            "es": "<p>Isso!<\/p>\r\n",
+            "en": "<p>Isso!<\/p>\r\n"
+        },
+        "handle": {
+            "es": "cambiate-por-favor",
+            "en": "og-add-image-action"
+        },
+        "attributes": [],
+        "published": true,
+        "free_shipping": true,
+        "created_at": "2012-02-19T17:34:36+0000",
+        "updated_at": "2014-07-17T14:13:19+0000",
+        "variants": [
+            {
+                "id": 821537,
+                "product_id": 435407,
+                "position": 5,
+                "price": "22.00",
+                "promotional_price": null,
+                "stock_management": false,
+                "stock": null,
+                "weight": "0.75",
+                "width": "0.00",
+                "height": "0.00",
+                "depth": "0.00",
+                "sku": "ASF",
+                "values": [],
+                "created_at": "2012-02-19T17:34:37+0000",
+                "updated_at": "2014-07-17T14:13:19+0000"
+            }
+        ],
+        "tags": "algo, jojo",
+        "images": [
+            {
+                "id": 634688,
+                "product_id": 435407,
+                "src": "https:\/\/s3-sa-east-1.amazonaws.com\/tiendanube-mati\/stores\/046\/products\/blog%2024-1024-1024.jpg",
+                "position": 1
+            },
+            {
+                "id": 1021828,
+                "product_id": 435407,
+                "src": "https:\/\/s3-sa-east-1.amazonaws.com\/tiendanube-mati\/stores\/046\/products\/do-test-1024-1024.jpg",
+                "position": 2
+            }
+        ],
+        "categories": [
+            {
+                "id": 105190,
+                "name": {
+                    "es": "Pantalones",
+                    "en": "Pantalones"
+                },
+                "description": {
+                    "es": "",
+                    "en": ""
+                },
+                "handle": {
+                    "es": "pantalones",
+                    "en": "pantalones"
+                },
+                "parent": null,
+                "subcategories": [
+                    119258
+                ],
+                "created_at": "2012-02-19T17:34:36+0000",
+                "updated_at": "2014-01-28T14:10:12+0000"
+            }
+        ]
+    }
+]
+```
+
+#### GET /products?free_shipping=true
+
+`HTTP/1.1 200 OK`
+
+```json
+[
+    {
+        "id": 435407,
+        "name": {
+            "es": "Cambiate por favor",
+            "en": "OG add image action"
+        },
+        "description": {
+            "es": "<p>Isso!<\/p>\r\n",
+            "en": "<p>Isso!<\/p>\r\n"
+        },
+        "handle": {
+            "es": "cambiate-por-favor",
+            "en": "og-add-image-action"
+        },
+        "attributes": [],
+        "published": true,
+        "free_shipping": true,
+        "created_at": "2012-02-19T17:34:36+0000",
+        "updated_at": "2014-07-17T14:13:19+0000",
+        "variants": [
+            {
+                "id": 821537,
+                "product_id": 435407,
+                "position": 5,
+                "price": "22.00",
+                "promotional_price": null,
+                "stock_management": false,
+                "stock": null,
+                "weight": "0.75",
+                "width": "0.00",
+                "height": "0.00",
+                "depth": "0.00",
+                "sku": "ASF",
+                "values": [],
+                "created_at": "2012-02-19T17:34:37+0000",
+                "updated_at": "2014-07-17T14:13:19+0000"
+            }
+        ],
+        "tags": "algo, jojo",
+        "images": [
+            {
+                "id": 634688,
+                "product_id": 435407,
+                "src": "https:\/\/s3-sa-east-1.amazonaws.com\/tiendanube-mati\/stores\/046\/products\/blog%2024-1024-1024.jpg",
+                "position": 1
+            },
+            {
+                "id": 1021828,
+                "product_id": 435407,
+                "src": "https:\/\/s3-sa-east-1.amazonaws.com\/tiendanube-mati\/stores\/046\/products\/do-test-1024-1024.jpg",
+                "position": 2
+            }
+        ],
+        "categories": [
+            {
+                "id": 105190,
+                "name": {
+                    "es": "Pantalones",
+                    "en": "Pantalones"
+                },
+                "description": {
+                    "es": "",
+                    "en": ""
+                },
+                "handle": {
+                    "es": "pantalones",
+                    "en": "pantalones"
+                },
+                "parent": null,
+                "subcategories": [
+                    119258
+                ],
+                "created_at": "2012-02-19T17:34:36+0000",
+                "updated_at": "2014-01-28T14:10:12+0000"
+            }
+        ]
     }
 ]
 ```

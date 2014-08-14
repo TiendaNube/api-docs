@@ -28,6 +28,8 @@ Properties
 | shipping_tracking_number | The shipping tracking number for the order. This may be null if not available            |
 | shipping_min_days | The minimum number of weekdays needed for the order to be delivered                             |
 | shipping_max_days | The maximum number of weekdays needed for the order to be delivered                             |
+| shipping_cost_owner   |   The shipping cost the store owner has to pay to the shipping company. |
+| shipping_cost_customer    |     The shipping cost the customer has to pay to the store owner. |
 | weight           | Order's total weight, in kilograms                                                               |
 | status           | Order's status. Possible values are "open", "closed" or "cancelled"                              |
 | payment_status   | Order's payment status. Possible values are "authorized", "pending", "paid", "abandoned", "refunded" or "voided" |
@@ -50,6 +52,7 @@ The `products` field has the following contents:
 | width            | Product's width at the time of purchase                                                          |
 | height           | Product's height at the time of purchase                                                         |
 | depth            | Product's depth at the time of purchase                                                         |
+| free_shipping    | Indicates if the product has free shipping or not.     |
 
 
 
@@ -101,6 +104,8 @@ Receive a list of all Orders.
       "shipping_tracking_number": null,
       "shipping_min_days": 2,
       "shipping_max_days": 4,
+      "shipping_cost_owner": "20.00",
+      "shipping_cost_customer": "20.00",
       "status": "open",
       "subtotal": "38.00",
       "token": "898544a54283414238f74cd08f0efd3916f74b75",
@@ -123,6 +128,7 @@ Receive a list of all Orders.
           "price": "19.00",
           "product_id": 1234,
           "quantity": 2,
+          "free_shipping": false,
           "variant_id": 101,
           "weight": "2.00",
           "width": null
@@ -218,6 +224,8 @@ Receive a single Order
     "shipping_tracking_number": null,
     "shipping_min_days": 2,
     "shipping_max_days": 4,
+    "shipping_cost_owner": "20.00",
+    "shipping_cost_customer": "20.00",
     "status": "open",
     "subtotal": "38.00",
     "token": "898544a54283414238f74cd08f0efd3916f74b75",
@@ -240,6 +248,7 @@ Receive a single Order
         "price": "19.00",
         "product_id": 1234,
         "quantity": 2,
+        "free_shipping": false,
         "variant_id": 101,
         "weight": "2.00",
         "width": null
@@ -316,6 +325,8 @@ Close an Order
     "shipping_tracking_number": null,
     "shipping_min_days": 2,
     "shipping_max_days": 4,
+    "shipping_cost_owner": "20.00",
+    "shipping_cost_customer": "20.00",
     "status": "closed",
     "subtotal": "38.00",
     "token": "898544a54283414238f74cd08f0efd3916f74b75",
@@ -338,6 +349,7 @@ Close an Order
         "price": "19.00",
         "product_id": 1234,
         "quantity": 2,
+        "free_shipping": false,
         "variant_id": 101,
         "weight": "2.00",
         "width": null
@@ -518,6 +530,8 @@ Cancel an Order
     "shipping_tracking_number": null,
     "shipping_min_days": 2,
     "shipping_max_days": 4,
+    "shipping_cost_owner": "20.00",
+    "shipping_cost_customer": "20.00",
     "status": "cancelled",
     "subtotal": "38.00",
     "token": "898544a54283414238f74cd08f0efd3916f74b75",
@@ -540,6 +554,7 @@ Cancel an Order
         "price": "19.00",
         "product_id": 1234,
         "quantity": 2,
+        "free_shipping": false,
         "variant_id": 101,
         "weight": "2.00",
         "width": null
@@ -622,6 +637,8 @@ Change the Order's owner_note (the only value you can modify through the API)
     "shipping_tracking_number": null,
     "shipping_min_days": 2,
     "shipping_max_days": 4,
+    "shipping_cost_owner": "20.00",
+    "shipping_cost_customer": "20.00",
     "status": "open",
     "subtotal": "38.00",
     "token": "898544a54283414238f74cd08f0efd3916f74b75",
@@ -644,6 +661,7 @@ Change the Order's owner_note (the only value you can modify through the API)
         "price": "19.00",
         "product_id": 1234,
         "quantity": 2,
+        "free_shipping": false,
         "variant_id": 101,
         "weight": "2.00",
         "width": null
