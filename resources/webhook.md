@@ -8,7 +8,8 @@ A Webhook is a tool that allows you to receive a notification for a certain even
 | App            | uninstalled/suspended/resumed                                                                    |
 | Category       | created/updated/deleted                                                                          |
 | Order          | created/updated/paid/fulfilled/cancelled                                                         |
-| Product        | created/updated/deleted                                                                          | 
+| Product        | created/updated/deleted                                                                          |
+| Domains        | updated                                                                                          |
 
 To register for the product created event, for example, you should send `product/created` in the event field.
 
@@ -28,8 +29,6 @@ Properties
 | event          | The event that will trigger the webhook                                                          |
 | created_at     | Date when the Webhook was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)    | 
 | updated_at     | Date when the Webhook was last updated in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)|
-
-Webhooks will be sent __only once__ (for now) to the url defined.
 
 ### Verifying a webhook
 
@@ -80,6 +79,10 @@ Also, every webhook will send custom parameters, as follows:
 #### product/created - product/updated - product/deleted
 
 * __id__: Product's id
+
+#### domains/updated
+
+* no additional parameter is sent along with this event. To get the list of domains one may refer to [Store](https://github.com/tiendanube/api-docs/blob/master/resources/store.md) resources.
  
 #### Example webhook content
 
