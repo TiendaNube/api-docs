@@ -137,6 +137,7 @@ var LS = {
             }
         ]
     },
+    customer : /* Current customer id or null if there is no logged-in customer */,
     lang : /* Current language's code (e.g. pt_BR) */,
     currency : /* Current currency in ISO 4217 format */
 }
