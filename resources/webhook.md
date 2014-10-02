@@ -43,7 +43,7 @@ See PHP example below:
 ```php
 <?php
 
-define('SECRET', 'secret');
+define('APP_SECRET', 'secret');
 
 function verify_webhook($data, $hmac_header) {
   return $hmac_header == hash_hmac('sha256', $data, APP_SECRET);
