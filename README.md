@@ -66,13 +66,6 @@ All data is sent and received as JSON. Our format is to have no root element and
 
 You'll receive a `415 Unsupported Media Type` response code if you leave out the `Content-Type` header.
 
-Use HTTP caching (Coming Soon)
-----------------
-
-You must make use of the HTTP freshness headers to lessen the load on our servers (and increase the speed of your application!). Most requests we return will include an `ETag` or `Last-Modified` header. When you first request a resource, store this value, and then submit them back to us on subsequent requests as `If-None-Match` and `If-Modified-Since`. If the resource hasn't changed, you'll see a `304 Not Modified` response, which saves you the time and bandwidth of sending something you already have.
-
-Also, cached requests will not consume your API rate limit (see Rate Limiting).
-
 
 Client errors
 -------------
@@ -162,31 +155,6 @@ Where possible, API v1 strives to use appropriate HTTP verbs for each action.
 * `PUT` :  Used for replacing resources or collections. For PUT requests with no body attribute, be sure to set the Content-Length header to zero.
 * `DELETE` : Used for deleting resources.
 
-Cross Origin Resource Sharing (Coming Soon)
------------------------------
-
-The API supports Cross Origin Resource Sharing (CORS) for AJAX requests. you can read the [CORS W3C working draft](http://www.w3.org/TR/cors), or [this intro](http://code.google.com/p/html5security/wiki/CrossOriginRequestSecurity) from the HTML 5 Security Guide.
-
-Here’s a sample request for a browser hitting http://example.com:
-
-```shell
-curl -i https://api.tiendanube.com -H "Origin: http://example.com"
-Access-Control-Allow-Credentials: true
-Access-Control-Expose-Headers: ETag, Link, X-Rate-Limit-Limit, X-Rate-Limit-Remaining, X-OAuth-Scopes, X-Accepted-OAuth-Scopes
-Access-Control-Allow-Origin: *
-```
-
-This is what the CORS preflight request looks like:
-
-```shell
-curl -i https://api.tiendanube.com -H "Origin: http://example.com" -X OPTIONS
-Access-Control-Allow-Credentials: true
-Access-Control-Expose-Headers: ETag, Link, X-Rate-Limit-Limit, X-Rate-Limit-Remaining, X-Rate-Limit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes
-Access-Control-Max-Age: 86400
-Access-Control-Allow-Headers: Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, X-Requested-With
-Access-Control-Allow-Methods: GET, POST, PUT, DELETE
-Access-Control-Allow-Origin: *
-```
 
 Languages and Internationalization
 ----------------------------------
