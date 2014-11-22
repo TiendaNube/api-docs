@@ -11,12 +11,14 @@ The product images have the following restrictions:
 Properties
 ----------
 
-| Property       | Explanation                                                                                      |
-| -------------- | ------------------------------------------------------------------------------------------------ |
-| id             | The unique numeric identifier for the Product Image                                              |
-| product_id     | The id of the product associated with the image                                                  |
-| src            | URL of the product image                                                                         |
+| Property       | Explanation                                                                                             |
+| -------------- | ------------------------------------------------------------------------------------------------------- |
+| id             | The unique numeric identifier for the Product Image                                                     |
+| product_id     | The id of the product associated with the image                                                         |
+| src            | URL of the product image                                                                                |
 | position       | Number indicating the position of the image in the product's image list. 1 is the first and the main product image |
+| created_at     | Date when the Product Image was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)     | 
+| updated_at     | Date when the Product Image was last updated in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)|
 
 Endpoints
 ---------
@@ -46,19 +48,25 @@ Receive a list of all Product Images for a given product.
       "id": 101,
       "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/servine-640-0.jpg",
       "position": 1,
-      "product_id": 1234
+      "product_id": 1234,
+      "created_at": "2013-01-03T09:11:51-03:00",
+      "updated_at": "2013-03-11T09:14:11-03:00"
     },
     {
       "id": 112,
       "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/onyx-640-0.jpg",
       "position": 2,
-      "product_id": 1234
+      "product_id": 1234,
+      "created_at": "2013-01-03T09:11:51-03:00",
+      "updated_at": "2013-03-11T09:14:11-03:00"
     },
     {
       "id": 123,
       "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/stoutland-640-0.jpg",
       "position": 3,
-      "product_id": 1234
+      "product_id": 1234,
+      "created_at": "2013-01-03T09:11:51-03:00",
+      "updated_at": "2013-03-11T09:14:11-03:00"
     }
 ]
 ```
@@ -73,13 +81,17 @@ Receive a list of all Product Images for a given product.
       "id": 112,
       "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/onyx-640-0.jpg",
       "position": 2,
-      "product_id": 1234
+      "product_id": 1234,
+      "created_at": "2013-01-03T09:11:51-03:00",
+      "updated_at": "2013-03-11T09:14:11-03:00"
     },
     {
       "id": 123,
       "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/stoutland-640-0.jpg",
       "position": 3,
-      "product_id": 1234
+      "product_id": 1234,
+      "created_at": "2013-01-03T09:11:51-03:00",
+      "updated_at": "2013-03-11T09:14:11-03:00"
     }
 ]
 ```
@@ -101,7 +113,9 @@ Receive a single Product Image
     "id": 112,
     "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/onyx-640-0.jpg",
     "position": 2,
-    "product_id": 1234
+    "product_id": 1234,
+    "created_at": "2013-01-03T09:11:51-03:00",
+    "updated_at": "2013-03-11T09:14:11-03:00"
 }
 ```
 
@@ -142,7 +156,9 @@ Create a new Product Image
     "id": 134,
     "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/charmander-640-0.jpg",
     "position": 4,
-    "product_id": 1234
+    "product_id": 1234,
+    "created_at": "2013-04-12T09:14:11-03:00",
+    "updated_at": "2013-04-12T09:14:11-03:00"
 }
 ```
 
@@ -170,7 +186,9 @@ CQA7"
     "id": 145,
     "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/mewtwo-640-0.jpg",
     "position": 5,
-    "product_id": 1234
+    "product_id": 1234,
+    "created_at": "2013-04-12T09:15:11-03:00",
+    "updated_at": "2013-04-12T09:15:11-03:00"
 }
 ```
 
@@ -196,7 +214,9 @@ Modify an existing Product Image
   "id": 145,
   "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/mewtwo-640-0.jpg",
   "position": 1,
-  "product_id": 1234
+  "product_id": 1234,
+  "created_at": "2013-01-03T09:11:51-03:00",
+  "updated_at": "2013-03-11T09:14:16-03:00"
 }
 ```
 
