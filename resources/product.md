@@ -17,6 +17,7 @@ Properties
 | categories     | List of [Category](https://github.com/tiendanube/api-docs/blob/master/resources/category.md) objects representing the Product's categories             |
 | published      | *true* if the Product is published in the store. *false* if the Product will not show up on the store |
 | attributes     | List of the names of the attributes whose values define the variants. E.g.: Color, Size, etc.     |
+| tags     | String with all the Product's tags, separated by commas |
 | created_at     | Date when the Product was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)     | 
 | updated_at     | Date when the Product was last updated in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)|
 
