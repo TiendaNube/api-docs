@@ -18,7 +18,7 @@ Properties
 | max_uses             | Max number of times the coupon can be used.                                                  |
 | value                | Value of the discount                                                                        |
 | min_price            | Indicates the minimun value of the bill for applying the discount                            |
-| categories           | Field that indicates the categories ids (separated by commas) of the store where the discount applies. |
+| categories           | List of [Category](https://github.com/tiendanube/api-docs/blob/master/resources/category.md) objects representing the categories of the store where the discount applies. |
 
 Endpoints
 ---------
