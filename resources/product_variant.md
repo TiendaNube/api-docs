@@ -9,6 +9,7 @@ Properties
 | Property          | Explanation                                                                                     |
 | ----------------- | ----------------------------------------------------------------------------------------------- |
 | id                | The unique numeric identifier for the Product Variant                                           |
+| image_id          | The id of the product's image associated with the variant                                       |
 | product_id        | The id of the product associated with the variant                                               |
 | price             | Price of the Product Variant. *null* indicates the product will initiate a contact instead of a checkout process |
 | promotional_price | Lower price to display as a sale. The value of price will be displayed crossed out for comparison                |
@@ -49,6 +50,7 @@ Receive a list of all Product Variants for a given product.
 [
     {
       "id": 101,
+      "image_id": null,
       "promotional_price": "19.00",
       "created_at": "2013-01-03T09:11:51-03:00",
       "depth": null,
@@ -69,6 +71,7 @@ Receive a list of all Product Variants for a given product.
     },
     {
       "id": 112,
+      "image_id": null,
       "promotional_price": "19.00",
       "created_at": "2013-01-03T09:11:51-03:00",
       "depth": null,
@@ -89,6 +92,7 @@ Receive a list of all Product Variants for a given product.
     },
     {
       "id": 133,
+      "image_id": null,
       "promotional_price": "19.00",
       "created_at": "2013-01-03T09:11:51-03:00",
       "depth": null,
@@ -118,6 +122,7 @@ Receive a list of all Product Variants for a given product.
 [
     {
       "id": 112,
+      "image_id": null,
       "promotional_price": "19.00",
       "created_at": "2013-01-03T09:11:51-03:00",
       "depth": null,
@@ -138,6 +143,7 @@ Receive a list of all Product Variants for a given product.
     },
     {
       "id": 133,
+      "image_id": null,
       "promotional_price": "19.00",
       "created_at": "2013-01-03T09:11:51-03:00",
       "depth": null,
@@ -174,6 +180,7 @@ Receive a single Product Variant
 ```json
 {
       "id": 112,
+      "image_id": null,
       "promotional_price": "19.00",
       "created_at": "2013-01-03T09:11:51-03:00",
       "depth": null,
@@ -216,6 +223,7 @@ Create a new Product Variant
 ```json
 {
       "id": 144,
+      "image_id": null,
       "promotional_price": null,
       "created_at": "2013-01-03T09:11:51-03:00",
       "depth": null,
@@ -245,6 +253,7 @@ Modify an existing Product Variant
 ```json
 {
       "id": 144,
+      "image_id": null,
       "promotional_price": "19.00",
       "created_at": "2013-01-03T09:11:51-03:00",
       "depth": null,
@@ -270,6 +279,7 @@ Modify an existing Product Variant
 ```json
 {
       "id": 144,
+      "image_id": null,
       "promotional_price": "19.00",
       "created_at": "2013-01-03T09:11:51-03:00",
       "depth": null,
