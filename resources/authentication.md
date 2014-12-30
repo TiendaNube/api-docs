@@ -72,6 +72,8 @@ The available scopes for the API are:
     - Customer
 * read_orders / write_orders
     - Order
+* read_coupons / write_coupons
+    - Coupon
 * write_scripts
     - Script
 
