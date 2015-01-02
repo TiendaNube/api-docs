@@ -12,24 +12,6 @@ The metafields can only be associated with the following entities:
 
 To do that you need to set the owner_resource to one of the above, an example would be owner_resource='Product'.
 
-
-API
-
-Agregar los endpoints
-GET /metafields (chusmear filtros de Product)
-POST /metafields para crear
-PUT /metafields/{id} para editar
-GET /metafields/{id} para obtener un metafield particular
-DELETE /metafields/{id} para eliminarlo
-Agregar la documentación para los Metafields
-Scopes
-Ojo que si sólo tengo el scope read_products no debería poder escribir metafields
-Tiendas
-
-Agregar una product.metafields en el Product_Interface que es un hash.
-Ejemplo: Si tenemos una metafield facu en el namespace tiendanube se podría acceder haciendo product.metafields.tiendanube.facu desde la plantilla
-Check Shopify's Metafields
-
 This allows for Reviews apps for example to add SEO features combined with HTML/CSS editing by our customers
 
 
@@ -160,8 +142,8 @@ Create a new metafield
 
 | Parameter                | Explanation                                                                             |
 | ------------------------ | ----------------------------------------------------------------------------------------|
-| key                     | The value is mandatory. Must be unique and can contain only alfanumeric characters        |
-| value                    | The value is mandatory and it can be any string that starts with a letter followed only by: a-Z A-B 0-9 or _.
+| key                     | The value is mandatory and it can be any string that starts with a letter followed only by: a-Z A-B 0-9 or _.|
+| value                    | The value is mandatory and it can be any string.
 | namespace                    | The value is mandatory and it can be any string that starts with a letter followed only by: a-Z A-B 0-9 or _.                            |
 | description                    | Is optional and can have some description that shows the use of this metafield                            |
 | owner_id                    | The value is mandatory and must exist an entity of the owner_resource type with that id.                            |
@@ -173,7 +155,7 @@ Create a new metafield
     "key": "key"
     "value": "value",
     "namespace": "namespace",
-    "description": 'description",
+    "description": "description",
     "owner_id": "2857023",
     "owner_resource": "Product"
 }
@@ -188,8 +170,8 @@ Create a new metafield
     "description":"description",
     "key":"key","value":"value",
     "owner_id":2857023,
-    "owner_resource":
-    "Product","created_at":"2015-01-02 20:27:51",
+    "owner_resource": "Product",
+    "created_at":"2015-01-02 20:27:51",
     "updated_at":"2015-01-02 20:27:51",
     "deleted_at":null
 }
