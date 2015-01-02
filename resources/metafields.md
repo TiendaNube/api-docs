@@ -10,25 +10,9 @@ The metafields can only be associated with the following entities:
 * Category
 * Page
 
-To do that you need to set the owner_resource to one of the above, an example would be owner_resource='Product'
+To do that you need to set the owner_resource to one of the above, an example would be owner_resource='Product'.
 
 
-A discount metafield is a way for a store to provide discounts for its customers. There are three type of metafields. Percentage, absolute and shipping. The percentage type indicates that the value is a percentage discount. The type absolute indicates that the value is an absolute amount of discount. And finally the type shipping indicates that the discount value is on the shipping.
-
-
-
-
-Entidad Metafield
-
-id
-namespace
-key
-description
-value
-owner_id
-owner_resource
-created_at
-updated_at
 API
 
 Agregar los endpoints
@@ -88,251 +72,59 @@ Receive a list of all metafield.
 | fields         | Comma-separated list of fields to include in the response                                        |
 
 
-#### GET /metafields
+#### GET /metafields/products
 
 `HTTP/1.1 200 OK`
+
 
 ```json
 [
     {
-        "id": 32965,
-        "code": "PR2",
-        "type": "percentage",
-        "value": "30.00",
-        "valid": true,
-        "used": 0,
-        "max_uses": 100,
-        "start_date": "2014-05-08",
-        "end_date": "2014-06-08",
-        "min_price": 10,
-        "categories": [
-            {
-                "id": 117023,
-                "name": {
-                    "es": "Oxido N\u00edtrico (NO2)",
-                    "en": "Oxido N\u00edtrico (NO2)"
-                },
-                "description": {
-                    "es": "",
-                    "en": ""
-                },
-                "handle": {
-                    "es": "oxido-nitrico-no2",
-                    "en": "oxido-nitrico-no2"
-                },
-                "parent": null,
-                "subcategories": [],
-                "created_at": "2013-03-22T14:40:55+0000",
-                "updated_at": "2014-05-28T20:07:05+0000"
-            }
-        ]
+        "id":10691,
+        "key":"key3",
+        "value":"3",
+        "namespace":"namespace3",
+        "description":"description3",
+        "owner_id":2856879,
+        "owner_resource":"Product",
+        "created_at":"2015-01-02T19:48:44+0000",
+        "updated_at":"2015-01-02T19:48:44+0000"
     },
     {
-        "id": 32966,
-        "code": "PR23",
-        "type": "percentage",
-        "value": "30.00",
-        "valid": true,
-        "used": 0,
-        "max_uses": 100,
-        "start_date": "2014-05-08",
-        "end_date": "2014-06-08",
-        "min_price": 10,
-        "categories": null
-    },
-    {
-        "id": 32964,
-        "code": "PR4",
-        "type": "percentage",
-        "value": "30.00",
-        "valid": true,
-        "used": 0,
-        "max_uses": 100,
-        "start_date": "2014-06-07",
-        "end_date": "2014-06-08",
-        "min_price": 10,
-        "categories": [
-            {
-                "id": 117023,
-                "name": {
-                    "es": "Oxido N\u00edtrico (NO2)",
-                    "en": "Oxido N\u00edtrico (NO2)"
-                },
-                "description": {
-                    "es": "",
-                    "en": ""
-                },
-                "handle": {
-                    "es": "oxido-nitrico-no2",
-                    "en": "oxido-nitrico-no2"
-                },
-                "parent": null,
-                "subcategories": [],
-                "created_at": "2013-03-22T14:40:55+0000",
-                "updated_at": "2014-05-28T20:07:05+0000"
-            }
-        ]
-    },
-    {
-        "id": 32963,
-        "code": "PR5",
-        "type": "percentage",
-        "value": "30.00",
-        "valid": false,
-        "used": 0,
-        "max_uses": null,
-        "start_date": null,
-        "end_date": null,
-        "min_price": 100,
-        "categories": [
-            {
-                "id": 105190,
-                "name": {
-                    "es": "Pantalones",
-                    "en": "Pantalones"
-                },
-                "description": {
-                    "es": "",
-                    "en": ""
-                },
-                "handle": {
-                    "es": "pantalones",
-                    "en": "pantalones"
-                },
-                "parent": null,
-                "subcategories": [
-                    119258
-                ],
-                "created_at": "2013-02-19T17:34:36+0000",
-                "updated_at": "2014-05-28T20:07:06+0000"
-            },
-            {
-                "id": 105191,
-                "name": {
-                    "es": "Camisas",
-                    "en": "Camisas"
-                },
-                "description": {
-                    "es": "",
-                    "en": ""
-                },
-                "handle": {
-                    "es": "camisas",
-                    "en": "camisas"
-                },
-                "parent": null,
-                "subcategories": [],
-                "created_at": "2013-02-19T17:34:37+0000",
-                "updated_at": "2014-05-28T20:07:06+0000"
-            },
-            {
-                "id": 117023,
-                "name": {
-                    "es": "Oxido N\u00edtrico (NO2)",
-                    "en": "Oxido N\u00edtrico (NO2)"
-                },
-                "description": {
-                    "es": "",
-                    "en": ""
-                },
-                "handle": {
-                    "es": "oxido-nitrico-no2",
-                    "en": "oxido-nitrico-no2"
-                },
-                "parent": null,
-                "subcategories": [],
-                "created_at": "2013-03-22T14:40:55+0000",
-                "updated_at": "2014-05-28T20:07:05+0000"
-            }
-        ]
+        "id":10692,
+        "key":"key4",
+        "value":"4",
+        "namespace":"namespace4",
+        "description":"description4",
+        "owner_id":2856879,
+        "owner_resource":"Product",
+        "created_at":"2015-01-02T19:48:44+0000",
+        "updated_at":"2015-01-02T19:48:44+0000"
     }
 ]
 ```
 
-#### GET /metafields?valid=true
+#### GET /metafields/products?per_page=3&owner_id=2856934&created_at_min=2013-01-01T00:00:00-03:00&fields=owner_id,key,value
 
 `HTTP/1.1 200 OK`
+
 
 ```json
 [
     {
-        "id": 32965,
-        "code": "PR2",
-        "type": "percentage",
-        "value": "30.00",
-        "valid": true,
-        "used": 0,
-        "max_uses": 100,
-        "start_date": "2014-05-08",
-        "end_date": "2014-06-08",
-        "min_price": 10,
-        "categories": [
-            {
-                "id": 117023,
-                "name": {
-                    "es": "Oxido N\u00edtrico (NO2)",
-                    "en": "Oxido N\u00edtrico (NO2)"
-                },
-                "description": {
-                    "es": "",
-                    "en": ""
-                },
-                "handle": {
-                    "es": "oxido-nitrico-no2",
-                    "en": "oxido-nitrico-no2"
-                },
-                "parent": null,
-                "subcategories": [],
-                "created_at": "2013-03-22T14:40:55+0000",
-                "updated_at": "2014-05-28T20:07:05+0000"
-            }
-        ]
+        "key":"key3",
+        "value":"3",
+        "owner_id":2856934
     },
     {
-        "id": 32966,
-        "code": "PR23",
-        "type": "percentage",
-        "value": "30.00",
-        "valid": true,
-        "used": 0,
-        "max_uses": 100,
-        "start_date": "2014-05-08",
-        "end_date": "2014-06-08",
-        "min_price": 10,
-        "categories": null
+        "key":"key4",
+        "value":"4",
+        "owner_id":2856934
     },
     {
-        "id": 32964,
-        "code": "PR4",
-        "type": "percentage",
-        "value": "30.00",
-        "valid": true,
-        "used": 0,
-        "max_uses": 100,
-        "start_date": "2014-06-07",
-        "end_date": "2014-06-08",
-        "min_price": 10,
-        "categories": [
-            {
-                "id": 117023,
-                "name": {
-                    "es": "Oxido N\u00edtrico (NO2)",
-                    "en": "Oxido N\u00edtrico (NO2)"
-                },
-                "description": {
-                    "es": "",
-                    "en": ""
-                },
-                "handle": {
-                    "es": "oxido-nitrico-no2",
-                    "en": "oxido-nitrico-no2"
-                },
-                "parent": null,
-                "subcategories": [],
-                "created_at": "2013-03-22T14:40:55+0000",
-                "updated_at": "2014-05-28T20:07:05+0000"
-            }
-        ]
+        "key":"key5",
+        "value":"5",
+        "owner_id":2856934
     }
 ]
 ```
@@ -341,43 +133,22 @@ Receive a list of all metafield.
 
 Receive a single metafield
 
-#### GET /metafields/32964
+#### GET /metafields/11896
+
 
 `HTTP/1.1 200 OK`
 
 ```json
 {
-    "id": 32964,
-    "code": "PR4",
-    "type": "percentage",
-    "value": "30.00",
-    "valid": true,
-    "used": 0,
-    "max_uses": 100,
-    "start_date": "2014-06-07",
-    "end_date": "2014-06-08",
-    "min_price": 10,
-    "categories": [
-        {
-            "id": 117023,
-            "name": {
-                "es": "Oxido N\u00edtrico (NO2)",
-                "en": "Oxido N\u00edtrico (NO2)"
-            },
-            "description": {
-                "es": "",
-                "en": ""
-            },
-            "handle": {
-                "es": "oxido-nitrico-no2",
-                "en": "oxido-nitrico-no2"
-            },
-            "parent": null,
-            "subcategories": [],
-            "created_at": "2013-03-22T14:40:55+0000",
-            "updated_at": "2014-05-28T20:07:05+0000"
-        }
-    ]
+    "id":11896,
+    "key":"key0",
+    "value":"0",
+    "namespace":"namespace0",
+    "description":"description0",
+    "owner_id":2856959,
+    "owner_resource":"Product",
+    "created_at":"2015-01-02T20:01:50+0000",
+    "updated_at":"2015-01-02T20:01:50+0000"
 }
 ```
 
@@ -389,19 +160,22 @@ Create a new metafield
 
 | Parameter                | Explanation                                                                             |
 | ------------------------ | ----------------------------------------------------------------------------------------|
-| code                     | The code is required. Must be unique and can contain only alfanumeric characters        |
-| value                    | The value is mandatory if the type is percentage or absolute                            |
+| key                     | The value is mandatory. Must be unique and can contain only alfanumeric characters        |
+| value                    | The value is mandatory and it can be any string that starts with a letter followed only by: a-Z A-B 0-9 or _.
+| namespace                    | The value is mandatory and it can be any string that starts with a letter followed only by: a-Z A-B 0-9 or _.                            |
+| description                    | Is optional and can have some description that shows the use of this metafield                            |
+| owner_id                    | The value is mandatory and must exist an entity of the owner_resource type with that id.                            |
+| owner_resource                    | The value is mandatory and can be only the allowed values mentioned at the beginning of this documentation.                            |
+
 
 ```json
 {
-    "code": "PRUEBA",
-    "type": "percentage",
-    "value": "30.00",
-    "max_uses": 100,
-    "min_price": 10,
-    "categories": null,
-    "start_date": "2014-05-08",
-    "end_date": "2014-06-08"
+    "key": "key"
+    "value": "value",
+    "namespace": "namespace",
+    "description": 'description",
+    "owner_id": "2857023",
+    "owner_resource": "Product"
 }
 ```
 
@@ -409,17 +183,15 @@ Create a new metafield
 
 ```json
 {
-    "id": 32967,
-    "code": "PRUEBA",
-    "type": "percentage",
-    "value": "30.00",
-    "valid": true,
-    "used": null,
-    "max_uses": 100,
-    "start_date": "2014-05-08",
-    "end_date": "2014-06-08",
-    "min_price": 10,
-    "categories": null
+    "id":12877,
+    "namespace":"namespace",
+    "description":"description",
+    "key":"key","value":"value",
+    "owner_id":2857023,
+    "owner_resource":
+    "Product","created_at":"2015-01-02 20:27:51",
+    "updated_at":"2015-01-02 20:27:51",
+    "deleted_at":null
 }
 ```
 
@@ -431,27 +203,24 @@ Modify an existing metafield
 
 ```json
 {
-    "code": "OTRAPRUEBA", 
-    "type": "absolute", 
-    "value": 50
+    "value": "modified"
 }
 ```
 
 `HTTP/1.1 200 OK`
 
+
 ```json
 {
-    "id": 32967,
-    "code": "OTRAPRUEBA",
-    "type": "absolute",
-    "value": 50,
-    "valid": true,
-    "used": 0,
-    "max_uses": 100,
-    "start_date": "2014-05-08",
-    "end_date": "2014-06-08",
-    "min_price": 10,
-    "categories": null
+    "id":13226,
+    "key":"key0",
+    "value":"modified",
+    "namespace":"namespace0",
+    "description":"description0",
+    "owner_id":2857047,
+    "owner_resource":"Product",
+    "created_at":"2015-01-02T20:32:08+0000",
+    "updated_at":"2015-01-02T20:32:09+0000"
 }
 ```
 
@@ -459,7 +228,7 @@ Modify an existing metafield
 
 Delete an existing metafield
 
-#### DELETE /metafields/32967
+#### DELETE /metafields/13226
 
 `HTTP/1.1 200 OK`
 
