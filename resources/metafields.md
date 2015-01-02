@@ -5,10 +5,10 @@ The metafields are Namespaced Key - Value store for Apps.
 
 The metafields can only be associated with the following entities: 
 
-Product
-Product_Variant
-Category
-Page
+* Product
+* Product_Variant
+* Category
+* Page
 
 To do that you need to set the owner_resource to one of the above, an example would be owner_resource='Product'
 
@@ -57,27 +57,28 @@ Properties
 | id                   | The unique numeric identifier for the metafield.                                                |
 | namespace                 | The namespace where the metafield makes sense. It can be any string that starts with a letter followed only by: a-Z A-B 0-9 or _.         |
 | key                 | String that identifies the metafield in some namespace. It can be any string that starts with a letter followed only by: a-Z A-B 0-9 or _.                                                           |
-| description                | String with some description explaining the metafield meaning.                           |
-| value           | Metafield's value (String).                                                         |
-| owner_resource             | Type of entity to which is associated the metaField.                                                               |
+| description                | The key (string) with some description explaining the metafield meaning.                           |
+| value           | Metafield's value (string).                                                         |
+| owner_resource             | Type of entity to which is associated the metafield.                                                               |
 | owner_id             | Entity id to which is associated the metaField.                                                               |
-| created_at     | Date when the Product was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)     | 
-| updated_at     | Date when the Product was last updated in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)|
+| created_at     | Date when the Metafield was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)     | 
+| updated_at     | Date when the Metafield was last updated in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)|
 
 Endpoints
 ---------
 
-### GET /metafields
+### GET /metafields/#{owner_resource}
+
+* #{owner_resource} examples are: products, product_variants, categories and pages
 
 Receive a list of all metafield.
 
+
 | Parameter      | Explanation                                                                                      |
 | -------------- | ------------------------------------------------------------------------------------------------ |
-| min_start_date | The minimum start_date to filter.                                                                |
-| min_end_date   | The minimum end_date to filter.                                                                  |
-| max_start_date | The maximum start_date to filter.                                                                |
-| max_end_date   | The maximum end_date to filter.                                                                  |
-| valid          | Flag (true of false) for filtering valid metafields.                                                |
+| owner_id | Entity id to which is associated the metaField.                                                                   |
+| namespace   | The namespace where the metafield was defined.filter.                                                                  |
+| key | metafield's key .                                                                |
 | created_at_min | Show Products created after date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))      |
 | created_at_max | Show Products created before date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))     |
 | updated_at_min | Show Products last updated after date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)) |
