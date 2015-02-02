@@ -257,6 +257,7 @@ API resources
 * [Script](https://github.com/tiendanube/api-docs/blob/master/resources/script.md)
 * [Webhook](https://github.com/tiendanube/api-docs/blob/master/resources/webhook.md)
 * [Coupons](https://github.com/tiendanube/api-docs/blob/master/resources/coupon.md)
+* [Metafields](https://github.com/tiendanube/api-docs/blob/master/resources/metafields.md)
 
 
 Help us make it better
