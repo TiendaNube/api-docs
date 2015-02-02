@@ -12,7 +12,7 @@ The metafields can only be associated with the following entities:
 
 To do that you need to set the owner_resource to one of the above, an example would be owner_resource='Product'.
 
-An use example would be use it in Reviews apps SEO features combined with HTML/CSS editing by our customers
+An use example would be use it in an app for Bookstores that require associate a book (product) with it's author and genre to provide an advanced search of books by this fields.
 
 
 Properties
@@ -23,7 +23,7 @@ Properties
 | id                   | The unique numeric identifier for the metafield.                                                |
 | namespace                 | The namespace where the metafield makes sense. It can be any string that starts with a letter followed only by: a-z A-Z 0-9 or _.         |
 | key                 | String that identifies the metafield in some namespace. It can be any string that starts with a letter followed only by: a-z A-Z 0-9 or _.                                                           |
-| description                | String explaining the metafield's meaning.                           |
+| description                | String explaining the metafield's meaning (optional).                           |
 | value           | Metafield's value (string).                                                         |
 | owner_resource             | Type of entity to which is associated the metafield.                                                               |
 | owner_id             | Entity id to which is associated the metaField.                                                               |
@@ -138,17 +138,17 @@ Receive a single metafield
 
 Create a new metafield
 
-#### POST /metafields
-
 | Parameter                | Explanation                                                                             |
 | ------------------------ | ----------------------------------------------------------------------------------------|
 | key                     | The value is mandatory and it can be any string that starts with a letter followed only by: a-z A-Z 0-9 or _.|
 | value                    | The value is mandatory and it can be any string.
 | namespace                    | The value is mandatory and it can be any string that starts with a letter followed only by: a-z A-Z 0-9 or _.                            |
-| description                    | Is optional and can have some description that shows the use of this metafield                            |
+| description                    | (Optional) Can have some description that shows the use of this metafield.                           |
 | owner_id                    | The value is mandatory and must exist an entity of the owner_resource type with that id.                            |
 | owner_resource                    | The value is mandatory and can be only the allowed values mentioned at the beginning of this documentation.                            |
 
+
+#### POST /metafields
 
 ```json
 {
@@ -179,13 +179,14 @@ Create a new metafield
 
 ### PUT /metafields/#{id}
 
-Modify an existing metafield
+Modify an existing metafield. You can update the metafield value or/and the description associated.
 
 #### PUT /metafields/32967
 
 ```json
 {
-    "value": "modified"
+    "value": "modified",
+    "description": "description modified",
 }
 ```
 
@@ -198,7 +199,7 @@ Modify an existing metafield
     "key":"key0",
     "value":"modified",
     "namespace":"namespace0",
-    "description":"description0",
+    "description":"description modified",
     "owner_id":2857047,
     "owner_resource":"Product",
     "created_at":"2015-01-02T20:32:08+0000",
