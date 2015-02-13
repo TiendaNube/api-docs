@@ -286,7 +286,7 @@ __A Script will only appear in checkout if the src starts with 'https://' in ord
 ```json
 {
     "invalid_name": "foobar",
-    "where" : "invalid_where",
+    "where" : "invalid_where"
 }
 ```
 
@@ -312,7 +312,7 @@ __A Script will only appear in checkout if the src starts with 'https://' in ord
 {
     "src": "http://myapp.com/new.js",
     "event" : "onload",
-    "where" : "store",
+    "where" : "store"
 }
 ```
 
