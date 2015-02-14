@@ -80,7 +80,7 @@ Receive a list of all Products.
               },
               "parent": null,
               "subcategories": [],
-              "updated_at": "2013-03-11T09:14:11-03:00",
+              "updated_at": "2013-03-11T09:14:11-03:00"
         }
       ],
       "created_at": "2013-01-03T09:11:51-03:00",
@@ -409,7 +409,7 @@ Receive a single Product
           },
           "parent": null,
           "subcategories": [],
-          "updated_at": "2013-03-11T09:14:11-03:00",
+          "updated_at": "2013-03-11T09:14:11-03:00"
     }
   ],
   "created_at": "2013-01-03T09:11:51-03:00",
@@ -589,7 +589,7 @@ Create a new Product
             },
             "parent": null,
             "subcategories": [],
-            "updated_at": "2013-03-11T09:14:11-03:00",
+            "updated_at": "2013-03-11T09:14:11-03:00"
       }
     ],
     "created_at": "2013-06-01T12:15:11-03:00",
@@ -684,7 +684,7 @@ Modify an existing Product
             },
             "parent": null,
             "subcategories": [],
-            "updated_at": "2013-03-11T09:14:11-03:00",
+            "updated_at": "2013-03-11T09:14:11-03:00"
       }
     ],
     "created_at": "2013-01-03T09:11:51-03:00",

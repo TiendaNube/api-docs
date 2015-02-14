@@ -66,7 +66,7 @@ Receive a list of all Categories.
       },
       "parent": null,
       "subcategories": [],
-      "updated_at": "2013-03-11T09:14:11-03:00",
+      "updated_at": "2013-03-11T09:14:11-03:00"
     }
 ]
 ```
@@ -84,7 +84,7 @@ Receive a list of all Categories.
           "es": "Poké Balls",
           "pt": "Poké Balls"
       },
-      "subcategories": [],
+      "subcategories": []
     }
 ]
 ```
@@ -122,7 +122,7 @@ Receive a single Category
   },
   "parent": null,
   "subcategories": [],
-  "updated_at": "2013-03-11T09:14:11-03:00",
+  "updated_at": "2013-03-11T09:14:11-03:00"
 }
 ```
 
@@ -157,7 +157,7 @@ Create a new Category
       "es": "Gen I",
       "pt": "Gen I"
     },
-    "parent": 4567,      
+    "parent": 4567    
 }
 ```
 
@@ -184,7 +184,7 @@ Create a new Category
   },
   "parent": 4567,
   "subcategories": [],
-  "updated_at": "2013-06-01T12:15:11-03:00",
+  "updated_at": "2013-06-01T12:15:11-03:00"
 }
 ```
 
@@ -224,7 +224,7 @@ Modify an existing Category
   },
   "parent": null,
   "subcategories": [],
-  "updated_at": "2013-06-01T12:15:11-03:00",
+  "updated_at": "2013-06-01T12:15:11-03:00"
 }
 ```
 

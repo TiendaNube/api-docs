@@ -190,7 +190,7 @@ Create a new Webhook
 ```json
 {
     "url": "foobar",
-    "event" : "invalid_event",
+    "event" : "invalid_event"
 }
 ```
 

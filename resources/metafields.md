@@ -186,7 +186,7 @@ Modify an existing metafield. You can update the metafield value or/and the desc
 ```json
 {
     "value": "modified",
-    "description": "description modified",
+    "description": "description modified"
 }
 ```
 
