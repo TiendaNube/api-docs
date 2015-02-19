@@ -213,7 +213,7 @@ Receive a list of all Orders.
     {
       "id": 450789469,
       "number": "101",
-      "price_usd": "58.00",
+      "price_usd": "58.00"
     }
 ]
 ```
