@@ -6,64 +6,64 @@ An order is created when a customer completes the checkout process. Orders can't
 Properties
 ----------
 
-| Property         | Explanation                                                                                      |
-| ---------------- | ------------------------------------------------------------------------------------------------ |
-| id               | The unique numeric identifier for the Order. It's different from `number`                        |
-| token            | Specifies the location of the Order                                                              |
-| number           | Unique numberc identifier for an Order used by the shop owner and customers. It's sequential and starts at 100 |
-| customer         | [Customer](https://github.com/tiendanube/api-docs/blob/master/resources/customer.md) that purchased this Order. Only given if the 'read_customers' scope is set for the app  |
-| products         | List of the products purchased by the `customer`. Contents are explained below and values hold are the ones corresponding to the time the products were purchased |
-| note             | Customer's note about the order                                                                  |
-| owner_note       | Store owner's note about the order                                                               |
-| coupon           | List of coupons applied to the order                                                             |
-| discount         | Total value of the discount applied to the price of the order                                    |
-| subtotal         | Price of the order before shipping                                                               |
-| total            | Total price of the order including shipping and discounts                                        |
-| total_usd        | Total price of the order in US dollars                                                           |
-| currency         | The total spent's currency in [ISO 4217 format](http://en.wikipedia.org/wiki/ISO_4217)           |
-| language         | Order's language used by the customer during the checkout process                                |
-| gateway          | The payment gateway used                                                                         |
-| shipping         | The shipping method used                                                                         |
-| shipping_pickup_type | "ship" if the order is going to be shipped; "pickup" if it's going to be picked up from a store branch |
-| shipping_store_branch_name | If order is going to be picked up, shows the store branch name                         |
-| shipping_address | The customer's shipping address where the order will be shipped                                  |
-| shipping_tracking_number | The shipping tracking number for the order. This may be null if not available            |
-| shipping_min_days | The minimum number of weekdays needed for the order to be delivered                             |
-| shipping_max_days | The maximum number of weekdays needed for the order to be delivered                             |
-| shipping_cost_owner   |   The shipping cost the store owner has to pay to the shipping company. |
-| shipping_cost_customer    |     The shipping cost the customer has to pay to the store owner. |
-| billing_address      | Billing address for the order                                                              |
-| billing_number       | Billing number for the order                                                               |
-| billing_floor        | Billing floor for the order                                                                |
-| billing_locality     | Billing locality for the order                                                             |
-| billing_zipcode      | Billing zipcode for the order                                                              |
-| billing_city         | Billing city for the order                                                                 |
-| billing_province     | Billing province for the order                                                             |
-| billing_country      | Billing country code for the order                                                         |
-| extra                | A JSON object containing custom information. Can be set via the API or through custom form fields of name "extra[key]" on the cart's checkout form in the storefront. |
-| weight           | Order's total weight, in kilograms                                                               |
-| status           | Order's status. Possible values are "open", "closed" or "cancelled"                              |
-| payment_status   | Order's payment status. Possible values are "authorized", "pending", "paid", "abandoned", "refunded" or "voided" |
-| shipping_status  | Order's shipping status. Possible values are "shipped" or "unshipped"                            |
-| shipped_at    | Date when the Order was shipped in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601) |
-| cancel_reason    | Reason why the store owner cancelled an Order. Possible values are "customer", "fraud", "inventory" or "other" |
-| created_at       | Date when the Order was created in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601)      | 
-| updated_at       | Date when the Order was last updated in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601) |
+| Property                   | Explanation                                                                                                                                                                 |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| id                         | The unique numeric identifier for the Order. It's different from `number`                                                                                                   |
+| token                      | Specifies the location of the Order                                                                                                                                         |
+| number                     | Unique numberc identifier for an Order used by the shop owner and customers. It's sequential and starts at 100                                                              |
+| customer                   | [Customer](https://github.com/tiendanube/api-docs/blob/master/resources/customer.md) that purchased this Order. Only given if the 'read_customers' scope is set for the app |
+| products                   | List of the products purchased by the `customer`. Contents are explained below and values hold are the ones corresponding to the time the products were purchased           |
+| note                       | Customer's note about the order                                                                                                                                             |
+| owner_note                 | Store owner's note about the order                                                                                                                                          |
+| coupon                     | List of coupons applied to the order                                                                                                                                        |
+| discount                   | Total value of the discount applied to the price of the order                                                                                                               |
+| subtotal                   | Price of the order before shipping                                                                                                                                          |
+| total                      | Total price of the order including shipping and discounts                                                                                                                   |
+| total_usd                  | Total price of the order in US dollars                                                                                                                                      |
+| currency                   | The total spent's currency in [ISO 4217 format](http://en.wikipedia.org/wiki/ISO_4217)                                                                                      |
+| language                   | Order's language used by the customer during the checkout process                                                                                                           |
+| gateway                    | The payment gateway used                                                                                                                                                    |
+| shipping                   | The shipping method used                                                                                                                                                    |
+| shipping_pickup_type       | "ship" if the order is going to be shipped; "pickup" if it's going to be picked up from a store branch                                                                      |
+| shipping_store_branch_name | If order is going to be picked up, shows the store branch name                                                                                                              |
+| shipping_address           | The customer's shipping address where the order will be shipped                                                                                                             |
+| shipping_tracking_number   | The shipping tracking number for the order. This may be null if not available                                                                                               |
+| shipping_min_days          | The minimum number of weekdays needed for the order to be delivered                                                                                                         |
+| shipping_max_days          | The maximum number of weekdays needed for the order to be delivered                                                                                                         |
+| shipping_cost_owner        | The shipping cost the store owner has to pay to the shipping company.                                                                                                       |
+| shipping_cost_customer     | The shipping cost the customer has to pay to the store owner.                                                                                                               |
+| billing_address            | Billing address for the order                                                                                                                                               |
+| billing_number             | Billing number for the order                                                                                                                                                |
+| billing_floor              | Billing floor for the order                                                                                                                                                 |
+| billing_locality           | Billing locality for the order                                                                                                                                              |
+| billing_zipcode            | Billing zipcode for the order                                                                                                                                               |
+| billing_city               | Billing city for the order                                                                                                                                                  |
+| billing_province           | Billing province for the order                                                                                                                                              |
+| billing_country            | Billing country code for the order                                                                                                                                          |
+| extra                      | A JSON object containing custom information. Can be set via the API or through custom form fields of name "extra[key]" on the cart's checkout form in the storefront.       |
+| weight                     | Order's total weight, in kilograms                                                                                                                                          |
+| status                     | Order's status. Possible values are "open", "closed" or "cancelled"                                                                                                         |
+| payment_status             | Order's payment status. Possible values are "authorized", "pending", "paid", "abandoned", "refunded" or "voided"                                                            |
+| shipping_status            | Order's shipping status. Possible values are "shipped" or "unshipped"                                                                                                       |
+| shipped_at                 | Date when the Order was shipped in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601)                                                                                 |
+| cancel_reason              | Reason why the store owner cancelled an Order. Possible values are "customer", "fraud", "inventory" or "other"                                                              |
+| created_at                 | Date when the Order was created in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601)                                                                                 | 
+| updated_at                 | Date when the Order was last updated in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601)                                                                            |
 
 The `products` field has the following contents:
 
-| Property         | Explanation                                                                                      |
-| ---------------- | ------------------------------------------------------------------------------------------------ |
-| product_id       | [Product](https://github.com/tiendanube/api-docs/blob/master/resources/product.md) purchased     |
+| Property         | Explanation                                                                                                  |
+| ---------------- | ------------------------------------------------------------------------------------------------------------ |
+| product_id       | [Product](https://github.com/tiendanube/api-docs/blob/master/resources/product.md) purchased                 |
 | variant_id       | [Product Variant](https://github.com/tiendanube/api-docs/blob/master/resources/product_variant.md) purchased |
-| name             | Product's name at the time of purchase                                                           |
-| price            | Product's price at the time of purchase                                                          |
-| quantity         | Quantity purchased                                                                               |
-| weight           | Product's weight at the time of purchase                                                         |
-| width            | Product's width at the time of purchase                                                          |
-| height           | Product's height at the time of purchase                                                         |
-| depth            | Product's depth at the time of purchase                                                         |
-| free_shipping    | Indicates if the product has free shipping or not.     |
+| name             | Product's name at the time of purchase                                                                       |
+| price            | Product's price at the time of purchase                                                                      |
+| quantity         | Quantity purchased                                                                                           |
+| weight           | Product's weight at the time of purchase                                                                     |
+| width            | Product's width at the time of purchase                                                                      |
+| height           | Product's height at the time of purchase                                                                     |
+| depth            | Product's depth at the time of purchase                                                                      |
+| free_shipping    | Indicates if the product has free shipping or not.                                                           |
 
 
 
@@ -75,19 +75,19 @@ Endpoints
 Receive a list of all Orders.
 
 
-| Parameter      | Explanation                                                                                      |
-| -------------- | ------------------------------------------------------------------------------------------------ |
-| since_id       | Restrict results to after the specified ID                                                       |
-| status         | Show Orders with a given state. "any" is the default                                             |
+| Parameter      | Explanation                                                                                                 |
+| -------------- | ----------------------------------------------------------------------------------------------------------- |
+| since_id       | Restrict results to after the specified ID                                                                  |
+| status         | Show Orders with a given state. "any" is the default                                                        |
 | payment_status | Show Orders with a given payment state. "any" is the default (it means authorized, pending and paid orders) |
-| shipping_status| Show Orders with a given shipping state. "any" is the default                                     |
-| created_at_min | Show Orders created after date ([ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601))        |
-| created_at_max | Show Orders created before date ([ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601))       |
-| updated_at_min | Show Orders last updated after date ([ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601))   |
-| updated_at_max | Show Orders last updated before date ([ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601))  |
-| page           | Page to show                                                                                     |
-| per_page       | Amount of results                                                                                |
-| fields         | Comma-separated list of fields to include in the response                                        |
+| shipping_status| Show Orders with a given shipping state. "any" is the default                                               |
+| created_at_min | Show Orders created after date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))                   |
+| created_at_max | Show Orders created before date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))                  |
+| updated_at_min | Show Orders last updated after date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))              |
+| updated_at_max | Show Orders last updated before date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))             |
+| page           | Page to show                                                                                                |
+| per_page       | Amount of results                                                                                           |
+| fields         | Comma-separated list of fields to include in the response                                                   |
 
 
 #### GET /orders
