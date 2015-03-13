@@ -45,6 +45,7 @@ Properties
 | status                     | Order's status. Possible values are "open", "closed" or "cancelled"                                                                                                         |
 | payment_status             | Order's payment status. Possible values are "authorized", "pending", "paid", "abandoned", "refunded" or "voided"                                                            |
 | shipping_status            | Order's shipping status. Possible values are "shipped" or "unshipped"                                                                                                       |
+| next_action                | Next available operation in the orders flow                                                                                                                                 |
 | shipped_at                 | Date when the Order was shipped in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601)                                                                                 |
 | cancel_reason              | Reason why the store owner cancelled an Order. Possible values are "customer", "fraud", "inventory" or "other"                                                              |
 | created_at                 | Date when the Order was created in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601)                                                                                 | 
@@ -66,7 +67,6 @@ The `products` field has the following contents:
 | free_shipping    | Indicates if the product has free shipping or not.                                                           |
 
 
-
 Endpoints
 ---------
 
@@ -85,9 +85,13 @@ Receive a list of all Orders.
 | created_at_max | Show Orders created before date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))                  |
 | updated_at_min | Show Orders last updated after date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))              |
 | updated_at_max | Show Orders last updated before date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))             |
+| total_min      | Show Orders with total value bigger or equals than the specified value                                      |
+| total_max      | Show Orders with total value lower or equals than the specified value                                       |
+| customer_ids   | Restrict results to the specified customer IDs (comma-separated)                                            |
 | page           | Page to show                                                                                                |
 | per_page       | Amount of results                                                                                           |
 | fields         | Comma-separated list of fields to include in the response                                                   |
+| q              | Search Orders by the givan number; or containing the given text in the customer name or email               |
 
 
 #### GET /orders
