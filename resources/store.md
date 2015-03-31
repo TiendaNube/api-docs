@@ -32,6 +32,7 @@ Properties
 | languages         | Store available languages with its currency and whether or not is active                      |
 | domains           | List of store's domains                                                                       |
 | original_domain   | Original `tiendanube.com` or `nuvemshop.com.br` domain for the Store                          |
+| current_theme	    | Store's current theme                          						    |
 | main_language     | Store's main language                                                                         |
 | main_currency     | Store's main currency in [ISO 4217 format](http://en.wikipedia.org/wiki/ISO_4217)             |
 | admin_language    | Store's admin language                                                                        |
@@ -96,6 +97,7 @@ Receive a single Store.
   },
   "logo": "//d26lpennugtm8s.cloudfront.net/stores/046/themes/common/logo-ff622335866ee56df3bceed2e9d41469.png",
   "main_currency": "BRL",
+  "current_theme": "luxury",
   "main_language": "pt",
   "name": {
       "en": "Poké Store",
