@@ -9,7 +9,7 @@ A Webhook is a tool that allows you to receive a notification for a certain even
 | Category       | created/updated/deleted                                                                          |
 | Order          | created/updated/paid/fulfilled/cancelled                                                         |
 | Product        | created/updated/deleted                                                                          |
-| Domains        | updated                                                                                          |
+| Domain        | updated                                                                                          |
 | Theme          | updated                                                                                          |
 
 To register for the product created event, for example, you should send `product/created` in the event field.
@@ -81,7 +81,7 @@ Also, every webhook will send custom parameters, as follows:
 
 * __id__: Product's id
 
-#### domains/updated
+#### domain/updated
 
 * no additional parameter is sent along with this event. To get the list of domains one may refer to [Store](https://github.com/tiendanube/api-docs/blob/master/resources/store.md) resources.
 
