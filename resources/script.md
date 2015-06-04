@@ -79,7 +79,13 @@ var LS = {
         ]
     },
     lang : /* Current language's code (e.g. pt_BR) */,
-    currency : /* Current currency in ISO 4217 format */,
+    currency : {
+        code: /* Current currency in ISO 4217 format */
+        display_short: /* Currency format string when the currency is not specified.*/
+        display_long: /* Currency format string when the currency is specified.*/
+        cents_separator: /* Symbol used for separating cents */
+        thousands_separator: /* Symbol used for separating thousands (could be blank) */
+    },
     country : /* Current currency in ISO 3166-1 format */,
     customer : /* Current customer id or null if there is no logged-in customer */,
     theme : {
