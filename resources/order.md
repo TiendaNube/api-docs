@@ -50,6 +50,15 @@ Properties
 | cancel_reason              | Reason why the store owner cancelled an Order. Possible values are "customer", "fraud", "inventory" or "other"                                                              |
 | created_at                 | Date when the Order was created in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601)                                                                                 | 
 | updated_at                 | Date when the Order was last updated in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601)                                                                            |
+Property `next_action` can take one of the following values:
+- __noop__: no action to take
+- __close__: order should be closed
+- __waiting_ipn__: we are waiting for the gateway to update us on the order status, the seller just needs to wait
+- __waiting_manual_confirmation__: we are waiting for the seller to confirm the transaction
+- __waiting_packing__: we are waiting for the seller to pack the order items
+- __waiting_pickup__: we are waiting for the fulfillment provider to pick up the order
+- __waiting_client_pickup__: we are waiting for the buyer to pick up the order (he shipped it to a seller's [B&M store](http://en.wikipedia.org/wiki/Brick_and_mortar))
+- __waiting_shipment__: we are waiting for the seller to ship the order
 
 The `products` field has the following contents:
 
@@ -91,7 +100,7 @@ Receive a list of all Orders.
 | page           | Page to show                                                                                                |
 | per_page       | Amount of results                                                                                           |
 | fields         | Comma-separated list of fields to include in the response                                                   |
-| q              | Search Orders by the givan number; or containing the given text in the customer name or email               |
+| q              | Search Orders by the given number; or containing the given text in the customer name or email               |
 
 
 #### GET /orders
