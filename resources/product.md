@@ -42,22 +42,22 @@ Receive a list of all Products.
 | created_at_max | Show Products created before date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))     |
 | updated_at_min | Show Products last updated after date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)) |
 | updated_at_max | Show Products last updated before date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))|
-| sort_by        | Sort Products by a particular criteria (I.E.: sort_by=created-ascending)
+| sort_by        | Sort Products by a particular criteria (I.E.: sort_by=created-at-ascending)
 | page           | Page to show                                                                                     |
 | per_page       | Amount of results                                                                                |
 | fields         | Comma-separated list of fields to include in the response                                        |
 
 
-| Sort Criteria     | Explanation                                                                                      |
-| ------------------| ------------------------------------------------------------------------------------------------ |
-| user              | User manually defined sort                                                                       |
-| price-ascending   | Sort by price ascending                                                                          |
-| price-descending  | Sort by price descending                                                                         |
-| alpha-ascending   | Sort by Product name ascending                                                                   |
-| alpha-descending  | Sort by Product name descending                                                                  |
-| created-ascending | Sort by created date ascending                                                                   |
-| created-descending| Sort by created date descending                                                                  |
-| best-selling      | Sort by number of sold products descending                                                       |
+| Sort Criteria                     | Explanation                                                                      |
+| ----------------------------------| -------------------------------------------------------------------------------- |
+| user                              | User manually defined sort                                                       |
+| price-ascending, cost-ascending   | Sort by price ascending                                                          |
+| price-descending, cost-descending | Sort by price descending                                                         |
+| alpha-ascending, name-ascending   | Sort by Product name ascending                                                   |
+| alpha-descending, name-descending | Sort by Product name descending                                                  |
+| created-at-ascending              | Sort by created date ascending                                                   |
+| created-at-descending             | Sort by created date descending                                                  |
+| best-selling                      | Sort by number of sold products descending                                       |
 
 
 #### GET /products
