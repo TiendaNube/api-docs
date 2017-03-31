@@ -64,7 +64,7 @@ Variables
 
 We make your life easier by providing a Javascript object (called `LS`) with some common variables.
 
-### Store
+### Store
 
 ```javascript
 var LS = {
@@ -103,7 +103,7 @@ var LS = {
 
 ```
 
-#### Product
+#### Product
 
 If we are on a Product page we add:
 
@@ -116,7 +116,7 @@ LS.product = {
 LS.variants = /* JSON encoded representation of the product variants */;
 ```
 
-#### Category
+#### Category
 
 If we are on a Category page we add:
 
@@ -156,7 +156,7 @@ var LS = {
 }
 ```
 
-#### Thank you page
+#### Thank you page
 
 If we are on the thank you page we add:
 
@@ -217,7 +217,7 @@ Receive a list of all Scripts.
       "created_at": "2013-01-03T09:11:51-03:00",
       "event": "onload",
       "id": 101,
-      "src": "http://myapp.com/foo.js",
+      "src": "https://myapp.com/foo.js",
       "updated_at": "2013-03-11T09:14:11-03:00",
       "where": "store,checkout"
     },
@@ -225,7 +225,7 @@ Receive a list of all Scripts.
       "created_at": "2013-04-07T09:11:51-03:00",
       "event": "onload",
       "id": 5123,
-      "src": "http://myapp.com/bar.js",
+      "src": "https://myapp.com/bar.js",
       "updated_at": "2013-04-08T11:11:51-03:00",
       "where": "store"
     },
@@ -233,7 +233,7 @@ Receive a list of all Scripts.
       "created_at": "2013-04-08T12:09:48-03:00",
       "event": "onload",
       "id": 6412,
-      "src": "http://myapp.com/yet_another_script.js",
+      "src": "https://myapp.com/yet_another_script.js",
       "updated_at": "2013-04-08T11:11:53-03:00",
       "where": "checkout"
     }
@@ -250,7 +250,7 @@ Receive a list of all Scripts.
       "created_at": "2013-04-07T09:11:51-03:00",
       "event": "onload",
       "id": 5123,
-      "src": "http://myapp.com/foo.js",
+      "src": "https://myapp.com/foo.js",
       "updated_at": "2013-04-08T11:11:51-03:00",
       "where": "store"
     },
@@ -258,7 +258,7 @@ Receive a list of all Scripts.
       "created_at": "2013-04-08T12:09:48-03:00",
       "event": "onload",
       "id": 6412,
-      "src": "http://myapp.com/bar.js",
+      "src": "https://myapp.com/bar.js",
       "updated_at": "2013-04-08T11:11:53-03:00",
       "where": "checkout"
     }
@@ -282,7 +282,7 @@ Receive a single Script
   "created_at": "2013-01-03T09:11:51-03:00",
   "event": "onload",
   "id": 101,
-  "src": "http://myapp.com/foo.js",
+  "src": "https://myapp.com/foo.js",
   "updated_at": "2013-03-11T09:14:11-03:00",
   "where": "store,checkout"
 }
@@ -323,7 +323,7 @@ __A Script will only appear in checkout if the src starts with 'https://' in ord
 
 ```json
 {
-    "src": "http://myapp.com/new.js",
+    "src": "https://myapp.com/new.js",
     "event" : "onload",
     "where" : "store"
 }
@@ -353,7 +353,7 @@ Modify an existing Script
   "created_at": "2013-04-07T09:11:51-03:00",
   "event": "onload",
   "id": 5123,
-  "src": "http://myapp.com/another_bar.js",
+  "src": "https://myapp.com/another_bar.js",
   "updated_at": "2013-06-01T12:05:34-03:00",
   "where": "store"
 }
@@ -366,7 +366,7 @@ Modify an existing Script
   "created_at": "2013-04-07T09:11:51-03:00",
   "event": "onload",
   "id": 5123,
-  "src": "http://myapp.com/another_bar.js",
+  "src": "https://myapp.com/another_bar.js",
   "updated_at": "2013-06-01T12:11:14-03:00",
   "where": "store"
 }
