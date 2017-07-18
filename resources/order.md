@@ -74,7 +74,13 @@ The `products` field has the following contents:
 | height           | Product's height at the time of purchase                                                                     |
 | depth            | Product's depth at the time of purchase                                                                      |
 | free_shipping    | Indicates if the product has free shipping or not.                                                           |
+| issues           | Possibles issues that can happen to an order. Contents are explained below.
 
+The `issues` field has the following content:
+
+| Property | Value Explanation | Issue explanation |
+| :---: | :---: | :---: |
+| unclaimed_stock | Number of itens claimed by the user with insufficient stock | Can happens due to a race condition while the user is trying to pay the order and another user buys the same item. |
 
 Endpoints
 ---------
