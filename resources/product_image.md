@@ -163,6 +163,7 @@ Create a new Product Image
 ```
 
 #### POST /products/1234/images
+The attachament must be the image encoded in Base64 String.
 
 ```json
 {
