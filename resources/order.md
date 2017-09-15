@@ -80,7 +80,7 @@ The `issues` field has the following content:
 
 | Property | Value Explanation | Issue explanation |
 | :---: | :---: | :---: |
-| unclaimed_stock | Number of itens claimed by the user with insufficient stock | Can happens due to a race condition while the user is trying to pay the order and another user buys the same item. |
+| unclaimed_stock | Number of items claimed by the user with insufficient stock | Can happens due to a race condition while the user is trying to pay the order and another user buys the same item. |
 
 Endpoints
 ---------
