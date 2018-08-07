@@ -108,7 +108,7 @@ If Tienda Nube/Nuvem Shop is having trouble, you might see a 5xx error. `500` me
 Rate limiting
 -------------
 
-In order to control the incoming traffic from the API, you can perform a limited number of requests in a given period of time. Currently, the approach used to limit the API usage is based on a [Leaky Bucket algorithm](https://en.wikipedia.org/wiki/Leaky_bucket) implementation, where the default bucket size is of 40 requests with a leaky rate of 2 requests per second, that means that you can perform up to 2 requests per second, with bursts of 40 requests, without getting a [429 Too Many Requests](http://tools.ietf.org/html/draft-nottingham-http-new-status-02#section-4) error. We use the following headers to provide information about the limit usage:
+In order to control the incoming traffic from the API, you can perform a limited number of requests in a given period of time. Currently, the approach used to limit the API usage is based on a [Leaky Bucket algorithm](https://en.wikipedia.org/wiki/Leaky_bucket) implementation, where the default bucket size is of 40 requests with a leaky rate of 2 requests per second, which means that you can perform up to 2 requests per second, with bursts of 40 requests, without getting a [429 Too Many Requests](http://tools.ietf.org/html/draft-nottingham-http-new-status-02#section-4) error. We use the following headers to provide information about the limit usage:
 
 * `X-Rate-Limit-Limit` : Total requests that can be done in a given period, in the case, the bucket size.
 * `X-Rate-Limit-Remaining` : Remaining requests to completely fill the bucket.
