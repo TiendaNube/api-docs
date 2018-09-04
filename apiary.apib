@@ -1,0 +1,4306 @@
+FORMAT: 1A
+HOST: http://api.tiendanube.com/v1/
+
+# Nuvem Shop / Tienda Nube API
+
+This is the official documentation for the Nuvem Shop / Tienda Nube public API, and it will show you how to use our API to authenticate, make requests, and retrieve data.
+
+## Getting Started
+
+Before you start to code your app integration, you will need to:
+
+1. Sign-up for a partner account at [Nuvem Shop](http://www.nuvemshop.com.br/parceiros) or [Tienda Nube](https://www.tiendanube.com/partners).
+
+2. Once inside your partner's panel, go to the _Apps_ section and create your app in order to get your credentials.
+
+3. Read up on the [authentication](/#introduction/authentication) to learn how to authenticate and authorize your requests.
+
+4. Read the API docs of the desired resources to learn how to retrieve and manipulate the available data.
+
+## The Basics
+
+This API adheres to the [REST](https://en.wikipedia.org/wiki/Representational_state_transfer) architectural constraints. Our API has predictable, resource-oriented URLs, and uses HTTP response codes to indicate API errors.
+
+All communication with the API is made through HTTP requests, using headers to specify and retrieve metadata, and [JSON](https://www.json.org/) as the content format.
+
+In this section, we describe what you need to exchange information with the API, like the base URLs, the mandatory headers, the available HTTP methods and the different response status codes you may come across.
+
+### Base URL
+
+The API is available under the two following URLs and there is no difference between them, so you can choose either one:
+
+* `https://api.nuvemshop.com.br`
+* `https://api.tiendanube.com`
+
+The path is prefixed with the API version and store ID, respectively, which is currently _v1_, so if we change the API in backward-incompatible ways, we'll bump the version marker and maintain stable support for the old URLs.
+
+Finally, **the API version must be suffixed with the requested store ID**, so if you want to access the store with id _123456_ via the API, you'll use either of the following URLs:
+* `https://api.nuvemshop.com.br/v1/123456`
+* `https://api.tiendanube.com/v1/123456`.
+
+>**Note**: The API is only available over SSL, so you have to specify the protocol (HTTPS) in all URLs.
+
+### Allowed HTTP Methods
+
+| Method | Description |
+| --- | --- |
+|`GET`| Used to get information about a specific resource. |
+|`POST`| Used to create a new resource object. |
+|`PUT`| Used to update/replace a resource object. |
+|`DELETE`| Used to delete resource objects. |
+|`HEAD`| Used to retrieve the headers of a resource. |
+
+>**Note**: For PUT requests with no body attribute, be sure to set the Content-Length header to zero.
+
+### Typical Server Responses
+
+| Code| Description |
+| --- | --- |
+|`200`| Success. Request completed. |
+|`201`| Success. New resource created. |
+|`204`| Success. No content to return. Only the status code returns. |
+|`400`| Bad Request - [The request could not be parsed](/#introduction/error-handling/client-errors). |
+|`401`| Unauthorized - User is not logged in, [could not be authenticated](/#introduction/authentication). |
+|`403`| Forbidden - Cannot access resource. |
+|`404`| Not Found - Resource doesn't exist. |
+|`409`| Conflict - Discord with state of the resource on server. Can occur with too many PUT requests. |
+|`415`| Unsupported Media Type - Your request must include a `Content-type` header. See the [JSON](/#introduction/the-basics/json) section for more information. |
+|`422`| Unprocessable Entity - [Invalid fields sent](/#introduction/error-handling/client-errors). |
+|`429`| Too Many Requests - [API rate limits exceeded](/#introduction/usage-limits). |
+|`500`| [Internal Server Error](/#introduction/error-handling/server-errors). |
+|`502`| [Bad gateway](/#introduction/error-handling/server-errors). |
+|`503`| [Service unavailable](/#introduction/error-handling/server-errors). |
+|`504`| [Gateway timeout](/#introduction/error-handling/server-errors). |
+
+### JSON
+
+All data is sent and received as JSON. Our format has no root element and we use snake_case to describe attribute keys. This means that you have to send `Content-Type: application/json; charset=utf-8` when POSTing or PUTing data into Tienda Nube/Nuvem Shop.
+
+>**Note**: You will receive a `415 Unsupported Media Type` response code if you leave out the Content-Type header.
+
+### Pagination
+
+Requests that return multiple items (also known as Collections) will be paginated to 30 items by default.
+
+You can specify further pages with the `page` parameter and also set a custom page size up to 200 with the `per_page` parameter using a query string appended to the URL, like the following:
+* `https://api.tiendanube.com/v1/123456/products?page=2&per_page=100`
+
+To check the total count of the results you can use the `X-Total-Count` header that will be returned by every request in a collection resource.
+
+To check the next and previous links for pagination you can use the `Link` header:
+
+```
+    HTTP/1.1 200 OK
+    Content-Type: application/json; charset=UTF-8
+    X-Total-Count: 5000
+    Link: <https://api.tiendanube.com/v1/123456/products?page=3&per_page=100>; rel="next", <https://api.tiendanube.com/v1/123456/products?page=50&per_page=100>; rel="last"
+```
+
+The possible `rel` values are:
+
+| Value | Description |
+| --- | --- |
+| next | Shows the URL of the immediate next page of results. |
+| last | Shows the URL of the last page of results. |
+| first | Shows the URL of the first page of results. |
+| prev | Shows the URL of the immediate previous page of results. |
+
+>**Note**: The page numbering is 1-based and ommiting the page parameter will return the first page.
+
+## Authentication
+
+We follow the OAuth 2 framework for letting users authorize their applications to use Nuvem Shop / Tienda Nube on their own.
+
+Basically, when someone installs your app, you will have to obtain an access token (a secret string denoting your rights over the user's store) from the user, which **you will need to include in the header of every request**.
+
+We provide authorization and user authentication by a restricted form of OAuth 2. At a glance:
+* The only grant type we support is the "authorization code".
+* Our access tokens don't expire. They become invalid only after you get a new one, or if the user uninstalls your app.
+* Along with the access token we provide a `user_id` or `store_id`, which is the ID of the store. **You need the user_id to make requests to our API**. It is also useful for authenticating app users on your website (see [User Authentication](/#introduction/authentication/user-authentication)).
+
+### Introduction
+
+- The first step is to register your application.
+    * You will need to go to [Nuvem Shop Parceiros](https://partners.nuvemshop.com.br) o [Tienda Nube Partners](https://partners.tiendanube.com) and login to the Partners program.
+    * Once logged in, you'll need to access the application tab. If this is your first time in this site, a dropdown menu may appear with the option to create new applications instead.
+    * Here you will find a list of your applications and a button to create a new ones. Clicking on the `Create Application` button will bring up a form for you to complete before you can click on `Create Application` to confirm the process.
+- When creating an app, you will have to select the scopes it needs and set a redirection URL.
+    * The scopes specify the resources for which the app is asking authorization of its users (see [Scopes](/#introduction/authentication/scopes)).
+    * The redirection URL is used as part of the authorization flow (see [Authorization Flow](/#introduction/authentication/authorization-flow)).
+- After you application has been registered, you'll have your application's exclusive information, including `client_id` and `client_secret`. You will need this data to complete the authorization flow for every new user that downloads your application.
+    * You can read more about this in our [Authorization Flow](/#introduction/authentication/authorization-flow) section.
+
+> **Note**: You will have to supply your own URL for the redirection URL. Nuvem Shop/Tienda Nube will not take responsability for failed redirections. This step is especially important because each new user will have to go through it to install the application succesfully (see [Authorization Flow](/#introduction/authentication/authorization-flow) for more information).
+
+### Authorization Flow
+
+This process will take place each time a user attempts to install your application. The objective of this process is for you to acquire the unique `access_token` that will allow your application to have access to the user's Nuvem Shop/Tienda Nube.
+
+The authorization flow is as follows:
+1. Users, from their TiendaNube/NuvemShop admin shop, select your app to install it. Or, alternatively, they go to `https://www.tiendanube.com/apps/(app_id)/authorize` (if they are not logged in, they will be prompted to do so).
+2. Users are then redirected to a website where they have to authorize the scopes your app needs (if they have already done this, the step is skipped).
+3. Finally, users are redirected to your app's redirection URL with an authorization code.
+4. Using your app's credentials and the authorization code, you can obtain an access token by making a POST request to `https://www.tiendanube.com/apps/authorize/token`. (Don't forget to also send `grant_type=authorization_code` - see the example provided below).
+
+> **Note**: Any of these URLs in the tiendanube.com domain can be replaced for identical ones in the nuvemshop.com.br domain or vice versa.
+
+#### Example:
+
+* If your app's data is:
+    * store_id = 123
+    * redirection URL = `https://www.example.com/`
+    * scopes = `read_orders`, `write_products`
+    * client_secret = abcdef
+
+The user will then follows these steps:
+1. User with ID 789 goes to `https://www.tiendanube.com/apps/123/authorize?state=csrf-code`
+2. User accepts scopes.
+3. User gets redirected to `https://www.example.com/?code=xyz&state=csrf-code`
+4. Then you POST:
+`curl https://www.tiendanube.com/apps/authorize/token --data 'client_id=123&client_secret=abcdef&grant_type=authorization_code&code=xyz'`
+
+Finally, you receive the following information:
+```
+{
+       "access_token":"61181d08b7e328d256736hdcb671c3ce50b8af5",
+       "token_type":"bearer",
+       "scope":"read_orders,write_products",
+       "user_id":"789"
+}
+```
+
+> **Note**: Remember, each HTTP request made to a user's Nuvem Shop/Tienda Nube must contain the Authentication header, whose value is `token_type access_token`. In the example this would be "Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5".
+
+### Scopes
+
+Apps should only ask for the access scopes they need. For example, if an app only needs to read products, it should only ask for the `read_products` scope.
+
+>**Note**: If you ask for any write scope, the read scope is implied.
+
+>**Note**: As a [Webhook](/#reference/webhook) relies on other resources, you will only be able to register webhooks for the resources you were granted permission to use.
+
+The available `scopes` are:
+* `read_content` / `write_content`
+    * Page
+* `read_products` / `write_products`
+    * Product
+    * Product Variant
+    * Product Image
+    * Category
+* `read_customers` / `write_customers`
+    * Customer
+* `read_orders` / `write_orders`
+    * Order
+* `read_coupons` / `write_coupons`
+    * Coupon
+* `write_scripts`
+    * Script
+
+### User Authentication
+
+Should you need your app's users to be able to sign-in on your website, you can reuse the Authorization flow for this purpose:
+* The login button should be a link to: https://www.tiendanube.com/apps/(app_id)/authorize
+* You can sign-in the user with the ID you receive with the new access token.
+>**Note**: We [recommend](https://tools.ietf.org/html/rfc6749#section-10.12) you add a `state` parameter for CSRF protection (e.g. a hash of the session cookie), so you may verify it after the redirection.
+
+### Identify Your App
+
+In every API request you *must* include a `User-Agent` header with the name of your application and a link to it, or your email address so we can get in touch with you. Here are some examples:
+* `User-Agent: Super app (http://superapp.com/contact)`
+* `User-Agent: Awesome app (awesome@app.com)`
+>**Note**: If you don't supply this header, you will get a `400 Bad Request` response.
+
+## Error Handling
+
+### Client Errors
+
+These are the possible types of client errors on API calls that receive request bodies:
+
+* Sending invalid JSON will result in a `400 Bad Request` response.
+```
+HTTP/1.1 400 Bad Request
+Content-Length: 34
+{"error": "Problems parsing JSON"}
+```
+
+> **Note**: Did you make an API request without the `User-Agent` [header](/#introduction/authentication/identify-your-app)?
+> **Note**: Missing a parenthesis? Try [this JSON validator](https://jsonlint.com/).
+
+* Sending invalid fields will result in a `422 Unprocessable Entity` response.
+```
+HTTP/1.1 422 Unprocessable Entity
+Content-Length: 47
+{
+    "src": [
+        "can't be blank"
+    ]
+}
+```
+
+### Server Errors
+
+If Nuvem Shop/Tienda Nube is having trouble, you might see a 5xx error. `500 Internal Server Error` means that the app is entirely down, but you might also see `502 Bad Gateway`, `503 Service Unavailable`, or `504 Gateway Timeout`. It's your responsibility in all of these cases to retry your request later.
+
+## Usage Limits
+
+You can perform up to 500 requests in a 5 minute period from the same app to the same store. If you exceed this limit, you'll get a `429 Too Many Requests` response for subsequent requests. We use the following headers to provide information:
+
+* `X-Rate-Limit-Limit`: Total requests that can be done in a given period.
+* `X-Rate-Limit-Remaining`: Remaining requests in the current period.
+* `X-Rate-Limit-Reset`: Remaining seconds until the start of the next period.
+
+## Front-end Integration
+
+When using scripts to integrate your app with the storefront, you may want to bind yourself to certain events or access related objects.
+
+While support for this is still being improved, there is one single event you may bind yourself to: `LS.registerOnChangeVariant(callback)` where callback is a function that receives a single argument, a variant, that contains information about the chosen product variant. In particular, `variant.element` contains a string detailing a jQuery selector that you may use in order to obtain a container for the chosen variant's form; this is important when working with themes that have a "quick shop" feature, such as LinkedMan or LinkedWoman, as there may be more than one product form present in a page.
+
+## Suspension of API access due to lack of payment
+
+Being a monthly subscription service, it's possible that a store will not renew its service. In this case, the store will go offline and the API will be inaccessible. The API will also be inaccessible if the app has a recurring price and it's not paid in time.
+
+In either case, all API calls will return a `402 Payment Required` response. Scripts will not be included and Webhooks will not be called. Please make sure you handle this error code to notify the user that he needs to resume his payment instead of displaying a generic server error.
+
+Once the required payment is made, the API becomes accessible again.
+
+>**Note**: If your app needs to know when access to the API is suspended or resumed (because you may have missed a webhook and want to do a full resync, for example), you can register to the app/suspended and app/resumed events using a [Webhook](/#reference/webhook).
+
+## Help Us Make It Better
+
+To talk with us about the API, feel free to [contact us](mailto:api@tiendanube.com) via e-mail to api@tiendanube.com with any doubts or to provide feedback.
+
+# Group Store
+
+The Store resource contains general settings and information about a Tienda Nube/Nuvem Shop's store.
+
+## Managing The Store: Examples And Resources [/store]
+
++ Attributes
+    + id (number) - The unique numeric identifier for the Store.
+    + name (string) - List of the names of the Store, in every language supported by the store.
+    + description (string) - List of the descriptions of the Store, in every language supported by the store.
+    + type (string) - Store type. Examples include "clothing", "sports", "electronic". Can be null.
+    + email (string) - Store owner's e-mail.
+    + logo (string) - Store logo URL, starting with // (or null if it has no logo).
+    + contact_email (string) - Store's contact e-mail.
+    + facebook (string) - Store's Facebook URL.
+    + twitter (string) - Store's Twitter URL.
+    + google_plus (string) - Store's G+ URL.
+    + instagram (string) - Store's Instagram URL.
+    + pinterest (string) - Store's Pinterest URL.
+    + blog (string) - Store's blog URL.
+    + address (string) - Store's address.
+    + phone (string) - Store's phone.
+    + business_id (string) - Business identifier (different for each country) of the company who owns the store.
+    + business_name (string) - Business name of the company who owns the store.
+    + business_address (string) - Business address of the company who owns the store.
+    + customer_accounts (string) - "optional" if the customer is allowed to checkout as guest. "mandatory" if not.
+    + plan_name (string) - Name of the Tienda Nube/Nuvem Shop's plan the store is on.
+    + country (string) - Store's country in ISO 3166-1 format.
+    + languages (string) - Store available languages with its currency and whether or not is active.
+    + domains (string) - List of store's domains.
+    + original_domain (string) - Original tiendanube.com or nuvemshop.com.br domain for the Store.
+    + current_theme (string) - Store's current theme.
+    + main_language (string) - Store's main language.
+    + main_currency (string) - Store's main currency in ISO 4217 format.
+    + admin_language (string) - Store's admin language.
+    + created_at (string) - Date when the Store was created in ISO 8601 format.
+
+### Retrieve A Single Store's Information [GET /{store_id}/store{?fields}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + fields (string, optional) - Comma-separated list of fields to include in the response.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        {
+            "address": null,
+            "admin_language": "pt",
+            "blog": null,
+            "business_id": null,
+            "business_name": null,
+            "business_address": null,
+            "contact_email": "contact@pokestore.com",
+            "country": "BR",
+            "created_at": "2013-01-01T05:12:51-03:00",
+            "customer_accounts": "optional",
+            "description": {
+                "en": "",
+                "es": "",
+                "pt": ""
+            },
+            "domains": [
+                "www.pokestore.com",
+                "www.another.com"
+            ],
+            "email": "owner@pokestore.com",
+            "facebook": "http://www.facebook.com/pokestore",
+            "google_plus": "http://plus.google.com/+pokestore",
+            "id": 1234,
+            "instagram": "http://www.instagram.com/pokestore",
+            "languages": {
+                "en": {
+                    "currency" : "USD",
+                    "active": true
+                },
+                "es": {
+                    "currency" : "ARS",
+                    "active": false
+                },
+                "pt": {
+                    "currency" : "BRL",
+                    "active": true
+                }
+            },
+            "logo": "//d26lpennugtm8s.cloudfront.net/stores/046/themes/common/logo-ff622335866ee56df3bceed2e9d41469.png",
+            "main_currency": "BRL",
+            "current_theme": "luxury",
+            "main_language": "pt",
+            "name": {
+                "en": "Poké Store",
+                "es": "Poké Tienda",
+                "pt": "Poké Loja"
+            },
+            "original_domain" : "pokeloja.nuvemshop.com.br",
+            "phone": null,
+            "pinterest": "http://www.pinterest.com/pokestore",
+            "plan_name": "Business",
+            "type": null,
+            "twitter": "http://www.twitter.com/pokestore" 
+        }
+
+# Group Product
+
+## Introduction
+
+A Product in a Tienda Nube store is an item for sale, and it is a composition of entities that forms a product object.
+
+A `Product` will always have one or more `Product Variants` and may have one or more `Product Images`.
+
+### Product
+
+A [Product](/#reference/product/managing-products-examples-and-resources) is an item for sale in a Tienda Nube/Nuvem Shop's store. It can be either a good or a service.
+
+### Product Variants
+
+[Product Variants](/#reference/product/managing-product-variants-examples-and-resources) allow you to group up different variants/properties on the same product. For example, a shoe with different sizes and colors, all within the same product.
+
+### Product Images
+
+[Product Images](/#reference/product/managing-product-images-examples-and-resources) could well be the single most important design aspect of any store. Without the ability to touch, hold, smell, taste or otherwise handle the products they are interested in, potential customers have only the product's images to interact with.
+
+> **Note**: The product images have the following restrictions:
+> * Must weight less than 10MB
+> * Must be in one of the following formats: .gif, .jpg, .png
+
+## Managing Products: Examples And Resources [/product]
+
++ Attributes
+    + id (number) - The unique numeric identifier for the Product.
+    + name (string) - List of the names of the Product, in every language supported by the store.
+    + descripton (string) - List of the descriptions of the Product, as HTML, in every language supported by the store.
+    + handle (string) - List of the url-friendly strings generated from the Product's names, in every language supported by the store.
+    + variants (string) - List of [Product Variant](/#reference/product/managing-product-variants-examples-and-resources) objects representing the different versions of the Product. Variants cannot be modified once created, however they can be added or erased.
+    + images (string) - List of [Product Image](/#reference/product/managing-product-images-examples-and-resources) objects representing the Product's images.
+    + categories (string) - List of [Category](/#reference/category) objects representing the Product's categories.
+    + published (string) - `true` if the Product is published in the store. `false` if the Product will not show up on the store.
+    + attributes (string) - List of the names of the attributes whose values define the variants. E.g.: Color, Size, etc.
+    + tags (string) - String with all the Product's tags, separated by commas.
+    + `created_at` (string) - Date when the Product was created in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
+    + `updated_at` (string) - Date when the Product was last updated in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
+
+### Retrieve A List Of All The Stores' Products [GET /{store_id}/products/{?since_id,language,q,handle,category_id,published,free_shipping,created_at_min,created_at_max,updated_at_min,updated_at_max,sort_by,page,per_page,fields}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + since_id (string, optional) - Restrict results to after the specified ID.
+    + language (string, optional) - Specify search language.
+    + q (string, optional) - Search Products containing the given text in their names or descriptions.
+    + handle (string, optional) - Show Products with a given URL.
+    + category_id (string, optional) - Show Products with a given category.
+    + published (string, optional) - Show Products by published status. Valid values are "true" or "false".
+    + free_shipping (string, optional, `true`) - Show Products by whether they have free shipping or not. Valid values are "true" or "false".
+    + created_at_min (string, optional) - Show Products created after date (ISO 8601 format).
+    + created_at_max (string, optional) - Show Products created before date (ISO 8601 format).
+    + updated_at_min (string, optional) - Show Products last updated after date (ISO 8601 format).
+    + updated_at_max (string, optional) - Show Products last updated before date (ISO 8601 format).
+    + sort_by (string, optional) - Sort Products by a particular criteria.
+    + page (number, optional) - Page to show.
+    + per_page (number, optional) - Amount of results.
+    + fields (string, optional) - Comma-separated list of fields to include in the response.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 435407,
+                "name": {
+                    "es": "Cambiate por favor",
+                    "en": "OG add image action"
+                },
+                "description": {
+                    "es": "<p>Isso!<\/p>\r\n",
+                    "en": "<p>Isso!<\/p>\r\n"
+                },
+                "handle": {
+                    "es": "cambiate-por-favor",
+                    "en": "og-add-image-action"
+                },
+                "attributes": [],
+                "published": true,
+                "free_shipping": true,
+                "created_at": "2012-02-19T17:34:36+0000",
+                "updated_at": "2014-07-17T14:13:19+0000",
+                "variants": [
+                    {
+                        "id": 821537,
+                        "product_id": 435407,
+                        "position": 5,
+                        "price": "22.00",
+                        "promotional_price": null,
+                        "stock_management": false,
+                        "stock": null,
+                        "weight": "0.75",
+                        "width": "0.00",
+                        "height": "0.00",
+                        "depth": "0.00",
+                        "sku": "ASF",
+                        "values": [],
+                        "created_at": "2012-02-19T17:34:37+0000",
+                        "updated_at": "2014-07-17T14:13:19+0000"
+                    }
+                ],
+                "tags": "algo, jojo",
+                "images": [
+                    {
+                        "id": 634688,
+                        "product_id": 435407,
+                        "src": "https:\/\/s3-sa-east-1.amazonaws.com\/tiendanube-mati\/stores\/046\/products\/blog%2024-1024-1024.jpg",
+                        "position": 1
+                    },
+                    {
+                        "id": 1021828,
+                        "product_id": 435407,
+                        "src": "https:\/\/s3-sa-east-1.amazonaws.com\/tiendanube-mati\/stores\/046\/products\/do-test-1024-1024.jpg",
+                        "position": 2
+                    }
+                ],
+                "categories": [
+                    {
+                        "id": 105190,
+                        "name": {
+                            "es": "Pantalones",
+                            "en": "Pantalones"
+                        },
+                        "description": {
+                            "es": "",
+                            "en": ""
+                        },
+                        "handle": {
+                            "es": "pantalones",
+                            "en": "pantalones"
+                        },
+                        "parent": null,
+                        "subcategories": [
+                            119258
+                        ],
+                        "created_at": "2012-02-19T17:34:36+0000",
+                        "updated_at": "2014-01-28T14:10:12+0000"
+                    }
+                ]
+            }
+        ]
+
+### Retrieve A Single Product [GET /{store_id}/products/#{id}{?fields}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + id (number, `1234`)
+    + fields (string, optional) - Comma-separated list of fields to include in the response.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        {
+          "attributes": [
+              {
+                  "en": "Size"
+              }
+          ],
+          "categories": [
+              {
+                  "created_at": "2013-01-03T09:11:51-03:00",
+                  "description": {
+                      "en": "",
+                      "es": "",
+                      "pt": ""
+                  },
+                  "handle": {
+                      "en": "poke-balls",
+                      "es": "poke-balls",
+                      "pt": "poke-balls"
+                  },
+                  "id": 4567,
+                  "name": {
+                      "en": "Poké Balls",
+                      "es": "Poké Balls",
+                      "pt": "Poké Balls"
+                  },
+                  "parent": null,
+                  "subcategories": [],
+                  "updated_at": "2013-03-11T09:14:11-03:00"
+            }
+          ],
+          "created_at": "2013-01-03T09:11:51-03:00",
+          "description": {
+              "en": "<p>The best Ball with the ultimate level of performance. It will catch any wild Pokémon without fail.</p>",
+              "es": "<p>La mejor Bola con el nivel máximo de desempeño. Atrapará cualquier Pokémon sin fallar.</p>",
+              "pt": "<p>A melhor Bola com o nível máximo de desempenho. Ele vai pegar qualquer Pokémon selvagem sem falhar.</p>"
+          },
+          "handle": {
+              "en": "master-ball",
+              "es": "master-ball",
+              "pt": "master-ball"
+          },
+          "id": 1234,
+          "images": [
+            {
+              "id": 101,
+              "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/servine-640-0.jpg",
+              "position": 1,
+              "product_id": 1234
+            },
+            {
+              "id": 112,
+              "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/onyx-640-0.jpg",
+              "position": 2,
+              "product_id": 1234
+            },
+            {
+              "id": 123,
+              "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/stoutland-640-0.jpg",
+              "position": 3,
+              "product_id": 1234
+            }
+          ],
+          "name": {
+              "en": "Master Ball",
+              "es": "Master Ball",
+              "pt": "Master Ball"
+          },
+          "published": true,
+          "updated_at": "2013-03-11T09:14:11-03:00",
+          "variants": [
+            {
+             "id": 101,
+             "promotional_price": "19.00",
+             "created_at": "2013-01-03T09:11:51-03:00",
+             "depth": null,
+             "height": null,
+             "values": [
+                  {
+                      "en": "Small"
+                  }
+              ],
+             "price": "25.00",
+             "product_id": 1234,
+             "stock_management": true,
+             "stock": 5,
+             "sku": "BSG1234A",
+             "updated_at": "2013-03-11T09:14:11-03:00",
+             "weight": "2.00",
+             "width": null      
+           },
+           {
+             "id": 112,
+             "promotional_price": "19.00",
+             "created_at": "2013-01-03T09:11:51-03:00",
+             "depth": null,
+             "height": null,
+             "values": [
+                  {
+                      "en": "Small"
+                  }
+              ],
+             "price": "25.00",
+             "product_id": 1234,
+             "stock_management": true,
+             "stock": 5,
+             "sku": "BSG1234B",
+             "updated_at": "2013-03-11T09:14:11-03:00",
+             "weight": "2.25",
+             "width": null      
+           },
+           {
+             "id": 133,
+             "promotional_price": "19.00",
+             "created_at": "2013-01-03T09:11:51-03:00",
+             "depth": null,
+             "height": null,
+             "values": [
+                  {
+                      "en": "Small"
+                  }
+              ],
+             "price": "25.00",
+             "product_id": 1234,
+             "stock_management": true,
+             "stock": 5,
+             "sku": "BSG1234C",
+             "updated_at": "2013-03-11T09:14:11-03:00",
+             "weight": "2.50",
+             "width": null
+           }
+          ]
+        }
+
+### Create A New Product [POST /{store_id}/products/{?name,variants,images}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + name (string, required, `Ultra Ball`)
+    + variants (string, required, `See request`)
+    + images (string, optional, `http://images/UltraBallArt.png`)
+
++ Request (application/json; charset=utf-8)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+    
+    + Body
+
+            {
+                "images": [
+                  {
+                    "src": "http://images1.wikia.nocookie.net/__cb20101106022321/pokemon/images/f/f1/UltraBallArt.png"
+                  }
+                ],
+                "name": {
+                  "en": "Ultra Ball",
+                  "es": "Ultra Ball",
+                  "pt": "Ultra Ball"
+                },
+                "variants": [
+                    {
+                        "price": "10.00",
+                        "stock_management": true,
+                        "stock": 12,
+                        "weight": "2.00"
+                    }
+                ]
+            }
+
++ Response 201 (application/json)
+
+        {
+            "attributes": [],
+            "categories": [
+                {
+                    "created_at": "2013-01-03T09:11:51-03:00",
+                    "description": {
+                        "en": "",
+                        "es": "",
+                        "pt": ""
+                    },
+                    "handle": {
+                        "en": "poke-balls",
+                        "es": "poke-balls",
+                        "pt": "poke-balls"
+                    },
+                    "id": 4567,
+                    "name": {
+                        "en": "Poké Balls",
+                        "es": "Poké Balls",
+                        "pt": "Poké Balls"
+                    },
+                    "parent": null,
+                    "subcategories": [],
+                    "updated_at": "2013-03-11T09:14:11-03:00"
+              }
+            ],
+            "created_at": "2013-06-01T12:15:11-03:00",
+            "description": {
+                "en": "",
+                "es": "",
+                "pt": ""
+            },
+            "handle": {
+                "en": "ultra-ball",
+                "es": "ultra-ball",
+                "pt": "ultra-ball"
+            },
+            "id": 2435,
+            "images": [
+              {
+                "id": 231,
+                "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/UltraBallArt.jpg"
+                "position": 1,
+                "product_id": 2435
+              }
+            ],
+            "name": {
+                "en": "Ultra Ball",
+                "es": "Ultra Ball",
+                "pt": "Ultra Ball"
+            },
+            "published": true,
+            "created_at": "2013-06-01T12:15:11-03:00",
+            "variants": [
+                {
+                 "id": 101,
+                 "promotional_price": null,
+                 "created_at": "2013-06-01T12:15:11-03:00",
+                 "depth": null,
+                 "height": null,
+                 "values": [],
+                 "price": "10.00",
+                 "product_id": 1234,
+                 "stock_management": true,
+                 "stock": 12,
+                 "sku": null,
+                 "updated_at": "2013-03-11T09:14:11-03:00",
+                 "weight": "2.00",
+                 "width": null      
+               }
+            ]
+        }
+
+### Modify An Existing Product [PUT /{store_id}/products/#{id}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + id (number, `5123`)
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+    
+    + Body
+
+            {
+                "categories": [4567],
+                "id": 1234,
+                "published": false
+            }
+
++ Response 200 (application/json)
+
+        {
+            "attributes": [
+                {
+                    "en": "Size"
+                }
+            ],
+            "categories": [
+                {
+                    "created_at": "2013-01-03T09:11:51-03:00",
+                    "description": {
+                        "en": "",
+                        "es": "",
+                        "pt": ""
+                    },
+                    "handle": {
+                        "en": "poke-balls",
+                        "es": "poke-balls",
+                        "pt": "poke-balls"
+                    },
+                    "id": 4567,
+                    "name": {
+                        "en": "Poké Balls",
+                        "es": "Poké Balls",
+                        "pt": "Poké Balls"
+                    },
+                    "parent": null,
+                    "subcategories": [],
+                    "updated_at": "2013-03-11T09:14:11-03:00"
+              }
+            ],
+            "created_at": "2013-01-03T09:11:51-03:00",
+            "description": {
+                "en": "<p>The best Ball with the ultimate level of performance. It will catch any wild Pokémon without fail.</p>",
+                "es": "<p>La mejor Bola con el nivel máximo de desempeño. Atrapará cualquier Pokémon sin fallar.</p>",
+                "pt": "<p>A melhor Bola com o nível máximo de desempenho. Ele vai pegar qualquer Pokémon selvagem sem falhar.</p>"
+            },
+            "handle": {
+                "en": "master-ball",
+                "es": "master-ball",
+                "pt": "master-ball"
+            },
+            "id": 1234,
+            "images": [
+              {
+                "id": 101,
+                "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/servine-640-0.jpg",
+                "position": 1,
+                "product_id": 1234
+              },
+              {
+                "id": 112,
+                "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/onyx-640-0.jpg",
+                "position": 2,
+                "product_id": 1234
+              },
+              {
+                "id": 123,
+                "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/stoutland-640-0.jpg",
+                "position": 3,
+                "product_id": 1234
+              }
+            ],
+            "name": {
+                "en": "Master Ball",
+                "es": "Master Ball",
+                "pt": "Master Ball"
+            },
+            "published": false,
+            "updated_at": "2013-06-01T12:15:11-03:00",
+            "variants": [
+              {
+               "id": 101,
+               "promotional_price": "19.00",
+               "created_at": "2013-01-03T09:11:51-03:00",
+               "depth": null,
+               "height": null,
+               "values": [
+                   {
+                       "en": "Small"
+                   }
+               ],
+               "price": "25.00",
+               "product_id": 1234,
+               "stock_management": true,
+               "stock": 5,
+               "sku": "BSG1234A",
+               "updated_at": "2013-03-11T09:14:11-03:00",
+               "weight": "2.00",
+               "width": null      
+             },
+             {
+               "id": 112,
+               "promotional_price": "19.00",
+               "created_at": "2013-01-03T09:11:51-03:00",
+               "depth": null,
+               "height": null,
+               "values": [
+                   {
+                       "en": "Medium"
+                   }
+               ],
+               "price": "25.00",
+               "product_id": 1234,
+               "stock_management": true,
+               "stock": 5,
+               "sku": "BSG1234B",
+               "updated_at": "2013-03-11T09:14:11-03:00",
+               "weight": "2.25",
+               "width": null      
+             },
+             {
+               "id": 133,
+               "promotional_price": "19.00",
+               "created_at": "2013-01-03T09:11:51-03:00",
+               "depth": null,
+               "height": null,
+               "values": [
+                   {
+                       "en": "Large"
+                   }
+               ],
+               "price": "25.00",
+               "product_id": 1234,
+               "stock_management": true,
+               "stock": 5,
+               "sku": "BSG1234C",
+               "updated_at": "2013-03-11T09:14:11-03:00",
+               "weight": "2.50",
+               "width": null
+             }
+            ]
+        }
+
+### Remove A Product [DELETE /{store_id}/products/#{id}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + id (number, `1234`)
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        {
+            
+        }
+
+## Managing Product Variants: Examples And Resources [/product_variant]
+
++ Attributes
+    + id (number) - The unique numeric identifier for the Product Variant.
+    + image_id (number) - The id of the product's image associated with the variant.
+    + product_id (number) - The id of the product associated with the variant.
+    + price (number) - Price of the Product Variant. `null` indicates the product will initiate a contact instead of a checkout process.
+    + promotional_price (string) - Lower price to display as a sale. The value of price will be displayed crossed out for comparison.
+    + stock_management (string) - Specifies whether or not Tienda Nube/Nuvem Shop tracks the number of items in stock for this product variant. Valid values are `true` if Tienda Nube/Nuvem Shop tracks the stock, `false` if it doesn't.
+    + stock (string) - Stock of the Product Variant. If `stock_management` is `false` the stock will be `null`.
+    + weight (string) - Weight of the Product Variant in kilograms.
+    + width (string) - Width of the Product Variant in centimetres.
+    + height (string) - Height of the Product Variant in centimetres.
+    + depth (string) - Depth of the Product Variant in centimetres.
+    + sku (string) - Unique identifier of the Product Variant in your store.
+    + values (string) - List of the values of the attributes whose values define the variant. E.g.: Large, Medium, etc.
+    + `created_at` (string) - Date when the Product Variant was created in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
+    + `updated_at` (string) - Date when the Product Variant was last updated in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
+
+### Retrieve A List Of All Product Variants For A Given Product [GET /{store_id}/products/#{product_id}/variants/{?since_id,created_at_min,created_at_max,updated_at_min,updated_at_max,page,per_page,fields}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + product_id (number, `1234`) - The id of the product associated with the variant.
+    + since_id (string, `105`) - Restrict results to after the specified ID.
+    + created_at_min (string) - Show Product Variants created after date (ISO 8601 format).
+    + created_at_max (string) - Show Product Variants created before date (ISO 8601 format).
+    + updated_at_min (string) - Show Product Variants last updated after date (ISO 8601 format).
+    + updated_at_max (string) - Show Product Variants last updated before date (ISO 8601 format).
+    + page (string) - Page to show.
+    + per_page (string) - Amount of results.
+    + fields (string) - Comma-separated list of fields to include in the response.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 71181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        [
+            {
+              "id": 112,
+              "image_id": null,
+              "promotional_price": "19.00",
+              "created_at": "2013-01-03T09:11:51-03:00",
+              "depth": null,
+              "height": null,
+              "values": [
+                  {
+                      "en": "Small"
+                  }
+              ],
+              "price": "25.00",
+              "product_id": 1234,
+              "stock_management": true,
+              "stock": 5,
+              "sku": "BSG1234B",
+              "updated_at": "2013-03-11T09:14:11-03:00",
+              "weight": "2.25",
+              "width": null      
+            },
+            {
+              "id": 133,
+              "image_id": null,
+              "promotional_price": "19.00",
+              "created_at": "2013-01-03T09:11:51-03:00",
+              "depth": null,
+              "height": null,
+              "values": [
+                  {
+                      "en": "Small"
+                  }
+              ],
+              "price": "25.00",
+              "product_id": 1234,
+              "stock_management": true,
+              "stock": 5,
+              "sku": "BSG1234C",
+              "updated_at": "2013-03-11T09:14:11-03:00",
+              "weight": "2.50",
+              "width": null
+            }
+        ]
+
+### Retrieve A Single Product Variant [GET /{store_id}/products/#{product_id}/variants/#{id}{?fields}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + id (number, `112`) - The unique identifier for the Product Variant.
+    + product_id (number, `1234`) - The id of the product associated with the product's variant.
+    + fields (string, optional) - Comma-separated list of fields to include in the response.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        {
+              "id": 112,
+              "image_id": null,
+              "promotional_price": "19.00",
+              "created_at": "2013-01-03T09:11:51-03:00",
+              "depth": null,
+              "height": null,
+              "values": [
+                  {
+                      "en": "Small"
+                  }
+              ],
+              "price": "25.00",
+              "product_id": 1234,
+              "stock_management": true,
+              "stock": 5,
+              "sku": "BSG1234B",
+              "updated_at": "2013-03-11T09:14:11-03:00",
+              "weight": "2.25",
+              "width": null      
+        }
+
+### Create A New Product Variant [POST /{store_id}/products/#{product_id}/variants]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + product_id (number, `1234`)
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+    
+    + Body
+
+            {
+                "values": [
+                    {
+                        "en": "X-Large"
+                    }
+                ],
+                "price": "19.00"
+            }
+
++ Response 201 (application/json)
+
+        {
+              "id": 144,
+              "image_id": null,
+              "promotional_price": null,
+              "created_at": "2013-01-03T09:11:51-03:00",
+              "depth": null,
+              "height": null,
+              "values": [
+                  {
+                      "en": "X-Large"
+                  }
+              ],
+              "price": "19.00",
+              "product_id": 1234,
+              "stock_management": false,
+              "stock": null,
+              "sku": null,
+              "updated_at": "2013-06-01T09:15:11-03:00",
+              "weight": null,
+              "width": null      
+        }
+
+### Modify An Existing Product Variant [PUT /{store_id}/products/#{product_id}/variants/#{id}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + id (number, `144`)
+    + product_id (number, `1234`)
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+    
+    + Body
+
+            {
+                  "id": 144,
+                  "image_id": null,
+                  "promotional_price": "19.00",
+                  "created_at": "2013-01-03T09:11:51-03:00",
+                  "depth": null,
+                  "height": null,
+                  "values": [
+                      {
+                          "en": "X-Large"
+                      }
+                  ],
+                  "price": "25.00",
+                  "product_id": 1234,
+                  "stock_management": true,
+                  "stock": 5,
+                  "sku": "BSG1234D",
+                  "updated_at": "2013-06-01T09:15:11-03:00",
+                  "weight": "2.75",
+                  "width": null
+            }
+
++ Response 200 (application/json)
+
+        {
+              "id": 144,
+              "image_id": null,
+              "promotional_price": "19.00",
+              "created_at": "2013-01-03T09:11:51-03:00",
+              "depth": null,
+              "height": null,
+              "values": [
+                  {
+                      "en": "X-Large"
+                  }
+              ],
+              "price": "25.00",
+              "product_id": 1234,
+              "stock_management": true,
+              "stock": 5,
+              "sku": "BSG1234D",
+              "updated_at": "2013-06-01T12:15:11-03:00",
+              "weight": "2.75",
+              "width": null      
+        }
+
+### Remove A Product Variant [DELETE /{store_id}/products/#{product_id}/variants/#{id}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + id (number, `112`)
+    + product_id (number, `1234`)
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        {
+            
+        }
+
+## Managing Product Images: Examples And Resources [/product_image]
+
++ Attributes
+    + id (number) - The unique numeric identifier for the Product Image.
+    + product_id (number) - The id of the product associated with the image.
+    + src (string) - URL of the product image.
+    + position (number) - Number indicating the position of the image in the product's image list. 1 is the first and the main Product Image.
+    + `created_at` (string) - Date when the Product Image was created in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
+    + `updated_at` (string) - Date when the Product Image was last updated in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
+
+### Retrieve A List Of All Product Images For A Given Product [GET /{store_id}/products/#{product_id}/images/{?since_id,src,position,page,per_page,fields}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + product_id (number, `1234`)
+    + since_id (string, optional, `105`) - Restrict results to after the specified ID.
+    + src (string, optional) - Show Product Images with a given URL.
+    + position (string, optional) - Show Product Images at a given position.
+    + page (string, optional) - Page to show.
+    + per_page (string, optional) - Amount of results.
+    + fields (string, optional) - Comma-separated list of fields to include in the response.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        [
+            {
+              "id": 112,
+              "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/onyx-640-0.jpg",
+              "position": 2,
+              "product_id": 1234,
+              "created_at": "2013-01-03T09:11:51-03:00",
+              "updated_at": "2013-03-11T09:14:11-03:00"
+            },
+            {
+              "id": 123,
+              "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/stoutland-640-0.jpg",
+              "position": 3,
+              "product_id": 1234,
+              "created_at": "2013-01-03T09:11:51-03:00",
+              "updated_at": "2013-03-11T09:14:11-03:00"
+            }
+        ]
+
+### Retrieve A Single Product Image [GET /{store_id}/products/#{product_id}/images/#{id}{?fields}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + id (number, `112`)
+    + product_id (number, `1234`)
+    + fields (string, optional) - Comma-separated list of fields to include in the response.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        {
+            "id": 112,
+            "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/onyx-640-0.jpg",
+            "position": 2,
+            "product_id": 1234,
+            "created_at": "2013-01-03T09:11:51-03:00",
+            "updated_at": "2013-03-11T09:14:11-03:00"
+        }
+
+### Create A New Product Image [POST /{store_id}/products/#{product_id}/images/{?src,attachment,filename,position}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + product_id (number, required, `1234`)
+    + src (string, required, `http://example.com/charmander.jpg`) - The URL to the image.
+    + attachment (string, optional) - Must be image encoded in a Base64 string.
+    + filename (string, optional) - A filename containing only letters, numbers, dashes, underscores and dots.
+    + position (number, optional) - A number indicating in which position of the image list should the new image be placed.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 201 (application/json)
+
+        {
+            "id": 134,
+            "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/charmander-640-0.jpg",
+            "position": 4,
+            "product_id": 1234,
+            "created_at": "2013-04-12T09:14:11-03:00",
+            "updated_at": "2013-04-12T09:14:11-03:00"
+        }
+
+### Modify An Existing Product Image [PUT /{store_id}/products/#{product_id}/images/#{id}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + id (number, `145`)
+    + product_id (number, `1234`)
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+    
+    + Body
+
+            {
+              "id": 145,
+              "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/mewtwo-640-0.jpg",
+              "position": 1,
+              "product_id": 1234
+            }
+
++ Response 200 (application/json)
+
+        {
+          "id": 145,
+          "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/mewtwo-640-0.jpg",
+          "position": 1,
+          "product_id": 1234,
+          "created_at": "2013-01-03T09:11:51-03:00",
+          "updated_at": "2013-03-11T09:14:16-03:00"
+        }
+
+### Remove A Product Image [DELETE /{store_id}/products/#{product_id}/images/#{id}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + id (number, `145`)
+    + product_id (number, `1234`)
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        {
+            
+        }
+
+# Group Category
+
+## Introduction
+
+A Category lets the store owner group their products to make the store easier to browse.
+
+## Managing Categories: Examples And Resources [/categories]
+
++ Attributes
+    + id (number) - The unique numeric identifier for the Category.
+    + name (string) - List of the names of the Category, in every language supported by the store.
+    + descripton (string) - List of the descriptions of the Category, as HTML, in every language supported by the store.
+    + handle (string) - List of the url-friendly strings generated from the Category's names, in every language supported by the store.
+    + parent (string) - Id of the Category's parent. `null` if it has no parent.
+    + subcategories (string) - The ids of the Category's first level subcategories.
+    + `created_at` (string) - Date when the Category was created in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
+    + `updated_at` (string) - Date when the Category was last updated in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
+
+### Retrieve A List Of All Categories [GET /{store_id}/categories/{?since_id,language,handle,parent_id,created_at_min,created_at_max,updated_at_min,updated_at_max,page,per_page,fields}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + since_id (string, optional) - Restrict results to after the specified ID.
+    + language (string, optional) - Specify search language (required when serching for handle).
+    + handle (string, optional) - Show Categories with a given URL.
+    + parent_id (string, optional) - Show Categories with a given parent category.
+    + created_at_min (string, optional) - Show Categories created after date (ISO 8601 format).
+    + created_at_max (string, optional) - Show Categories created before date (ISO 8601 format).
+    + updated_at_min (string, optional) - Show Categories last updated after date (ISO 8601 format).
+    + updated_at_max (string, optional) - Show Categories last updated before date (ISO 8601 format).
+    + page (number, optional) - Page to show.
+    + per_page (string, optional) - Amount of results.
+    + fields (string, optional) - Comma-separated list of fields to include in the response.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        [
+            {
+              "created_at": "2013-01-03T09:11:51-03:00",
+              "description": {
+                  "en": "",
+                  "es": "",
+                  "pt": ""
+              },
+              "handle": {
+                  "en": "poke-balls",
+                  "es": "poke-balls",
+                  "pt": "poke-balls"
+              },
+              "id": 4567,
+              "name": {
+                  "en": "Poké Balls",
+                  "es": "Poké Balls",
+                  "pt": "Poké Balls"
+              },
+              "parent": null,
+              "subcategories": [],
+              "updated_at": "2013-03-11T09:14:11-03:00"
+            }
+        ]
+
+### Retrieve A Single Category [GET /{store_id}/categories/#{id}{?fields}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + id (number, `4567`)
+    + fields (string, optional) - Comma-separated list of fields to include in the response.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        {
+          "created_at": "2013-01-03T09:11:51-03:00",
+          "description": {
+              "en": "",
+              "es": "",
+              "pt": ""
+          },
+          "handle": {
+              "en": "poke-balls",
+              "es": "poke-balls",
+              "pt": "poke-balls"
+          },
+          "id": 4567,
+          "name": {
+              "en": "Poké Balls",
+              "es": "Poké Balls",
+              "pt": "Poké Balls"
+          },
+          "parent": null,
+          "subcategories": [],
+          "updated_at": "2013-03-11T09:14:11-03:00"
+        }
+
+### Create A New Category [POST /{store_id}/categories/{?name,parent}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + name (string, `Gen I`) - Restrict results to after the specified ID.
+    + parent (number, optional, `4567`)
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+    
+    + Body
+
+            {
+                "name": {
+                  "en": "Gen I",
+                  "es": "Gen I",
+                  "pt": "Gen I"
+                },
+                "parent": 4567    
+            }
+
++ Response 201 (application/json)
+
+        {
+          "created_at": "2013-06-01T12:15:11-03:00",
+          "description": {
+              "en": "",
+              "es": "",
+              "pt": ""
+          },
+          "handle": {
+              "en": "gen-i",
+              "es": "gen-i",
+              "pt": "gen-i"
+          },
+          "id": 5678,
+          "name": {
+              "en": "Gen I",
+              "es": "Gen I",
+              "pt": "Gen I"
+          },
+          "parent": 4567,
+          "subcategories": [],
+          "updated_at": "2013-06-01T12:15:11-03:00"
+        }
+
+### Modify An Existing Category [PUT /{store_id}/categories/#{id}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + id (number, `5678`)
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+    
+    + Body
+
+            {
+              "id": 5678,
+              "parent": null
+            }
+
++ Response 200 (application/json)
+
+        {
+          "created_at": "2013-06-01T12:15:11-03:00",
+          "description": {
+              "en": "",
+              "es": "",
+              "pt": ""
+          },
+          "handle": {
+              "en": "gen-i",
+              "es": "gen-i",
+              "pt": "gen-i"
+          },
+          "id": 5678,
+          "name": {
+              "en": "Gen I",
+              "es": "Gen I",
+              "pt": "Gen I"
+          },
+          "parent": null,
+          "subcategories": [],
+          "updated_at": "2013-06-01T12:15:11-03:00"
+        }
+
+### Remove A Category [DELETE /{store_id}/categories/#{id}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + id (number, `4567`)
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        {
+            
+        }
+
+# Group Order
+
+## Introduction
+
+An order is created when a customer completes the checkout process. Orders can't be created through the API.
+
+Orders contain 3 important fields that are detailed below. These are `products`, `next_action` and `issues`:
+
+* `products`
+    * `product_id` - [Product](/#reference/product) purchased.
+    * `variant_id` - [Product Variant](/#reference/product) purchased.
+    * `name` - Product's name at the time of purchase.
+    * `price` - Product's price at the time of purchase.
+    * `quantity` - Quantity purchased.
+    * `weight` - Product's weight at the time of purchase.
+    * `width` - Product's width at the time of purchase.
+    * `height` - Product's height at the time of purchase.
+    * `depth` - Product's depth at the time of purchase.
+    * `free_shipping` - Indicates if the product has free shipping or not.
+    * `issues` - Possibles issues that can happen to an order. Contents are explained below.
+
+* `next_action`
+    * `noop` - No action to take.
+    * `close` - Order should be closed.
+    * `waiting_ipn` - We are waiting for the gateway to update us on the order status, the seller just needs to wait.
+    * `waiting_manual_confirmation` - We are waiting for the seller to confirm the transaction.
+    * `waiting_packing` - We are waiting for the seller to pack the order items.
+    * `waiting_pickup` - We are waiting for the fulfillment provider to pick up the order.
+    * `waiting_client_pickup` - We are waiting for the buyer to pick up the order (he shipped it to a seller's B&M store).
+    * `waiting_shipment` - We are waiting for the seller to ship the order.
+
+* `issues`
+    * `unclaimed_stock` (number) - Can happen due to a race condition while the user is trying to pay the order and another user buys the same item.
+
+> **Note**: The `unclaimed_stock` property of the `issues` attribute has a number value associated to it which represents the number of items claimed by the user with insufficient stock.
+
+## Managing Orders: Examples and Resources [/order]
+
++ Attributes
+    + id (number) - The unique numeric identifier for the Order. It's different from `number`.
+    + token (string) - Specifies the location of the Order.
+    + number (string) - Unique number identifier for an Order used by the shop owner and customers. It's sequential and starts at 100.
+    + customer (string) - [Customer](/#reference/customer) that purchased this Order. Only given if the 'read_customers' scope is set for the app.
+    + products - List of the products purchased by the `customer`. Contents are explained [above](/#reference/order) and values hold are the ones corresponding to the time the products were purchased.
+    + note (string) - Customer's note about the order.
+    + owner_note (string) - Store owner's note about the order.
+    + coupon (string) - List of coupons applied to the order.
+    + discount (string) - Total value of the discount applied to the price of the order.
+    + subtotal (string) - Price of the order before shipping.
+    + total (string) - Total price of the order including shipping and discounts.
+    + total_usd (string) - Total price of the order in US dollars.
+    + currency (string) - The total spent's currency in [ISO 4217 format](https://en.wikipedia.org/wiki/ISO_4217).
+    + language (string) - Order's language used by the customer during the checkout process.
+    + gateway (string) - The payment gateway used.
+    + shipping (string) - The shipping method used.
+    + shipping_pickup_type (string) - "ship" if the order is going to be shipped; "pickup" if it's going to be picked up from a store branch.
+    + shipping_store_branch_name (string) - If order is going to be picked up, shows the store branch name.
+    + shipping_address (string) - The customer's shipping address where the order will be shipped.
+    + shipping_tracking_number (string) - The shipping tracking number for the order. This may be null if not available.
+    + shipping_min_days (string) - The minimum number of weekdays needed for the order to be delivered.
+    + shipping_max_days (string) - The maximum number of weekdays needed for the order to be delivered.
+    + shipping_cost_owner (string) - The shipping cost the store owner has to pay to the shipping company.
+    + shipping_cost_customer (string) - The shipping cost the customer has to pay to the store owner.
+    + billing_address (string) - Billing address for the order.
+    + billing_number (string) - Billing number for the order.
+    + billing_floor (string) - Billing floor for the order.
+    + billing_locality (string) - Billing locality for the order.
+    + billing_zipcode (string) - Billing zipcode for the order.
+    + billing_city (string) - Billing city for the order.
+    + billing_province (string) - Billing province for the order.
+    + billing_country (string) - Billing country code for the order.
+    + extra (string) - A JSON object containing custom information. Can be set via the API or through custom form fields of name "`extra[key]`" on the cart's checkout form in the storefront.
+    + weight (string) - Order's total weight, in kilograms.
+    + status (string) - Order's status. Possible values are "`open`", "`closed`" or "`cancelled`".
+    + payment_status (string) - Order's payment status. Possible values are "`authorized`", "`pending`", "`paid`", "`abandoned`", "`refunded`" or "`voided`".
+    + shipping_status (string) - Order's shipping status. Possible values are "`unpacked`", "`shipped`" or "`unshipped`".
+    + next_action (string) - Next available operation in the orders flow.
+    + `shipped_at` (string) - Date when the Order was shipped in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
+    + cancel_reason (string) - Reason why the store owner cancelled an Order. Possible values are "`customer`", "`fraud`", "`inventory`" or "`other`".
+    + `created_at` (string) - Date when the Order was created in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
+    + `updated_at` (string) - Date when the Order was last updated in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
+    + next_action - Specifies the next action to take by the Order. Contents are explained [above](/#reference/order).
+
+### Retrieve A List Of All Orders [GET /{store_id}/orders/{?since_id,status,payment_status,shipping_status,created_at_min,created_at_max,updated_at_min,updated_at_max,total_min,total_max,customer_ids,page,per_page,fields,q}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + since_id (string, optional) - Restrict results to after the specified ID.
+    + status (string, optional) - Show Orders with a given state.
+        + Default: `any`
+    + payment_status (string, optional) - Show Orders with a given payment state. `any` is the default (it means authorized, pending and paid orders).
+        + Default: `any`
+    + shipping_status (string, optional) - Show Orders with a given shipping state.
+        + Default: `any`
+    + created_at_min (string, optional) - Show Orders created after date (ISO 8601 format).
+    + created_at_max (string, optional) - Show Orders created before date (ISO 8601 format).
+    + updated_at_min (string, optional) - Show Orders last updated after date (ISO 8601 format).
+    + updated_at_max (string, optional) - Show Orders last updated before date (ISO 8601 format).
+    + total_min (string, optional) - Show Orders with total value bigger or equals than the specified value.
+    + total_max (string, optional) - Show Orders with total value lower or equals than the specified value.
+    + customer_ids (string, optional) - Restrict results to the specified customer IDs (comma-separated).
+    + page (string, optional) - Page to show.
+    + per_page (string, optional) - Amount of results.
+    + fields (string, optional, `id,number,price_usd`) - Comma-separated list of fields to include in the response.
+    + q (string, optional) - Search Orders by the given number; or containing the given text in the customer name or email.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        [
+            {
+              "id": 450789469,
+              "number": "101",
+              "price_usd": "58.00"
+            }
+        ]
+
+### Retrieve A Single Order [GET /{store_id}/orders/#{id}{?fields}]
+
++ Parameters
+    + store_id (integer, required, ) - The requested store ID.
+    + id (number, `450789469`) - The unique numeric identifier for the Order.
+    + fields (string, optional) - Comma-separated list of fields to include in the response.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        {
+            "cancel_reason": null,
+            "created_at": "2008-01-10T11:00:00-05:00",
+            "currency": "USD",
+            "gateway": "paypal",
+            "id": 450789469,
+            "landing_site": "http://www.example.com?source=abc",
+            "language": "en",
+            "location_id": null,
+            "name": "#1001",
+            "note": null,
+            "number": 1,
+            "owner_note": null,
+            "payment_status": "pending",
+            "shipping": "ups",
+            "shipping_status": "unshipped",
+            "shipping_tracking_number": null,
+            "shipping_min_days": 2,
+            "shipping_max_days": 4,
+            "shipping_cost_owner": "20.00",
+            "shipping_cost_customer": "20.00",
+            "status": "open",
+            "subtotal": "38.00",
+            "token": "898544a54283414238f74cd08f0efd3916f74b75",
+            "discount": "0.00",
+            "price": "58.00",
+            "price_usd": "58.00",
+            "weight": "2.00",
+            "updated_at": "2008-01-10T11:00:00-05:00",
+            "shipped_at": "2008-01-10T11:00:00-05:00",
+            "number": 101,
+            "coupon": [
+              {
+                "code": "SUPERDISCOUNT"
+              }
+            ],
+            "products": [
+              {
+                "depth": null,
+                "height": null,
+                "price": "19.00",
+                "product_id": 1234,
+                "quantity": 2,
+                "free_shipping": false,
+                "variant_id": 101,
+                "weight": "2.00",
+                "width": null
+              }
+            ],
+            "billing_address": "Evergreen Terrace",
+            "billing_city": "Springfield",
+            "billing_country": "US",
+            "billing_default": true,
+            "billing_floor": null,
+            "billing_locality": null,
+            "billing_number": "742",
+            "billing_phone": "555-123-0413",
+            "billing_province": "Oregon",
+            "billing_zipcode": "97475",
+            "extra": {
+              "gift-wrap": "deluxe"
+            },
+            "shipping_pickup_type": "ship",
+            "shipping_store_branch_name": null,
+            "shipping_address": {
+              "address": "Evergreen Terrace",
+              "city": "Springfield",
+              "country": "US",
+              "created_at": "2013-01-03T09:11:51-03:00",
+              "default": true,
+              "floor": null,
+              "id": 1234,
+              "locality": null,
+              "number": "742",
+              "phone": "555-123-0413",
+              "province": "Oregon",
+              "updated_at": "2013-03-10T11:13:01-03:00",
+              "zipcode": "97475"
+            },
+            "customer": {
+              "created_at": "2013-01-03T09:11:51-03:00",
+              "email": "john.doe@example.com",
+              "id": 101,
+              "last_order_id": 9001,
+              "name": "John Doe",
+              "total_spent": "89.00",
+              "total_spent_currency": "USD",
+              "updated_at": "2013-03-11T09:14:11-03:00",
+              "default_address": {
+                "address": "Evergreen Terrace",
+                "city": "Springfield",
+                "country": "US",
+                "created_at": "2013-01-03T09:11:51-03:00",
+                "default": true,
+                "floor": null,
+                "id": 1234,
+                "locality": null,
+                "number": "742",
+                "phone": "555-123-0413",
+                "province": "Oregon",
+                "updated_at": "2013-03-10T11:13:01-03:00",
+                "zipcode": "97475"
+              }
+            }
+        }
+
+### Close An Order [POST /{store_id}/orders/#{id}/close]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + id (number, `450789469`) - The unique numeric identifier for the Order.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        {
+            "cancel_reason": null,
+            "created_at": "2008-01-10T11:00:00-05:00",
+            "currency": "USD",
+            "gateway": "paypal",
+            "id": 450789469,
+            "landing_site": "http://www.example.com?source=abc",
+            "language": "en",
+            "location_id": null,
+            "name": "#1001",
+            "note": null,
+            "number": 1,
+            "owner_note": null,
+            "payment_status": "pending",
+            "shipping": "ups",
+            "shipping_status": "unshipped",
+            "shipping_tracking_number": null,
+            "shipping_min_days": 2,
+            "shipping_max_days": 4,
+            "shipping_cost_owner": "20.00",
+            "shipping_cost_customer": "20.00",
+            "status": "closed",
+            "subtotal": "38.00",
+            "token": "898544a54283414238f74cd08f0efd3916f74b75",
+            "discount": "0.00",
+            "price": "58.00",
+            "price_usd": "58.00",
+            "weight": "2.00",
+            "updated_at": "2008-01-10T11:00:00-05:00",
+            "shipped_at": "2008-01-10T11:00:00-05:00",
+            "number": 101,
+            "coupon": [
+              {
+                "code": "SUPERDISCOUNT"
+              }
+            ],
+            "products": [
+              {
+                "depth": null,
+                "height": null,
+                "price": "19.00",
+                "product_id": 1234,
+                "quantity": 2,
+                "free_shipping": false,
+                "variant_id": 101,
+                "weight": "2.00",
+                "width": null
+              }
+            ],
+            "billing_address": "Evergreen Terrace",
+            "billing_city": "Springfield",
+            "billing_country": "US",
+            "billing_default": true,
+            "billing_floor": null,
+            "billing_locality": null,
+            "billing_number": "742",
+            "billing_phone": "555-123-0413",
+            "billing_province": "Oregon",
+            "billing_zipcode": "97475",
+            "extra": {
+              "gift-wrap": "deluxe"
+            },
+            "shipping_pickup_type": "ship",
+            "shipping_store_branch_name": null,
+            "shipping_address": {
+              "address": "Evergreen Terrace",
+              "city": "Springfield",
+              "country": "US",
+              "created_at": "2013-01-03T09:11:51-03:00",
+              "default": true,
+              "floor": null,
+              "id": 1234,
+              "locality": null,
+              "number": "742",
+              "phone": "555-123-0413",
+              "province": "Oregon",
+              "updated_at": "2013-03-10T11:13:01-03:00",
+              "zipcode": "97475"
+            },
+            "customer": {
+              "created_at": "2013-01-03T09:11:51-03:00",
+              "email": "john.doe@example.com",
+              "id": 101,
+              "last_order_id": 9001,
+              "name": "John Doe",
+              "total_spent": "89.00",
+              "total_spent_currency": "USD",
+              "updated_at": "2013-03-11T09:14:11-03:00",
+              "default_address": {
+                "address": "Evergreen Terrace",
+                "city": "Springfield",
+                "country": "US",
+                "created_at": "2013-01-03T09:11:51-03:00",
+                "default": true,
+                "floor": null,
+                "id": 1234,
+                "locality": null,
+                "number": "742",
+                "phone": "555-123-0413",
+                "province": "Oregon",
+                "updated_at": "2013-03-10T11:13:01-03:00",
+                "zipcode": "97475"
+              }
+            }
+        }
+
+### Re-Open A Closed Order [POST /{store_id}/orders/#{id}/open]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + id (number, `450789469`) - The unique numeric identifier for the Order.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        {
+            "cancel_reason": null,
+            "created_at": "2008-01-10T11:00:00-05:00",
+            "currency": "USD",
+            "gateway": "paypal",
+            "id": 450789469,
+            "landing_site": "http://www.example.com?source=abc",
+            "language": "en",
+            "location_id": null,
+            "name": "#1001",
+            "note": null,
+            "number": 1,
+            "owner_note": null,
+            "payment_status": "pending",
+            "shipping": "ups",
+            "shipping_status": "unshipped",
+            "shipping_tracking_number": null,
+            "shipping_min_days": 2,
+            "shipping_max_days": 4,
+            "status": "open",
+            "subtotal": "38.00",
+            "token": "898544a54283414238f74cd08f0efd3916f74b75",
+            "discount": "0.00",
+            "price": "58.00",
+            "price_usd": "58.00",
+            "weight": "2.00",
+            "updated_at": "2008-01-10T11:00:00-05:00",
+            "shipped_at": "2008-01-10T11:00:00-05:00",
+            "number": 101,
+            "coupon": [
+              {
+                "code": "SUPERDISCOUNT"
+              }
+            ],
+            "products": [
+              {
+                "depth": null,
+                "height": null,
+                "price": "19.00",
+                "product_id": 1234,
+                "quantity": 2,
+                "variant_id": 101,
+                "weight": "2.00",
+                "width": null
+              }
+            ],
+            "billing_address": "Evergreen Terrace",
+            "billing_city": "Springfield",
+            "billing_country": "US",
+            "billing_default": true,
+            "billing_floor": null,
+            "billing_locality": null,
+            "billing_number": "742",
+            "billing_phone": "555-123-0413",
+            "billing_province": "Oregon",
+            "billing_zipcode": "97475",
+            "extra": {
+              "gift-wrap": "deluxe"
+            },
+            "shipping_pickup_type": "ship",
+            "shipping_store_branch_name": null,
+            "shipping_address": {
+              "address": "Evergreen Terrace",
+              "city": "Springfield",
+              "country": "US",
+              "created_at": "2013-01-03T09:11:51-03:00",
+              "default": true,
+              "floor": null,
+              "id": 1234,
+              "locality": null,
+              "number": "742",
+              "phone": "555-123-0413",
+              "province": "Oregon",
+              "updated_at": "2013-03-10T11:13:01-03:00",
+              "zipcode": "97475"
+            },
+            "customer": {
+              "created_at": "2013-01-03T09:11:51-03:00",
+              "email": "john.doe@example.com",
+              "id": 101,
+              "last_order_id": 9001,
+              "name": "John Doe",
+              "total_spent": "89.00",
+              "total_spent_currency": "USD",
+              "updated_at": "2013-03-11T09:14:11-03:00",
+              "default_address": {
+                "address": "Evergreen Terrace",
+                "city": "Springfield",
+                "country": "US",
+                "created_at": "2013-01-03T09:11:51-03:00",
+                "default": true,
+                "floor": null,
+                "id": 1234,
+                "locality": null,
+                "number": "742",
+                "phone": "555-123-0413",
+                "province": "Oregon",
+                "updated_at": "2013-03-10T11:13:01-03:00",
+                "zipcode": "97475"
+              }
+            }
+        }
+
+### Mark An Order As Packed [POST /{store_id}/orders/#{id}/pack/]
+
++ Parameters
+    + store_id (integer, required, `23498`) - The requested store ID.
+    + id (number, required, `30459875`) - The unique numeric identifier for the Order.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        {
+            "id": 30459875,
+            "token": "53fead2d765a92c44ff41cfd4dc58daf04b5ade3",
+            "store_id": 23498,
+            "shipping_min_days": 12,
+            "shipping_max_days": 12,
+            "billing_name": "Nombre",
+            "billing_phone": "3132131589",
+            "billing_address": "Rua Hilarino Benedito Malta",
+            "billing_number": "123",
+            "billing_floor": "",
+            "billing_locality": "Madre Gertrudes",
+            "billing_zipcode": "30512770",
+            "billing_city": "Belo Horizonte",
+            "billing_province": "Minas Gerais",
+            "billing_country": "BR",
+            "shipping_cost_owner": "23.28",
+            "shipping_cost_customer": "23.28",
+            "coupon": [],
+            "promotional_discount": {
+                "id": null,
+                "store_id": 23498,
+                "order_id": 30459875,
+                "created_at": "2018-10-01T20:35:53+0000",
+                "total_discount_amount": "0.00",
+                "contents": [],
+                "promotions_applied": []
+            },
+            "subtotal": "245.90",
+            "discount": "0.00",
+            "discount_coupon": "0.00",
+            "discount_gateway": "0.00",
+            "total": "269.18",
+            "total_usd": "84.06",
+            "weight": "0.615",
+            "currency": "BRL",
+            "language": "pt",
+            "gateway": "pagseguro",
+            "gateway_id": "7707AB85-8CFB-4D9A-B195-D23FDE1A0736",
+            "shipping": "correios",
+            "shipping_option": "Correios - PAC",
+            "shipping_store_branch_name": null,
+            "shipping_pickup_type": "ship",
+            "shipping_suboption": [],
+            "extra": {},
+            "storefront": "store",
+            "note": null,
+            "created_at": "2018-03-29T17:38:47+0000",
+            "updated_at": "2018-10-01T20:35:53+0000",
+            "completed_at": {
+                "date": "2018-03-29 17:38:47.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "next_action": "waiting_ipn",
+            "payment_details": {
+                "method": null,
+                "credit_card_company": "visa",
+                "installments": 0
+            },
+            "customer": {
+                "id": 8539058,
+                "name": "Nombre Apellido",
+                "email": "c71305313732808644615@sandbox.pagseguro.com.br",
+                "identification": "12345678909",
+                "phone": "3132131589",
+                "note": null,
+                "default_address": {
+                    "address": "Rua Hilarino Benedito Malta",
+                    "city": "Belo Horizonte",
+                    "country": "BR",
+                    "created_at": "2018-03-29T17:38:46+0000",
+                    "default": true,
+                    "floor": "",
+                    "id": 5115424,
+                    "locality": "Madre Gertrudes",
+                    "name": "Nombre Apellido",
+                    "number": "123",
+                    "phone": "3132131589",
+                    "province": "Minas Gerais",
+                    "updated_at": "2018-03-29T17:38:46+0000",
+                    "zipcode": "30512770"
+                },
+                "addresses": [
+                    {
+                        "address": "Rua Hilarino Benedito Malta",
+                        "city": "Belo Horizonte",
+                        "country": "BR",
+                        "created_at": "2018-03-29T17:38:46+0000",
+                        "default": true,
+                        "floor": "",
+                        "id": 5115424,
+                        "locality": "Madre Gertrudes",
+                        "name": "Nombre Apellido",
+                        "number": "123",
+                        "phone": "3132131589",
+                        "province": "Minas Gerais",
+                        "updated_at": "2018-03-29T17:38:46+0000",
+                        "zipcode": "30512770"
+                    }
+                ],
+                "billing_name": "Nombre",
+                "billing_phone": "3132131589",
+                "billing_address": "Rua Hilarino Benedito Malta",
+                "billing_number": "123",
+                "billing_floor": "",
+                "billing_locality": "Madre Gertrudes",
+                "billing_zipcode": "30512770",
+                "billing_city": "Belo Horizonte",
+                "billing_province": "Minas Gerais",
+                "billing_country": "BR",
+                "extra": {},
+                "total_spent": "269.18",
+                "total_spent_currency": "BRL",
+                "last_order_id": 30459875,
+                "active": false,
+                "created_at": "2018-03-29T17:38:46+0000",
+                "updated_at": "2018-03-29T17:38:47+0000"
+            },
+            "products": [
+                {
+                    "id": 32720350,
+                    "depth": "0.00",
+                    "height": "0.00",
+                    "name": "The Coffee Care - Esfoliante Corporal",
+                    "price": "59.90",
+                    "product_id": 15033192,
+                    "image": {
+                        "id": 12807577,
+                        "product_id": 15033192,
+                        "src": "https:\/\/s3-sa-east-1.amazonaws.com\/tiendanube-mati\/stores\/019\/437\/products\/duolo-fundo11-fe50cccb44336adaf114668881669852-1024-1024.png",
+                        "position": 1,
+                        "alt": [],
+                        "created_at": "2016-06-25T20:53:55+0000",
+                        "updated_at": "2016-07-12T18:13:27+0000"
+                    },
+                    "quantity": 1,
+                    "free_shipping": false,
+                    "weight": "0.20",
+                    "width": "0.00",
+                    "variant_id": 26801223,
+                    "variant_values": [],
+                    "sku": "Cofee200",
+                    "barcode": null
+                },
+                {
+                    "id": 32720349,
+                    "depth": "0.00",
+                    "height": "0.00",
+                    "name": "ZMA TESTO FOODS - BR NUTRITION FOODS (120 cápsulas)",
+                    "price": "70.00",
+                    "product_id": 12365900,
+                    "image": {
+                        "id": 10297567,
+                        "product_id": 12365900,
+                        "src": "https:\/\/s3-sa-east-1.amazonaws.com\/tiendanube-mati\/stores\/019\/437\/products\/7898904938405-a-85770438894105a716ab4f671b22ccb1-1024-1024.jpg",
+                        "position": 1,
+                        "alt": [],
+                        "created_at": "2016-02-20T15:37:34+0000",
+                        "updated_at": "2016-02-20T15:41:23+0000"
+                    },
+                    "quantity": 2,
+                    "free_shipping": false,
+                    "weight": "0.15",
+                    "width": "0.00",
+                    "variant_id": 22150439,
+                    "variant_values": [
+                        "120 cápsulas"
+                    ],
+                    "sku": "3230",
+                    "barcode": null
+                },
+                {
+                    "id": 32720348,
+                    "depth": "0.00",
+                    "height": "0.00",
+                    "name": "Syn Ake 4% - Creme de veneno de cobra (15 g)",
+                    "price": "46.00",
+                    "product_id": 15259901,
+                    "image": {
+                        "id": 13132538,
+                        "product_id": 15259901,
+                        "src": "https:\/\/s3-sa-east-1.amazonaws.com\/tiendanube-mati\/stores\/019\/437\/products\/syn-ake-o-creme-de-veneno-de-cobra1-aabf0888336ef9709314682865071550-1024-1024.png",
+                        "position": 1,
+                        "alt": [],
+                        "created_at": "2016-07-12T01:14:05+0000",
+                        "updated_at": "2016-07-19T18:41:12+0000"
+                    },
+                    "quantity": 1,
+                    "free_shipping": false,
+                    "weight": "0.12",
+                    "width": "0.00",
+                    "variant_id": 27343759,
+                    "variant_values": [
+                        "15 g"
+                    ],
+                    "sku": null,
+                    "barcode": null
+                }
+            ],
+            "clearsale": {
+                "CodigoIntegracao": "c61a0034-d670-4785-94b4-14fb0970527c",
+                "IP": null,
+                "Estado": "MG"
+            },
+            "number": 6558,
+            "cancel_reason": null,
+            "owner_note": null,
+            "cancelled_at": null,
+            "closed_at": null,
+            "read_at": null,
+            "status": "open",
+            "payment_status": "pending",
+            "shipping_address": {
+                "address": "Rua Hilarino Benedito Malta",
+                "city": "Belo Horizonte",
+                "country": "BR",
+                "created_at": "2018-03-29T17:38:46+0000",
+                "default": true,
+                "floor": "",
+                "id": 5115424,
+                "locality": "Madre Gertrudes",
+                "name": "Nombre Apellido",
+                "number": "123",
+                "phone": "3132131589",
+                "province": "Minas Gerais",
+                "updated_at": "2018-03-29T17:38:46+0000",
+                "zipcode": "30512770"
+            },
+            "shipping_status": "unshipped",
+            "shipping_tracking_number": null,
+            "shipped_at": null,
+            "paid_at": null
+        }
+
+### Fulfill An Order [POST /{store_id}/orders/#{id}/fulfill/{?shipping_tracking_number,notify_customer}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + id (number, required, `450789469`) - The unique numeric identifier for the Order.
+    + shipping_tracking_number (string, optional, `ABC1234`) - Shipment's tracking number provided by the shipping company.
+    + notify_customer (string, optional) - Notify the customer of the cancellation.
+        + Default: `true`
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        {
+            "cancel_reason": null,
+            "created_at": "2008-01-10T11:00:00-05:00",
+            "currency": "USD",
+            "gateway": "paypal",
+            "id": 450789469,
+            "landing_site": "http://www.example.com?source=abc",
+            "language": "en",
+            "location_id": null,
+            "name": "#1001",
+            "note": null,
+            "number": 1,
+            "owner_note": null,
+            "payment_status": "pending",
+            "shipping": "ups",
+            "shipping_status": "shipped",
+            "shipping_tracking_number": "ABC1234",
+            "shipping_min_days": 2,
+            "shipping_max_days": 4,
+            "shipping_cost_owner": "20.00",
+            "shipping_cost_customer": "20.00",
+            "status": "open",
+            "subtotal": "38.00",
+            "token": "898544a54283414238f74cd08f0efd3916f74b75",
+            "discount": "0.00",
+            "price": "58.00",
+            "price_usd": "58.00",
+            "weight": "2.00",
+            "updated_at": "2008-01-10T11:00:00-05:00",
+            "shipped_at": "2008-01-10T11:00:00-05:00",
+            "number": 101,
+            "coupon": [
+              {
+                "code": "SUPERDISCOUNT"
+              }
+            ],
+            "products": [
+              {
+                "depth": null,
+                "height": null,
+                "price": "19.00",
+                "product_id": 1234,
+                "quantity": 2,
+                "free_shipping": false,
+                "variant_id": 101,
+                "weight": "2.00",
+                "width": null
+              }
+            ],
+            "billing_address": "Evergreen Terrace",
+            "billing_city": "Springfield",
+            "billing_country": "US",
+            "billing_default": true,
+            "billing_floor": null,
+            "billing_locality": null,
+            "billing_number": "742",
+            "billing_phone": "555-123-0413",
+            "billing_province": "Oregon",
+            "billing_zipcode": "97475",
+            "extra": {
+              "gift-wrap": "deluxe"
+            },
+            "shipping_pickup_type": "ship",
+            "shipping_store_branch_name": null,
+            "shipping_address": {
+              "address": "Evergreen Terrace",
+              "city": "Springfield",
+              "country": "US",
+              "created_at": "2013-01-03T09:11:51-03:00",
+              "default": true,
+              "floor": null,
+              "id": 1234,
+              "locality": null,
+              "number": "742",
+              "phone": "555-123-0413",
+              "province": "Oregon",
+              "updated_at": "2013-03-10T11:13:01-03:00",
+              "zipcode": "97475"
+            },
+            "customer": {
+              "created_at": "2013-01-03T09:11:51-03:00",
+              "email": "john.doe@example.com",
+              "id": 101,
+              "last_order_id": 9001,
+              "name": "John Doe",
+              "total_spent": "89.00",
+              "total_spent_currency": "USD",
+              "updated_at": "2013-03-11T09:14:11-03:00",
+              "default_address": {
+                "address": "Evergreen Terrace",
+                "city": "Springfield",
+                "country": "US",
+                "created_at": "2013-01-03T09:11:51-03:00",
+                "default": true,
+                "floor": null,
+                "id": 1234,
+                "locality": null,
+                "number": "742",
+                "phone": "555-123-0413",
+                "province": "Oregon",
+                "updated_at": "2013-03-10T11:13:01-03:00",
+                "zipcode": "97475"
+              }
+            }
+        }
+
+### Cancel An Order [POST /{store_id}/orders/#{id}/cancel/{?reason,email,restock}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + id (number, required, `450789469`) - The unique numeric identifier for the Order.
+    + reason (string, required) - The reason for the order cancellation.
+        + Members
+            + `customer`
+            + `inventory`
+            + `fraud`
+            + `other`
+    + email (string, optional) - Notify the customer of the cancellation.
+        + Default: `true`
+    + restock (string, optional) - Restock the store's products.
+        + Default: `true`
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+    
+    + Body
+    
+            {
+                "reason": "customer"
+            }
+
++ Response 200 (application/json)
+
+        {
+            "cancel_reason": "customer",
+            "created_at": "2008-01-10T11:00:00-05:00",
+            "currency": "USD",
+            "gateway": "paypal",
+            "id": 450789469,
+            "landing_site": "http://www.example.com?source=abc",
+            "language": "en",
+            "location_id": null,
+            "name": "#1001",
+            "note": null,
+            "number": 1,
+            "owner_note": null,
+            "payment_status": "pending",
+            "shipping": "ups",
+            "shipping_status": "unshipped",
+            "shipping_tracking_number": null,
+            "shipping_min_days": 2,
+            "shipping_max_days": 4,
+            "shipping_cost_owner": "20.00",
+            "shipping_cost_customer": "20.00",
+            "status": "cancelled",
+            "subtotal": "38.00",
+            "token": "898544a54283414238f74cd08f0efd3916f74b75",
+            "discount": "0.00",
+            "price": "58.00",
+            "price_usd": "58.00",
+            "weight": "2.00",
+            "updated_at": "2008-01-10T11:00:00-05:00",
+            "shipped_at": "2008-01-10T11:00:00-05:00",
+            "number": 101,
+            "coupon": [
+              {
+                "code": "SUPERDISCOUNT"
+              }
+            ],
+            "products": [
+              {
+                "depth": null,
+                "height": null,
+                "price": "19.00",
+                "product_id": 1234,
+                "quantity": 2,
+                "free_shipping": false,
+                "variant_id": 101,
+                "weight": "2.00",
+                "width": null
+              }
+            ],
+            "billing_address": "Evergreen Terrace",
+            "billing_city": "Springfield",
+            "billing_country": "US",
+            "billing_default": true,
+            "billing_floor": null,
+            "billing_locality": null,
+            "billing_number": "742",
+            "billing_phone": "555-123-0413",
+            "billing_province": "Oregon",
+            "billing_zipcode": "97475",
+            "extra": {
+              "gift-wrap": "deluxe"
+            },
+            "shipping_pickup_type": "ship",
+            "shipping_store_branch_name": null,
+            "shipping_address": {
+              "address": "Evergreen Terrace",
+              "city": "Springfield",
+              "country": "US",
+              "created_at": "2013-01-03T09:11:51-03:00",
+              "default": true,
+              "floor": null,
+              "id": 1234,
+              "locality": null,
+              "number": "742",
+              "phone": "555-123-0413",
+              "province": "Oregon",
+              "updated_at": "2013-03-10T11:13:01-03:00",
+              "zipcode": "97475"
+            },
+            "customer": {
+              "created_at": "2013-01-03T09:11:51-03:00",
+              "email": "john.doe@example.com",
+              "id": 101,
+              "last_order_id": 9001,
+              "name": "John Doe",
+              "total_spent": "89.00",
+              "total_spent_currency": "USD",
+              "updated_at": "2013-03-11T09:14:11-03:00",
+              "default_address": {
+                "address": "Evergreen Terrace",
+                "city": "Springfield",
+                "country": "US",
+                "created_at": "2013-01-03T09:11:51-03:00",
+                "default": true,
+                "floor": null,
+                "id": 1234,
+                "locality": null,
+                "number": "742",
+                "phone": "555-123-0413",
+                "province": "Oregon",
+                "updated_at": "2013-03-10T11:13:01-03:00",
+                "zipcode": "97475"
+              }
+            }
+        }
+
+### Change/Update An Order [PUT /{store_id}/orders/#{id}{?owner_note,status}]
+
+> **Note**: As far as changing an Order's attributes, you can only modify the `owner_note` one for now.
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + id (number, required, `450789469`) - The unique numeric identifier for the Order.
+    + owner_note (string, optional, `Need to gift wrap this order`) - Store owner's note about the order.
+    + status (string, optional) - Order's status.
+        + Members
+            + `open`
+            + `paid`
+            + `closed`
+            + `cancelled`
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        {
+            "cancel_reason": null,
+            "created_at": "2008-01-10T11:00:00-05:00",
+            "currency": "USD",
+            "gateway": "paypal",
+            "id": 450789469,
+            "landing_site": "http://www.example.com?source=abc",
+            "language": "en",
+            "location_id": null,
+            "name": "#1001",
+            "note": null,
+            "number": 1,
+            "owner_note": "Need to gift wrap this order",
+            "payment_status": "paid",
+            "shipping": "ups",
+            "shipping_status": "unshipped",
+            "shipping_tracking_number": null,
+            "shipping_min_days": 2,
+            "shipping_max_days": 4,
+            "shipping_cost_owner": "20.00",
+            "shipping_cost_customer": "20.00",
+            "status": "open",
+            "subtotal": "38.00",
+            "token": "898544a54283414238f74cd08f0efd3916f74b75",
+            "discount": "0.00",
+            "price": "58.00",
+            "price_usd": "58.00",
+            "weight": "2.00",
+            "updated_at": "2008-01-10T11:00:00-05:00",
+            "shipped_at": "2008-01-10T11:00:00-05:00",
+            "number": 101,
+            "coupon": [
+              {
+                "code": "SUPERDISCOUNT"
+              }
+            ],
+            "products": [
+              {
+                "depth": null,
+                "height": null,
+                "price": "19.00",
+                "product_id": 1234,
+                "quantity": 2,
+                "free_shipping": false,
+                "variant_id": 101,
+                "weight": "2.00",
+                "width": null
+              }
+            ],
+            "billing_address": "Evergreen Terrace",
+            "billing_city": "Springfield",
+            "billing_country": "US",
+            "billing_default": true,
+            "billing_floor": null,
+            "billing_locality": null,
+            "billing_number": "742",
+            "billing_phone": "555-123-0413",
+            "billing_province": "Oregon",
+            "billing_zipcode": "97475",
+            "extra": {
+              "gift-wrap": "deluxe"
+            },
+            "shipping_pickup_type": "ship",
+            "shipping_store_branch_name": null,
+            "shipping_address": {
+              "address": "Evergreen Terrace",
+              "city": "Springfield",
+              "country": "US",
+              "created_at": "2013-01-03T09:11:51-03:00",
+              "default": true,
+              "floor": null,
+              "id": 1234,
+              "locality": null,
+              "number": "742",
+              "phone": "555-123-0413",
+              "province": "Oregon",
+              "updated_at": "2013-03-10T11:13:01-03:00",
+              "zipcode": "97475"
+            },
+            "customer": {
+              "created_at": "2013-01-03T09:11:51-03:00",
+              "email": "john.doe@example.com",
+              "id": 101,
+              "last_order_id": 9001,
+              "name": "John Doe",
+              "total_spent": "89.00",
+              "total_spent_currency": "USD",
+              "updated_at": "2013-03-11T09:14:11-03:00",
+              "default_address": {
+                "address": "Evergreen Terrace",
+                "city": "Springfield",
+                "country": "US",
+                "created_at": "2013-01-03T09:11:51-03:00",
+                "default": true,
+                "floor": null,
+                "id": 1234,
+                "locality": null,
+                "number": "742",
+                "phone": "555-123-0413",
+                "province": "Oregon",
+                "updated_at": "2013-03-10T11:13:01-03:00",
+                "zipcode": "97475"
+              }
+            }
+        }
+
+# Group Customer
+
+## Introduction
+
+Customer accounts store contact information for the customer, saving logged-in customers the trouble of having to provide it at every checkout.
+
+## Managing Customers: Examples and Resources [/customer]
+
++ Attributes
+    + id (number) - The unique numeric identifier for the Customer.
+    + name (string) - Name of the Customer.
+    + email (string) - E-mail of the Customer.
+    + phone (string) - Phone number of the Customer (not necessarily the same as the address's phone).
+    + identification (string) - Customer's identification (in Brazil for example, it would be the CPF/CNPJ).
+    + note (string) - Store owner's notes about the customer.
+    + default_address (string) - Default shipping address of the Customer.
+    + addresses (string) - List of shipping addresses for the Customer.
+    + billing_address (string) - Billing address of the Customer.
+    + billing_number (string) - Billing number of the Customer.
+    + billing_floor (string) - Billing floor of the Customer.
+    + billing_locality (string) - Billing locality of the Customer.
+    + billing_zipcode (string) - Billing zipcode of the Customer.
+    + billing_city (string) - Billing city of the Customer.
+    + billing_province (string) - Billing province of the Customer.
+    + billing_country (string) - Billing country code of the Customer.
+    + extra (string) - A JSON object containing custom information. It can be set via the API or through custom form fields of name "`extra[key]`" on the Customer's register form in the storefront.
+    + total_spent (string) - The total amount of money that the Customer has spent at the store.
+    + total_spent_currency (string) - The total spent's currency in [ISO 4217 format](https://en.wikipedia.org/wiki/ISO_4217).
+    + last_order_id (string) - The id of the Customer's last Order.
+    + active (string) - "`true`" if the Customer activated the account or "`false`" if the Customer hasn't activated it.
+    + `created_at` (string) - Date when the Customer was created in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
+    + `updated_at` (string) - Date when the Customer was last updated in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
+
+### Retrieve A List Of All Consumers [GET /{store_id}/customers/{?since_id,created_at_min,created_at_max,updated_at_min,updated_at_max,page,per_page,fields}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + since_id (number, `105`) - Restrict results to after the specified ID.
+    + created_at_min (string) - Show Customers created after date (ISO 8601 format).
+    + created_at_max (string) - Show Customers created before date (ISO 8601 format).
+    + updated_at_min (string) - Show Customers last updated after date (ISO 8601 format).
+    + updated_at_max (string) - Show Customers last updated before date (ISO 8601 format).
+    + page (number) - Page to show.
+    + per_page (string) - Amount of results.
+    + fields (string) - Comma-separated list of fields to include in the response.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        [
+            {
+              "created_at": "2013-01-03T09:11:51-03:00",
+              "email": "john.doe@example.com",
+              "id": 101,
+              "identification": "28776255670",
+              "last_order_id": 9001,
+              "name": "John Doe",
+              "note": null,
+              "phone": null,
+              "total_spent": "89.00",
+              "total_spent_currency": "USD",
+              "updated_at": "2013-03-11T09:14:11-03:00",
+              "billing_address": "Evergreen Terrace",
+              "billing_city": "Springfield",
+              "billing_country": "US",
+              "billing_floor": null,
+              "billing_locality": null,
+              "billing_number": "742",
+              "billing_phone": "555-123-0413",
+              "billing_province": "Oregon",
+              "billing_zipcode": "97475",
+              "extra": {
+                "number_of_children": "2",
+                "gender": "male"
+              },
+              "default_address": {
+                "address": "Evergreen Terrace",
+                "city": "Springfield",
+                "country": "US",
+                "created_at": "2013-01-03T09:11:51-03:00",
+                "default": true,
+                "floor": null,
+                "id": 1234,
+                "locality": null,
+                "number": "742",
+                "phone": "555-123-0413",
+                "province": "Oregon",
+                "updated_at": "2013-03-10T11:13:01-03:00",
+                "zipcode": "97475"
+              },
+              "addresses": [
+                {
+                  "address": "Evergreen Terrace",
+                  "city": "Springfield",
+                  "country": "US",
+                  "created_at": "2013-01-03T09:11:51-03:00",
+                  "default": true,
+                  "floor": null,
+                  "id": 1234,
+                  "locality": null,
+                  "number": "742",
+                  "phone": "555-123-0413",
+                  "province": "Oregon",
+                  "updated_at": "2013-03-10T11:13:01-03:00",
+                  "zipcode": "97475"
+                }
+              ]
+            }
+        ]
+
+### Retrieve A Single Customer [GET /{store_id}/customers/#{id}{?fields}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + id (number, `101`) - The unique numeric identifier for the Customer.
+    + fields (string, optional) - Comma-separated list of fields to include in the response.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        {
+          "created_at": "2013-01-03T09:11:51-03:00",
+          "email": "john.doe@example.com",
+          "id": 101,
+          "identification": "28776255670",
+          "last_order_id": 9001,
+          "name": "John Doe",
+          "note": null,
+          "phone": null,
+          "total_spent": "89.00",
+          "total_spent_currency": "USD",
+          "updated_at": "2013-03-11T09:14:11-03:00",
+          "billing_address": "Evergreen Terrace",
+          "billing_city": "Springfield",
+          "billing_country": "US",
+          "billing_floor": null,
+          "billing_locality": null,
+          "billing_number": "742",
+          "billing_phone": "555-123-0413",
+          "billing_province": "Oregon",
+          "billing_zipcode": "97475",
+          "extra": {
+            "number_of_children": "2",
+            "gender": "male"
+          },
+          "default_address": {
+            "address": "Evergreen Terrace",
+            "city": "Springfield",
+            "country": "US",
+            "created_at": "2013-01-03T09:11:51-03:00",
+            "default": true,
+            "floor": null,
+            "id": 1234,
+            "locality": null,
+            "number": "742",
+            "phone": "555-123-0413",
+            "province": "Oregon",
+            "updated_at": "2013-03-10T11:13:01-03:00",
+            "zipcode": "97475"
+          },
+          "addresses": [
+            {
+              "address": "Evergreen Terrace",
+              "city": "Springfield",
+              "country": "US",
+              "created_at": "2013-01-03T09:11:51-03:00",
+              "default": true,
+              "floor": null,
+              "id": 1234,
+              "locality": null,
+              "number": "742",
+              "phone": "555-123-0413",
+              "province": "Oregon",
+              "updated_at": "2013-03-10T11:13:01-03:00",
+              "zipcode": "97475"
+            }
+          ]
+        }
+
+### Create a new Customer [POST /{store_id}/customers/{?send_email_invite,password}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + send_email_invite (string, `true`) - Send an email to notify the customer of their registration.
+    + password (string, `mysupersecretpassword`) - User's password.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
+    + Body
+
+            {
+                "name": "First Last",
+                "email": "first.last@example.com",
+                "addresses": [
+                  {
+                    "address": "My Street",
+                    "city": "My City",
+                    "country": "BR",
+                    "locality": "Morumbi",
+                    "number": "123",
+                    "phone": "11 1234-5678",
+                    "province": "São Paulo",
+                    "zipcode": "05653-071"
+                  }
+                ],
+                "send_email_invite": true,
+                "password": "mysupersecretpassword"
+            }
+
++ Response 201 (application/json)
+
+        {
+          "created_at": "2013-06-01T09:11:51-03:00",
+          "email": "john.doe+modified@example.com",
+          "id": 101,
+          "identification": "28776255670",
+          "last_order_id": 9001,
+          "name": "John Doe",
+          "note": null,
+          "total_spent": "89.00",
+          "total_spent_currency": "USD",
+          "updated_at": "2013-06-01T09:11:51-03:00",
+          "billing_address": null,
+          "billing_city": null,
+          "billing_country": null,
+          "billing_floor": null,
+          "billing_locality": null,
+          "billing_number": null,
+          "billing_phone": null,
+          "billing_province": null,
+          "billing_zipcode": null,
+          "extra": {
+            "number_of_children": "2",
+            "gender": "male"
+          },
+          "default_address": {
+            "address": "My Street",
+            "city": "My City",
+            "country": "BR",
+            "created_at": "2013-06-01T09:11:51-03:00",
+            "default": true,
+            "floor": null,
+            "id": 1240,
+            "locality": null,
+            "number": "123",
+            "phone": "11 1234-5678",
+            "province": "São Paulo",
+            "updated_at": "2013-06-01T09:11:51-03:00",
+            "zipcode": "05653-071"
+          },
+          "addresses": [
+            {
+              "address": "My Street",
+              "city": "My City",
+              "country": "BR",
+              "created_at": "2013-06-01T09:11:51-03:00",
+              "default": true,
+              "floor": null,
+              "id": 1240,
+              "locality": null,
+              "number": "123",
+              "phone": "11 1234-5678",
+              "province": "São Paulo",
+              "updated_at": "2013-06-01T09:11:51-03:00",
+              "zipcode": "05653-071"
+            }
+          ]
+        }
+
+### Modify An Existing Customer [PUT /{store_id}/customers/#{id}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + id (number, `5123`) - The unique numeric identifier for the Customer.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+    
+    + Body
+
+            {
+              "created_at": "2013-01-03T09:11:51-03:00",
+              "email": "john.doe+modified@example.com",
+              "id": 101,
+              "identification": "28776255670",
+              "last_order_id": 9001,
+              "name": "John Doe",
+              "note": null,
+              "phone": "911",
+              "total_spent": "89.00",
+              "total_spent_currency": "USD",
+              "billing_address": "Evergreen Terrace",
+              "billing_city": "Springfield",
+              "billing_country": "US",
+              "billing_floor": null,
+              "billing_locality": null,
+              "billing_number": "742",
+              "billing_phone": "555-123-0413",
+              "billing_province": "Oregon",
+              "billing_zipcode": "97475",
+              "extra": {
+                "number_of_children": "2",
+                "gender": "male"
+              },
+              "updated_at": "2013-03-11T09:14:11-03:00",
+              "default_address": {
+                "address": "Evergreen Terrace",
+                "city": "Springfield",
+                "country": "US",
+                "created_at": "2013-01-03T09:11:51-03:00",
+                "default": true,
+                "floor": null,
+                "id": 1234,
+                "locality": null,
+                "number": "742",
+                "phone": "555-123-0413",
+                "province": "Oregon",
+                "updated_at": "2013-03-10T11:13:01-03:00",
+                "zipcode": "97475"
+              },
+              "addresses": [
+                {
+                  "address": "Evergreen Terrace",
+                  "city": "Springfield",
+                  "country": "US",
+                  "created_at": "2013-01-03T09:11:51-03:00",
+                  "default": true,
+                  "floor": null,
+                  "id": 1234,
+                  "locality": null,
+                  "number": "742",
+                  "phone": "555-123-0413",
+                  "province": "Oregon",
+                  "updated_at": "2013-03-10T11:13:01-03:00",
+                  "zipcode": "97475"
+                }
+              ]
+            }
+
++ Response 200 (application/json)
+
+        {
+          "created_at": "2013-01-03T09:11:51-03:00",
+          "email": "john.doe+modified@example.com",
+          "id": 101,
+          "identification": "28776255670",
+          "last_order_id": 9001,
+          "name": "John Doe",
+          "note": null,
+          "phone": "911",
+          "total_spent": "89.00",
+          "total_spent_currency": "USD",
+          "updated_at": "2013-06-01T09:14:11-03:00",
+          "billing_address": "Evergreen Terrace",
+          "billing_city": "Springfield",
+          "billing_country": "US",
+          "billing_floor": null,
+          "billing_locality": null,
+          "billing_number": "742",
+          "billing_phone": "555-123-0413",
+          "billing_province": "Oregon",
+          "billing_zipcode": "97475",
+          "extra": {
+            "number_of_children": "2",
+            "gender": "male"
+          },
+          "default_address": {
+            "address": "Evergreen Terrace",
+            "city": "Springfield",
+            "country": "US",
+            "created_at": "2013-01-03T09:11:51-03:00",
+            "default": true,
+            "floor": null,
+            "id": 1234,
+            "locality": null,
+            "number": "742",
+            "phone": "555-123-0413",
+            "province": "Oregon",
+            "updated_at": "2013-03-10T11:13:01-03:00",
+            "zipcode": "97475"
+          },
+          "addresses": [
+            {
+              "address": "Evergreen Terrace",
+              "city": "Springfield",
+              "country": "US",
+              "created_at": "2013-01-03T09:11:51-03:00",
+              "default": true,
+              "floor": null,
+              "id": 1234,
+              "locality": null,
+              "number": "742",
+              "phone": "555-123-0413",
+              "province": "Oregon",
+              "updated_at": "2013-03-10T11:13:01-03:00",
+              "zipcode": "97475"
+            }
+          ]
+        }
+
+# Group Coupons
+
+## Introduction
+
+A discount coupon is a way for a store to provide discounts for its customers. There are three type of coupons. Percentage, absolute and shipping. The percentage type indicates that the value is a percentage discount. The type absolute indicates that the value is an absolute amount of discount. And finally the type shipping indicates that the discount value is on the shipping.
+
+## Managing Coupons: Examples and Resources [/coupon]
+
++ Attributes
+    + `id` (number) - The unique numeric identifier for the coupon.
+    + `code` (string) - String that identifies the coupon.
+    + `type` (string) - Type of the coupon. Possible values are "`percentage`", "`absolute`" or "`shipping`".
+    + `valid` (string) - Flag ("`true`" or "`false`") that indicates if the coupon is valid or not.
+    + `start_date` (string) - Date from which the coupon is valid.
+    + `end_date` (string) - Date of overdue of the coupon.
+    + `deleted_at` (string) - Date when the coupon was deleted. The value is "`null`" if the coupon is still valid.
+    + `max_uses` (string) - Max number of times the coupon can be used.
+    + `value` (string) - Value of the discount.
+    + `min_price` (string) - Indicates the minimun value of the bill for applying the discount.
+    + `categories` (string) - List of [Category](/#reference/category) objects representing the categories of the store where the discount applies.
+
+### Retrieve A List Of All Coupons [GET /{store_id}/coupons/{?min_start_date,min_end_date,max_start_date,max_end_date,valid,created_at_min,created_at_max,updated_at_min,updated_at_max,page,per_page,fields}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + min_start_date (string, optional) - The minimum start_date to filter.
+    + min_end_date (string, optional) - The minimum end_date to filter.
+    + max_start_date (string, optional) - The maximum start_date to filter.
+    + max_end_date (string, optional) - The maximum end_date to filter.
+    + valid (string, optional) - Flag for filtering valid coupons.
+        + Members
+            + `true`
+            + `false`
+    + created_at_min (string, optional) - Show Products created after date (ISO 8601 format).
+    + created_at_max (string, optional) - Show Products created before date (ISO 8601 format).
+    + updated_at_min (string, optional) - Show Products last updated after date (ISO 8601 format).
+    + updated_at_max (string, optional) - Show Products last updated before date (ISO 8601 format).
+    + page (string, optional) - Page to show.
+    + per_page (number, optional) - Amount of results.
+    + fields (string, optional) - Comma-separated list of fields to include in the response.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 32965,
+                "code": "PR2",
+                "type": "percentage",
+                "value": "30.00",
+                "valid": true,
+                "used": 0,
+                "max_uses": 100,
+                "start_date": "2014-05-08",
+                "end_date": "2014-06-08",
+                "min_price": 10,
+                "categories": [
+                    {
+                        "id": 117023,
+                        "name": {
+                            "es": "Oxido N\u00edtrico (NO2)",
+                            "en": "Oxido N\u00edtrico (NO2)"
+                        },
+                        "description": {
+                            "es": "",
+                            "en": ""
+                        },
+                        "handle": {
+                            "es": "oxido-nitrico-no2",
+                            "en": "oxido-nitrico-no2"
+                        },
+                        "parent": null,
+                        "subcategories": [],
+                        "created_at": "2013-03-22T14:40:55+0000",
+                        "updated_at": "2014-05-28T20:07:05+0000"
+                    }
+                ]
+            },
+            {
+                "id": 32966,
+                "code": "PR23",
+                "type": "percentage",
+                "value": "30.00",
+                "valid": true,
+                "used": 0,
+                "max_uses": 100,
+                "start_date": "2014-05-08",
+                "end_date": "2014-06-08",
+                "min_price": 10,
+                "categories": null
+            },
+            {
+                "id": 32964,
+                "code": "PR4",
+                "type": "percentage",
+                "value": "30.00",
+                "valid": true,
+                "used": 0,
+                "max_uses": 100,
+                "start_date": "2014-06-07",
+                "end_date": "2014-06-08",
+                "min_price": 10,
+                "categories": [
+                    {
+                        "id": 117023,
+                        "name": {
+                            "es": "Oxido N\u00edtrico (NO2)",
+                            "en": "Oxido N\u00edtrico (NO2)"
+                        },
+                        "description": {
+                            "es": "",
+                            "en": ""
+                        },
+                        "handle": {
+                            "es": "oxido-nitrico-no2",
+                            "en": "oxido-nitrico-no2"
+                        },
+                        "parent": null,
+                        "subcategories": [],
+                        "created_at": "2013-03-22T14:40:55+0000",
+                        "updated_at": "2014-05-28T20:07:05+0000"
+                    }
+                ]
+            }
+        ]
+
+### Retrieve A Single Coupon [GET /{store_id}/coupons/#{id}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + id (number, `32964`) - The unique numeric identifier for the Coupon.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        {
+            "id": 32964,
+            "code": "PR4",
+            "type": "percentage",
+            "value": "30.00",
+            "valid": true,
+            "used": 0,
+            "max_uses": 100,
+            "start_date": "2014-06-07",
+            "end_date": "2014-06-08",
+            "min_price": 10,
+            "categories": [
+                {
+                    "id": 117023,
+                    "name": {
+                        "es": "Oxido N\u00edtrico (NO2)",
+                        "en": "Oxido N\u00edtrico (NO2)"
+                    },
+                    "description": {
+                        "es": "",
+                        "en": ""
+                    },
+                    "handle": {
+                        "es": "oxido-nitrico-no2",
+                        "en": "oxido-nitrico-no2"
+                    },
+                    "parent": null,
+                    "subcategories": [],
+                    "created_at": "2013-03-22T14:40:55+0000",
+                    "updated_at": "2014-05-28T20:07:05+0000"
+                }
+            ]
+        }
+
+### Create A New Coupon [POST /{store_id}/coupons/{?code,type,value,fields}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + code (string, required) - Must be unique and can contain only alfanumeric characters.
+    + type (string, required) - Type of the coupon.
+        + Members
+            + `percentage`
+            + `absolute`
+            + `shipping`
+    + value (string, optional) - The value is mandatory if the type is percentage or absolute.
+    + fields (string, optional) - Comma-separated list of fields to include in the response.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+    
+    + Body
+
+            {
+                "code": "test_code",
+                "type": "percentage",
+                "value": "30.00",
+                "max_uses": 100,
+                "min_price": 10,
+                "categories": null,
+                "start_date": "2014-05-08",
+                "end_date": "2014-06-08"
+            }
+
++ Response 201 (application/json)
+
+        {
+            "id": 32967,
+            "code": "test_code",
+            "type": "percentage",
+            "value": "30.00",
+            "valid": true,
+            "used": null,
+            "max_uses": 100,
+            "start_date": "2014-05-08",
+            "end_date": "2014-06-08",
+            "min_price": 10,
+            "categories": null
+        }
+
+### Modify An Existing Coupon [PUT /{store_id}/coupons/#{id,code}{?type,value}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + id (number, `32967`)
+    + code (string, `OTRAPRUEBA`)
+    + type (string, `absolute`)
+    + value (number, `50`)
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        {
+            "id": 32967,
+            "code": "OTRAPRUEBA",
+            "type": "absolute",
+            "value": 50,
+            "valid": true,
+            "used": 0,
+            "max_uses": 100,
+            "start_date": "2014-05-08",
+            "end_date": "2014-06-08",
+            "min_price": 10,
+            "categories": null
+        }
+
+### Delete A Coupon [DELETE /{store_id}/coupons/#{id}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + id (number, `32967`)
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        {
+          
+        }
+
+# Group Metafields
+
+## Introduction
+
+The metafields are Namespaced Key - Value store for Apps.
+
+The metafields can only be associated with the following entities:
+* Product
+* Product_Variant
+* Category
+* Page
+
+To do that you need to set the `owner_resource` to one of the above, an example would be `owner_resource='Product'`.
+
+An example would be to use it in an app for Bookstores that require that you associate a book (product) with it's author and genre to provide an advanced search of books by this fields.
+
+## Managing Metafields: Examples and Resources [/metafield]
+
++ Attributes
+    + `owner_resource` (string) - Type of entity to which the Metafield is associated.
+    + `id` (number) - The unique numeric identifier for the Metafield.
+    + `namespace` (string) - The namespace where the Metafield makes sense. It can be any string that starts with a letter followed only by: `a-z`, `A-Z`, `0-9` or `_`.
+    + `key` (string) - String that identifies the Metafield in some namespace. It can be any string that starts with a letter followed only by: `a-z`, `A-Z`, `0-9` or `_`.
+    + `description` (string, optional) - String explaining the Metafield's meaning.
+    + `value` (string) - Metafield's value.
+    + `owner_id` (string) - Entity id to which the Metafield is associated.
+    + `created_at` (string) - Date when the Metafield was created in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
+    + `updated_at` (string) - Date when the Metafield was last updated in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
+
+### Retrieve A List Of All Metafields [GET /{store_id}/metafields/#{owner_resource}{?owner_id,namespace,key,created_at_min,created_at_max,updated_at_min,updated_at_max,page,per_page,fields}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + key (string, optional) - Metafield's key.
+    + namespace (string, optional) - The namespace where the Metafield was defined.
+    + owner_id (number, optional) - Entity id to which the Metafield is associated.
+    + owner_resource (string, `Product`) - Type of entity to which the Metafield is associated.
+    + created_at_min (string, optional, `2013-01-01T00:00:00-03:00`) - Show Products created after date (ISO 8601 format).
+    + created_at_max (string, optional) - Show Products created before date (ISO 8601 format).
+    + updated_at_min (string, optional) - Show Products last updated after date (ISO 8601 format).
+    + updated_at_max (string, optional) - Show Products last updated before date (ISO 8601 format).
+    + page (string, optional) - Page to show.
+    + per_page (string, optional, `3`) - Amount of results.
+    + fields (string, optional, `owner_id,key,value`) - Comma-separated list of fields to include in the response.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        [
+            {
+                "key":"key3",
+                "value":"3",
+                "owner_id":2856934
+            },
+            {
+                "key":"key4",
+                "value":"4",
+                "owner_id":2856934
+            },
+            {
+                "key":"key5",
+                "value":"5",
+                "owner_id":2856934
+            }
+        ]
+
+### Retrieve A Single Metafield [GET /{store_id}/metafields/#{id}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + id (number, `11896`) - The unique numeric identifier for the Metafield.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        {
+            "id":11896,
+            "key":"key0",
+            "value":"0",
+            "namespace":"namespace0",
+            "description":"description0",
+            "owner_id":2856959,
+            "owner_resource":"Product",
+            "created_at":"2015-01-02T20:01:50+0000",
+            "updated_at":"2015-01-02T20:01:50+0000"
+        }
+
+### Create A New Metafield [POST /{store_id}/metafields/{?key,value,namespace,description,owner_id,owner_resource}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + key (string, `the_key`) - String that identifies the Metafield in some namespace. It can be any string that starts with a letter followed only by: `a-z`, `A-Z`, `0-9` or `_`.
+    + value (string, `its_value`) - Metafield's value.
+    + namespace (string, `a_namespace`) - The namespace where the Metafield makes sense. It can be any string that starts with a letter followed only by: `a-z`, `A-Z`, `0-9` or `_`.
+    + description (string, optional, `an adequate description`) - String explaining the Metafield's meaning.
+    + owner_id (number, `2857023`) - Entity id to which the Metafield is associated.
+    + owner_resource (string, `Product`) - Type of entity to which the Metafield is associated.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 201 (application/json)
+
+        {
+            "id":12877,
+            "namespace":"a_namespace",
+            "description":"an adequate description",
+            "key":"the_key","value":"its_value",
+            "owner_id":2857023,
+            "owner_resource": "Product",
+            "created_at":"2015-01-02 20:27:51",
+            "updated_at":"2015-01-02 20:27:51",
+            "deleted_at":null
+        }
+
+### Modify An Existing Metafield [PUT /{store_id}/metafields/#{id}{?value,description}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + id (number, `13226`) - The unique numeric identifier for the Metafield.
+    + value (string, optional,`new_value`) - Metafield's value.
+    + description (string, optional, `a better description`) - String explaining the Metafield's meaning.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        {
+            "id":13226,
+            "key":"key0",
+            "value":"new_value",
+            "namespace":"namespace0",
+            "description":"a better description",
+            "owner_id":2857047,
+            "owner_resource":"Product",
+            "created_at":"2015-01-02T20:32:08+0000",
+            "updated_at":"2015-01-02T20:32:09+0000"
+        }
+
+### Delete A Metafield [DELETE /{store_id}/metafields/#{id}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + id (number, `13226`) - The unique numeric identifier for the Metafield.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        {
+            
+        }
+
+# Group Script
+
+## Introduction
+
+The Script resource allows your app to register custom Javascript to be run in the store or in the checkout page. Also, if the user deletes your app, then they will not have to edit their theme to remove your JavaScript. When an app is uninstalled from a store, all of the scripts the app created are automatically removed along with it.
+
+Before you begin, please take into consideration that:
+* You cannot depend on any JavaScript available in the store's theme. Not even jQuery.
+* Other applications may be installed and can include other JavaScript in addition to yours.
+* When we include your script in the store, we will send a `store` parameter with the store id:```<script type="text/javascript" src="http://myapp.com/new.js?store=1234"></script>```
+
+Ideally, your javascript should be inside a closure to avoid any conflict:
+```
+        (function(){
+            // Your JavaScript
+        })();
+```
+
+Use AJAX to load specific configurations for the store. Access your own defined URL with the store ID specified in that URL. Your app will serve those store settings in JSON format, which you can then use in your JavaScript file.
+
+> **Note**: If you are going to use jQuery, you should load it in your JS using `jQuery.noConflict` as some stores already have jQuery in their themes. You should not assume the store has a cutting-edge jQuery version.
+
+Please refer to the following examples:
+```
+        var loadScript = function(url, callback){
+            /*
+                JavaScript that will load the jQuery library
+                on Google's CDN.
+                We recommend this code:
+                http://snipplr.com/view/18756/loadscript/
+                Once the jQuery library is loaded,
+                the callback function will be executed.
+            */
+        };
+        
+        var myAppJavaScript = function($){
+            /*
+                Your app's JavaScript here.
+                $ in this scope references
+                the jQuery object we'll use.
+                Don't use 'jQuery' or 'jQuery191' here.
+                Use the dollar sign
+                that was passed as argument.
+            */
+            $('body').append(
+                "<p>I'm using jQuery version "+$.fn.jquery+'</p>');
+        };
+        
+        // For jQuery version 1.7
+        var target = [1, 7, 0];
+        
+        var current = typeof jQuery === 'undefined' ? [0,0,0] :
+            $.fn.jquery.split('.').map(function(item) {
+                return parseInt(item);
+        });
+        
+        if(current[0]<target[0] || (current[0]==target[0]&&current[1] < target[1]))
+        {
+            loadScript(
+                '//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js',
+                function(){
+                    var jQuery1101 = jQuery.noConflict(true);
+                    myAppJavaScript(jQuery1101);
+                });
+        } else {
+            myAppJavaScript(jQuery);
+        }
+```
+
+## Variables We Provide
+
+We make your life easier by providing a Javascript object (called `LS`) with some common variables.
+
+The following are the two `LS` Javascript objects we offer, one for the Store and another for Checkout:
+
+### Store
+
+```
+        var LS = {
+            store : {
+                id : /* Store's id */,
+                url : /* Store's URL */
+            },
+            cart : {
+                subtotal : /* Cart's subtotal in cents */,
+                items : [
+                    /* For every cart item we have. */
+                    {
+                        id: /* Product Variant's id. */,
+                        name: /* Product Variant's name. */,
+                        unit_price: /*
+                                        Product Variant's price
+                                        in cents.
+                                     */,
+                        quantity: /*
+                                     Quantity to be
+                                     purchased.
+                                   */
+                    }
+                ]
+            },
+            lang : /* Current language's code (e.g. pt_BR) */,
+            currency : {
+                code: /* Current currency in ISO 4217 format */
+                display_short: /*
+                                  Currency format string
+                                  when the currency
+                                  is not specified.
+                                */
+                display_long: /*
+                                 Currency format string
+                                 when the currency
+                                 is specified.
+                               */
+                cents_separator: /* Symbol used for
+                                    separating cents.
+                                  */
+                thousands_separator: /*
+                                        Symbol used for
+                                        separating thousands
+                                        (could be blank).
+                                      */
+            },
+            country : /* Current currency in ISO 3166-1 format. */,
+            customer : /*
+                          Current customer id or null
+                          if there is no
+                          logged-in customer.
+                        */,
+            theme : {
+                code: /* Current theme's code. */,
+                name: /* Current theme's name. */
+            }
+        }
+```
+
+#### Product
+
+When on a `Product` page, the Store `LS` object also has the following:
+
+```
+        LS.product = {
+            id : /* Product's id. */,
+            name : /* Product's name. */,
+            tags : /* Array of product's tags. */
+        };
+        LS.variants = /*
+                        JSON encoded representation
+                        of the product variants.
+                       */;
+```
+
+#### Category
+
+When on a `Category` page, the Store `LS` object also has the following:
+
+```
+        LS.category = {
+            id : /* Category's id. */,
+            name : /* Category's name. */
+        };
+```
+
+### Checkout
+
+```
+        var LS = {
+            store : {
+                id : /* Store's id. */,
+                url : /* Store's URL. */
+            },
+            cart : {
+                subtotal : /* Cart's subtotal in cents. */,
+                items : [
+                    /* For every cart item we have. */
+                    {
+                        id: /* Product Variant's id. */,
+                        name: /* Product Variant's name. */,
+                        unit_price: /*
+                                        Product Variant's price
+                                        in cents.
+                                     */,
+                        quantity: /* Quantity to be purchased. */
+                    }
+                ]
+            },
+            customer : /*
+                          Current customer id or null
+                          if there is no logged-in customer.
+                        */,
+            lang : /* Current language's code (e.g. pt_BR). */,
+            currency : /* Current currency in ISO 4217 format. */
+        }
+```
+
+#### Thank You Page
+
+When on the `Thank You` for your order page, the Checkout `LS` object also has the following:
+
+```
+        LS.order = {
+            id : /* Order's id */,
+            number : /* Order's number */,
+            hash : /* Order's hash */,
+            created_at : /* Order's creation date */,
+            coupon : /*
+                        Array of coupon codes that apply to this
+                        order.
+                     */,
+            discount : /* Order's discount in cents */,
+            total : /* Order's total in cents */,
+            total_in_usd : /* Order's total in USD in cents */,
+            gateway : /* Payment Gateway's code */
+        };
+```
+
+> **Note**: When creating one, a Script will only appear in checkout if the src starts with `https://` in order not to break the SSL lock.
+
+## Managing Scripts: Examples and Resources [/script]
+
++ Attributes
+    + id (number) - The unique numeric identifier for the Script.
+    + src (string) - Specifies the location of the Script.
+    + event (string) - DOM event which triggers the loading of the script. Valid values are "`onload`" (default).
+    + where (string) - A comma-separated list of places where the javascript will run. Valid values are "`store`" (default) or "`checkout`".
+    + `created_at` (string) - Date when the Script was created in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
+    + `updated_at` (string) - Date when the Script was last updated in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
+
+### Retrieve All Scripts [GET /{store_id}/scripts/{?since_id,src,created_at_min,created_at_max,updated_at_min,updated_at_max,page,per_page,fields}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + `since_id` (string, optional) - Restrict results to after the specified ID.
+    + `src` (string, optional) - Show scripts with a given URL.
+    + `created_at_min` (string, optional) - Show Scripts created after date ([ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601)).
+    + `created_at_max` (string, optional) - Show Scripts created before date ([ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601)).
+    + `updated_at_min` (string, optional) - Show Scripts last updated after date ([ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601)).
+    + `updated_at_max` (string, optional) - Show Scripts last updated before date ([ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601)).
+    + `page` (string, optional) - Page to show.
+    + `per_page` (string, optional) - Amount of results.
+    + `fields` (string, optional) - Comma-separated list of fields to include in the response.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        [
+            {
+                "created_at": "2013-01-03T09:11:51-03:00",
+                "event": "onload",
+                "id": 101,
+                "src": "https://myapp.com/foo.js",
+                "updated_at": "2013-03-11T09:14:11-03:00",
+                "where": "store,checkout"
+            },
+            {
+                "created_at": "2013-04-07T09:11:51-03:00",
+                "event": "onload",
+                "id": 5123,
+                "src": "https://myapp.com/bar.js",
+                "updated_at": "2013-04-08T11:11:51-03:00",
+                "where": "store"
+            },
+            {
+                "created_at": "2013-04-08T12:09:48-03:00",
+                "event": "onload",
+                "id": 6412,
+                "src": "https://myapp.com/yet_another_script.js",
+                "updated_at": "2013-04-08T11:11:53-03:00",
+                "where": "checkout"
+            }
+        ]
+
+### Retrieve A Single Script [GET /{store_id}/scripts/#{id}{?fields}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + id (number, `101`) - The unique numeric identifier for the Script.
+    + fields (string, optional) - Comma-separated list of fields to include in the response.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        {
+            "created_at": "2013-01-03T09:11:51-03:00",
+            "event": "onload",
+            "id": 101,
+            "src": "https://myapp.com/foo.js",
+            "updated_at": "2013-03-11T09:14:11-03:00",
+            "where": "store,checkout"
+        }
+
+### Create A New Script [POST /{store_id}/scripts/{?src,event,where}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + src (string, required, `https://myapp.com/new.js`) - Specifies the location of the Script.
+    + event (string, required) - DOM event which triggers the loading of the script.
+        + Members
+            + `onload`
+    + where (string, required) - A comma-separated list of places where the javascript will run.
+        + Members
+            + `store`
+            + `checkout`
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+    
+    + Body
+    
+            {
+                "src": "https://myapp.com/new.js",
+                "where": "store",
+                "event": "onload"
+            }
+
++ Response 201 (application/json)
+
+        {
+            "created_at": "2013-06-01T15:12:15-03:00",
+            "event": "onload",
+            "id": 8901,
+            "src": "http://myapp.com/new.js",
+            "updated_at": "2013-06-01T15:12:15-03:00",
+            "where": "store"
+        }
+
+### Modify An Existing Script [POST /{store_id}/scripts/#{id}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + id (number, `5123`) - The unique numeric identifier for the Script.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+    
+    + Body
+
+            {
+                "created_at": "2013-04-07T09:11:51-03:00",
+                "event": "onload",
+                "id": 5123,
+                "src": "https://myapp.com/another_bar.js",
+                "updated_at": "2013-06-01T12:05:34-03:00",
+                "where": "store"
+            }
+
++ Response 200 (application/json)
+
+        {
+            "created_at": "2013-04-07T09:11:51-03:00",
+            "event": "onload",
+            "id": 5123,
+            "src": "https://myapp.com/another_bar.js",
+            "updated_at": "2013-06-01T12:11:14-03:00",
+            "where": "store"
+        }
+
+### Remove A Script [DELETE /{store_id}/scripts/#{id}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + id (number, `5123`) - The unique numeric identifier for the Script.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        {
+            
+        }
+
+# Group Webhook
+
+## Introduction
+
+A Webhook is a tool that allows you to receive a notification for a certain event. It allows you to register an http or https URL which will receive the event data, stored in JSON.
+
+Webhooks can be registered for the following events:
+| Webhook Category | Events |
+| --- | --- |
+| App | uninstalled/suspended/resumed |
+| Category | created/updated/deleted |
+| Order | created/updated/paid/fulfilled/cancelled |
+| Product | created/updated/deleted |
+| Domain | updated |
+| Theme | updated |
+
+To register for the product created event, for example, you should send `product/created` in the event field.
+
+The `app/suspended` and `app/resumed` events refer to the [suspension of API access due to lack of payment](/#introduction/suspension-of-api-access-due-to-lack-of-payment).
+
+> **Note**: You are not allowed to use a localhost/tiendanube/nuvemshop domain for webhooks.
+
+### Verifying A Webhook
+
+Webhooks created through the API can be verified by calculating a digital signature.
+
+Each Webhook request includes a `X-Linkedstore-HMAC-SHA256` header which is generated using the app's secret, along with the data sent in the request.
+
+> **Note**: Some frameworks will change the header to `HTTP_X_LINKEDSTORE_HMAC_SHA256`.
+
+See PHP example below:
+
+```
+<?php
+
+define('APP_SECRET', 'secret');
+
+function verify_webhook($data, $hmac_header) {
+  return $hmac_header == hash_hmac('sha256', $data, APP_SECRET);
+}
+
+$hmac_header = $_SERVER['HTTP_X_LINKEDSTORE_HMAC_SHA256'];
+$data = file_get_contents('php://input');
+$verified = verify_webhook($data, $hmac_header);
+echo 'Webhook verified: ' . var_export($verified, true);
+```
+
+### Webhook Event Notifications
+
+When doing the `POST` request, all webhooks will send the following parameters in JSON format:
+
+* `store_id`: Store from where the event originated.
+* `event`: Event's name.
+
+Also, every webhook will send custom parameters depending on which event creates them, as follows:
+
+#### app/uninstalled
+When an app is uninstalled, the event will generate and forward you a JSON with the following extra parameter:
+* id: App's id
+
+Example webhook content:
+```
+{
+    'store_id':123,
+    'event':'app/uninstalled',
+    'id':1948209
+}
+```
+
+#### category/created - category/updated - category/deleted
+When an app's category is somehow modified, the event will generate and forward you a JSON with the following extra parameter:
+* id: Category's id
+
+Example webhook content:
+```
+{
+    'store_id':354,
+    'event':'category/created',
+    'id':11
+}
+```
+
+#### order/created - order/updated - order/paid - order/fulfilled - order/cancelled
+When an order's status is changed, the event will generate and forward you a JSON with the following extra parameter:
+* id: Order's id
+
+Example webhook content:
+```
+{
+    'store_id':876,
+    'event':'product/created',
+    'id':48708
+}
+```
+
+#### product/created - product/updated - product/deleted
+When an product's status is changed, the event will generate and forward you a JSON with the following extra parameter:
+* id: Product's id
+
+Example webhook content:
+```
+{
+    'store_id':910,
+    'event':'product/created',
+    'id':165
+}
+```
+
+#### domain/updated
+When an app's domain is changed, the event will generate and forward you an empty JSON:
+* no additional parameter is sent along with this event. To get the list of domains one may refer to [Store](/#reference/store) resources.
+
+Example webhook content:
+```
+{
+    'store_id':723,
+    'event':'domain/updated',
+}
+```
+
+#### theme/updated
+When an app's theme is changed, the event will generate and forward you a JSON containing the following extra parameters:
+* old_theme: Old Theme's code
+* new_theme: New Theme's code
+
+Example webhook content:
+```
+{
+    'store_id':821,
+    'event':'theme/updated',
+    'old_theme':7862354
+    'new_theme':9834511
+}
+```
+
+### Retry Policies
+A webhook notification expects a 200 status code in `response`. If this does not happen (it gets another response code or no response at all) we will retry to deliver the notification 14 times along the next three days in incremental lapses of time. After this, the notification is lost.
+
+## Managing Webhooks: Examples and Resources [/webhook]
+
++ Attributes
+    + id (number) - The unique numeric identifier for the webhook.
+    + url (string) - The URL where the webhook should send the POST request when the event occurs.
+    + event (string) - The event that will trigger the webhook.
+    + `created_at` (string) - Date when the webhook was created in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
+    + `updated_at` (string) - Date when the webhook was last updated in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
+
+### Retrieve All Webhooks [GET /{store_id}/webhooks/{?since_id,url,event,created_at_min,created_at_max,updated_at_min,updated_at_max,page,per_page,fields}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + `since_id` (string, optional) - Restrict results to after the specified ID.
+    + `url` (string, optional) - Show webhooks tags with a given URL.
+    + `event` (string, optional) - Show webhooks with a given event.
+    + `created_at_min` (string, optional) - Show Webhooks created after date ([ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601)).
+    + `created_at_max` (string, optional) - Show Webhooks created before date ([ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601)).
+    + `updated_at_min` (string, optional) - Show Webhooks last updated after date ([ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601)).
+    + `updated_at_max` (string, optional) - Show Webhooks last updated before date ([ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601)).
+    + `page` (string, optional) - Page to show.
+    + `per_page` (string, optional) - Amount of results.
+    + `fields` (string, optional) - Comma-separated list of fields to include in the response.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        [
+            {
+                "created_at": "2013-01-03T09:11:51-03:00",
+                "event": "app/uninstalled",
+                "id": 101,
+                "updated_at": "2013-03-11T09:14:11-03:00",
+                "url": "http://myapp.com/uninstall"
+            },
+            {
+                "created_at": "2013-04-07T09:11:51-03:00",
+                "event": "order/created",
+                "id": 5670,
+                "updated_at": "2013-04-08T11:11:51-03:00",
+                "url": "http://myapp.com/order_created_hook"
+            }
+        ]
+
+### Retrieve A Single Webhook [GET /{store_id}/webhooks/#{id}{?fields}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + id (number, `5670`) - This is the Webhook's unique ID.
+    + fields (string, optional) - Comma-separated list of fields to include in the response.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200 (application/json)
+
+        {
+            "created_at": "2013-04-07T09:11:51-03:00",
+            "event": "order/created",
+            "id": 5670,
+            "updated_at": "2013-04-08T11:11:51-03:00",
+            "url": "http://myapp.com/order_created_hook"
+        }
+
+### Create A New Webhook [POST /{store_id}/webhooks/{?url,event}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + url (string, required, `http://myapp.com/product_created_hook`) - Show webhooks tags with a given URL.
+    + event (string, required) - Show webhooks with a given event.
+        + Members
+            + `app/uninstalled`
+            + `app/suspended`
+            + `app/resumed`
+            + `category/created`
+            + `category/updated`
+            + `category/deleted`
+            + `order/created`
+            + `order/updated`
+            + `order/paid`
+            + `order/fulfilled`
+            + `order/cancelled`
+            + `product/created`
+            + `product/updated`
+            + `product/deleted`
+            + `domain/updated`
+            + `theme/updated`
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 201 (application/json)
+
+        {
+            "created_at": "2013-06-01T15:12:15-03:00",
+            "event": "product/created",
+            "id": 8901,
+            "updated_at": "2013-06-01T15:12:15-03:00",
+            "url": "http://myapp.com/product_created_hook"
+        }
+
+### Modify An Existing Webhook [PUT /{store_id}/webhooks/#{id}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + id (number, `5670`) - This is the Webhook's unique ID.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+    
+    + Body
+
+            {
+                "created_at": "2013-04-07T09:11:51-03:00",
+                "event": "category/created",
+                "id": 5670,
+                "updated_at": "2013-04-08T11:11:51-03:00",
+                "url": "http://myapp.com/category_created_hook"
+            }
+
++ Response 200
+
+        {
+            "created_at": "2013-04-07T09:11:51-03:00",
+            "event": "category/created",
+            "id": 5670,
+            "updated_at": "2013-06-01T12:11:14-03:00",
+            "url": "http://myapp.com/category_created_hook"
+        }
+
+### Remove A Webhook [DELETE /{store_id}/webhooks/#{id}]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + id (number, `5670`) - This is the Webhook's unique ID.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+
++ Response 200
+
+        {
+            
+        }
