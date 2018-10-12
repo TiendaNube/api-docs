@@ -3,7 +3,7 @@ HOST: http://api.tiendanube.com/v1/
 
 # Nuvem Shop / Tienda Nube API
 
-This is the official documentation for the Nuvem Shop / Tienda Nube public API, and it will show you how to use our API to authenticate, make requests, and retrieve data.
+This is the official documentation for the Nuvem Shop / Tienda Nube API, and it will show you how to use our API to authenticate, make requests, and retrieve data.
 
 ## Getting Started
 
@@ -11,7 +11,7 @@ Before you start to code your app integration, you will need to:
 
 1. Sign-up for a partner account at [Nuvem Shop](http://www.nuvemshop.com.br/parceiros) or [Tienda Nube](https://www.tiendanube.com/partners).
 
-2. Once inside your partner's panel, go to the _Apps_ section and create your app in order to get your credentials.
+2. Once inside the partner's panel, go to the _Apps_ section and create your app in order to get your credentials.
 
 3. Read up on the [authentication](/#introduction/authentication) to learn how to authenticate and authorize your requests.
 
@@ -23,7 +23,7 @@ This API adheres to the [REST](https://en.wikipedia.org/wiki/Representational_st
 
 All communication with the API is made through HTTP requests, using headers to specify and retrieve metadata, and [JSON](https://www.json.org/) as the content format.
 
-In this section, we describe what you need to exchange information with the API, like the base URLs, the mandatory headers, the available HTTP methods and the different response status codes you may come across.
+In this section, we describe what you need to know before you start making requests to the API, like the base URLs, the mandatory headers, the available HTTP methods and the different response status codes you may come across.
 
 ### Base URL
 
@@ -58,10 +58,10 @@ Finally, **the API version must be suffixed with the requested store ID**, so if
 | --- | --- |
 |`200`| Success. Request completed. |
 |`201`| Success. New resource created. |
-|`204`| Success. No content to return. Only the status code returns. |
+|`204`| Success. No content to return. Only the status code is returned. |
 |`400`| Bad Request - [The request could not be parsed](/#introduction/error-handling/client-errors). |
-|`401`| Unauthorized - User is not logged in, [could not be authenticated](/#introduction/authentication). |
-|`403`| Forbidden - Cannot access resource. |
+|`401`| Unauthorized - The [access token](/#introduction/authentication) is missing or is not valid. |
+|`403`| Forbidden - Operation not permitted, permission not granted. |
 |`404`| Not Found - Resource doesn't exist. |
 |`409`| Conflict - Discord with state of the resource on server. Can occur with too many PUT requests. |
 |`415`| Unsupported Media Type - Your request must include a `Content-type` header. See the [JSON](/#introduction/the-basics/json) section for more information. |
@@ -74,7 +74,7 @@ Finally, **the API version must be suffixed with the requested store ID**, so if
 
 ### JSON
 
-All data is sent and received as JSON. Our format has no root element and we use snake_case to describe attribute keys. This means that you have to send `Content-Type: application/json; charset=utf-8` when POSTing or PUTing data into Tienda Nube/Nuvem Shop.
+All data is sent and received as JSON. Our format has no root element and we use snake_case to describe attribute keys. This means that you have to send `Content-Type: application/json; charset=utf-8` when POSTing or PUTing data to the Nuvem Shop / Tienda Nube API.
 
 >**Note**: You will receive a `415 Unsupported Media Type` response code if you leave out the Content-Type header.
 
@@ -111,7 +111,7 @@ The possible `rel` values are:
 
 We follow the OAuth 2 framework for letting users authorize their applications to use Nuvem Shop / Tienda Nube on their own.
 
-Basically, when someone installs your app, you will have to obtain an access token (a secret string denoting your rights over the user's store) from the user, which **you will need to include in the header of every request**.
+Basically, when someone installs your app, you will have to obtain an access token (a secret string denoting your rights over a given store) from the user, which **you will need to include in the header of every request**.
 
 We provide authorization and user authentication by a restricted form of OAuth 2. At a glance:
 * The only grant type we support is the "authorization code".
@@ -121,9 +121,9 @@ We provide authorization and user authentication by a restricted form of OAuth 2
 ### Introduction
 
 - The first step is to register your application.
-    * You will need to go to [Nuvem Shop Parceiros](https://partners.nuvemshop.com.br) o [Tienda Nube Partners](https://partners.tiendanube.com) and login to the Partners program.
+    * You will need to go to [Nuvem Shop Parceiros](https://partners.nuvemshop.com.br) or [Tienda Nube Partners](https://partners.tiendanube.com) and sign-up to the Partners program.
     * Once logged in, you'll need to access the application tab. If this is your first time in this site, a dropdown menu may appear with the option to create new applications instead.
-    * Here you will find a list of your applications and a button to create a new ones. Clicking on the `Create Application` button will bring up a form for you to complete before you can click on `Create Application` to confirm the process.
+    * Here you will find a list of your applications and a button to create a new one. Clicking on the `Create Application` button will bring up a form for you to complete before you can click on `Create Application` to confirm the process.
 - When creating an app, you will have to select the scopes it needs and set a redirection URL.
     * The scopes specify the resources for which the app is asking authorization of its users (see [Scopes](/#introduction/authentication/scopes)).
     * The redirection URL is used as part of the authorization flow (see [Authorization Flow](/#introduction/authentication/authorization-flow)).
@@ -137,8 +137,8 @@ We provide authorization and user authentication by a restricted form of OAuth 2
 This process will take place each time a user attempts to install your application. The objective of this process is for you to acquire the unique `access_token` that will allow your application to have access to the user's Nuvem Shop/Tienda Nube.
 
 The authorization flow is as follows:
-1. Users, from their TiendaNube/NuvemShop admin shop, select your app to install it. Or, alternatively, they go to `https://www.tiendanube.com/apps/(app_id)/authorize` (if they are not logged in, they will be prompted to do so).
-2. Users are then redirected to a website where they have to authorize the scopes your app needs (if they have already done this, the step is skipped).
+1. Users, from their Nuvem Shop / Tienda Nube app store, select your app to install it. Or, alternatively, they go to `https://www.tiendanube.com/apps/(app_id)/authorize` (if they are not logged in, they will be prompted to do so).
+2. Users then redirect to the authorization page, where your app will request the user the permissions it needs (if they have already done this, the step is skipped).
 3. Finally, users are redirected to your app's redirection URL with an authorization code.
 4. Using your app's credentials and the authorization code, you can obtain an access token by making a POST request to `https://www.tiendanube.com/apps/authorize/token`. (Don't forget to also send `grant_type=authorization_code` - see the example provided below).
 
@@ -154,22 +154,27 @@ The authorization flow is as follows:
 
 The user will then follows these steps:
 1. User with ID 789 goes to `https://www.tiendanube.com/apps/123/authorize?state=csrf-code`
-2. User accepts scopes.
+2. They accept (or not) the requested permissions (scopes).
 3. User gets redirected to `https://www.example.com/?code=xyz&state=csrf-code`
-4. Then you POST:
-`curl https://www.tiendanube.com/apps/authorize/token --data 'client_id=123&client_secret=abcdef&grant_type=authorization_code&code=xyz'`
+4. Finally, you send a POST request to the authorization URL, with your app's credentials, followed by the grant_type and the authorization code received in the previous step, like so:
+```
+        curl https://www.tiendanube.com/apps/authorize/token \
+        --data \
+        'client_id=123&client_secret=abcdef&grant_type=authorization_code&code=xyz'
+```
 
 Finally, you receive the following information:
 ```
 {
-       "access_token":"61181d08b7e328d256736hdcb671c3ce50b8af5",
+       "access_token":"mySt0r34cc3ssT0k3n",
        "token_type":"bearer",
        "scope":"read_orders,write_products",
        "user_id":"789"
 }
 ```
 
-> **Note**: Remember, each HTTP request made to a user's Nuvem Shop/Tienda Nube must contain the Authentication header, whose value is `token_type access_token`. In the example this would be "Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5".
+> **Note**: Remember, each HTTP request made to a user's Nuvem Shop/Tienda Nube must contain the Authentication header, whose value is `token_type access_token`. In the example this would be:
+> ```Authentication: bearer mySt0r34cc3ssT0k3n```
 
 ### Scopes
 
@@ -180,25 +185,19 @@ Apps should only ask for the access scopes they need. For example, if an app onl
 >**Note**: As a [Webhook](/#reference/webhook) relies on other resources, you will only be able to register webhooks for the resources you were granted permission to use.
 
 The available `scopes` are:
-* `read_content` / `write_content`
-    * Page
-* `read_products` / `write_products`
-    * Product
-    * Product Variant
-    * Product Image
-    * Category
-* `read_customers` / `write_customers`
-    * Customer
-* `read_orders` / `write_orders`
-    * Order
-* `read_coupons` / `write_coupons`
-    * Coupon
-* `write_scripts`
-    * Script
+
+| Scope | Affected Endpoints |
+| --- | --- |
+| `read_content` / `write_content` | `Page` |
+| `read_products` / `write_products` | `Product`, `Product Variant`, `Product Image` and `Category` |
+| `read_customers` / `write_customers` | `Customer` |
+| `read_orders` / `write_orders` | `Order` |
+| `read_coupons` / `write_coupons` | `Coupon` |
+| `write_scripts` | `Script` |
 
 ### User Authentication
 
-Should you need your app's users to be able to sign-in on your website, you can reuse the Authorization flow for this purpose:
+Should you need your app's users to be able to sign-in to your website, you can reuse the Authorization flow:
 * The login button should be a link to: https://www.tiendanube.com/apps/(app_id)/authorize
 * You can sign-in the user with the ID you receive with the new access token.
 >**Note**: We [recommend](https://tools.ietf.org/html/rfc6749#section-10.12) you add a `state` parameter for CSRF protection (e.g. a hash of the session cookie), so you may verify it after the redirection.
@@ -243,7 +242,7 @@ If Nuvem Shop/Tienda Nube is having trouble, you might see a 5xx error. `500 Int
 
 ## Usage Limits
 
-You can perform up to 500 requests in a 5 minute period from the same app to the same store. If you exceed this limit, you'll get a `429 Too Many Requests` response for subsequent requests. We use the following headers to provide information:
+In order to control the incoming traffic to the API, we allow you to perform a limited number of requests in a given period of time. You can make up to 40 requests in a second, while gaining 2 additional requests every second after that, until you reach the maximum of 40 requests once more. Should you exceed this limitation, you'll receive a `429 - Too Many Requests` error. To provide information about the limit usage, we use the following headers:
 
 * `X-Rate-Limit-Limit`: Total requests that can be done in a given period.
 * `X-Rate-Limit-Remaining`: Remaining requests in the current period.
@@ -271,9 +270,9 @@ To talk with us about the API, feel free to [contact us](mailto:api@tiendanube.c
 
 # Group Store
 
-The Store resource contains general settings and information about a Tienda Nube/Nuvem Shop's store.
+The Store resource contains general settings and information about a Nuvem Shop / Tienda Nube store.
 
-## Managing The Store: Examples And Resources [/store]
+## Managing The Store [/store]
 
 + Attributes
     + id (number) - The unique numeric identifier for the Store.
@@ -306,7 +305,7 @@ The Store resource contains general settings and information about a Tienda Nube
     + admin_language (string) - Store's admin language.
     + created_at (string) - Date when the Store was created in ISO 8601 format.
 
-### Retrieve A Single Store's Information [GET /{store_id}/store{?fields}]
+### Retrieve The Store's Information [GET /{store_id}/store{?fields}]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
@@ -317,7 +316,7 @@ The Store resource contains general settings and information about a Tienda Nube
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -401,7 +400,7 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
 > * Must weight less than 10MB
 > * Must be in one of the following formats: .gif, .jpg, .png
 
-## Managing Products: Examples And Resources [/product]
+## Managing Products [/product]
 
 + Attributes
     + id (number) - The unique numeric identifier for the Product.
@@ -417,7 +416,7 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
     + `created_at` (string) - Date when the Product was created in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
     + `updated_at` (string) - Date when the Product was last updated in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
 
-### Retrieve A List Of All The Stores' Products [GET /{store_id}/products/{?since_id,language,q,handle,category_id,published,free_shipping,created_at_min,created_at_max,updated_at_min,updated_at_max,sort_by,page,per_page,fields}]
+### Get All Products [GET /{store_id}/products/{?since_id,language,q,handle,category_id,published,free_shipping,created_at_min,created_at_max,updated_at_min,updated_at_max,sort_by,page,per_page,fields}]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
@@ -442,7 +441,7 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -526,7 +525,7 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
             }
         ]
 
-### Retrieve A Single Product [GET /{store_id}/products/#{id}{?fields}]
+### Get A Single Product [GET /{store_id}/products/#{id}{?fields}]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
@@ -538,7 +537,7 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -688,7 +687,7 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
     
     + Body
 
@@ -799,7 +798,7 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
     
     + Body
 
@@ -955,7 +954,7 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -963,7 +962,7 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
             
         }
 
-## Managing Product Variants: Examples And Resources [/product_variant]
+## Product Variants [/product_variant]
 
 + Attributes
     + id (number) - The unique numeric identifier for the Product Variant.
@@ -982,7 +981,7 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
     + `created_at` (string) - Date when the Product Variant was created in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
     + `updated_at` (string) - Date when the Product Variant was last updated in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
 
-### Retrieve A List Of All Product Variants For A Given Product [GET /{store_id}/products/#{product_id}/variants/{?since_id,created_at_min,created_at_max,updated_at_min,updated_at_max,page,per_page,fields}]
+### Get All Variants Of A Product [GET /{store_id}/products/#{product_id}/variants/{?since_id,created_at_min,created_at_max,updated_at_min,updated_at_max,page,per_page,fields}]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
@@ -1001,7 +1000,7 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 71181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -1050,7 +1049,7 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
             }
         ]
 
-### Retrieve A Single Product Variant [GET /{store_id}/products/#{product_id}/variants/#{id}{?fields}]
+### Get A Particular's Product's Variant [GET /{store_id}/products/#{product_id}/variants/#{id}{?fields}]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
@@ -1063,7 +1062,7 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -1100,7 +1099,7 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
     
     + Body
 
@@ -1149,7 +1148,7 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
     
     + Body
 
@@ -1211,7 +1210,7 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -1219,7 +1218,7 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
             
         }
 
-## Managing Product Images: Examples And Resources [/product_image]
+## Product Images [/product_image]
 
 + Attributes
     + id (number) - The unique numeric identifier for the Product Image.
@@ -1229,7 +1228,7 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
     + `created_at` (string) - Date when the Product Image was created in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
     + `updated_at` (string) - Date when the Product Image was last updated in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
 
-### Retrieve A List Of All Product Images For A Given Product [GET /{store_id}/products/#{product_id}/images/{?since_id,src,position,page,per_page,fields}]
+### Get All Images Of A Product [GET /{store_id}/products/#{product_id}/images/{?since_id,src,position,page,per_page,fields}]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
@@ -1246,7 +1245,7 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -1269,7 +1268,7 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
             }
         ]
 
-### Retrieve A Single Product Image [GET /{store_id}/products/#{product_id}/images/#{id}{?fields}]
+### Get A Particular Image Of A Product [GET /{store_id}/products/#{product_id}/images/#{id}{?fields}]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
@@ -1282,7 +1281,7 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -1295,7 +1294,7 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
             "updated_at": "2013-03-11T09:14:11-03:00"
         }
 
-### Create A New Product Image [POST /{store_id}/products/#{product_id}/images/{?src,attachment,filename,position}]
+### Upload A New Image To A Product [POST /{store_id}/products/#{product_id}/images/{?src,attachment,filename,position}]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
@@ -1310,7 +1309,7 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 201 (application/json)
 
@@ -1335,7 +1334,7 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
     
     + Body
 
@@ -1369,7 +1368,7 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -1383,7 +1382,7 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
 
 A Category lets the store owner group their products to make the store easier to browse.
 
-## Managing Categories: Examples And Resources [/categories]
+## Managing Categories [/categories]
 
 + Attributes
     + id (number) - The unique numeric identifier for the Category.
@@ -1395,7 +1394,7 @@ A Category lets the store owner group their products to make the store easier to
     + `created_at` (string) - Date when the Category was created in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
     + `updated_at` (string) - Date when the Category was last updated in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
 
-### Retrieve A List Of All Categories [GET /{store_id}/categories/{?since_id,language,handle,parent_id,created_at_min,created_at_max,updated_at_min,updated_at_max,page,per_page,fields}]
+### Get All Categories [GET /{store_id}/categories/{?since_id,language,handle,parent_id,created_at_min,created_at_max,updated_at_min,updated_at_max,page,per_page,fields}]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
@@ -1416,7 +1415,7 @@ A Category lets the store owner group their products to make the store easier to
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -1445,7 +1444,7 @@ A Category lets the store owner group their products to make the store easier to
             }
         ]
 
-### Retrieve A Single Category [GET /{store_id}/categories/#{id}{?fields}]
+### Get A Category [GET /{store_id}/categories/#{id}{?fields}]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
@@ -1457,7 +1456,7 @@ A Category lets the store owner group their products to make the store easier to
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -1496,7 +1495,7 @@ A Category lets the store owner group their products to make the store easier to
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
     
     + Body
 
@@ -1545,7 +1544,7 @@ A Category lets the store owner group their products to make the store easier to
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
     
     + Body
 
@@ -1590,7 +1589,7 @@ A Category lets the store owner group their products to make the store easier to
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -1634,7 +1633,7 @@ Orders contain 3 important fields that are detailed below. These are `products`,
 
 > **Note**: The `unclaimed_stock` property of the `issues` attribute has a number value associated to it which represents the number of items claimed by the user with insufficient stock.
 
-## Managing Orders: Examples and Resources [/order]
+## Managing Orders [/order]
 
 + Attributes
     + id (number) - The unique numeric identifier for the Order. It's different from `number`.
@@ -1681,7 +1680,7 @@ Orders contain 3 important fields that are detailed below. These are `products`,
     + `updated_at` (string) - Date when the Order was last updated in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
     + next_action - Specifies the next action to take by the Order. Contents are explained [above](/#reference/order).
 
-### Retrieve A List Of All Orders [GET /{store_id}/orders/{?since_id,status,payment_status,shipping_status,created_at_min,created_at_max,updated_at_min,updated_at_max,total_min,total_max,customer_ids,page,per_page,fields,q}]
+### Get All Orders [GET /{store_id}/orders/{?since_id,status,payment_status,shipping_status,created_at_min,created_at_max,updated_at_min,updated_at_max,total_min,total_max,customer_ids,page,per_page,fields,q}]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
@@ -1709,7 +1708,7 @@ Orders contain 3 important fields that are detailed below. These are `products`,
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -1721,7 +1720,7 @@ Orders contain 3 important fields that are detailed below. These are `products`,
             }
         ]
 
-### Retrieve A Single Order [GET /{store_id}/orders/#{id}{?fields}]
+### Get A Particular Order [GET /{store_id}/orders/#{id}{?fields}]
 
 + Parameters
     + store_id (integer, required, ) - The requested store ID.
@@ -1733,7 +1732,7 @@ Orders contain 3 important fields that are detailed below. These are `products`,
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -1843,7 +1842,7 @@ Orders contain 3 important fields that are detailed below. These are `products`,
             }
         }
 
-### Close An Order [POST /{store_id}/orders/#{id}/close]
+### Close The Order [POST /{store_id}/orders/#{id}/close]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
@@ -1854,7 +1853,7 @@ Orders contain 3 important fields that are detailed below. These are `products`,
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -1975,7 +1974,7 @@ Orders contain 3 important fields that are detailed below. These are `products`,
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -2082,7 +2081,7 @@ Orders contain 3 important fields that are detailed below. These are `products`,
             }
         }
 
-### Mark An Order As Packed [POST /{store_id}/orders/#{id}/pack/]
+### Mark The Order As Packed [POST /{store_id}/orders/#{id}/pack/]
 
 + Parameters
     + store_id (integer, required, `23498`) - The requested store ID.
@@ -2093,7 +2092,7 @@ Orders contain 3 important fields that are detailed below. These are `products`,
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -2332,7 +2331,7 @@ Orders contain 3 important fields that are detailed below. These are `products`,
             "paid_at": null
         }
 
-### Fulfill An Order [POST /{store_id}/orders/#{id}/fulfill/{?shipping_tracking_number,notify_customer}]
+### Fulfill The Order [POST /{store_id}/orders/#{id}/fulfill/{?shipping_tracking_number,notify_customer}]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
@@ -2346,7 +2345,7 @@ Orders contain 3 important fields that are detailed below. These are `products`,
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -2456,7 +2455,7 @@ Orders contain 3 important fields that are detailed below. These are `products`,
             }
         }
 
-### Cancel An Order [POST /{store_id}/orders/#{id}/cancel/{?reason,email,restock}]
+### Cancel The Order [POST /{store_id}/orders/#{id}/cancel/{?reason,email,restock}]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
@@ -2477,7 +2476,7 @@ Orders contain 3 important fields that are detailed below. These are `products`,
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
     
     + Body
     
@@ -2593,7 +2592,7 @@ Orders contain 3 important fields that are detailed below. These are `products`,
             }
         }
 
-### Change/Update An Order [PUT /{store_id}/orders/#{id}{?owner_note,status}]
+### Change/Update The Order [PUT /{store_id}/orders/#{id}{?owner_note,status}]
 
 > **Note**: As far as changing an Order's attributes, you can only modify the `owner_note` one for now.
 
@@ -2613,7 +2612,7 @@ Orders contain 3 important fields that are detailed below. These are `products`,
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -2729,7 +2728,7 @@ Orders contain 3 important fields that are detailed below. These are `products`,
 
 Customer accounts store contact information for the customer, saving logged-in customers the trouble of having to provide it at every checkout.
 
-## Managing Customers: Examples and Resources [/customer]
+## Managing Customers [/customer]
 
 + Attributes
     + id (number) - The unique numeric identifier for the Customer.
@@ -2756,7 +2755,7 @@ Customer accounts store contact information for the customer, saving logged-in c
     + `created_at` (string) - Date when the Customer was created in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
     + `updated_at` (string) - Date when the Customer was last updated in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
 
-### Retrieve A List Of All Consumers [GET /{store_id}/customers/{?since_id,created_at_min,created_at_max,updated_at_min,updated_at_max,page,per_page,fields}]
+### Get All Costumers [GET /{store_id}/customers/{?since_id,created_at_min,created_at_max,updated_at_min,updated_at_max,page,per_page,fields}]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
@@ -2774,7 +2773,7 @@ Customer accounts store contact information for the customer, saving logged-in c
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -2839,7 +2838,7 @@ Customer accounts store contact information for the customer, saving logged-in c
             }
         ]
 
-### Retrieve A Single Customer [GET /{store_id}/customers/#{id}{?fields}]
+### Get A Particular Customer [GET /{store_id}/customers/#{id}{?fields}]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
@@ -2851,7 +2850,7 @@ Customer accounts store contact information for the customer, saving logged-in c
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -2914,7 +2913,7 @@ Customer accounts store contact information for the customer, saving logged-in c
           ]
         }
 
-### Create a new Customer [POST /{store_id}/customers/{?send_email_invite,password}]
+### Create A New Customer [POST /{store_id}/customers/{?send_email_invite,password}]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
@@ -2926,7 +2925,7 @@ Customer accounts store contact information for the customer, saving logged-in c
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
     + Body
 
@@ -3020,7 +3019,7 @@ Customer accounts store contact information for the customer, saving logged-in c
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
     
     + Body
 
@@ -3150,7 +3149,7 @@ Customer accounts store contact information for the customer, saving logged-in c
 
 A discount coupon is a way for a store to provide discounts for its customers. There are three type of coupons. Percentage, absolute and shipping. The percentage type indicates that the value is a percentage discount. The type absolute indicates that the value is an absolute amount of discount. And finally the type shipping indicates that the discount value is on the shipping.
 
-## Managing Coupons: Examples and Resources [/coupon]
+## Managing Coupons [/coupon]
 
 + Attributes
     + `id` (number) - The unique numeric identifier for the coupon.
@@ -3165,7 +3164,7 @@ A discount coupon is a way for a store to provide discounts for its customers. T
     + `min_price` (string) - Indicates the minimun value of the bill for applying the discount.
     + `categories` (string) - List of [Category](/#reference/category) objects representing the categories of the store where the discount applies.
 
-### Retrieve A List Of All Coupons [GET /{store_id}/coupons/{?min_start_date,min_end_date,max_start_date,max_end_date,valid,created_at_min,created_at_max,updated_at_min,updated_at_max,page,per_page,fields}]
+### Get All Coupons [GET /{store_id}/coupons/{?min_start_date,min_end_date,max_start_date,max_end_date,valid,created_at_min,created_at_max,updated_at_min,updated_at_max,page,per_page,fields}]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
@@ -3190,7 +3189,7 @@ A discount coupon is a way for a store to provide discounts for its customers. T
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -3276,7 +3275,7 @@ A discount coupon is a way for a store to provide discounts for its customers. T
             }
         ]
 
-### Retrieve A Single Coupon [GET /{store_id}/coupons/#{id}]
+### Get A Particular Coupon [GET /{store_id}/coupons/#{id}]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
@@ -3287,7 +3286,7 @@ A discount coupon is a way for a store to provide discounts for its customers. T
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -3343,7 +3342,7 @@ A discount coupon is a way for a store to provide discounts for its customers. T
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
     
     + Body
 
@@ -3388,7 +3387,7 @@ A discount coupon is a way for a store to provide discounts for its customers. T
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -3417,7 +3416,7 @@ A discount coupon is a way for a store to provide discounts for its customers. T
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -3441,7 +3440,7 @@ To do that you need to set the `owner_resource` to one of the above, an example 
 
 An example would be to use it in an app for Bookstores that require that you associate a book (product) with it's author and genre to provide an advanced search of books by this fields.
 
-## Managing Metafields: Examples and Resources [/metafield]
+## Managing Metafields [/metafield]
 
 + Attributes
     + `owner_resource` (string) - Type of entity to which the Metafield is associated.
@@ -3454,7 +3453,7 @@ An example would be to use it in an app for Bookstores that require that you ass
     + `created_at` (string) - Date when the Metafield was created in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
     + `updated_at` (string) - Date when the Metafield was last updated in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
 
-### Retrieve A List Of All Metafields [GET /{store_id}/metafields/#{owner_resource}{?owner_id,namespace,key,created_at_min,created_at_max,updated_at_min,updated_at_max,page,per_page,fields}]
+### Get All Metafields [GET /{store_id}/metafields/#{owner_resource}{?owner_id,namespace,key,created_at_min,created_at_max,updated_at_min,updated_at_max,page,per_page,fields}]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
@@ -3475,7 +3474,7 @@ An example would be to use it in an app for Bookstores that require that you ass
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -3497,7 +3496,7 @@ An example would be to use it in an app for Bookstores that require that you ass
             }
         ]
 
-### Retrieve A Single Metafield [GET /{store_id}/metafields/#{id}]
+### Get A Particular Metafield [GET /{store_id}/metafields/#{id}]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
@@ -3508,7 +3507,7 @@ An example would be to use it in an app for Bookstores that require that you ass
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -3540,7 +3539,7 @@ An example would be to use it in an app for Bookstores that require that you ass
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 201 (application/json)
 
@@ -3569,7 +3568,7 @@ An example would be to use it in an app for Bookstores that require that you ass
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -3596,7 +3595,7 @@ An example would be to use it in an app for Bookstores that require that you ass
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -3822,7 +3821,7 @@ When on the `Thank You` for your order page, the Checkout `LS` object also has t
 
 > **Note**: When creating one, a Script will only appear in checkout if the src starts with `https://` in order not to break the SSL lock.
 
-## Managing Scripts: Examples and Resources [/script]
+## Managing Scripts [/script]
 
 + Attributes
     + id (number) - The unique numeric identifier for the Script.
@@ -3832,7 +3831,7 @@ When on the `Thank You` for your order page, the Checkout `LS` object also has t
     + `created_at` (string) - Date when the Script was created in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
     + `updated_at` (string) - Date when the Script was last updated in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
 
-### Retrieve All Scripts [GET /{store_id}/scripts/{?since_id,src,created_at_min,created_at_max,updated_at_min,updated_at_max,page,per_page,fields}]
+### Get All Scripts [GET /{store_id}/scripts/{?since_id,src,created_at_min,created_at_max,updated_at_min,updated_at_max,page,per_page,fields}]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
@@ -3851,7 +3850,7 @@ When on the `Thank You` for your order page, the Checkout `LS` object also has t
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -3882,7 +3881,7 @@ When on the `Thank You` for your order page, the Checkout `LS` object also has t
             }
         ]
 
-### Retrieve A Single Script [GET /{store_id}/scripts/#{id}{?fields}]
+### Get A Particular Script [GET /{store_id}/scripts/#{id}{?fields}]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
@@ -3894,7 +3893,7 @@ When on the `Thank You` for your order page, the Checkout `LS` object also has t
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -3925,7 +3924,7 @@ When on the `Thank You` for your order page, the Checkout `LS` object also has t
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
     
     + Body
     
@@ -3957,7 +3956,7 @@ When on the `Thank You` for your order page, the Checkout `LS` object also has t
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
     
     + Body
 
@@ -3992,7 +3991,7 @@ When on the `Thank You` for your order page, the Checkout `LS` object also has t
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -4138,7 +4137,7 @@ Example webhook content:
 ### Retry Policies
 A webhook notification expects a 200 status code in `response`. If this does not happen (it gets another response code or no response at all) we will retry to deliver the notification 14 times along the next three days in incremental lapses of time. After this, the notification is lost.
 
-## Managing Webhooks: Examples and Resources [/webhook]
+## Managing Webhooks [/webhook]
 
 + Attributes
     + id (number) - The unique numeric identifier for the webhook.
@@ -4147,7 +4146,7 @@ A webhook notification expects a 200 status code in `response`. If this does not
     + `created_at` (string) - Date when the webhook was created in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
     + `updated_at` (string) - Date when the webhook was last updated in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
 
-### Retrieve All Webhooks [GET /{store_id}/webhooks/{?since_id,url,event,created_at_min,created_at_max,updated_at_min,updated_at_max,page,per_page,fields}]
+### Get All Webhooks [GET /{store_id}/webhooks/{?since_id,url,event,created_at_min,created_at_max,updated_at_min,updated_at_max,page,per_page,fields}]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
@@ -4167,7 +4166,7 @@ A webhook notification expects a 200 status code in `response`. If this does not
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -4188,7 +4187,7 @@ A webhook notification expects a 200 status code in `response`. If this does not
             }
         ]
 
-### Retrieve A Single Webhook [GET /{store_id}/webhooks/#{id}{?fields}]
+### Get A Particular Webhook [GET /{store_id}/webhooks/#{id}{?fields}]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
@@ -4200,7 +4199,7 @@ A webhook notification expects a 200 status code in `response`. If this does not
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200 (application/json)
 
@@ -4241,7 +4240,7 @@ A webhook notification expects a 200 status code in `response`. If this does not
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 201 (application/json)
 
@@ -4264,7 +4263,7 @@ A webhook notification expects a 200 status code in `response`. If this does not
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
     
     + Body
 
@@ -4297,7 +4296,7 @@ A webhook notification expects a 200 status code in `response`. If this does not
     + Headers
     
             User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer 61181d08b7e328d256736hdcb671c3ce50b8af5
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
 + Response 200
 
