@@ -716,7 +716,7 @@ Fulfill an Order
 ```json
 {
     "shipping_tracking_number": "ABC1234",
-    "notify_customers": true
+    "notify_customer": true
 }
 ```
 
