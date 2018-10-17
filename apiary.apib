@@ -186,7 +186,7 @@ Apps should only ask for the access scopes they need. For example, if an app onl
 
 The available `scopes` are:
 
-| Scope | Affected Endpoints |
+| Scope | Affected Content |
 | --- | --- |
 | `read_content` / `write_content` | `Page` |
 | `read_products` / `write_products` | `Product`, `Product Variant`, `Product Image` and `Category` |
@@ -242,7 +242,7 @@ If Nuvem Shop/Tienda Nube is having trouble, you might see a 5xx error. `500 Int
 
 ## Usage Limits
 
-In order to control the incoming traffic to the API, we allow you to perform a limited number of requests in a given period of time. You can make up to 40 requests in a second, while gaining 2 additional requests every second after that, until you reach the maximum of 40 requests once more. Should you exceed this limitation, you'll receive a `429 - Too Many Requests` error. To provide information about the limit usage, we use the following headers:
+In order to control the incoming traffic to the API, we allow you to perform a limited number of requests in a given period of time. Currently, the approach used to limit the API usage is based on a [Leaky Bucket algorithm](https://en.wikipedia.org/wiki/Leaky_bucket) implementation, where the default bucket size is of 40 requests with a leaky rate of 2 requests per second, which means that you can make up to 40 requests in a second, while gaining 2 additional requests every second after that, until you reach the maximum of 40 requests once more. Should you exceed this limitation, you'll receive a `429 - Too Many Requests` error. To provide information about the limit usage, we use the following headers:
 
 * `X-Rate-Limit-Limit`: Total requests that can be done in a given period.
 * `X-Rate-Limit-Remaining`: Remaining requests in the current period.
