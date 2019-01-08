@@ -1,5 +1,5 @@
 FORMAT: 1A
-HOST: http://api.tiendanube.com/v1/
+HOST: https://api.tiendanube.com/v1/
 
 # Nuvem Shop / Tienda Nube API
 
@@ -9,7 +9,7 @@ This is the official documentation for the Nuvem Shop / Tienda Nube API, and it 
 
 Before you start to code your app integration, you will need to:
 
-1. Sign-up for a partner account at [Nuvem Shop](http://www.nuvemshop.com.br/parceiros) or [Tienda Nube](https://www.tiendanube.com/partners).
+1. Sign-up for a partner account at [Nuvem Shop](https://www.nuvemshop.com.br/parceiros) or [Tienda Nube](https://www.tiendanube.com/partners).
 
 2. Once inside the partner's panel, go to the _Apps_ section and create your app in order to get your credentials.
 
@@ -1299,7 +1299,7 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
 + Parameters
     + store_id (integer, required) - The requested store ID.
     + product_id (number, required, `1234`)
-    + src (string, required, `http://example.com/charmander.jpg`) - The URL to the image.
+    + src (string, required, `https://example.com/charmander.jpg`) - The URL to the image.
     + attachment (string, optional) - Must be image encoded in a Base64 string.
     + filename (string, optional) - A filename containing only letters, numbers, dashes, underscores and dots.
     + position (number, optional) - A number indicating in which position of the image list should the new image be placed.
@@ -2226,7 +2226,7 @@ Orders contain 3 important fields that are detailed below. These are `products`,
                     "image": {
                         "id": 12807577,
                         "product_id": 15033192,
-                        "src": "https:\/\/s3-sa-east-1.amazonaws.com\/tiendanube-mati\/stores\/019\/437\/products\/duolo-fundo11-fe50cccb44336adaf114668881669852-1024-1024.png",
+                        "src": "https://www.example.com/n1c31mag3-1024-1024.png",
                         "position": 1,
                         "alt": [],
                         "created_at": "2016-06-25T20:53:55+0000",
@@ -2251,7 +2251,7 @@ Orders contain 3 important fields that are detailed below. These are `products`,
                     "image": {
                         "id": 10297567,
                         "product_id": 12365900,
-                        "src": "https:\/\/s3-sa-east-1.amazonaws.com\/tiendanube-mati\/stores\/019\/437\/products\/7898904938405-a-85770438894105a716ab4f671b22ccb1-1024-1024.jpg",
+                        "src": "https://www.example.com/n1c31mag3-1024-1024.png",
                         "position": 1,
                         "alt": [],
                         "created_at": "2016-02-20T15:37:34+0000",
@@ -2278,7 +2278,7 @@ Orders contain 3 important fields that are detailed below. These are `products`,
                     "image": {
                         "id": 13132538,
                         "product_id": 15259901,
-                        "src": "https:\/\/s3-sa-east-1.amazonaws.com\/tiendanube-mati\/stores\/019\/437\/products\/syn-ake-o-creme-de-veneno-de-cobra1-aabf0888336ef9709314682865071550-1024-1024.png",
+                        "src": "https://www.example.com/n1c31mag3-1024-1024.png",
                         "position": 1,
                         "alt": [],
                         "created_at": "2016-07-12T01:14:05+0000",
@@ -3324,18 +3324,15 @@ A discount coupon is a way for a store to provide discounts for its customers. T
             ]
         }
 
-### Create A New Coupon [POST /{store_id}/coupons/{?code,type,value,fields}]
+### Create A New Coupon [POST /{store_id}/coupons/]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
+
++ Attributes
     + code (string, required) - Must be unique and can contain only alfanumeric characters.
-    + type (string, required) - Type of the coupon.
-        + Members
-            + `percentage`
-            + `absolute`
-            + `shipping`
-    + value (string, optional) - The value is mandatory if the type is percentage or absolute.
-    + fields (string, optional) - Comma-separated list of fields to include in the response.
+    + type (string, required) - Type of the coupon. Possible values are `percentage`, `absolute` and `shipping`.
+    + value (string, optional) - The value is mandatory if the type is `percentage` or `absolute`.
 
 + Request (application/json)
 
@@ -3612,7 +3609,7 @@ The Script resource allows your app to register custom Javascript to be run in t
 Before you begin, please take into consideration that:
 * You cannot depend on any JavaScript available in the store's theme. Not even jQuery.
 * Other applications may be installed and can include other JavaScript in addition to yours.
-* When we include your script in the store, we will send a `store` parameter with the store id:```<script type="text/javascript" src="http://myapp.com/new.js?store=1234"></script>```
+* When we include your script in the store, we will send a `store` parameter with the store id:```<script type="text/javascript" src="https://myapp.com/new.js?store=1234"></script>```
 
 Ideally, your javascript should be inside a closure to avoid any conflict:
 ```
@@ -3632,7 +3629,7 @@ Please refer to the following examples:
                 JavaScript that will load the jQuery library
                 on Google's CDN.
                 We recommend this code:
-                http://snipplr.com/view/18756/loadscript/
+                https://snipplr.com/view/18756/loadscript/
                 Once the jQuery library is loaded,
                 the callback function will be executed.
             */
@@ -3940,7 +3937,7 @@ When on the `Thank You` for your order page, the Checkout `LS` object also has t
             "created_at": "2013-06-01T15:12:15-03:00",
             "event": "onload",
             "id": 8901,
-            "src": "http://myapp.com/new.js",
+            "src": "https://myapp.com/new.js",
             "updated_at": "2013-06-01T15:12:15-03:00",
             "where": "store"
         }
