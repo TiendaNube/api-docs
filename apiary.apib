@@ -2382,13 +2382,15 @@ Orders contain 3 important fields that are detailed below. These are `products`,
             "paid_at": null
         }
 
-### Fulfill The Order [POST /{store_id}/orders/#{id}/fulfill/{?shipping_tracking_number,notify_customer}]
+### Fulfill The Order [POST /{store_id}/orders/#{id}/fulfill/]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
     + id (number, required, `450789469`) - The unique numeric identifier for the Order.
-    + shipping_tracking_number (string, optional, `ABC1234`) - Shipment's tracking number provided by the shipping company.
-    + notify_customer (string, optional) - Notify the customer of the cancellation.
+
++ Attributes
+    + shipping_tracking_number (string) - Shipment's tracking number provided by the shipping company.
+    + notify_customer (string) - Notify the customer of the cancellation.
         + Default: `true`
 
 + Request (application/json)
@@ -2506,20 +2508,17 @@ Orders contain 3 important fields that are detailed below. These are `products`,
             }
         }
 
-### Cancel The Order [POST /{store_id}/orders/#{id}/cancel/{?reason,email,restock}]
+### Cancel The Order [POST /{store_id}/orders/#{id}/cancel/]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
     + id (number, required, `450789469`) - The unique numeric identifier for the Order.
-    + reason (string, required) - The reason for the order cancellation.
-        + Members
-            + `customer`
-            + `inventory`
-            + `fraud`
-            + `other`
-    + email (string, optional) - Notify the customer of the cancellation.
+
++ Attributes
+    + reason (string, required) - The reason for the order cancellation. Possible values are `customer`, `inventory`, `fraud` and `other`.
+    + email (string) - Notify the customer of the cancellation.
         + Default: `true`
-    + restock (string, optional) - Restock the store's products.
+    + restock (string) - Restock the store's products.
         + Default: `true`
 
 + Request (application/json)
@@ -2650,13 +2649,11 @@ Orders contain 3 important fields that are detailed below. These are `products`,
 + Parameters
     + store_id (integer, required) - The requested store ID.
     + id (number, required, `450789469`) - The unique numeric identifier for the Order.
-    + owner_note (string, optional, `Need to gift wrap this order`) - Store owner's note about the order.
-    + status (string, optional) - Order's status.
-        + Members
-            + `open`
-            + `paid`
-            + `closed`
-            + `cancelled`
+
++ Attributes
+    + owner_note (string, optional) - Store owner's note about the order.
+        + Sample: `Need to gift wrap this order`
+    + status (string, optional) - Order's status. Possible values are `open`, `paid`, `closed` and `cancelled`.
 
 + Request (application/json)
 
@@ -2664,6 +2661,12 @@ Orders contain 3 important fields that are detailed below. These are `products`,
     
             User-Agent: Awesome app (awesome@app.com)
             Authentication: bearer mySt0r34cc3ssT0k3n
+    
+    + Body
+
+            {
+                "owner_note": "Need to gift wrap this order"
+            }
 
 + Response 200 (application/json)
 
