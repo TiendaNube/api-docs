@@ -405,7 +405,7 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
 + Attributes
     + id (number) - The unique numeric identifier for the Product.
     + name (string) - List of the names of the Product, in every language supported by the store.
-    + descripton (string) - List of the descriptions of the Product, as HTML, in every language supported by the store.
+    + description (string) - List of the descriptions of the Product, as HTML, in every language supported by the store.
     + handle (string) - List of the url-friendly strings generated from the Product's names, in every language supported by the store.
     + variants (string) - List of [Product Variant](/#reference/product/managing-product-variants-examples-and-resources) objects representing the different versions of the Product. Variants cannot be modified once created, however they can be added or erased.
     + images (string) - List of [Product Image](/#reference/product/managing-product-images-examples-and-resources) objects representing the Product's images.
@@ -678,9 +678,16 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
-    + name (string, required, `Ultra Ball`)
-    + variants (string, required, `See request`)
-    + images (string, optional, `http://images/UltraBallArt.png`)
+
++ Attributes
+    + name (string, required) - List of the names of the Product, in every language supported by the store.
+    + variants (array[string]) - List of Product Variant objects representing the different versions of the Product. Variants cannot be modified once created, however they can be added or erased.
+    + images (array[string]) - List of Product Image objects representing the Product's images.
+    + description (string) - List of the descriptions of the Product, as HTML, in every language supported by the store.
+    + handle (string) - List of the url-friendly strings generated from the Product's names, in every language supported by the store.
+    + categories (array[string]) - List of Category objects representing the Product's categories.
+    + published (string) - `true` if the Product is published in the store. `false` if the Product will not show up on the store.
+    + attributes (array[string]) - List of the names of the attributes whose values define the variants. E.g.: Color, Size, etc.
 
 + Request (application/json; charset=utf-8)
 
@@ -792,6 +799,14 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
 + Parameters
     + store_id (integer, required) - The requested store ID.
     + id (number, `5123`)
+
++ Attributes
+    + name (string) - List of the names of the Product, in every language supported by the store.
+    + description (string) - List of the descriptions of the Product, as HTML, in every language supported by the store.
+    + handle (string) - List of the url-friendly strings generated from the Product's names, in every language supported by the store.
+    + categories (array[string]) - List of Category objects representing the Product's categories.
+    + published (string) - `true` if the Product is published in the store. `false` if the Product will not show up on the store.
+    + attributes (array[string]) - List of the names of the attributes whose values define the variants. E.g.: Color, Size, etc.
 
 + Request (application/json)
 
