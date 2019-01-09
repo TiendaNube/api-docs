@@ -1109,6 +1109,18 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
     + store_id (integer, required) - The requested store ID.
     + product_id (number, `1234`)
 
++ Attributes
+    + price (number) - Price of the Product Variant. `null` indicates the product will initiate a contact instead of a checkout process.
+    + promotional_price (string) - Lower price to display as a sale. The value of price will be displayed crossed out for comparison.
+    + stock_management (string) - Specifies whether or not Tienda Nube/Nuvem Shop tracks the number of items in stock for this product variant. Valid values are `true` if Tienda Nube/Nuvem Shop tracks the stock, `false` if it doesn't.
+    + stock (string) - Stock of the Product Variant. If `stock_management` is `false` the stock will be `null`.
+    + weight (string) - Weight of the Product Variant in kilograms.
+    + width (string) - Width of the Product Variant in centimetres.
+    + height (string) - Height of the Product Variant in centimetres.
+    + depth (string) - Depth of the Product Variant in centimetres.
+    + sku (string) - Unique identifier of the Product Variant in your store.
+    + values (array[string]) - List of the values of the attributes whose values define the variant. E.g.: Large, Medium, etc.
+
 + Request (application/json)
 
     + Headers
@@ -1157,6 +1169,18 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
     + store_id (integer, required) - The requested store ID.
     + id (number, `144`)
     + product_id (number, `1234`)
+
++ Attributes
+    + values (array[string], required) - List of the values of the attributes whose values define the variant. E.g.: Large, Medium, etc.
+    + price (number) - Price of the Product Variant. `null` indicates the product will initiate a contact instead of a checkout process.
+    + promotional_price (string) - Lower price to display as a sale. The value of price will be displayed crossed out for comparison.
+    + stock_management (string) - Specifies whether or not Tienda Nube/Nuvem Shop tracks the number of items in stock for this product variant. Valid values are `true` if Tienda Nube/Nuvem Shop tracks the stock, `false` if it doesn't.
+    + stock (string) - Stock of the Product Variant. If `stock_management` is `false` the stock will be `null`.
+    + weight (string) - Weight of the Product Variant in kilograms.
+    + width (string) - Width of the Product Variant in centimetres.
+    + height (string) - Height of the Product Variant in centimetres.
+    + depth (string) - Depth of the Product Variant in centimetres.
+    + sku (string) - Unique identifier of the Product Variant in your store.
 
 + Request (application/json)
 
@@ -1309,15 +1333,17 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
             "updated_at": "2013-03-11T09:14:11-03:00"
         }
 
-### Upload A New Image To A Product [POST /{store_id}/products/#{product_id}/images/{?src,attachment,filename,position}]
+### Upload A New Image To A Product [POST /{store_id}/products/#{product_id}/images/]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
     + product_id (number, required, `1234`)
-    + src (string, required, `https://example.com/charmander.jpg`) - The URL to the image.
-    + attachment (string, optional) - Must be image encoded in a Base64 string.
-    + filename (string, optional) - A filename containing only letters, numbers, dashes, underscores and dots.
-    + position (number, optional) - A number indicating in which position of the image list should the new image be placed.
+
++ Attributes
+    + src (string) - URL of the product image. If `src` is not provided, `attachment` and `filename` must be present.
+    + attachment (string) - Must be image encoded in a Base64 string.
+    + filename (string) - A filename containing only letters, numbers, dashes, underscores and dots. Must be in one of the following formats: `.gif`, `.jpg`, `.png`.
+    + position (number) - A number indicating in which position of the image list should the new image be placed.
 
 + Request (application/json)
 
@@ -1343,6 +1369,12 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
     + store_id (integer, required) - The requested store ID.
     + id (number, `145`)
     + product_id (number, `1234`)
+
++ Attributes
+    + src (string) - URL of the product image. If `src` is not provided, `attachment` and `filename` must be present.
+    + attachment (string) - Must be image encoded in a Base64 string.
+    + filename (string) - A filename containing only letters, numbers, dashes, underscores and dots. Must be in one of the following formats: `.gif`, `.jpg`, `.png`.
+    + position (number) - A number indicating in which position of the image list should the new image be placed.
 
 + Request (application/json)
 
