@@ -1434,7 +1434,7 @@ A Category lets the store owner group their products to make the store easier to
 + Attributes
     + id (number) - The unique numeric identifier for the Category.
     + name (string) - List of the names of the Category, in every language supported by the store.
-    + descripton (string) - List of the descriptions of the Category, as HTML, in every language supported by the store.
+    + description (string) - List of the descriptions of the Category, as HTML, in every language supported by the store.
     + handle (string) - List of the url-friendly strings generated from the Category's names, in every language supported by the store.
     + parent (string) - Id of the Category's parent. `null` if it has no parent.
     + subcategories (string) - The ids of the Category's first level subcategories.
@@ -1530,12 +1530,16 @@ A Category lets the store owner group their products to make the store easier to
           "updated_at": "2013-03-11T09:14:11-03:00"
         }
 
-### Create A New Category [POST /{store_id}/categories/{?name,parent}]
+### Create A New Category [POST /{store_id}/categories/]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
-    + name (string, `Gen I`) - Restrict results to after the specified ID.
-    + parent (number, optional, `4567`)
+
++ Attributes
+    + name (string, required) - Name of the category, in every language supported by the store.
+    + description (string) - List of the descriptions of the Category, as HTML, in every language supported by the store.
+    + parent (string) - Id of the Category's parent. `null` if it has no parent.
+    + subcategories (array[string]) - List of the ids of the Category's first level subcategories.
 
 + Request (application/json)
 
