@@ -3520,7 +3520,7 @@ An example would be to use it in an app for Bookstores that require that you ass
 ## Managing Metafields [/metafield]
 
 + Attributes
-    + `owner_resource` (string) - Type of entity to which the Metafield is associated.
+    + `owner_resource` (string) - Type of entity to which the Metafield is associated. Possible values are products, product_variants, categories and pages.
     + `id` (number) - The unique numeric identifier for the Metafield.
     + `namespace` (string) - The namespace where the Metafield makes sense. It can be any string that starts with a letter followed only by: `a-z`, `A-Z`, `0-9` or `_`.
     + `key` (string) - String that identifies the Metafield in some namespace. It can be any string that starts with a letter followed only by: `a-z`, `A-Z`, `0-9` or `_`.
@@ -3537,7 +3537,12 @@ An example would be to use it in an app for Bookstores that require that you ass
     + key (string, optional) - Metafield's key.
     + namespace (string, optional) - The namespace where the Metafield was defined.
     + owner_id (number, optional) - Entity id to which the Metafield is associated.
-    + owner_resource (string, `Product`) - Type of entity to which the Metafield is associated.
+    + owner_resource (string, required) - Type of entity to which the Metafield is associated.
+        + Members
+            + products
+            + product_variants
+            + categories
+            + pages
     + created_at_min (string, optional, `2013-01-01T00:00:00-03:00`) - Show Products created after date (ISO 8601 format).
     + created_at_max (string, optional) - Show Products created before date (ISO 8601 format).
     + updated_at_min (string, optional) - Show Products last updated after date (ISO 8601 format).
@@ -3573,11 +3578,16 @@ An example would be to use it in an app for Bookstores that require that you ass
             }
         ]
 
-### Get A Particular Metafield [GET /{store_id}/metafields/#{id}]
+### Get A Particular Metafield [GET /{store_id}/metafields/#{id?key,namespace,owner_id,page,fields}]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
     + id (number, `11896`) - The unique numeric identifier for the Metafield.
+    + key (string, optional) - Metafield's key.
+    + namespace (string, optional) - The namespace where the Metafield was defined.
+    + owner_id (number, optional) - Entity id to which the Metafield is associated.
+    + page (string, optional) - Page to show.
+    + fields (string, optional, `owner_id,key,value`) - Comma-separated list of fields to include in the response.
 
 + Request (application/json)
 
@@ -3600,16 +3610,23 @@ An example would be to use it in an app for Bookstores that require that you ass
             "updated_at":"2015-01-02T20:01:50+0000"
         }
 
-### Create A New Metafield [POST /{store_id}/metafields/{?key,value,namespace,description,owner_id,owner_resource}]
+### Create A New Metafield [POST /{store_id}/metafields]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
-    + key (string, `the_key`) - String that identifies the Metafield in some namespace. It can be any string that starts with a letter followed only by: `a-z`, `A-Z`, `0-9` or `_`.
-    + value (string, `its_value`) - Metafield's value.
-    + namespace (string, `a_namespace`) - The namespace where the Metafield makes sense. It can be any string that starts with a letter followed only by: `a-z`, `A-Z`, `0-9` or `_`.
-    + description (string, optional, `an adequate description`) - String explaining the Metafield's meaning.
-    + owner_id (number, `2857023`) - Entity id to which the Metafield is associated.
-    + owner_resource (string, `Product`) - Type of entity to which the Metafield is associated.
+
++ Attributes
+    + `owner_resource` (string) - Type of entity to which the Metafield is associated. Possible values are `products`, `product_variants`, `categories` and `pages`.
+    + id (number) - The unique numeric identifier for the Metafield.
+    + namespace (string) - The namespace where the Metafield makes sense. It can be any string that starts with a letter followed only by: `a-z`, `A-Z`, `0-9` or `_`.
+    + key (string) - String that identifies the Metafield in some namespace. It can be any string that starts with a letter followed only by: `a-z`, `A-Z`, `0-9` or `_`.
+    + description (string, optional) - String explaining the Metafield's meaning.
+    + value (string) - Metafield's value.
+    + key (string) - String that identifies the Metafield in some namespace. It can be any string that starts with a letter followed only by: `a-z`, `A-Z`, `0-9` or `_`.
+    + value (string) - Metafield's value.
+    + namespace (string) - The namespace where the Metafield makes sense. It can be any string that starts with a letter followed only by: `a-z`, `A-Z`, `0-9` or `_`.
+    + description (string, optional) - String explaining the Metafield's meaning.
+    + `owner_id` (number) - Entity id to which the Metafield is associated.
 
 + Request (application/json)
 
@@ -3632,13 +3649,15 @@ An example would be to use it in an app for Bookstores that require that you ass
             "deleted_at":null
         }
 
-### Modify An Existing Metafield [PUT /{store_id}/metafields/#{id}{?value,description}]
+### Modify An Existing Metafield [PUT /{store_id}/metafields/#{id}]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
     + id (number, `13226`) - The unique numeric identifier for the Metafield.
-    + value (string, optional,`new_value`) - Metafield's value.
-    + description (string, optional, `a better description`) - String explaining the Metafield's meaning.
+
++ Attributes
+    + value (string) - Metafield's value.
+    + description (string) - String explaining the Metafield's meaning.
 
 + Request (application/json)
 
