@@ -4006,14 +4006,11 @@ When on the `Thank You` for your order page, the Checkout `LS` object also has t
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
-    + src (string, required, `https://myapp.com/new.js`) - Specifies the location of the Script.
-    + event (string, required) - DOM event which triggers the loading of the script.
-        + Members
-            + `onload`
-    + where (string, required) - A comma-separated list of places where the javascript will run.
-        + Members
-            + `store`
-            + `checkout`
+
++ Attributes
+    + src (string, required) - Specifies the location of the Script.
+    + event (string, required) - DOM event which triggers the loading of the script. The only valid value is `onload` (default).
+    + where (string, required) - A comma-separated list of places where the javascript will run. Possible values are store (default) or checkout.
 
 + Request (application/json)
 
@@ -4026,7 +4023,7 @@ When on the `Thank You` for your order page, the Checkout `LS` object also has t
     
             {
                 "src": "https://myapp.com/new.js",
-                "where": "store",
+                "where": "checkout",
                 "event": "onload"
             }
 
@@ -4038,7 +4035,7 @@ When on the `Thank You` for your order page, the Checkout `LS` object also has t
             "id": 8901,
             "src": "https://myapp.com/new.js",
             "updated_at": "2013-06-01T15:12:15-03:00",
-            "where": "store"
+            "where": "checkout"
         }
 
 ### Modify An Existing Script [POST /{store_id}/scripts/#{id}]
@@ -4046,6 +4043,11 @@ When on the `Thank You` for your order page, the Checkout `LS` object also has t
 + Parameters
     + store_id (integer, required) - The requested store ID.
     + id (number, `5123`) - The unique numeric identifier for the Script.
+
++ Attributes
+    + src (string, required) - Specifies the location of the Script.
+    + event (string, required) - DOM event which triggers the loading of the script. The only valid value is `onload` (default).
+    + where (string, required) - A comma-separated list of places where the javascript will run. Possible values are store (default) or checkout.
 
 + Request (application/json)
 
@@ -4057,11 +4059,8 @@ When on the `Thank You` for your order page, the Checkout `LS` object also has t
     + Body
 
             {
-                "created_at": "2013-04-07T09:11:51-03:00",
                 "event": "onload",
-                "id": 5123,
                 "src": "https://myapp.com/another_bar.js",
-                "updated_at": "2013-06-01T12:05:34-03:00",
                 "where": "store"
             }
 
@@ -4307,29 +4306,14 @@ A webhook notification expects a 200 status code in `response`. If this does not
             "url": "http://myapp.com/order_created_hook"
         }
 
-### Create A New Webhook [POST /{store_id}/webhooks/{?url,event}]
+### Create A New Webhook [POST /{store_id}/webhooks/]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
-    + url (string, required, `http://myapp.com/product_created_hook`) - Show webhooks tags with a given URL.
-    + event (string, required) - Show webhooks with a given event.
-        + Members
-            + `app/uninstalled`
-            + `app/suspended`
-            + `app/resumed`
-            + `category/created`
-            + `category/updated`
-            + `category/deleted`
-            + `order/created`
-            + `order/updated`
-            + `order/paid`
-            + `order/fulfilled`
-            + `order/cancelled`
-            + `product/created`
-            + `product/updated`
-            + `product/deleted`
-            + `domain/updated`
-            + `theme/updated`
+
++ Attributes
+    + url (string, required) - Show webhooks tags with a given URL.
+    + event (string, required) - Show webhooks with a given event. Possible values found in the list specified in the introduction to this section.
 
 + Request (application/json)
 
@@ -4337,6 +4321,13 @@ A webhook notification expects a 200 status code in `response`. If this does not
     
             User-Agent: Awesome app (awesome@app.com)
             Authentication: bearer mySt0r34cc3ssT0k3n
+    
+    + Body
+
+            {
+                "url": "http://myapp.com/product_created_hook",
+                "event": "product/created"
+            }
 
 + Response 201 (application/json)
 
@@ -4354,6 +4345,10 @@ A webhook notification expects a 200 status code in `response`. If this does not
     + store_id (integer, required) - The requested store ID.
     + id (number, `5670`) - This is the Webhook's unique ID.
 
++ Attributes
+    + url (string, required) - Show webhooks tags with a given URL.
+    + event (string, required) - Show webhooks with a given event. Possible values found in the list specified in the introduction to this section.
+
 + Request (application/json)
 
     + Headers
@@ -4364,10 +4359,7 @@ A webhook notification expects a 200 status code in `response`. If this does not
     + Body
 
             {
-                "created_at": "2013-04-07T09:11:51-03:00",
                 "event": "category/created",
-                "id": 5670,
-                "updated_at": "2013-04-08T11:11:51-03:00",
                 "url": "http://myapp.com/category_created_hook"
             }
 
