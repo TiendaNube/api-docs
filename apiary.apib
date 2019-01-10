@@ -3412,7 +3412,7 @@ A discount coupon is a way for a store to provide discounts for its customers. T
                 "value": "30.00",
                 "max_uses": 100,
                 "min_price": 10,
-                "categories": null,
+                "categories": [1234,3456,5678],
                 "start_date": "2014-05-08",
                 "end_date": "2014-06-08"
             }
@@ -3430,17 +3430,26 @@ A discount coupon is a way for a store to provide discounts for its customers. T
             "start_date": "2014-05-08",
             "end_date": "2014-06-08",
             "min_price": 10,
-            "categories": null
+            "categories": [1234,3456,5678]
         }
 
-### Modify An Existing Coupon [PUT /{store_id}/coupons/#{id,code}{?type,value}]
+### Modify An Existing Coupon [PUT /{store_id}/coupons/#{id}]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
     + id (number, `32967`)
-    + code (string, `OTRAPRUEBA`)
-    + type (string, `absolute`)
-    + value (number, `50`)
+
++ Attributes
+    + `code` (string) - String that identifies the coupon.
+    + `type` (string) - Type of the coupon. Possible values are "`percentage`", "`absolute`" or "`shipping`".
+    + `valid` (string) - Flag ("`true`" or "`false`") that indicates if the coupon is valid or not.
+    + `start_date` (string) - Date from which the coupon is valid.
+    + `end_date` (string) - Date of overdue of the coupon.
+    + `deleted_at` (string) - Date when the coupon was deleted. The value is "`null`" if the coupon is still valid.
+    + `max_uses` (string) - Max number of times the coupon can be used.
+    + `value` (string) - Value of the discount.
+    + `min_price` (string) - Indicates the minimun value of the bill for applying the discount.
+    + `categories` (array[number]) - List of Category objects representing the categories of the store where the discount applies.
 
 + Request (application/json)
 
@@ -3448,12 +3457,20 @@ A discount coupon is a way for a store to provide discounts for its customers. T
     
             User-Agent: Awesome app (awesome@app.com)
             Authentication: bearer mySt0r34cc3ssT0k3n
+    
+    + Body
+
+            {
+                "type": "absolute",
+                "value": "50",
+                "categories": [123,456,567]
+            }
 
 + Response 200 (application/json)
 
         {
             "id": 32967,
-            "code": "OTRAPRUEBA",
+            "code": "ANOTHERTEST",
             "type": "absolute",
             "value": 50,
             "valid": true,
@@ -3462,7 +3479,7 @@ A discount coupon is a way for a store to provide discounts for its customers. T
             "start_date": "2014-05-08",
             "end_date": "2014-06-08",
             "min_price": 10,
-            "categories": null
+            "categories": [123,456,567]
         }
 
 ### Delete A Coupon [DELETE /{store_id}/coupons/#{id}]
