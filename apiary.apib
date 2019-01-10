@@ -276,8 +276,8 @@ The Store resource contains general settings and information about a Nuvem Shop 
 
 + Attributes
     + id (number) - The unique numeric identifier for the Store.
-    + name (string) - List of the names of the Store, in every language supported by the store.
-    + description (string) - List of the descriptions of the Store, in every language supported by the store.
+    + name (array[string]) - List of the names of the Store, in every language supported by the store.
+    + description (array[string]) - List of the descriptions of the Store, in every language supported by the store.
     + type (string) - Store type. Examples include "clothing", "sports", "electronic". Can be null.
     + email (string) - Store owner's e-mail.
     + logo (string) - Store logo URL, starting with // (or null if it has no logo).
@@ -297,7 +297,7 @@ The Store resource contains general settings and information about a Nuvem Shop 
     + plan_name (string) - Name of the Tienda Nube/Nuvem Shop's plan the store is on.
     + country (string) - Store's country in ISO 3166-1 format.
     + languages (string) - Store available languages with its currency and whether or not is active.
-    + domains (string) - List of store's domains.
+    + domains (array[string]) - List of store's domains.
     + original_domain (string) - Original tiendanube.com or nuvemshop.com.br domain for the Store.
     + current_theme (string) - Store's current theme.
     + main_language (string) - Store's main language.
@@ -404,14 +404,14 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
 
 + Attributes
     + id (number) - The unique numeric identifier for the Product.
-    + name (string) - List of the names of the Product, in every language supported by the store.
-    + description (string) - List of the descriptions of the Product, as HTML, in every language supported by the store.
-    + handle (string) - List of the url-friendly strings generated from the Product's names, in every language supported by the store.
-    + variants (string) - List of [Product Variant](/#reference/product/managing-product-variants-examples-and-resources) objects representing the different versions of the Product. Variants cannot be modified once created, however they can be added or erased.
-    + images (string) - List of [Product Image](/#reference/product/managing-product-images-examples-and-resources) objects representing the Product's images.
-    + categories (string) - List of [Category](/#reference/category) objects representing the Product's categories.
+    + name (array[string]) - List of the names of the Product, in every language supported by the store.
+    + description (array[string]) - List of the descriptions of the Product, as HTML, in every language supported by the store.
+    + handle (array[string]) - List of the url-friendly strings generated from the Product's names, in every language supported by the store.
+    + variants (array[string]) - List of [Product Variant](/#reference/product/managing-product-variants-examples-and-resources) objects representing the different versions of the Product. Variants cannot be modified once created, however they can be added or erased.
+    + images (array[string]) - List of [Product Image](/#reference/product/managing-product-images-examples-and-resources) objects representing the Product's images.
+    + categories (array[number]) - List of [Category](/#reference/category) objects representing the Product's categories.
     + published (string) - `true` if the Product is published in the store. `false` if the Product will not show up on the store.
-    + attributes (string) - List of the names of the attributes whose values define the variants. E.g.: Color, Size, etc.
+    + attributes (array[string]) - List of the names of the attributes whose values define the variants. E.g.: Color, Size, etc.
     + tags (string) - String with all the Product's tags, separated by commas.
     + `created_at` (string) - Date when the Product was created in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
     + `updated_at` (string) - Date when the Product was last updated in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
@@ -680,12 +680,12 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
     + store_id (integer, required) - The requested store ID.
 
 + Attributes
-    + name (string, required) - List of the names of the Product, in every language supported by the store.
+    + name (array[string], required) - List of the names of the Product, in every language supported by the store.
     + variants (array[string]) - List of Product Variant objects representing the different versions of the Product. Variants cannot be modified once created, however they can be added or erased.
     + images (array[string]) - List of Product Image objects representing the Product's images.
-    + description (string) - List of the descriptions of the Product, as HTML, in every language supported by the store.
-    + handle (string) - List of the url-friendly strings generated from the Product's names, in every language supported by the store.
-    + categories (array[string]) - List of Category objects representing the Product's categories.
+    + description (array[string]) - List of the descriptions of the Product, as HTML, in every language supported by the store.
+    + handle (array[string]) - List of the url-friendly strings generated from the Product's names, in every language supported by the store.
+    + categories (array[number]) - List of Category objects representing the Product's categories.
     + published (string) - `true` if the Product is published in the store. `false` if the Product will not show up on the store.
     + attributes (array[string]) - List of the names of the attributes whose values define the variants. E.g.: Color, Size, etc.
 
@@ -801,9 +801,9 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
     + id (number, `5123`)
 
 + Attributes
-    + name (string) - List of the names of the Product, in every language supported by the store.
-    + description (string) - List of the descriptions of the Product, as HTML, in every language supported by the store.
-    + handle (string) - List of the url-friendly strings generated from the Product's names, in every language supported by the store.
+    + name (array[string]) - List of the names of the Product, in every language supported by the store.
+    + description (array[string]) - List of the descriptions of the Product, as HTML, in every language supported by the store.
+    + handle (array[string]) - List of the url-friendly strings generated from the Product's names, in every language supported by the store.
     + categories (array[string]) - List of Category objects representing the Product's categories.
     + published (string) - `true` if the Product is published in the store. `false` if the Product will not show up on the store.
     + attributes (array[string]) - List of the names of the attributes whose values define the variants. E.g.: Color, Size, etc.
@@ -992,7 +992,7 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
     + height (string) - Height of the Product Variant in centimetres.
     + depth (string) - Depth of the Product Variant in centimetres.
     + sku (string) - Unique identifier of the Product Variant in your store.
-    + values (string) - List of the values of the attributes whose values define the variant. E.g.: Large, Medium, etc.
+    + values (array[string]) - List of the values of the attributes whose values define the variant. E.g.: Large, Medium, etc.
     + `created_at` (string) - Date when the Product Variant was created in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
     + `updated_at` (string) - Date when the Product Variant was last updated in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
 
@@ -1433,9 +1433,9 @@ A Category lets the store owner group their products to make the store easier to
 
 + Attributes
     + id (number) - The unique numeric identifier for the Category.
-    + name (string) - List of the names of the Category, in every language supported by the store.
-    + description (string) - List of the descriptions of the Category, as HTML, in every language supported by the store.
-    + handle (string) - List of the url-friendly strings generated from the Category's names, in every language supported by the store.
+    + name (array[string]) - List of the names of the Category, in every language supported by the store.
+    + description (array[string]) - List of the descriptions of the Category, as HTML, in every language supported by the store.
+    + handle (array[string]) - List of the url-friendly strings generated from the Category's names, in every language supported by the store.
     + parent (string) - Id of the Category's parent. `null` if it has no parent.
     + subcategories (string) - The ids of the Category's first level subcategories.
     + `created_at` (string) - Date when the Category was created in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
@@ -1537,7 +1537,7 @@ A Category lets the store owner group their products to make the store easier to
 
 + Attributes
     + name (string, required) - Name of the category, in every language supported by the store.
-    + description (string) - List of the descriptions of the Category, as HTML, in every language supported by the store.
+    + description (array[string]) - List of the descriptions of the Category, as HTML, in every language supported by the store.
     + parent (string) - Id of the Category's parent. `null` if it has no parent.
     + subcategories (array[string]) - List of the ids of the Category's first level subcategories.
 
@@ -1691,10 +1691,10 @@ Orders contain 3 important fields that are detailed below. These are `products`,
     + token (string) - Specifies the location of the Order.
     + number (string) - Unique number identifier for an Order used by the shop owner and customers. It's sequential and starts at 100.
     + customer (string) - [Customer](/#reference/customer) that purchased this Order. Only given if the 'read_customers' scope is set for the app.
-    + products - List of the products purchased by the `customer`. Contents are explained [above](/#reference/order) and values hold are the ones corresponding to the time the products were purchased.
+    + products (array[string]) - List of the products purchased by the `customer`. Contents are explained [above](/#reference/order) and values hold are the ones corresponding to the time the products were purchased.
     + note (string) - Customer's note about the order.
     + owner_note (string) - Store owner's note about the order.
-    + coupon (string) - List of coupons applied to the order.
+    + coupon (array[string]) - List of coupons applied to the order.
     + discount (string) - Total value of the discount applied to the price of the order.
     + subtotal (string) - Price of the order before shipping.
     + total (string) - Total price of the order including shipping and discounts.
@@ -2792,7 +2792,7 @@ Customer accounts store contact information for the customer, saving logged-in c
     + identification (string) - Customer's identification (in Brazil for example, it would be the CPF/CNPJ).
     + note (string) - Store owner's notes about the customer.
     + default_address (string) - Default shipping address of the Customer.
-    + addresses (string) - List of shipping addresses for the Customer.
+    + addresses (array[string]) - List of shipping addresses for the Customer.
     + billing_address (string) - Billing address of the Customer.
     + billing_number (string) - Billing number of the Customer.
     + billing_floor (string) - Billing floor of the Customer.
@@ -2809,7 +2809,7 @@ Customer accounts store contact information for the customer, saving logged-in c
     + `created_at` (string) - Date when the Customer was created in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
     + `updated_at` (string) - Date when the Customer was last updated in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601).
 
-### Get All Costumers [GET /{store_id}/customers/{?since_id,created_at_min,created_at_max,updated_at_min,updated_at_max,page,per_page,fields}]
+### Get All Customers [GET /{store_id}/customers/{?since_id,created_at_min,created_at_max,updated_at_min,updated_at_max,page,per_page,fields}]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
@@ -3216,7 +3216,7 @@ A discount coupon is a way for a store to provide discounts for its customers. T
     + `max_uses` (string) - Max number of times the coupon can be used.
     + `value` (string) - Value of the discount.
     + `min_price` (string) - Indicates the minimun value of the bill for applying the discount.
-    + `categories` (string) - List of [Category](/#reference/category) objects representing the categories of the store where the discount applies.
+    + `categories` (array[string]) - List of [Category](/#reference/category) objects representing the categories of the store where the discount applies.
 
 ### Get All Coupons [GET /{store_id}/coupons/{?min_start_date,min_end_date,max_start_date,max_end_date,valid,created_at_min,created_at_max,updated_at_min,updated_at_max,page,per_page,fields}]
 
@@ -3329,11 +3329,12 @@ A discount coupon is a way for a store to provide discounts for its customers. T
             }
         ]
 
-### Get A Particular Coupon [GET /{store_id}/coupons/#{id}]
+### Get A Particular Coupon [GET /{store_id}/coupons/#{id?fields}]
 
 + Parameters
     + store_id (integer, required) - The requested store ID.
     + id (number, `32964`) - The unique numeric identifier for the Coupon.
+    + fields (string, optional) - Comma-separated list of fields to include in the response.
 
 + Request (application/json)
 
@@ -3386,7 +3387,15 @@ A discount coupon is a way for a store to provide discounts for its customers. T
 + Attributes
     + code (string, required) - Must be unique and can contain only alfanumeric characters.
     + type (string, required) - Type of the coupon. Possible values are `percentage`, `absolute` and `shipping`.
-    + value (string, optional) - The value is mandatory if the type is `percentage` or `absolute`.
+    + value (string, optional) - Value of the discount. The `value` is mandatory if the type is `percentage` or `absolute`.
+    + `valid` (string) - Flag ("`true`" or "`false`") that indicates if the coupon is valid or not.
+    + `start_date` (string) - Date from which the coupon is valid.
+    + `end_date` (string) - Date of overdue of the coupon.
+    + `deleted_at` (string) - Date when the coupon was deleted. The value is "`null`" if the coupon is still valid.
+    + `max_uses` (string) - Max number of times the coupon can be used.
+    + `min_price` (string) - Indicates the minimun value of the bill for applying the discount.
+    + `categories` (array[number]) - List of Category objects representing the categories of the store where the discount applies.
+
 
 + Request (application/json)
 
