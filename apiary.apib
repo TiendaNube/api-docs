@@ -236,6 +236,8 @@ Content-Length: 47
 }
 ```
 
+>**Note**: All parameters' values must be separated by commas.
+
 ### Server Errors
 
 If Nuvem Shop/Tienda Nube is having trouble, you might see a 5xx error. `500 Internal Server Error` means that the app is entirely down, but you might also see `502 Bad Gateway`, `503 Service Unavailable`, or `504 Gateway Timeout`. It's your responsibility in all of these cases to retry your request later.
@@ -304,6 +306,7 @@ The Store resource contains general settings and information about a Nuvem Shop 
     + main_currency (string) - Store's main currency in ISO 4217 format.
     + admin_language (string) - Store's admin language.
     + created_at (string) - Date when the Store was created in ISO 8601 format.
+
 
 ### Retrieve The Store's Information [GET /{store_id}/store{?fields}]
 
