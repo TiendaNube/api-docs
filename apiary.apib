@@ -4682,10 +4682,6 @@ We will provide server-side caching to reduce the number of requests done to you
 + Parameters
     + store_id (integer, required) - The requested store ID.
     + id (integer, required, `1`) - The requested shipping carrier's ID.
-    + `created_at_min` (string, optional) - Show Shipping Carriers added after date ([ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601)).
-    + `created_at_max` (string, optional) - Show Shipping Carriers added before date ([ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601)).
-    + `updated_at_min` (string, optional) - Show Shipping Carriers last updated after date ([ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601)).
-    + `updated_at_max` (string, optional) - Show Shipping Carriers last updated before date ([ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601)).
     + `page` (string, optional) - Page to show.
     + `per_page` (string, optional) - Amount of results.
     + `fields` (string, optional) - Comma-separated list of fields to include in the response.
@@ -4728,11 +4724,11 @@ We will provide server-side caching to reduce the number of requests done to you
     
     + Body
 
-        {
-            "name": "My Shipping Company",
-            "callback_url": "https://example.com/rates",
-            "types": "ship,pickup"
-        }
+            {
+                "name": "My Shipping Company",
+                "callback_url": "https://example.com/rates",
+                "types": "ship,pickup"
+            }
 
 + Response 201 (application/json)
 
@@ -4767,11 +4763,11 @@ We will provide server-side caching to reduce the number of requests done to you
     
     + Body
 
-        {
-            "name": "My Super Shipping Company",
-            "types": "ship",
-            "active": false  
-        }
+            {
+                "name": "My Super Shipping Company",
+                "types": "ship",
+                "active": false
+            }
 
 + Response 200 (application/json)
 
@@ -4810,13 +4806,27 @@ We will provide server-side caching to reduce the number of requests done to you
 
 A Fulfillment Event represents a tracking event belonging to the order's fulfillment. Fulfillment events are displayed on the order tracking page to give buyers visibility on their shipment status.
 
+Valid status are:
+| Status | Description |
+| --- | --- |
+| `dispatched` | Package has been posted by the merchant. |
+| `received_by_post_office` | Package has been received by the Shipping Carrier. |
+| `in_transit` | Package is in transit. |
+| `out_for_delivery` | Package is out for delivery. |
+| `delivery_attempt_failed` | Package could not be delivered. |
+| `delayed` | Package delayed. |
+| `ready_for_pickup` | Package is ready for pickup. |
+| `returned_to_sender` | Package was returned to sender. |
+| `lost` | Package lost. |
+| `failure` | Package delivery failed. |
+
 ## Managing Fulfillment Events [/fulfillment_events]
 
-### Retrieve All Fulfillment Events For An Order [GET /orders/#{order_id}/fulfillments]
+### Retrieve All Fulfillment Events For An Order [GET /{store_id}/orders/#{order_id}/fulfillments]
 
 + Parameters
-    + store_id (integer, required) - The requested store ID.
-    + id (integer, required) - The requested shipping carrier's ID.
+    + store_id (integer, required) - The requested store's ID.
+    + order_id (integer, required) - The requested order's ID.
 
 + Request (application/json)
 
@@ -4856,102 +4866,103 @@ A Fulfillment Event represents a tracking event belonging to the order's fulfill
             }
         }
 
-### GET /orders/#{order_id}/fulfillments/#{id}
+### Receive A Single Fulfillment Event [GET /{store_id}/orders/#{order_id}/fulfillments/#{id}]
 
-Receive a single Fulfillment Event
++ Parameters
+    + store_id (integer, required) - The requested store's ID.
+    + order_id (integer, required, `123`) - The requested order's ID.
+    + id (integer, required, `1`) - The requested fulfillment event's ID.
 
-#### GET /orders/123/fulfillments/1
++ Request (application/json)
 
-`HTTP/1.1 200 OK`
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
-```json
-{
-    "id": 1,
-    "order_id": 123,
-    "status": "dispatched",
-    "description": "Objeto postado",
-    "city": "São Paulo",
-    "province": "São Paulo",
-    "country": "BR",
-    "created_at": "2013-04-20T08:23:42-03:00",
-    "updated_at": "2013-04-20T08:23:42-03:00",
-    "happened_at": "2013-04-20T05:17:02-03:00",
-    "estimated_delivery_at": "2013-04-22T12:00:00-03:00"
-}
-```
++ Response 200 (application/json)
 
-### POST /orders/#{order_id}/fulfillments
+            {
+                "id": 1,
+                "order_id": 123,
+                "status": "dispatched",
+                "description": "Objeto postado",
+                "city": "São Paulo",
+                "province": "São Paulo",
+                "country": "BR",
+                "created_at": "2013-04-20T08:23:42-03:00",
+                "updated_at": "2013-04-20T08:23:42-03:00",
+                "happened_at": "2013-04-20T05:17:02-03:00",
+                "estimated_delivery_at": "2013-04-22T12:00:00-03:00"
+            }
 
-Create a new Fulfillment Event
+### Create A New Fulfillment Event [POST /#{store_id}/orders/#{order_id}/fulfillments]
 
-| Parameter            | Explanation                                                                                                     |
-| -------------------- | --------------------------------------------------------------------------------------------------------------- |
-| status               | Fulfillment Event's status (see below for accepted values).                                                     |
-| description          | Message describing the status.                                                                                   |
-| city                 | Fulfillment Event's city.                                                                                       |
-| province             | Fulfillment Event's province.                                                                                   |
-| country              | Fulfillment Event's country in [ISO 3166-1 format](http://en.wikipedia.org/wiki/ISO_3166-1).                    |
-| happened_at          | Date when the Fulfillment Event occured was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601).|
-| estimated_delivery_at| Estimated date when the package will be delivered in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601).  |
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + order_id (integer, required, `123`) - The requested order's ID.
 
-Valid status are:
++ Attributes
+    + name (string) - The name of the Shipping Carrier as seen by both merchants and buyers.
+    + status (string, required) - Fulfillment Event's status. Accepted values are listed above.
+    + description (string, required) - Message describing the status.
+    + city (string, required) - Fulfillment Event's city.
+    + province (string, required) - Fulfillment Event's province.
+    + country (string, required) - Fulfillment Event's country in [ISO 3166-1 format](http://en.wikipedia.org/wiki/ISO_3166-1).
+    + `happened_at` (string) - Date when the Fulfillment Event occured was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601).
+    + `estimated_delivery_at` (string) - Estimated date when the package will be delivered in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601).
 
++ Request (application/json)
 
-| Status                 | Explanation                                                    |
-| ---------------------- | -------------------------------------------------------------- |
-| dispatched             | Package has been posted by the merchant.                       |
-| received_by_post_office| Package has been received by the Shipping Carrier.             |
-| in_transit             | Package is in transit.                                         |
-| out_for_delivery       | Package is out for delivery.                                   |
-| delivery_attempt_failed| Package could not be delivered.                                |
-| delayed                | Package delayed.                                               |
-| ready_for_pickup       | Package is ready for pickup.                                   |
-| returned_to_sender     | Package was returned to sender.                                |
-| lost                   | Package lost.                                                  |
-| failure                | Package delivery failed.                                       |
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer mySt0r34cc3ssT0k3n
+    
+    + Body
 
+            {
+                "status": "delivered",
+                "description": "Objeto entregue ao destinatário",
+                "city": "São Paulo",
+                "province": "São Paulo",
+                "country": "BR",
+                "happened_at": "2013-04-22T11:39:12-03:00",
+                "estimated_delivery_at": "2013-04-22T11:39:12-03:00"
+            }
 
++ Response 201 (application/json)
 
-#### POST /orders/123/fulfillments
+            {
+                "id": 3,
+                "order_id": 123,
+                "status": "delivered",
+                "description": "Objeto entregue ao destinatário",
+                "city": "São Paulo",
+                "province": "São Paulo",
+                "country": "BR",
+                "created_at": "2013-04-20T08:23:42-03:00",
+                "updated_at": "2013-04-20T08:23:42-03:00",
+                "happened_at": "2013-04-20T05:17:02-03:00",
+                "estimated_delivery_at": "2013-04-22T12:00:00-03:00"
+            }
 
-```json
-{
-    "status": "delivered",
-    "description": "Objeto entregue ao destinatário",
-    "city": "São Paulo",
-    "province": "São Paulo",
-    "country": "BR",
-    "happened_at": "2013-04-22T11:39:12-03:00",
-    "estimated_delivery_at": "2013-04-22T11:39:12-03:00"
-}
-```
+### Remove A Fulfillment Event [DELETE /#{store_id}/orders/#{order_id}/fulfillments/#{id}]
 
-`HTTP/1.1 201 Created`
++ Parameters
+    + store_id (integer, required) - The requested store's ID.
+    + order_id (integer, required, `123`) - The requested order's ID.
+    + id (integer, required, `1`) - The requested fulfillment event's ID.
 
-```json
-{
-    "id": 3,
-    "order_id": 123,
-    "status": "delivered",
-    "description": "Objeto entregue ao destinatário",
-    "city": "São Paulo",
-    "province": "São Paulo",
-    "country": "BR",
-    "created_at": "2013-04-20T08:23:42-03:00",
-    "updated_at": "2013-04-20T08:23:42-03:00",
-    "happened_at": "2013-04-20T05:17:02-03:00",
-    "estimated_delivery_at": "2013-04-22T12:00:00-03:00"
-}
-```
++ Request (application/json)
 
-### DELETE /orders/${order_id}/fulfillments/#{id}
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer mySt0r34cc3ssT0k3n
 
-Remove a Fulfillment Event
++ Response 200 (application/json)
 
-#### DELETE /orders/123/fulfillments/1
-
-`HTTP/1.1 200 OK`
-
-```json
-{}
-```
+            {
+                
+            }
