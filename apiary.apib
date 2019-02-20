@@ -299,7 +299,7 @@ The Store resource contains general settings and information about a Nuvem Shop 
     + customer_accounts (string) - "optional" if the customer is allowed to checkout as guest. "mandatory" if not.
     + plan_name (string) - Name of the Tienda Nube/Nuvem Shop's plan the store is on.
     + country (string) - Store's country in ISO 3166-1 format.
-    + languages (string) - Store available languages with its currency and whether or not is active.
+    + languages (string) - Store's available languages with its currency and whether or not it is active.
     + domains (array[string]) - List of store's domains.
     + original_domain (string) - Original tiendanube.com or nuvemshop.com.br domain for the Store.
     + current_theme (string) - Store's current theme.
@@ -4423,7 +4423,7 @@ The response object rates must be a JSON array of objects with the following fie
 | `currency` | __(required)__ The rate's currency. |
 | `type` | __(required)__ The rate's type: `ship` if it will be delivered to a buyer's address or `pickup` if it will be picked up by the buyer. |
 | `address` | __(required)__ _(pickup only)_ Where the pickup point is located. |
-| `hours` | __(required)__ _(pickup only)_ The location open hours providing: `day` (0: sunday, 6: saturday), `start` and `end` on `HHMM` format. |
+| `hours` | __(required)__ _(pickup only)_ The pickup location's open hours providing: `day` (0: sunday, 6: saturday), `start` and `end` on `HHMM` format. |
 | `price_merchant` | The rate's price that will be payed by the merchant. It may be different than `price` due to items with free shipping. Defaults to `price`. |
 | `min_delivery_date` | The earliest estimated delivery date in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601). Defaults to `null`. |
 | `max_delivery_date` | The latest estimated delivery date in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601). Defaults to `null`. | 
@@ -4625,10 +4625,10 @@ The response object rates must be a JSON array of objects with the following fie
 ### Server-side caching of requests
 
 We will provide server-side caching to reduce the number of requests done to your callback URLs. Any shipping rate request that identically matches the following fields will be retrieved from our cache of the initial response:
-- variant ids
+- variant IDs
 - variant quantities
 - default shipping box weight and dimensions
-- shipping carrier id
+- shipping carrier ID
 - origin address
 - destination address
 - item weights & dimensions
@@ -4642,7 +4642,7 @@ We will provide server-side caching to reduce the number of requests done to you
     + `name` (string) - The name of the Shipping Carrier as seen by both merchants and buyers.
     + `callback_url` (string) - The URL endpoint that we need to retrieve shipping rates. Must be HTTPS.
     + `types` (string) - The supported shipping types, can be one or both "`ship`" or "`pickup`".
-    + `active` (string) - Whether this Shipping Carrier is active.
+    + `active` (string) - Indicates whether this Shipping Carrier is active.
     + `created_at` (string) - Date when the Shipping Carrier was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601).
     + `updated_at` (string) - Date when the Shipping Carrier was last updated in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601).
 
@@ -4716,13 +4716,13 @@ We will provide server-side caching to reduce the number of requests done to you
 ### Create A Shipping Carrier [POST /{store_id}/shipping_carriers]
 
 + Parameters
-    + store_id (integer, required) - The requested store ID.
+    + store_id (integer, required) - The requested store's ID.
 
 + Attributes
     + name (string, required) - The name of the Shipping Carrier as seen by both merchants and buyers.
-    + callback_url (string, required) - The URL endpoint that we need to retrieve shipping rates when the buyer wants the items ship to an address.
+    + callback_url (string, required) - The URL endpoint that we need to retrieve shipping rates. Must be HTTPS.
     + types (string, required) - Comma separated values indicating supported methods: can be either `ship` or `pickup`.
-    + active (boolean, required) - A boolean value indicating whether this Shipping Carrier is active.
+    + active (boolean, required) - Indicates whether this Shipping Carrier is active.
 
 + Request (application/json)
 
@@ -4759,9 +4759,9 @@ We will provide server-side caching to reduce the number of requests done to you
 
 + Attributes
     + name (string) - The name of the Shipping Carrier as seen by both merchants and buyers.
-    + callback_url (string) - The URL endpoint that we need to retrieve shipping rates when the buyer wants the items ship to an address.
+    + callback_url (string) - The URL endpoint that we need to retrieve shipping rates. Must be HTTPS.
     + types (string) - Comma separated values indicating supported methods: can be either `ship` or `pickup`.
-    + active (boolean) - A boolean value indicating whether this Shipping Carrier is active.
+    + active (boolean) - Indicates whether this Shipping Carrier is active.
 
 + Request (application/json)
 
@@ -4916,9 +4916,9 @@ Valid status are:
     + status (string, required) - Fulfillment Event's status. Accepted values are listed above.
     + description (string, required) - Message describing the status.
     + city (string, required) - Fulfillment Event's city.
-    + province (string, required) - Fulfillment Event's province.
+    + province (string, required) - Fulfillment Event's province or state.
     + country (string, required) - Fulfillment Event's country in [ISO 3166-1 format](http://en.wikipedia.org/wiki/ISO_3166-1).
-    + `happened_at` (string) - Date when the Fulfillment Event occured was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601).
+    + `happened_at` (string) - Date when the Fulfillment Event occured (or was created) in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601).
     + `estimated_delivery_at` (string) - Estimated date when the package will be delivered in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601).
 
 + Request (application/json)
