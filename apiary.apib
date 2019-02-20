@@ -4421,7 +4421,7 @@ The response object rates must be a JSON array of objects with the following fie
 | `code` | __(required)__ A unique code associated with the rate. |
 | `price` | __(required)__ The rate's price that will be payed by the buyer. |
 | `currency` | __(required)__ The rate's currency. |
-| `type` | __(required)__ The rate's type: `ship` if it will be deliverd to a buyer's address or `pickup` if it will be picked up by the buyer. |
+| `type` | __(required)__ The rate's type: `ship` if it will be delivered to a buyer's address or `pickup` if it will be picked up by the buyer. |
 | `address` | __(required)__ _(pickup only)_ Where the pickup point is located. |
 | `hours` | __(required)__ _(pickup only)_ The location open hours providing: `day` (0: sunday, 6: saturday), `start` and `end` on `HHMM` format. |
 | `price_merchant` | The rate's price that will be payed by the merchant. It may be different than `price` due to items with free shipping. Defaults to `price`. |
@@ -4430,6 +4430,7 @@ The response object rates must be a JSON array of objects with the following fie
 | `id_required` | Whether the customer must provide an identification number at checkout. Defaults to `false`. |
 | `phone_required` | Whether the customer must provide a phone number at checkout. Defaults to `false`. |
 | `accepts_cod` | Whether the customer is allowed to pay for this rate with a Cash on Delivery (COD) payment method (defaults to `true`). |
+| `reference` | An internal reference you wish to save for the rate. We will save it and return it on the Order as `shipping_option_reference`. |
 | `availability` | _(pickup only)_ Whether there is availability for all items at the location. Defaults to `true`. |
 
 ### Example requests for shipping rates
@@ -4438,28 +4439,31 @@ The response object rates must be a JSON array of objects with the following fie
 
 ```json
 {
+    "store_id": 123456,
+    "currency": "ARS",
+    "language": "es",
     "origin": {
-        "country": "AR",
-        "postal_code": "1602",
-        "province": "Capital Federal",
-        "locality": "Nuñez",
-        "city": "Capital Federal",
         "name": null,
         "address": "Avenida Cabildo",
         "number": "4781",
         "floor": null,
+        "locality": "Nuñez",
+        "city": "Capital Federal",
+        "province": "Capital Federal",
+        "country": "AR",
+        "postal_code": "1602",
         "phone": null
     },
     "destination": {
-        "country": "AR",
-        "postal_code": "1602",
-        "province": "Capital Federal",
-        "locality": "Nuñez",
-        "city": "Capital Federal",
         "name": null,
         "address": "Juan B. Justo",
         "number": "3000",
         "floor": null,
+        "locality": "Nuñez",
+        "city": "Capital Federal",
+        "province": "Capital Federal",
+        "country": "AR",
+        "postal_code": "1602",
         "phone": null
     },
     "items": [
@@ -4467,150 +4471,154 @@ The response object rates must be a JSON array of objects with the following fie
             "name": "My product",
             "sku": null,
             "quantity": 1,
+            "free_shipping": true,
             "grams": 1000,
-            "price": 2000,
-            "width": "0.00",
-            "height": "0.00",
-            "depth": "0.00",
-            "free_shipping": false
+            "price": 20.00,
+            "dimensions": {
+                "width": 12.0,
+                "height": 10.0,
+                "depth": 10.0
+            }
         }
-    ],
-    "currency": "ARS",
-    "language": "es"
+    ]
 }
 ```
 
 `HTTP/1.1 200 OK`
 ```json
 {
-    "rates": [
-        {
-            "name": "Standard Shipping",
-            "code": "standard",
-            "price": "1415",
-            "currency": "ARS",
-            "type": "ship",
-            "min_delivery_date": "2016-07-14 14:48:45 -0300",
-            "max_delivery_date": "2016-07-17 14:48:45 -0300",
-            "phone_required": false,
-            "id_required": false,
-            "accepts_cod": true
-        },
-        {
-            "name": "Express Shipping",
-            "code": "express",
-            "price": "2815",
-            "currency": "ARS",
-            "type": "ship",
-            "min_delivery_date": "2016-07-12 14:48:45 -0300",
-            "max_delivery_date": "2016-07-13 14:48:45 -0300",
-            "phone_required": false,
-            "id_required": false,
-            "accepts_cod": true
-        },
-        {
-            "name": "Shipping branch #1",
-            "code": "pickup_1",
-            "price": "1415",
-            "currency": "ARS",
-            "type": "pickup",
-            "min_delivery_date": "2016-07-14 14:48:45 -0300",
-            "max_delivery_date": "2016-07-17 14:48:45 -0300",
-            "phone_required": false,
-            "id_required": false,
-            "accepts_cod": true,
-            "availability": false,
-            "address": {
-                "address": "My address",
-                "number": "345",
-                "floor": null,
-                "locality": "Lanús",
-                "city": "Lanús",
-                "province": "Buenos Aires",
-                "country": "AR",
-                "phone": "+54 11 5678-1234",
-                "zipcode": "1824"
-            },
-            "hours": [
-                {
-                    "day": 1,
-                    "start": "0900",
-                    "end": "1800"
-                },
-                {
-                    "day": 2,
-                    "start": "0900",
-                    "end": "1800"
-                },
-                {
-                    "day": 3,
-                    "start": "0900",
-                    "end": "1800"
-                },
-                {
-                    "day": 4,
-                    "start": "0900",
-                    "end": "1800"
-                },
-                {
-                    "day": 5,
-                    "start": "0900",
-                    "end": "1800"
-                }
-            ]
-        },
-        {
-            "name": "Shipping branch #2",
-            "code": "pickup_2",
-            "price": "1415",
-            "currency": "ARS",
-            "type": "pickup",
-            "min_delivery_date": "2016-07-12 14:48:45 -0300",
-            "max_delivery_date": "2016-07-13 14:48:45 -0300",
-            "accepts_cod": true,
-            "phone_required": false,
-            "id_required": false,
-            "availability": false,
-            "address": {
-                "address": "Another address",
-                "number": "123",
-                "floor": null,
-                "locality": "Florida",
-                "city": "Vicente Lopez",
-                "province": "Buenos Aires",
-                "country": "AR",
-                "phone": "+54 11 1234-5678",
-                "zipcode": "1602"
-            },
-            "hours": [
-                {
-                    "day": 1,
-                    "start": "0900",
-                    "end": "1800"
-                },
-                {
-                    "day": 2,
-                    "start": "0900",
-                    "end": "1800"
-                },
-                {
-                    "day": 3,
-                    "start": "0900",
-                    "end": "1800"
-                },
-                {
-                    "day": 4,
-                    "start": "0900",
-                    "end": "1800"
-                },
-                {
-                    "day": 5,
-                    "start": "0900",
-                    "end": "1800"
-                }
-            ]
-        }        
-    ]
+   "rates": [
+       {
+           "name": "Standard Shipping",
+           "code": "standard",
+           "price": 0.00,
+           "price_merchant": 14.15,
+           "currency": "ARS",
+           "type": "ship",
+           "min_delivery_date": "2016-07-14T14:48:45-0300",
+           "max_delivery_date": "2016-07-17T14:48:45-0300",
+           "phone_required": true,
+           "reference": "ref123"
+       },
+       {
+           "name": "Express Shipping",
+           "code": "express",
+           "price": 28.15,
+           "currency": "ARS",
+           "type": "ship",
+           "min_delivery_date": "2016-07-12T14:48:45-0300",
+           "max_delivery_date": "2016-07-13T14:48:45-0300",
+           "id_required": true,
+           "reference": "ref123"
+       },
+       {
+           "name": "Shipping branch #1",
+           "code": "pickup_1",
+           "price": 14.15,
+           "currency": "ARS",
+           "type": "pickup",
+           "min_delivery_date": "2016-07-14T14:48:45-0300",
+           "max_delivery_date": "2016-07-17T14:48:45-0300",
+           "phone_required": true,
+           "id_required": true,
+           "accepts_cod": true,
+           "address": {
+               "address": "My address",
+               "number": "345",
+               "floor": null,
+               "locality": "Lanús",
+               "city": "Lanús",
+               "province": "Buenos Aires",
+               "country": "AR",
+               "phone": "+54 11 5678-1234",
+               "zipcode": "1824",
+               "latitude": "123456",
+               "longitude": "-123456"
+           },
+           "hours": [
+               {
+                   "day": 1,
+                   "start": "0900",
+                   "end": "1800"
+               },
+               {
+                   "day": 2,
+                   "start": "0900",
+                   "end": "1800"
+               },
+               {
+                   "day": 3,
+                   "start": "0900",
+                   "end": "1800"
+               },
+               {
+                   "day": 4,
+                   "start": "0900",
+                   "end": "1800"
+               },
+               {
+                   "day": 5,
+                   "start": "0900",
+                   "end": "1800"
+               }
+           ],
+           "availability": false,
+           "reference": "ref123"
+       },
+       {
+           "name": "Shipping branch #2",
+           "code": "pickup_2",
+           "price": 14.15,
+           "currency": "ARS",
+           "type": "pickup",
+           "min_delivery_date": "2016-07-12T14:48:45-0300",
+           "max_delivery_date": "2016-07-13T14:48:45-0300",
+           "accepts_cod": true,
+           "phone_required": true,
+           "id_required": true,
+           "address": {
+               "address": "Another address",
+               "number": "123",
+               "floor": null,
+               "locality": "Florida",
+               "city": "Vicente Lopez",
+               "province": "Buenos Aires",
+               "country": "AR",
+               "phone": "+54 11 1234-5678",
+               "zipcode": "1602",
+               "latitude": null,
+               "longitude": null
+           },
+           "hours": [
+               {
+                   "day": 1,
+                   "start": "0900",
+                   "end": "1800"
+               },
+               {
+                   "day": 2,
+                   "start": "0900",
+                   "end": "1800"
+               },
+               {
+                   "day": 3,
+                   "start": "0900",
+                   "end": "1800"
+               },
+               {
+                   "day": 4,
+                   "start": "0900",
+                   "end": "1800"
+               },
+               {
+                   "day": 5,
+                   "start": "0900",
+                   "end": "1800"
+               }
+           ],
+           "reference": "ref123"
+       }       
+   ]
 }
 ```
 
@@ -4633,6 +4641,7 @@ We will provide server-side caching to reduce the number of requests done to you
     + `id` (number) - The unique numeric identifier for the Shipping Carrier.
     + `name` (string) - The name of the Shipping Carrier as seen by both merchants and buyers.
     + `callback_url` (string) - The URL endpoint that we need to retrieve shipping rates. Must be HTTPS.
+    + `types` (string) - The supported shipping types, can be one or both "`ship`" or "`pickup`".
     + `active` (string) - Whether this Shipping Carrier is active.
     + `created_at` (string) - Date when the Shipping Carrier was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601).
     + `updated_at` (string) - Date when the Shipping Carrier was last updated in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601).
