@@ -1659,6 +1659,8 @@ A Category lets the store owner group their products to make the store easier to
 
 ## Introduction
 
+### Orders
+
 An order is created when a customer completes the checkout process. Orders can't be created through the API.
 
 Orders contain 3 important fields that are detailed below. These are `products`, `next_action` and `issues`:
@@ -1690,6 +1692,26 @@ Orders contain 3 important fields that are detailed below. These are `products`,
     * `unclaimed_stock` (number) - Can happen due to a race condition while the user is trying to pay the order and another user buys the same item.
 
 > **Note**: The `unclaimed_stock` property of the `issues` attribute has a number value associated to it which represents the number of items claimed by the user with insufficient stock.
+
+> **Note**: As far as changing an Order's attributes, you can only modify the `owner_note` one for now.
+
+### Fulfillment Events
+
+A Fulfillment Event represents a tracking event belonging to the order's fulfillment. Fulfillment events are displayed on the order tracking page to give buyers visibility on their shipment status.
+
+Valid status are:
+| Status | Description |
+| --- | --- |
+| `dispatched` | Package has been posted by the merchant. |
+| `received_by_post_office` | Package has been received by the Shipping Carrier. |
+| `in_transit` | Package is in transit. |
+| `out_for_delivery` | Package is out for delivery. |
+| `delivery_attempt_failed` | Package could not be delivered. |
+| `delayed` | Package delayed. |
+| `ready_for_pickup` | Package is ready for pickup. |
+| `returned_to_sender` | Package was returned to sender. |
+| `lost` | Package lost. |
+| `failure` | Package delivery failed. |
 
 ## Managing Orders [/order]
 
@@ -2651,8 +2673,6 @@ Orders contain 3 important fields that are detailed below. These are `products`,
 
 ### Change/Update The Order [PUT /{store_id}/orders/#{id}{?owner_note,status}]
 
-> **Note**: As far as changing an Order's attributes, you can only modify the `owner_note` one for now.
-
 + Parameters
     + store_id (integer, required) - The requested store ID.
     + id (number, required, `450789469`) - The unique numeric identifier for the Order.
@@ -2782,6 +2802,151 @@ Orders contain 3 important fields that are detailed below. These are `products`,
               }
             }
         }
+
+### Retrieve All Fulfillment Events From An Order [GET /{store_id}/orders/#{order_id}/fulfillments]
+
++ Parameters
+    + store_id (integer, required) - The requested store's ID.
+    + order_id (integer, required) - The requested order's ID.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer mySt0r34cc3ssT0k3n
+
++ Response 200 (application/json)
+
+        {
+            {
+                "id": 1,
+                "order_id": 123,
+                "status": "dispatched",
+                "description": "Objeto postado",
+                "city": "São Paulo",
+                "province": "São Paulo",
+                "country": "BR",
+                "created_at": "2013-04-20T08:23:42-03:00",
+                "updated_at": "2013-04-20T08:23:42-03:00",
+                "happened_at": "2013-04-20T05:17:02-03:00",
+                "estimated_delivery_at": "2013-04-22T12:00:00-03:00"
+            },
+            {
+                "id": 2,
+                "order_id": 123,
+                "status": "in_transit",
+                "description": "Objeto encaminhado",
+                "city": "São Paulo",
+                "province": "São Paulo",
+                "country": "BR",
+                "created_at": "2013-04-21T17:15:00-03:00",
+                "updated_at": "2013-04-21T17:15:00-03:00",
+                "happened_at": "2013-04-21T17:14:25-03:00",
+                "estimated_delivery_at": "2013-04-22T12:00:00-03:00"
+            }
+        }
+
+### Receive A Single Fulfillment Event From An Order [GET /{store_id}/orders/#{order_id}/fulfillments/#{id}]
+
++ Parameters
+    + store_id (integer, required) - The requested store's ID.
+    + order_id (integer, required, `123`) - The requested order's ID.
+    + id (integer, required, `1`) - The requested fulfillment event's ID.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer mySt0r34cc3ssT0k3n
+
++ Response 200 (application/json)
+
+            {
+                "id": 1,
+                "order_id": 123,
+                "status": "dispatched",
+                "description": "Objeto postado",
+                "city": "São Paulo",
+                "province": "São Paulo",
+                "country": "BR",
+                "created_at": "2013-04-20T08:23:42-03:00",
+                "updated_at": "2013-04-20T08:23:42-03:00",
+                "happened_at": "2013-04-20T05:17:02-03:00",
+                "estimated_delivery_at": "2013-04-22T12:00:00-03:00"
+            }
+
+### Create A New Fulfillment Event For An Order [POST /#{store_id}/orders/#{order_id}/fulfillments]
+
++ Parameters
+    + store_id (integer, required) - The requested store ID.
+    + order_id (integer, required, `123`) - The requested order's ID.
+
++ Attributes
+    + name (string) - The name of the Shipping Carrier as seen by both merchants and buyers.
+    + status (string, required) - Fulfillment Event's status. Accepted values are listed above.
+    + description (string, required) - Message describing the status.
+    + city (string, required) - Fulfillment Event's city.
+    + province (string, required) - Fulfillment Event's province or state.
+    + country (string, required) - Fulfillment Event's country in [ISO 3166-1 format](http://en.wikipedia.org/wiki/ISO_3166-1).
+    + `happened_at` (string) - Date when the Fulfillment Event occured (or was created) in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601).
+    + `estimated_delivery_at` (string) - Estimated date when the package will be delivered in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601).
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer mySt0r34cc3ssT0k3n
+    
+    + Body
+
+            {
+                "status": "delivered",
+                "description": "Objeto entregue ao destinatário",
+                "city": "São Paulo",
+                "province": "São Paulo",
+                "country": "BR",
+                "happened_at": "2013-04-22T11:39:12-03:00",
+                "estimated_delivery_at": "2013-04-22T11:39:12-03:00"
+            }
+
++ Response 201 (application/json)
+
+            {
+                "id": 3,
+                "order_id": 123,
+                "status": "delivered",
+                "description": "Objeto entregue ao destinatário",
+                "city": "São Paulo",
+                "province": "São Paulo",
+                "country": "BR",
+                "created_at": "2013-04-20T08:23:42-03:00",
+                "updated_at": "2013-04-20T08:23:42-03:00",
+                "happened_at": "2013-04-20T05:17:02-03:00",
+                "estimated_delivery_at": "2013-04-22T12:00:00-03:00"
+            }
+
+### Remove A Fulfillment Event From An Order [DELETE /#{store_id}/orders/#{order_id}/fulfillments/#{id}]
+
++ Parameters
+    + store_id (integer, required) - The requested store's ID.
+    + order_id (integer, required, `123`) - The requested order's ID.
+    + id (integer, required, `1`) - The requested fulfillment event's ID.
+
++ Request (application/json)
+
+    + Headers
+    
+            User-Agent: Awesome app (awesome@app.com)
+            Authentication: bearer mySt0r34cc3ssT0k3n
+
++ Response 200 (application/json)
+
+            {
+                
+            }
 
 # Group Customer
 
@@ -4808,170 +4973,3 @@ We will provide server-side caching to reduce the number of requests done to you
         {
             
         }
-
-# Group Fulfillment Events
-
-## Introduction
-
-A Fulfillment Event represents a tracking event belonging to the order's fulfillment. Fulfillment events are displayed on the order tracking page to give buyers visibility on their shipment status.
-
-Valid status are:
-| Status | Description |
-| --- | --- |
-| `dispatched` | Package has been posted by the merchant. |
-| `received_by_post_office` | Package has been received by the Shipping Carrier. |
-| `in_transit` | Package is in transit. |
-| `out_for_delivery` | Package is out for delivery. |
-| `delivery_attempt_failed` | Package could not be delivered. |
-| `delayed` | Package delayed. |
-| `ready_for_pickup` | Package is ready for pickup. |
-| `returned_to_sender` | Package was returned to sender. |
-| `lost` | Package lost. |
-| `failure` | Package delivery failed. |
-
-## Managing Fulfillment Events [/fulfillment_events]
-
-### Retrieve All Fulfillment Events For An Order [GET /{store_id}/orders/#{order_id}/fulfillments]
-
-+ Parameters
-    + store_id (integer, required) - The requested store's ID.
-    + order_id (integer, required) - The requested order's ID.
-
-+ Request (application/json)
-
-    + Headers
-    
-            User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer mySt0r34cc3ssT0k3n
-
-+ Response 200 (application/json)
-
-        {
-            {
-                "id": 1,
-                "order_id": 123,
-                "status": "dispatched",
-                "description": "Objeto postado",
-                "city": "São Paulo",
-                "province": "São Paulo",
-                "country": "BR",
-                "created_at": "2013-04-20T08:23:42-03:00",
-                "updated_at": "2013-04-20T08:23:42-03:00",
-                "happened_at": "2013-04-20T05:17:02-03:00",
-                "estimated_delivery_at": "2013-04-22T12:00:00-03:00"
-            },
-            {
-                "id": 2,
-                "order_id": 123,
-                "status": "in_transit",
-                "description": "Objeto encaminhado",
-                "city": "São Paulo",
-                "province": "São Paulo",
-                "country": "BR",
-                "created_at": "2013-04-21T17:15:00-03:00",
-                "updated_at": "2013-04-21T17:15:00-03:00",
-                "happened_at": "2013-04-21T17:14:25-03:00",
-                "estimated_delivery_at": "2013-04-22T12:00:00-03:00"
-            }
-        }
-
-### Receive A Single Fulfillment Event [GET /{store_id}/orders/#{order_id}/fulfillments/#{id}]
-
-+ Parameters
-    + store_id (integer, required) - The requested store's ID.
-    + order_id (integer, required, `123`) - The requested order's ID.
-    + id (integer, required, `1`) - The requested fulfillment event's ID.
-
-+ Request (application/json)
-
-    + Headers
-    
-            User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer mySt0r34cc3ssT0k3n
-
-+ Response 200 (application/json)
-
-            {
-                "id": 1,
-                "order_id": 123,
-                "status": "dispatched",
-                "description": "Objeto postado",
-                "city": "São Paulo",
-                "province": "São Paulo",
-                "country": "BR",
-                "created_at": "2013-04-20T08:23:42-03:00",
-                "updated_at": "2013-04-20T08:23:42-03:00",
-                "happened_at": "2013-04-20T05:17:02-03:00",
-                "estimated_delivery_at": "2013-04-22T12:00:00-03:00"
-            }
-
-### Create A New Fulfillment Event [POST /#{store_id}/orders/#{order_id}/fulfillments]
-
-+ Parameters
-    + store_id (integer, required) - The requested store ID.
-    + order_id (integer, required, `123`) - The requested order's ID.
-
-+ Attributes
-    + name (string) - The name of the Shipping Carrier as seen by both merchants and buyers.
-    + status (string, required) - Fulfillment Event's status. Accepted values are listed above.
-    + description (string, required) - Message describing the status.
-    + city (string, required) - Fulfillment Event's city.
-    + province (string, required) - Fulfillment Event's province or state.
-    + country (string, required) - Fulfillment Event's country in [ISO 3166-1 format](http://en.wikipedia.org/wiki/ISO_3166-1).
-    + `happened_at` (string) - Date when the Fulfillment Event occured (or was created) in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601).
-    + `estimated_delivery_at` (string) - Estimated date when the package will be delivered in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601).
-
-+ Request (application/json)
-
-    + Headers
-    
-            User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer mySt0r34cc3ssT0k3n
-    
-    + Body
-
-            {
-                "status": "delivered",
-                "description": "Objeto entregue ao destinatário",
-                "city": "São Paulo",
-                "province": "São Paulo",
-                "country": "BR",
-                "happened_at": "2013-04-22T11:39:12-03:00",
-                "estimated_delivery_at": "2013-04-22T11:39:12-03:00"
-            }
-
-+ Response 201 (application/json)
-
-            {
-                "id": 3,
-                "order_id": 123,
-                "status": "delivered",
-                "description": "Objeto entregue ao destinatário",
-                "city": "São Paulo",
-                "province": "São Paulo",
-                "country": "BR",
-                "created_at": "2013-04-20T08:23:42-03:00",
-                "updated_at": "2013-04-20T08:23:42-03:00",
-                "happened_at": "2013-04-20T05:17:02-03:00",
-                "estimated_delivery_at": "2013-04-22T12:00:00-03:00"
-            }
-
-### Remove A Fulfillment Event [DELETE /#{store_id}/orders/#{order_id}/fulfillments/#{id}]
-
-+ Parameters
-    + store_id (integer, required) - The requested store's ID.
-    + order_id (integer, required, `123`) - The requested order's ID.
-    + id (integer, required, `1`) - The requested fulfillment event's ID.
-
-+ Request (application/json)
-
-    + Headers
-    
-            User-Agent: Awesome app (awesome@app.com)
-            Authentication: bearer mySt0r34cc3ssT0k3n
-
-+ Response 200 (application/json)
-
-            {
-                
-            }
