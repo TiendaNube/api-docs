@@ -3,11 +3,6 @@ Tienda Nube/Nuvem Shop API
 
 This is a REST-style API that uses JSON for serialization and OAuth 2 for authentication.
 
-**READ BEFORE**
-----------------
-
-Due to high volume of applications and themes we're receiving to be published in our AppStore and ThemeStore, our response time have become very high. For this reason, we're building a new team that will give you support exclusively with the only purpose to help you bring your service to our customers. In the meanwhile, you can design applications and themes, and offer them to your customers individually (without publishing them in our site), but with full 100% access to the functionalities offered by Tienda Nube / Nuvem Shop.
-
 Where do I start?
 ----------------
 
