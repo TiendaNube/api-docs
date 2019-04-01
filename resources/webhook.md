@@ -18,7 +18,7 @@ The `app/suspended` and `app/resumed` events refer to the [suspension of API acc
 
 You are not allowed to use a localhost/tiendanube/nuvemshop domain for webhooks.
 
-To aid in your development you can use [PostCatcher](http://postcatcher.in/). PostCatcher is a web app that generates a unique url that you can use as a webhook endpoint and display any POST requests sent to it for you to examine.
+To aid in your development you can use [RequestCatcher](https://requestcatcher.com/). PostCatcher is a web app that generates a unique url that you can use as a webhook endpoint and display any POST requests sent to it for you to examine.
 
 Properties
 ----------
