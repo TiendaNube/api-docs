@@ -137,6 +137,7 @@ Receive a list of all Orders.
       "shipping": "ups",
       "shipping_status": "unshipped",
       "shipping_tracking_number": null,
+      "shipping_tracking_url": null,
       "shipping_min_days": 2,
       "shipping_max_days": 4,
       "shipping_cost_owner": "20.00",
@@ -272,6 +273,7 @@ Receive a single Order
     "shipping": "ups",
     "shipping_status": "unshipped",
     "shipping_tracking_number": null,
+    "shipping_tracking_url": null,
     "shipping_min_days": 2,
     "shipping_max_days": 4,
     "shipping_cost_owner": "20.00",
@@ -388,6 +390,7 @@ Close an Order
     "shipping": "ups",
     "shipping_status": "unshipped",
     "shipping_tracking_number": null,
+    "shipping_tracking_url": null,
     "shipping_min_days": 2,
     "shipping_max_days": 4,
     "shipping_cost_owner": "20.00",
@@ -504,6 +507,7 @@ Re-open a closed Order
     "shipping": "ups",
     "shipping_status": "unshipped",
     "shipping_tracking_number": null,
+    "shipping_tracking_url": null,
     "shipping_min_days": 2,
     "shipping_max_days": 4,
     "status": "open",
@@ -617,6 +621,7 @@ Pack an Order
     "shipping": "ups",
     "shipping_status": "unshipped",
     "shipping_tracking_number": null,
+    "shipping_tracking_url": null,
     "shipping_min_days": 2,
     "shipping_max_days": 4,
     "shipping_cost_owner": "20.00",
@@ -714,6 +719,7 @@ Fulfill an Order
 | Parameter                    | Explanation                                                                        |
 | ---------------------------- | ---------------------------------------------------------------------------------- |
 | shipping_tracking_number     | Shipment's tracking number provided by the shipping company                        |
+| shipping_tracking_url        | Shipment's tracking URL provided by the shipping company                           |
 | notify_customer              | Notify the customer of the cancellation (the default value is true)                |
 
 #### POST /orders/450789469/fulfill
@@ -721,6 +727,7 @@ Fulfill an Order
 ```json
 {
     "shipping_tracking_number": "ABC1234",
+    "shipping_tracking_url": "https://shipping.com/tracking/ABC1234",
     "notify_customer": true
 }
 ```
@@ -745,6 +752,7 @@ Fulfill an Order
     "shipping": "ups",
     "shipping_status": "shipped",
     "shipping_tracking_number": "ABC1234",
+    "shipping_tracking_url": "https://shipping.com/tracking/ABC1234",
     "shipping_min_days": 2,
     "shipping_max_days": 4,
     "shipping_cost_owner": "20.00",
@@ -868,6 +876,7 @@ Cancel an Order
     "shipping": "ups",
     "shipping_status": "unshipped",
     "shipping_tracking_number": null,
+    "shipping_tracking_url": null,
     "shipping_min_days": 2,
     "shipping_max_days": 4,
     "shipping_cost_owner": "20.00",
@@ -991,6 +1000,7 @@ Change an Order's attributes (just `owner_note` for now) and/or update an Order'
     "shipping": "ups",
     "shipping_status": "unshipped",
     "shipping_tracking_number": null,
+    "shipping_tracking_url": null,
     "shipping_min_days": 2,
     "shipping_max_days": 4,
     "shipping_cost_owner": "20.00",
