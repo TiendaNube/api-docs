@@ -32,6 +32,12 @@ Properties
 | shipping_max_days          | The maximum number of weekdays needed for the order to be delivered                                                                                                         |
 | shipping_cost_owner        | The shipping cost the store owner has to pay to the shipping company.                                                                                                       |
 | shipping_cost_customer     | The shipping cost the customer has to pay to the store owner.                                                                                                               |
+| shipping_option            | The shipping option chosen by the customer during the checkout process. |
+| shipping_option_code       | The shipping option code selected by the consumers. |
+| shipping_option_reference  | The shipping option reference provided by a custom shipping carrier during the checkout process. |
+| shipping_pickup_details    | The shipping pickup details (address and/or business hours) of the selected pickup point. |
+| shipping_tracking_number   | The shipping tracking number for the order |
+| shipping_tracking_url      | The shipping tracking URL where the customer can check for the shipment status. |
 | billing_address            | Billing address for the order                                                                                                                                               |
 | billing_number             | Billing number for the order                                                                                                                                                |
 | billing_floor              | Billing floor for the order                                                                                                                                                 |
