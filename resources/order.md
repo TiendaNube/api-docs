@@ -36,7 +36,6 @@ Properties
 | shipping_option_code       | The shipping option code selected by the consumers. |
 | shipping_option_reference  | The shipping option reference provided by a custom shipping carrier during the checkout process. |
 | shipping_pickup_details    | The shipping pickup details (address and/or business hours) of the selected pickup point. |
-| shipping_tracking_number   | The shipping tracking number for the order |
 | shipping_tracking_url      | The shipping tracking URL where the customer can check for the shipment status. |
 | billing_address            | Billing address for the order                                                                                                                                               |
 | billing_number             | Billing number for the order                                                                                                                                                |
