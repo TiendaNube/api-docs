@@ -78,6 +78,8 @@ The available scopes for the API are:
     - Coupon
 * write_scripts
     - Script
+* write_shipping
+    - Shipping Carrier
 
 
 User authentication
