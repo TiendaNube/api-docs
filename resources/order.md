@@ -720,7 +720,7 @@ Fulfill an Order
 | ---------------------------- | ---------------------------------------------------------------------------------- |
 | shipping_tracking_number     | Shipment's tracking number provided by the shipping company                        |
 | shipping_tracking_url        | Shipment's tracking URL provided by the shipping company                           |
-| notify_customer              | Notify the customer of the cancellation (the default value is true)                |
+| notify_customer              | Notify the customer about the fulfillment (the default value is true)              |
 
 #### POST /orders/450789469/fulfill
 
