@@ -626,6 +626,7 @@ Valid status are:
 | delivery_attempt_failed| Package could not be delivered.                                |
 | delayed                | Package delayed.                                               |
 | ready_for_pickup       | Package is ready for pickup.                                   |
+| delivered              | Package was delivered.                                         |
 | returned_to_sender     | Package was returned to sender.                                |
 | lost                   | Package lost.                                                  |
 | failure                | Package delivery failed.                                       |
