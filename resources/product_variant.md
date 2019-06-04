@@ -11,7 +11,7 @@ Properties
 | id                | The unique numeric identifier for the Product Variant                                           |
 | image_id          | The id of the product's image associated with the variant                                       |
 | product_id        | The id of the product associated with the variant                                               |
-| price             | Price of the Product Variant. *null* indicates the product will initiate a contact instead of a checkout process |
+| price             | Price of the Product Variant.<br><br>*null* indicates the product will initiate a contact instead of a checkout process.<br><br>**Note: The API will return the price configured in the product. If you store has more than one currency, it won't convert it. You will need to do it at your side of the application.** |
 | promotional_price | Lower price to display as a sale. The value of price will be displayed crossed out for comparison                |
 | stock_management  | Specifies whether or not Tienda Nube/Nuvem Shop tracks the number of items in stock for this product variant. Valid values are *true* if Tienda Nube/Nuvem Shop tracks the stock, *false* if it doesn't.|
 | stock             | Stock of the Product Variant. If `stock_management` is false the stock will be null             |
