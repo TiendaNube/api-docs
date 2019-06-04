@@ -1,4 +1,4 @@
-Tienda Nube/Nuvem Shop API
+Tiendanube/Nuvemshop API
 ====================
 
 This is a REST-style API that uses JSON for serialization and OAuth 2 for authentication.
@@ -8,7 +8,7 @@ Where do I start?
 
 Want to get started with API integration? Here's a quick check list:
 
-1. Register as a partner in [Tienda Nube](http://www.tiendanube.com/partners) or [Nuvem Shop](http://www.nuvemshop.com.br/parceiros).
+1. Register as a partner in [Tiendanube](http://www.tiendanube.com/partners) or [Nuvemshop](http://www.nuvemshop.com.br/parceiros).
 2. Once inside your partner's admin panel, go to the "Apps" section and create your app.
 3. Read up on [how to authenticate](#authentication) your app with us.
 4. Read the API docs to understand what you can do with your app.
@@ -43,7 +43,7 @@ curl -H 'Authentication: bearer ACCESS_TOKEN ' \
 Authentication
 --------------
 
-We follow the OAuth 2 framework for letting users authorize your application to use Tienda Nube/Nuvem Shop on their behalf. Quite briefly, when a user installs it you can obtain an access token (a secret string denoting your rights over his store), which you have to include in the header of every request (as shown in the above example).
+We follow the OAuth 2 framework for letting users authorize your application to use Tiendanube/Nuvemshop on their behalf. Quite briefly, when a user installs it you can obtain an access token (a secret string denoting your rights over his store), which you have to include in the header of every request (as shown in the above example).
 
 Read the [authentication guide](https://github.com/tiendanube/api-docs/blob/master/resources/authentication.md) to get started.
 
@@ -62,7 +62,7 @@ If you don't supply this header, you will get a `400 Bad Request` response.
 Just JSON
 -----------------
 
-All data is sent and received as JSON. Our format is to have no root element and we use snake\_case to describe attribute keys. This means that you have to send `Content-Type: application/json; charset=utf-8` when POSTing or PUTing data into Tienda Nube/Nuvem Shop.
+All data is sent and received as JSON. Our format is to have no root element and we use snake\_case to describe attribute keys. This means that you have to send `Content-Type: application/json; charset=utf-8` when POSTing or PUTing data into Tiendanube/Nuvemshop.
 
 You'll receive a `415 Unsupported Media Type` response code if you leave out the `Content-Type` header.
 
@@ -97,7 +97,7 @@ Content-Length: 47
 Server errors
 -------------
 
-If Tienda Nube/Nuvem Shop is having trouble, you might see a 5xx error. `500` means that the app is entirely down, but you might also see `502 Bad Gateway`, `503 Service Unavailable`, or `504 Gateway Timeout`. It's your responsibility in all of these cases to retry your request later.
+If Tiendanube/Nuvemshop is having trouble, you might see a 5xx error. `500` means that the app is entirely down, but you might also see `502 Bad Gateway`, `503 Service Unavailable`, or `504 Gateway Timeout`. It's your responsibility in all of these cases to retry your request later.
 
 
 Rate limiting
