@@ -20,6 +20,7 @@ Properties
 | tags     | String with all the Product's tags, separated by commas |
 | created_at     | Date when the Product was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)     | 
 | updated_at     | Date when the Product was last updated in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)|
+| canonical_url  | The SEO friendly url for the product in the store                                                 |
 
 Endpoints
 ---------
