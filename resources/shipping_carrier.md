@@ -281,9 +281,10 @@ Create a new Shipping Carrier
 
 | Parameter          | Explanation                                                                                                    |
 | ------------------ | -------------------------------------------------------------------------------------------------------------- |
-| name               | The name of the Shipping Carrier as seen by both merchants and buyers.                                         |
-| callback_url       | The URL endpoint that we need to retrieve shipping rates when the buyer wants the items ship to an address.    |
-| types              | Comma separated values indicating supported methods: can be any of `ship` or `pickup`.                         |
+| name               | __(required)__ The name of the Shipping Carrier as seen by both merchants and buyers.                                         |
+| callback_url       | __(required)__ The URL endpoint that we need to retrieve shipping rates when the buyer wants the items ship to an address.    |
+| types              | __(required)__ Comma separated values indicating supported methods: can be any of `ship` or `pickup`.                         |
+| active             | The shipping carrier availability status, used to disable or enable it for the store. Defaults to __true__.             |
 
 #### POST /shipping_carriers
 
@@ -410,6 +411,7 @@ Create a new Shipping Carrier Option
 | additional_days | The additional days configurable value that will be added to the option's estimated delivery time. | No |
 | additional_cost | The additional cost configurable value that will be added to the option's consumer price. | No |
 | allow_free_shipping | The configurable free shipping eligible parameter that specifies that an option allows free shipping. | No |
+| active | The avaiability status of the Shipping Carrier Option. Defaults to __true__ | No |
 
 #### POST /shipping_carriers/1234/options
 
