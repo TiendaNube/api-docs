@@ -3,24 +3,25 @@ Order
 
 An order is created when a customer completes the checkout process. Orders can't be created through the API.
 
-##### Table of Contents
-[Get all orders](#GET-/orders)
-
-[Get a order](#GET-/orders/#{id})
-
-[Create a order](#POST-/orders/)
-
-[Update a order](#PUT-/orders/#{id})
-
-[Close a order](#POST-/orders/#{id}/close)
-
-[Reopen a order](#POST-/orders/#{id}/open)
-
-[Pack a order](#POST-/orders/#{id}/pack)
-
-[Fulfill a order](#POST-/orders/#{id}/pack)
-
-[Cancel a order](#POST-/orders/#{id}/cancel)
+#### Table of Contents
+> [Get all orders](#GET-orders)
+> 
+> [Get a order](#GET-ordersid)
+> 
+> [Create a order](#POST-orders)
+> 
+> [Update a order](#PUT-ordersid)
+> 
+> [Close a order](#POST-ordersidclose)
+> 
+> [Reopen a order](#POST-ordersidopen)
+> 
+> [Pack a order](#POST-ordersidpack)
+> 
+> [Fulfill a order](#POST-ordersidpack)
+> 
+> [Cancel a order](#POST-ordersidcancel)
+> 
 
 Properties
 ----------
@@ -434,7 +435,7 @@ Create a Order.
 | city        | The address's city                                                                  | String | Yes      |
 | province    | The address's province                                                              | String | Yes      |
 | zipcode     | The address's postal code                                                           | String | Yes      |
-| country     | The address's country [ISO 3166-1 Format)](http://en.wikipedia.org/wiki/ISO_3166-1) | String | Yes      |
+| country     | The address's country ([ISO 3166-1 Format](http://en.wikipedia.org/wiki/ISO_3166-1)) | String | Yes      |
 | phone       | The address's phone number                                                          | String | No       |
 
 
