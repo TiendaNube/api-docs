@@ -75,6 +75,7 @@ Properties
 | cancel_reason              | Reason why the store owner cancelled an Order. Possible values are "customer", "fraud", "inventory" or "other"                                                              |
 | created_at                 | Date when the Order was created in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601)                                                                                 | 
 | updated_at                 | Date when the Order was last updated in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601)                                                                            |
+
 Property `next_action` can take one of the following values:
 - __noop__: no action to take
 - __close__: order should be closed
@@ -84,6 +85,7 @@ Property `next_action` can take one of the following values:
 - __waiting_pickup__: we are waiting for the fulfillment provider to pick up the order
 - __waiting_client_pickup__: we are waiting for the buyer to pick up the order (he shipped it to a seller's [B&M store](http://en.wikipedia.org/wiki/Brick_and_mortar))
 - __waiting_shipment__: we are waiting for the seller to ship the order
+
 
 The `products` field has the following contents:
 
