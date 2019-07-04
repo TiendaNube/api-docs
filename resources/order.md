@@ -5,13 +5,21 @@ An order is created when a customer completes the checkout process. Orders can't
 
 ##### Table of Contents
 [Get all orders](#GET-/orders)
+
 [Get a order](#GET-/orders/#{id})
-[Create a order](#POST-/orders/#{id})
+
+[Create a order](#POST-/orders/)
+
 [Update a order](#PUT-/orders/#{id})
+
 [Close a order](#POST-/orders/#{id}/close)
+
 [Reopen a order](#POST-/orders/#{id}/open)
+
 [Pack a order](#POST-/orders/#{id}/pack)
+
 [Fulfill a order](#POST-/orders/#{id}/pack)
+
 [Cancel a order](#POST-/orders/#{id}/cancel)
 
 Properties
@@ -375,6 +383,186 @@ Receive a single Order
 }
 ```
 
+### POST /orders/
+
+Create a Order.
+
+| Parameter          | Description                                                                                                                           |Required|
+|--------------------| --------------------------------------------------------------------------------------------------------------------------------------|--------|
+| currency           | The order currency code ([ISO 4217 format](https://en.wikipedia.org/wiki/ISO_4217)). The default is the store currency.               | No     |
+| language           | The language code ([ISO 639-1 format](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)). The default is the store main language.| No     | 
+| gateway            | The order's payment gateway ([Payment Gateway](#Payment-Gateway)).                                                                    | Yes    |
+| payment_status     | The order's payment status ([Payment Status](#Payment-Status)).                                                                       | Yes    | 
+| status             | The order status ([Order Status](#Order-Status)).                                                                                     | Yes    |
+| products           | A list of order products ([Product](#Product)).                                                                                       | Yes    |
+| inventory_behaviour| The inventory behaviour that the order must perform ([Inventory Behaviour](#Inventory-Behaviour)).                                    | No     |
+| customer           | The customer object ([Customer](#Customer)).                                                                                          | Yes    |
+| note               | An additional customer note for the order.                                                                                            | No     |
+| billing_address    | The customer's billing address object ([Address](#Address)).                                                                          | Yes    |
+| shipping_address   | The customer's shipping address object ([Address](#Address)).                                                                         | Yes    |
+| shipping_pickup_type | The shipping pickup type ([Shipping Type](#Shipping-Type)).                                                                         | Yes    |
+| shipping             | The shipping method ([Shipping Method](#Shipping-Method)).                                                                          | Yes    |
+| shipping_option      | The order's shipping option nice name.                                                                                              | Yes    |
+| shipping_tracking_number | The order's shipping tracking number                                                                                            | No     |
+| shipping_cost_customer   | The customer's shipping cost double value. The value 0 means free shipping.                                                     | Yes    |
+| shipping_cost_owner      | The owner's shipping cost double value.                                                                                         | No     |
+| send_confirmation_email  | Send the order confirmation email to the customer . The default is false.                                                       | No     |
+| send_fulfillment_email   | Send the order fulfillment email to the customer . The default is false.                                                        | No     |
+
+
+### Objects
+
+#### Customer
+
+| Value       | Description                    | Type    | Required |
+|-------------|--------------------------------|---------|----------|
+| name        | The customer's name            | String  | Yes      |
+| email       | The customer's email address   | E-mail  | Yes      |
+| phone       | The customer's phone number    | String  | No       |
+| document    | The customer's document number | String  | No       |
+
+#### Address
+
+| Value       | Description                                                                         | Type   | Required |
+|-------------|-------------------------------------------------------------------------------------|--------|----------|
+| first_name  | The customer's first name                                                           | String | Yes      |
+| last_name   | The customer's last name                                                            | String | Yes      |
+| address     | The customer's address                                                              | String | Yes      |
+| number      | The address's number                                                                | String | Yes      |
+| floor       | The address's complement                                                            | String | No       |
+| locality    | The address's locality                                                              | String | No       | 
+| city        | The address's city                                                                  | String | Yes      |
+| province    | The address's province                                                              | String | Yes      |
+| zipcode     | The address's postal code                                                           | String | Yes      |
+| country     | The address's country [ISO 3166-1 Format)](http://en.wikipedia.org/wiki/ISO_3166-1) | String | Yes      |
+| phone       | The address's phone number                                                          | String | No       |
+
+
+#### Product
+| Value       | Description              | Type    | Required |
+|-------------|--------------------------|---------|----------|
+| variant_id  | The product variant ID   | Integer | Yes      |
+| quantity    | The product quantity     | Integer | Yes      |
+
+#### Order Status
+
+| Value        | Description                                         |
+|--------------| ----------------------------------------------------|
+| open         | The order is open                                   |
+| closed       | The order is closed                                 |
+| cancelled    | The order is cancelled                              |
+
+
+#### Payment Status
+
+| Value        | Description                                         |
+|--------------|-----------------------------------------------------|
+| pending      | The payment confirmation is pending                 |
+| authorized   |  The payment was authorized but not captured yet    |
+| paid         | The payment was successfully confirmed and captured |
+| voided       | The payment confirmation is voided                  |
+| refunded     | The payment was refunded to the customer            |
+| abandoned    | The payment confirmation is abandoned               |
+
+
+#### Payment Gateway 
+
+| Value        | Description                         |
+|--------------|-------------------------------------|
+| not-provided | The payment gateway is not provided |
+| mercadopago  | Mercado Pago                        |
+| offline      | Offline payment gateway             |
+| payu         | Payu                                |
+| todopago     | Todo Pago                           |
+
+
+#### Shipping Type
+
+| Value           | Description                           |
+|-----------------|---------------------------------------|
+| ship            | Home delivery                         |
+| pickuo          | Pickup in a physical location         |
+
+#### Shipping Method
+
+| Value             | Description                           |
+|-------------------|---------------------------------------|
+| branch            | Store branches                        |
+| correios          | Brazilian Correios                    |
+| correo-argentino  | Correo Argentino                      |
+| not-provided      | The shipping method was not provided  |
+| oca-partner-ar    | OCA                                   |
+| table             | Custom                                |
+
+#### Inventory Behaviour
+
+| Value    | Description                                                  |
+|----------|--------------------------------------------------------------|
+| bypass   | Do not claim inventory (default)                             |
+| claim    | Attempt to claim inventory, it could prevent order creation  |
+
+
+#### POST /orders/
+
+`HTTP/1.1 201 Created`
+
+```json
+{
+   "currency": "ARS",
+   "language": "es",
+   "status": "open",
+   "gateway": "mercadopago",
+   "payment_status": "pending",
+   "products": [
+       {
+           "variant_id": 101,
+           "quantity": 2
+       }
+   ],
+   "inventory_behaviour" : "bypass",
+   "customer": {
+       "email": "john.doe@example.com",
+       "name": "John Doe",
+       "phone": "+55 11 99999-9999",
+       "document": "12345678901"
+   },
+   "note": null,
+   "billing_address": {
+       "first_name": "John",
+       "last_name": "Doe",
+       "address": "Evergreen Terrace",
+       "number": "742",
+       "floor": null,
+       "locality": null,
+       "city": "Springfield",
+       "province": "Oregon",
+       "zipcode": "97475",
+       "country": "US",
+       "phone": "5551230413"
+   },
+   "shipping_address": {
+       "first_name": "John",
+       "last_name": "Doe",
+       "address": "Evergreen Terrace",
+       "number": "742",
+       "floor": null,
+       "locality": null,
+       "city": "Springfield",
+       "province": "Oregon",
+       "zipcode": "97475",
+       "country": "US",
+       "phone": "5551230413"
+   },
+   "shipping_pickup_type": "ship",
+   "shipping": "correios",
+   "shipping_option": "Correios - PAC",
+   "shipping_tracking_number": null,
+   "shipping_cost_customer": 20.00,
+   "shipping_cost_owner": 20.00,
+   "send_confirmation_email" : false,
+   "send_fulfillment_email" : false
+}
+```
 
 ### PUT /orders/#{id}
 
