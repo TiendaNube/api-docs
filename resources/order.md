@@ -3,6 +3,17 @@ Order
 
 An order is created when a customer completes the checkout process. Orders can't be created through the API.
 
+##### Table of Contents
+[Get all orders](#GET-/orders)
+[Get a order](#GET-/orders/#{id})
+[Create a order](#POST-/orders/#{id})
+[Update a order](#PUT-/orders/#{id})
+[Close a order](#POST-/orders/#{id}/close)
+[Reopen a order](#POST-/orders/#{id}/open)
+[Pack a order](#POST-/orders/#{id}/pack)
+[Fulfill a order](#POST-/orders/#{id}/pack)
+[Cancel a order](#POST-/orders/#{id}/cancel)
+
 Properties
 ----------
 
@@ -363,6 +374,132 @@ Receive a single Order
     }
 }
 ```
+
+
+### PUT /orders/#{id}
+
+Change an Order's attributes (just `owner_note` for now) and/or update an Order's status
+
+#### PUT /orders/450789469
+
+```json
+{
+    "owner_note": "Need to gift wrap this order",
+    "status": "paid"
+}
+```
+
+`HTTP/1.1 200 OK`
+
+```json
+{
+    "cancel_reason": null,
+    "created_at": "2008-01-10T11:00:00-05:00",
+    "currency": "USD",
+    "gateway": "paypal",
+    "id": 450789469,
+    "landing_site": "http://www.example.com?source=abc",
+    "language": "en",
+    "location_id": null,
+    "name": "#1001",
+    "note": null,
+    "number": 1,
+    "owner_note": "Need to gift wrap this order",
+    "payment_status": "paid",
+    "shipping": "ups",
+    "shipping_status": "unshipped",
+    "shipping_tracking_number": null,
+    "shipping_tracking_url": null,
+    "shipping_min_days": 2,
+    "shipping_max_days": 4,
+    "shipping_cost_owner": "20.00",
+    "shipping_cost_customer": "20.00",
+    "status": "open",
+    "subtotal": "38.00",
+    "token": "898544a54283414238f74cd08f0efd3916f74b75",
+    "discount": "0.00",
+    "price": "58.00",
+    "price_usd": "58.00",
+    "weight": "2.00",
+    "updated_at": "2008-01-10T11:00:00-05:00",
+    "shipped_at": "2008-01-10T11:00:00-05:00",
+    "number": 101,
+    "coupon": [
+      {
+        "code": "SUPERDISCOUNT"
+      }
+    ],
+    "products": [
+      {
+        "depth": null,
+        "height": null,
+        "price": "19.00",
+        "product_id": 1234,
+        "quantity": 2,
+        "free_shipping": false,
+        "variant_id": 101,
+        "weight": "2.00",
+        "width": null
+      }
+    ],
+    "billing_address": "Evergreen Terrace",
+    "billing_city": "Springfield",
+    "billing_country": "US",
+    "billing_default": true,
+    "billing_floor": null,
+    "billing_locality": null,
+    "billing_number": "742",
+    "billing_phone": "555-123-0413",
+    "billing_province": "Oregon",
+    "billing_zipcode": "97475",
+    "extra": {
+      "gift-wrap": "deluxe"
+    },
+    "shipping_pickup_type": "ship",
+    "shipping_store_branch_name": null,
+    "shipping_address": {
+      "address": "Evergreen Terrace",
+      "city": "Springfield",
+      "country": "US",
+      "created_at": "2013-01-03T09:11:51-03:00",
+      "default": true,
+      "floor": null,
+      "id": 1234,
+      "locality": null,
+      "number": "742",
+      "phone": "555-123-0413",
+      "province": "Oregon",
+      "updated_at": "2013-03-10T11:13:01-03:00",
+      "zipcode": "97475"
+    },
+    "customer": {
+      "created_at": "2013-01-03T09:11:51-03:00",
+      "email": "john.doe@example.com",
+      "id": 101,
+      "last_order_id": 9001,
+      "name": "John Doe",
+      "total_spent": "89.00",
+      "total_spent_currency": "USD",
+      "updated_at": "2013-03-11T09:14:11-03:00",
+      "default_address": {
+        "address": "Evergreen Terrace",
+        "city": "Springfield",
+        "country": "US",
+        "created_at": "2013-01-03T09:11:51-03:00",
+        "default": true,
+        "floor": null,
+        "id": 1234,
+        "locality": null,
+        "number": "742",
+        "phone": "555-123-0413",
+        "province": "Oregon",
+        "updated_at": "2013-03-10T11:13:01-03:00",
+        "zipcode": "97475"
+      }
+    }
+}
+```
+
 
 ### POST /orders/#{id}/close
 
@@ -882,130 +1019,6 @@ Cancel an Order
     "shipping_cost_owner": "20.00",
     "shipping_cost_customer": "20.00",
     "status": "cancelled",
-    "subtotal": "38.00",
-    "token": "898544a54283414238f74cd08f0efd3916f74b75",
-    "discount": "0.00",
-    "price": "58.00",
-    "price_usd": "58.00",
-    "weight": "2.00",
-    "updated_at": "2008-01-10T11:00:00-05:00",
-    "shipped_at": "2008-01-10T11:00:00-05:00",
-    "number": 101,
-    "coupon": [
-      {
-        "code": "SUPERDISCOUNT"
-      }
-    ],
-    "products": [
-      {
-        "depth": null,
-        "height": null,
-        "price": "19.00",
-        "product_id": 1234,
-        "quantity": 2,
-        "free_shipping": false,
-        "variant_id": 101,
-        "weight": "2.00",
-        "width": null
-      }
-    ],
-    "billing_address": "Evergreen Terrace",
-    "billing_city": "Springfield",
-    "billing_country": "US",
-    "billing_default": true,
-    "billing_floor": null,
-    "billing_locality": null,
-    "billing_number": "742",
-    "billing_phone": "555-123-0413",
-    "billing_province": "Oregon",
-    "billing_zipcode": "97475",
-    "extra": {
-      "gift-wrap": "deluxe"
-    },
-    "shipping_pickup_type": "ship",
-    "shipping_store_branch_name": null,
-    "shipping_address": {
-      "address": "Evergreen Terrace",
-      "city": "Springfield",
-      "country": "US",
-      "created_at": "2013-01-03T09:11:51-03:00",
-      "default": true,
-      "floor": null,
-      "id": 1234,
-      "locality": null,
-      "number": "742",
-      "phone": "555-123-0413",
-      "province": "Oregon",
-      "updated_at": "2013-03-10T11:13:01-03:00",
-      "zipcode": "97475"
-    },
-    "customer": {
-      "created_at": "2013-01-03T09:11:51-03:00",
-      "email": "john.doe@example.com",
-      "id": 101,
-      "last_order_id": 9001,
-      "name": "John Doe",
-      "total_spent": "89.00",
-      "total_spent_currency": "USD",
-      "updated_at": "2013-03-11T09:14:11-03:00",
-      "default_address": {
-        "address": "Evergreen Terrace",
-        "city": "Springfield",
-        "country": "US",
-        "created_at": "2013-01-03T09:11:51-03:00",
-        "default": true,
-        "floor": null,
-        "id": 1234,
-        "locality": null,
-        "number": "742",
-        "phone": "555-123-0413",
-        "province": "Oregon",
-        "updated_at": "2013-03-10T11:13:01-03:00",
-        "zipcode": "97475"
-      }
-    }
-}
-```
-
-### PUT /orders/#{id}
-
-Change an Order's attributes (just `owner_note` for now) and/or update an Order's status
-
-#### PUT /orders/450789469
-
-```json
-{
-    "owner_note": "Need to gift wrap this order",
-    "status": "paid"
-}
-```
-
-`HTTP/1.1 200 OK`
-
-```json
-{
-    "cancel_reason": null,
-    "created_at": "2008-01-10T11:00:00-05:00",
-    "currency": "USD",
-    "gateway": "paypal",
-    "id": 450789469,
-    "landing_site": "http://www.example.com?source=abc",
-    "language": "en",
-    "location_id": null,
-    "name": "#1001",
-    "note": null,
-    "number": 1,
-    "owner_note": "Need to gift wrap this order",
-    "payment_status": "paid",
-    "shipping": "ups",
-    "shipping_status": "unshipped",
-    "shipping_tracking_number": null,
-    "shipping_tracking_url": null,
-    "shipping_min_days": 2,
-    "shipping_max_days": 4,
-    "shipping_cost_owner": "20.00",
-    "shipping_cost_customer": "20.00",
-    "status": "open",
     "subtotal": "38.00",
     "token": "898544a54283414238f74cd08f0efd3916f74b75",
     "discount": "0.00",
