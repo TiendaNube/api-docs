@@ -6,21 +6,21 @@ An order is created when a customer completes the checkout process. Orders can't
 #### Table of Contents
 > [Get all orders](#GET-orders)
 > 
-> [Get a order](#GET-ordersid)
+> [Get an order](#GET-ordersid)
 > 
-> [Create a order](#POST-orders)
+> [Create an order](#POST-orders)
 > 
-> [Update a order](#PUT-ordersid)
+> [Update an order](#PUT-ordersid)
 > 
-> [Close a order](#POST-ordersidclose)
+> [Close an order](#POST-ordersidclose)
 > 
-> [Reopen a order](#POST-ordersidopen)
+> [Reopen an order](#POST-ordersidopen)
 > 
-> [Pack a order](#POST-ordersidpack)
+> [Pack an order](#POST-ordersidpack)
 > 
-> [Fulfill a order](#POST-ordersidpack)
+> [Fulfill an order](#POST-ordersidpack)
 > 
-> [Cancel a order](#POST-ordersidcancel)
+> [Cancel an order](#POST-ordersidcancel)
 > 
 
 Properties
@@ -388,7 +388,7 @@ Receive a single Order
 
 ### POST /orders/
 
-Create a Order.
+Create an Order.
 
 | Parameter          | Description                                                                                                                           |Required|
 |--------------------| --------------------------------------------------------------------------------------------------------------------------------------|--------|
