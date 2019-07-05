@@ -484,7 +484,7 @@ Create a Order.
 | Value           | Description                           |
 |-----------------|---------------------------------------|
 | ship            | Home delivery                         |
-| pickuo          | Pickup in a physical location         |
+| pickup          | Pickup in a physical location         |
 
 #### Shipping Method
 
