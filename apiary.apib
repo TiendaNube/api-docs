@@ -1,21 +1,25 @@
 FORMAT: 1A
 HOST: https://api.tiendanube.com/v1/
 
-# Nuvem Shop / Tienda Nube API
+# Nuvemshop / Tiendanube API
 
-This is the official documentation for the Nuvem Shop / Tienda Nube API, and it will show you how to use our API to authenticate, make requests, and retrieve data.
+This is the official documentation for the Nuvemshop / Tiendanube API, and it will show you how to use our API to authenticate, make requests, and retrieve data.
+
+>**Note**: This documentation is intended for SaaS companies and developers that are already part of our technology partners program. If you are not yet part of this program, please find this form at the [Nuvemshop website](https://docs.google.com/forms/d/e/1FAIpQLSdrUpK_3UV0eHXGLfW4TuBxATIYzHboB-xrVn3ud7A9OKUU9w/viewform) or at the [Tiendanube website](https://docs.google.com/forms/d/e/1FAIpQLScWZjOTgQHgd6HIpvCV0RhOTG4WMIfFHuDr2kfYPiSQAvRaDQ/viewform) to learn more.
 
 ## Getting Started
 
 Before you start to code your app integration, you will need to:
 
-1. Sign-up for a partner account at [Nuvem Shop](https://www.nuvemshop.com.br/parceiros) or [Tienda Nube](https://www.tiendanube.com/partners).
+1. Sign-up for a partner account at [Nuvemshop](https://www.nuvemshop.com.br/parceiros) or [Tiendanube](https://www.tiendanube.com/partners).
 
 2. Once inside the partner's panel, go to the _Apps_ section and create your app in order to get your credentials.
 
 3. Read up on the [authentication](/#introduction/authentication) to learn how to authenticate and authorize your requests.
 
 4. Read the API docs of the desired resources to learn how to retrieve and manipulate the available data.
+
+5. Read our publish guidelines at [Nuvemshop](https://www.nuvemshop.com.br/parceiros-tecnologicos/guia-publicacao) or [Tiendanube](https://www.tiendanube.com/partners-tecnologicos/guia-publicacion) to be sure that your content and assets follow our requirements to be published on our appstore.
 
 ## The Basics
 
@@ -74,7 +78,7 @@ Finally, **the API version must be suffixed with the requested store ID**, so if
 
 ### JSON
 
-All data is sent and received as JSON. Our format has no root element and we use snake_case to describe attribute keys. This means that you have to send `Content-Type: application/json; charset=utf-8` when POSTing or PUTing data to the Nuvem Shop / Tienda Nube API.
+All data is sent and received as JSON. Our format has no root element and we use snake_case to describe attribute keys. This means that you have to send `Content-Type: application/json; charset=utf-8` when POSTing or PUTing data to the Nuvemshop / Tiendanube API.
 
 >**Note**: You will receive a `415 Unsupported Media Type` response code if you leave out the Content-Type header.
 
@@ -109,7 +113,7 @@ The possible `rel` values are:
 
 ## Authentication
 
-We follow the OAuth 2 framework for letting users authorize their applications to use Nuvem Shop / Tienda Nube on their own.
+We follow the OAuth 2 framework for letting users authorize their applications to use Nuvemshop / Tiendanube on their own.
 
 Basically, when someone installs your app, you will have to obtain an access token (a secret string denoting your rights over a given store) from the user, which **you will need to include in the header of every request**.
 
@@ -121,7 +125,7 @@ We provide authorization and user authentication by a restricted form of OAuth 2
 ### Introduction
 
 - The first step is to register your application.
-    * You will need to go to [Nuvem Shop Parceiros](https://partners.nuvemshop.com.br) or [Tienda Nube Partners](https://partners.tiendanube.com) and sign-up to the Partners program.
+    * You will need to go to [Nuvemshop Parceiros](https://partners.nuvemshop.com.br) or [Tiendanube Partners](https://partners.tiendanube.com) and sign-up to the Partners program.
     * Once logged in, you'll need to access the application tab. If this is your first time in this site, a dropdown menu may appear with the option to create new applications instead.
     * Here you will find a list of your applications and a button to create a new one. Clicking on the `Create Application` button will bring up a form for you to complete before you can click on `Create Application` to confirm the process.
 - When creating an app, you will have to select the scopes it needs and set a redirection URL.
@@ -130,14 +134,14 @@ We provide authorization and user authentication by a restricted form of OAuth 2
 - After your application has been registered, you'll have your application's exclusive information, including `client_id` and `client_secret`. You will need this data to complete the authorization flow for every new user that downloads your application.
     * You can read more about this in our [Authorization Flow](/#introduction/authentication/authorization-flow) section.
 
-> **Note**: You will have to supply your own URL for the redirection URL. Nuvem Shop/Tienda Nube will not take responsability for failed redirections. This step is especially important because each new user will have to go through it to install the application succesfully (see [Authorization Flow](/#introduction/authentication/authorization-flow) for more information).
+> **Note**: You will have to supply your own URL for the redirection URL. Nuvemshop/Tiendanube will not take responsability for failed redirections. This step is especially important because each new user will have to go through it to install the application succesfully (see [Authorization Flow](/#introduction/authentication/authorization-flow) for more information).
 
 ### Authorization Flow
 
-This process will take place each time a user attempts to install your application. The objective of this process is for you to acquire the unique `access_token` that will allow your application to have access to the user's Nuvem Shop/Tienda Nube.
+This process will take place each time a user attempts to install your application. The objective of this process is for you to acquire the unique `access_token` that will allow your application to have access to the user's Nuvemshop/Tiendanube.
 
 The authorization flow is as follows:
-1. Users, from their Nuvem Shop / Tienda Nube app store, select your app to install it. Or, alternatively, they go to `https://www.tiendanube.com/apps/(app_id)/authorize` (if they are not logged in, they will be prompted to do so).
+1. Users, from their Nuvemshop / Tiendanube app store, select your app to install it. Or, alternatively, they go to `https://www.tiendanube.com/apps/(app_id)/authorize` (if they are not logged in, they will be prompted to do so).
 2. Users then redirect to the authorization page, where your app will request the user the permissions it needs (if they have already done this, the step is skipped).
 3. Finally, users are redirected to your app's redirection URL with an authorization code.
 4. Using your app's credentials and the authorization code, you can obtain an access token by making a POST request to `https://www.tiendanube.com/apps/authorize/token`. (Don't forget to also send `grant_type=authorization_code` - see the example provided below).
@@ -173,7 +177,7 @@ Finally, you receive the following information:
 }
 ```
 
-> **Note**: Remember, each HTTP request made to a user's Nuvem Shop/Tienda Nube must contain the Authentication header, whose value is `token_type access_token`. In the example this would be:
+> **Note**: Remember, each HTTP request made to a user's Nuvemshop/Tiendanube must contain the Authentication header, whose value is `token_type access_token`. In the example this would be:
 > ```Authentication: bearer mySt0r34cc3ssT0k3n```
 
 ### Scopes
@@ -241,7 +245,7 @@ Content-Length: 47
 
 ### Server Errors
 
-If Nuvem Shop/Tienda Nube is having trouble, you might see a 5xx error. `500 Internal Server Error` means that the app is entirely down, but you might also see `502 Bad Gateway`, `503 Service Unavailable`, or `504 Gateway Timeout`. It's your responsibility in all of these cases to retry your request later.
+If Nuvemshop/Tiendanube is having trouble, you might see a 5xx error. `500 Internal Server Error` means that the app is entirely down, but you might also see `502 Bad Gateway`, `503 Service Unavailable`, or `504 Gateway Timeout`. It's your responsibility in all of these cases to retry your request later.
 
 ## Usage Limits
 
@@ -273,7 +277,7 @@ To talk with us about the API, feel free to [contact us](mailto:api@tiendanube.c
 
 # Group Store
 
-The Store resource contains general settings and information about a Nuvem Shop / Tienda Nube store.
+The Store resource contains general settings and information about a Nuvemshop / Tiendanube store.
 
 ## Managing The Store [/store]
 
@@ -297,7 +301,7 @@ The Store resource contains general settings and information about a Nuvem Shop 
     + business_name (string) - Business name of the company who owns the store.
     + business_address (string) - Business address of the company who owns the store.
     + customer_accounts (string) - "optional" if the customer is allowed to checkout as guest. "mandatory" if not.
-    + plan_name (string) - Name of the Tienda Nube/Nuvem Shop's plan the store is on.
+    + plan_name (string) - Name of the Nuvemshop/Tiendanube's plan the store is on.
     + country (string) - Store's country in ISO 3166-1 format.
     + languages (string) - Store's available languages with its currency and whether or not it is active.
     + domains (array[string]) - List of store's domains.
@@ -390,7 +394,7 @@ A `Product` will always have one or more `Product Variants` and may have one or 
 
 ### Product
 
-A [Product](/#reference/product/managing-products-examples-and-resources) is an item for sale in a Tienda Nube/Nuvem Shop's store. It can be either a good or a service.
+A [Product](/#reference/product/managing-products-examples-and-resources) is an item for sale in a Nuvemshop/Tiendanube's store. It can be either a good or a service.
 
 ### Product Variants
 
@@ -992,7 +996,7 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
     + product_id (number) - The id of the product associated with the variant.
     + price (number) - Price of the Product Variant. `null` indicates the product will initiate a contact instead of a checkout process.
     + promotional_price (string) - Lower price to display as a sale. The value of price will be displayed crossed out for comparison.
-    + stock_management (string) - Specifies whether or not Tienda Nube/Nuvem Shop tracks the number of items in stock for this product variant. Valid values are `true` if Tienda Nube/Nuvem Shop tracks the stock, `false` if it doesn't.
+    + stock_management (string) - Specifies whether or not Nuvemshop/Tiendanube tracks the number of items in stock for this product variant. Valid values are `true` if Nuvemshop/Tiendanube tracks the stock, `false` if it doesn't.
     + stock (string) - Stock of the Product Variant. If `stock_management` is `false` the stock will be `null`.
     + weight (string) - Weight of the Product Variant in kilograms.
     + width (string) - Width of the Product Variant in centimetres.
@@ -1119,7 +1123,7 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
 + Attributes
     + price (number) - Price of the Product Variant. `null` indicates the product will initiate a contact instead of a checkout process.
     + promotional_price (string) - Lower price to display as a sale. The value of price will be displayed crossed out for comparison.
-    + stock_management (string) - Specifies whether or not Tienda Nube/Nuvem Shop tracks the number of items in stock for this product variant. Valid values are `true` if Tienda Nube/Nuvem Shop tracks the stock, `false` if it doesn't.
+    + stock_management (string) - Specifies whether or not Nuvemshop/Tiendanube tracks the number of items in stock for this product variant. Valid values are `true` if Nuvemshop/Tiendanube tracks the stock, `false` if it doesn't.
     + stock (string) - Stock of the Product Variant. If `stock_management` is `false` the stock will be `null`.
     + weight (string) - Weight of the Product Variant in kilograms.
     + width (string) - Width of the Product Variant in centimetres.
@@ -1181,7 +1185,7 @@ A [Product](/#reference/product/managing-products-examples-and-resources) is an 
     + values (array[string], required) - List of the values of the attributes whose values define the variant. E.g.: Large, Medium, etc.
     + price (number) - Price of the Product Variant. `null` indicates the product will initiate a contact instead of a checkout process.
     + promotional_price (string) - Lower price to display as a sale. The value of price will be displayed crossed out for comparison.
-    + stock_management (string) - Specifies whether or not Tienda Nube/Nuvem Shop tracks the number of items in stock for this product variant. Valid values are `true` if Tienda Nube/Nuvem Shop tracks the stock, `false` if it doesn't.
+    + stock_management (string) - Specifies whether or not Nuvemshop/Tiendanube tracks the number of items in stock for this product variant. Valid values are `true` if Nuvemshop/Tiendanube tracks the stock, `false` if it doesn't.
     + stock (string) - Stock of the Product Variant. If `stock_management` is `false` the stock will be `null`.
     + weight (string) - Weight of the Product Variant in kilograms.
     + width (string) - Width of the Product Variant in centimetres.
