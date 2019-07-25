@@ -107,7 +107,7 @@ In order to control the incoming traffic from the API, you can perform a limited
 
 * `X-Rate-Limit-Limit` : Total requests that can be done in a given period, in the case, the bucket size.
 * `X-Rate-Limit-Remaining` : Remaining requests to completely fill the bucket.
-* `X-Rate-Limit-Reset` : Remaining seconds to completely empty the bucket.
+* `X-Rate-Limit-Reset` : Remaining milliseconds to completely empty the bucket.
 
 Pagination
 ----------
