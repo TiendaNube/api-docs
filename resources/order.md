@@ -430,7 +430,7 @@ Create an Order.
 |-------------|-------------------------------------------------------------------------------------|--------|----------|
 | first_name  | The customer's first name                                                           | String | Yes      |
 | last_name   | The customer's last name                                                            | String | Yes      |
-| address     | The customer's address                                                              | String | Yes      |
+| address     | The customer's street                                                               | String | Yes      |
 | number      | The address's number                                                                | String | Yes      |
 | floor       | The address's complement                                                            | String | No       |
 | locality    | The address's locality                                                              | String | No       | 
@@ -461,7 +461,7 @@ Create an Order.
 | Value        | Description                                         |
 |--------------|-----------------------------------------------------|
 | pending      | The payment confirmation is pending                 |
-| authorized   |  The payment was authorized but not captured yet    |
+| authorized   | The payment was authorized but not captured yet     |
 | paid         | The payment was successfully confirmed and captured |
 | voided       | The payment confirmation is voided                  |
 | refunded     | The payment was refunded to the customer            |
@@ -472,11 +472,11 @@ Create an Order.
 
 | Value        | Description                         |
 |--------------|-------------------------------------|
-| not-provided | The payment gateway is not provided |
 | mercadopago  | Mercado Pago                        |
 | offline      | Offline payment gateway             |
 | payu         | Payu                                |
 | todopago     | Todo Pago                           |
+| not-provided | The payment gateway is not provided |
 
 
 #### Shipping Type
@@ -493,9 +493,9 @@ Create an Order.
 | branch            | Store branches                        |
 | correios          | Brazilian Correios                    |
 | correo-argentino  | Correo Argentino                      |
-| not-provided      | The shipping method was not provided  |
 | oca-partner-ar    | OCA                                   |
 | table             | Custom                                |
+| not-provided      | The shipping method was not provided  |
 
 #### Inventory Behaviour
 
