@@ -1,7 +1,7 @@
 Order
 =====
 
-An order is created when a customer completes the checkout process. Orders can't be created through the API.
+An order is created when a customer completes the checkout process. Orders also can be created through the API.
 
 #### Table of Contents
 > [Get all orders](#GET-orders)
