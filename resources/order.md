@@ -470,13 +470,17 @@ Create an Order.
 
 #### Payment Gateway 
 
-| Value        | Description                         |
-|--------------|-------------------------------------|
-| mercadopago  | Mercado Pago                        |
-| offline      | Offline payment gateway             |
-| payu         | Payu                                |
-| todopago     | Todo Pago                           |
-| not-provided | The payment gateway is not provided |
+| Value            | Description                         |
+|------------------|-------------------------------------|
+| offline          | Offline payment gateway             |
+| mercadopago      | Mercado Pago                        |
+| pagseguro        | PagSeguro                           |
+| cielo            | Cielo                               |
+| moip             | Wirecard                            |
+| boleto_paghiper  | PagHiper                            |
+| payu             | Payu                                |
+| todopago         | Todo Pago                           |
+| not-provided     | The payment gateway is not provided |
 
 
 #### Shipping Type
