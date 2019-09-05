@@ -15,12 +15,15 @@ Properties
 | variants       | List of [Product Variant](https://github.com/tiendanube/api-docs/blob/master/resources/product_variant.md) objects representing the different version of the Product |
 | images         | List of [Product Image](https://github.com/tiendanube/api-docs/blob/master/resources/product_image.md) objects representing the Product's images                 |
 | categories     | List of [Category](https://github.com/tiendanube/api-docs/blob/master/resources/category.md) objects representing the Product's categories             |
-| published      | *true* if the Product is published in the store. *false* if the Product will not show up on the store |
-| attributes     | List of the names of the attributes whose values define the variants. E.g.: Color, Size, etc.     |
-| tags     | String with all the Product's tags, separated by commas |
+| brand .        | The Product's brand                                                                               |
+| published      | *true* if the Product is published in the store. *false* otherwise                                |
+| free_shipping  | *true* if the Product is elegible for free shipping. *false* otherwise                            |
+| seo_title      | The SEO friendly title for the Product                                                            |
+| seo_description| The SEO friendly description for the Product                                                      |
+| attributes     | List of the names of the attributes whose values define the variants. E.g.: Color, Size, etc      |
+| tags           | String with all the Product's tags, separated by commas                                           |
 | created_at     | Date when the Product was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)     | 
 | updated_at     | Date when the Product was last updated in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)|
-| canonical_url  | The SEO friendly url for the product in the store                                                 |
 
 Endpoints
 ---------
@@ -134,6 +137,9 @@ Receive a list of all Products.
           "es": "Master Ball",
           "pt": "Master Ball"
       },
+      "brand": null,
+      "seo_title": "Master Ball",
+      "seo_description": "The best Ball with the ultimate level of performance. It will catch any wild Pokémon without fail.",
       "published": true,
       "free_shipping": false,
       "updated_at": "2013-03-11T09:14:11-03:00",
@@ -197,175 +203,11 @@ Receive a list of all Products.
          "updated_at": "2013-03-11T09:14:11-03:00",
          "weight": "2.50",
          "width": null
-       }
+        }
       ]
-    },
-    {
-        "id": 435407,
-        "name": {
-            "es": "Cambiate por favor",
-            "en": "OG add image action"
-        },
-        "description": {
-            "es": "<p>Isso!<\/p>\r\n",
-            "en": "<p>Isso!<\/p>\r\n"
-        },
-        "handle": {
-            "es": "cambiate-por-favor",
-            "en": "og-add-image-action"
-        },
-        "attributes": [],
-        "published": true,
-        "free_shipping": true,
-        "created_at": "2012-02-19T17:34:36+0000",
-        "updated_at": "2014-07-17T14:13:19+0000",
-        "variants": [
-            {
-                "id": 821537,
-                "product_id": 435407,
-                "position": 5,
-                "price": "22.00",
-                "promotional_price": null,
-                "stock_management": false,
-                "stock": null,
-                "weight": "0.75",
-                "width": "0.00",
-                "height": "0.00",
-                "depth": "0.00",
-                "sku": "ASF",
-                "values": [],
-                "created_at": "2012-02-19T17:34:37+0000",
-                "updated_at": "2014-07-17T14:13:19+0000"
-            }
-        ],
-        "tags": "algo, jojo",
-        "images": [
-            {
-                "id": 634688,
-                "product_id": 435407,
-                "src": "https:\/\/s3-sa-east-1.amazonaws.com\/tiendanube-mati\/stores\/046\/products\/blog%2024-1024-1024.jpg",
-                "position": 1
-            },
-            {
-                "id": 1021828,
-                "product_id": 435407,
-                "src": "https:\/\/s3-sa-east-1.amazonaws.com\/tiendanube-mati\/stores\/046\/products\/do-test-1024-1024.jpg",
-                "position": 2
-            }
-        ],
-        "categories": [
-            {
-                "id": 105190,
-                "name": {
-                    "es": "Pantalones",
-                    "en": "Pantalones"
-                },
-                "description": {
-                    "es": "",
-                    "en": ""
-                },
-                "handle": {
-                    "es": "pantalones",
-                    "en": "pantalones"
-                },
-                "parent": null,
-                "subcategories": [
-                    119258
-                ],
-                "created_at": "2012-02-19T17:34:36+0000",
-                "updated_at": "2014-01-28T14:10:12+0000"
-            }
-        ]
     }
 ]
 ```
-
-#### GET /products?free_shipping=true
-
-`HTTP/1.1 200 OK`
-
-```json
-[
-    {
-        "id": 435407,
-        "name": {
-            "es": "Cambiate por favor",
-            "en": "OG add image action"
-        },
-        "description": {
-            "es": "<p>Isso!<\/p>\r\n",
-            "en": "<p>Isso!<\/p>\r\n"
-        },
-        "handle": {
-            "es": "cambiate-por-favor",
-            "en": "og-add-image-action"
-        },
-        "attributes": [],
-        "published": true,
-        "free_shipping": true,
-        "created_at": "2012-02-19T17:34:36+0000",
-        "updated_at": "2014-07-17T14:13:19+0000",
-        "variants": [
-            {
-                "id": 821537,
-                "product_id": 435407,
-                "position": 5,
-                "price": "22.00",
-                "promotional_price": null,
-                "stock_management": false,
-                "stock": null,
-                "weight": "0.75",
-                "width": "0.00",
-                "height": "0.00",
-                "depth": "0.00",
-                "sku": "ASF",
-                "values": [],
-                "created_at": "2012-02-19T17:34:37+0000",
-                "updated_at": "2014-07-17T14:13:19+0000"
-            }
-        ],
-        "tags": "algo, jojo",
-        "images": [
-            {
-                "id": 634688,
-                "product_id": 435407,
-                "src": "https:\/\/s3-sa-east-1.amazonaws.com\/tiendanube-mati\/stores\/046\/products\/blog%2024-1024-1024.jpg",
-                "position": 1
-            },
-            {
-                "id": 1021828,
-                "product_id": 435407,
-                "src": "https:\/\/s3-sa-east-1.amazonaws.com\/tiendanube-mati\/stores\/046\/products\/do-test-1024-1024.jpg",
-                "position": 2
-            }
-        ],
-        "categories": [
-            {
-                "id": 105190,
-                "name": {
-                    "es": "Pantalones",
-                    "en": "Pantalones"
-                },
-                "description": {
-                    "es": "",
-                    "en": ""
-                },
-                "handle": {
-                    "es": "pantalones",
-                    "en": "pantalones"
-                },
-                "parent": null,
-                "subcategories": [
-                    119258
-                ],
-                "created_at": "2012-02-19T17:34:36+0000",
-                "updated_at": "2014-01-28T14:10:12+0000"
-            }
-        ]
-    }
-]
-```
-
 #### GET /products?created_at_min=2013-01-01T00:00:00-03:00&fields=id,name
 
 `HTTP/1.1 200 OK`
@@ -463,7 +305,11 @@ Receive a single Product
       "es": "Master Ball",
       "pt": "Master Ball"
   },
+  "brand": null,
+  "seo_title": "Master Ball",
+  "seo_description": "The best Ball with the ultimate level of performance. It will catch any wild Pokémon without fail.",
   "published": true,
+  "free_shipping": false,
   "updated_at": "2013-03-11T09:14:11-03:00",
   "variants": [
     {
@@ -631,7 +477,11 @@ Create a new Product
         "es": "Ultra Ball",
         "pt": "Ultra Ball"
     },
+    "brand": null,
+    "seo_title": "Ultra Ball",
+    "seo_description": "",
     "published": true,
+    "free_shipping": false,
     "created_at": "2013-06-01T12:15:11-03:00",
     "variants": [
         {
@@ -738,7 +588,11 @@ Modify an existing Product
         "es": "Master Ball",
         "pt": "Master Ball"
     },
+    "brand": null,
+    "seo_title": "Master Ball",
+    "seo_description": "The best Ball with the ultimate level of performance. It will catch any wild Pokémon without fail.",
     "published": false,
+    "free_shipping": false,
     "updated_at": "2013-06-01T12:15:11-03:00",
     "variants": [
       {
