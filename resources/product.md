@@ -467,7 +467,7 @@ Create a new Product
     "images": [
       {
         "id": 231,
-        "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/UltraBallArt.jpg"
+        "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/UltraBallArt.jpg",
         "position": 1,
         "product_id": 2435
       }
