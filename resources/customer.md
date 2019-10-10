@@ -50,6 +50,8 @@ Receive a list of all Customers.
 | page           | Page to show                                                                                     |
 | per_page       | Amount of results                                                                                |
 | fields         | Comma-separated list of fields to include in the response                                        |
+| q              | Search Customers containing the given text in their name, email or identification                |
+
 
 
 #### GET /customers
