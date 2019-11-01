@@ -21,6 +21,7 @@ Properties
 | depth             | Depth of the Product Variant in centimetres                                                     |
 | sku               | Unique identifier of the Product Variant in your store                                          |
 | values            | List of the values of the attributes whose values define the variant. E.g.: Large, Medium, etc. |
+| barcode           | The value associated with an identifier of the product (GTIN, EAN, ISBN, etc.)                  |
 | created_at        | Date when the Product Variant was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)     | 
 | updated_at        | Date when the Product Variant was last updated in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)|
 
