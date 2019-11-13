@@ -271,6 +271,11 @@ We will provide server-side caching to reduce the number of requests done to you
 
 If any of these fields differ, or if the cache has expired since the original request, then new shipping rates are requested.
 
+About caching expire time (TTL)
+
+- All responses with status code *200* from callback URLs has 15min to expire 
+- All responses with status code *422* from callback URLs has 1min to expire
+- The responses without status code 200 and 422 it doesn't cached
 
 Endpoints
 ---------
