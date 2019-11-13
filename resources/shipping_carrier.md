@@ -275,7 +275,7 @@ About caching expire time (TTL)
 
 - All responses with status code *200* from callback URLs has 15min to expire 
 - All responses with status code *422* from callback URLs has 1min to expire
-- The responses without status code 200 and 422 it doesn't cached
+- The responses without status code *200* or *422* It doesn't cached
 
 Endpoints
 ---------
