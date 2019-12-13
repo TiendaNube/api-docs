@@ -411,7 +411,7 @@ Create a new Shipping Carrier Option
 
 | Parameter | Explanation | Required |
 |-----------|-------------|----------|
-| code | A unique code associated with the Shipping Carrier Option. | Yes |
+| code | A unique code associated with the Shipping Carrier Option. This code will be used to associate with returned shipping rate codes.  | Yes |
 | name | The name of the Shipping Carrier Option as seen by both merchants and buyers. | Yes |
 | additional_days | The additional days configurable value that will be added to the option's estimated delivery time. | No |
 | additional_cost | The additional cost configurable value that will be added to the option's consumer price. | No |
