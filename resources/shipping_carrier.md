@@ -411,12 +411,14 @@ Create a new Shipping Carrier Option
 
 | Parameter | Explanation | Required |
 |-----------|-------------|----------|
-| code | A unique code associated with the Shipping Carrier Option. This code will be used to associate with returned shipping rate code.  | Yes |
+| code | A unique code associated with the Shipping Carrier Option.  | Yes |
 | name | The name of the Shipping Carrier Option as seen by both merchants and buyers. | Yes |
 | additional_days | The additional days configurable value that will be added to the option's estimated delivery time. | No |
 | additional_cost | The additional cost configurable value that will be added to the option's consumer price. | No |
 | allow_free_shipping | The configurable free shipping eligible parameter that specifies that an option allows free shipping. | No |
 | active | The avaiability status of the Shipping Carrier Option. Defaults to __true__ | No |
+
+_Obs_: The carrier option `code` is used for matching against the shipping rates. This allows merchant to add additional day and cost settings to the retrieved carrier options.
 
 #### POST /shipping_carriers/1234/options
 
