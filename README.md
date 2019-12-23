@@ -258,6 +258,8 @@ API resources
 * [Webhook](https://github.com/tiendanube/api-docs/blob/master/resources/webhook.md)
 * [Coupons](https://github.com/tiendanube/api-docs/blob/master/resources/coupon.md)
 * [Metafields](https://github.com/tiendanube/api-docs/blob/master/resources/metafields.md)
+* [Payment Provider](https://github.com/tiendanube/api-docs/blob/master/resources/payment_provider.md)
+* [Transaction](https://github.com/tiendanube/api-docs/blob/master/resources/transaction.md)
 
 
 Help us make it better
