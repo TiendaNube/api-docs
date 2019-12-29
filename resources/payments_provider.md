@@ -19,9 +19,9 @@ In our Platform, a Payment Provider is created for a specific `Store`.
 - [Currencies](#link)
   - [Currency Codes](#link)
 - [`Payment Methods`](#link)
-  - `supported_methods` field in `Payments Provider` Object Properties
+  - [`supported_methods` field in `Payments Provider` Object Properties](#link)
 - [`Rates`](#link)
-  - `rates` field in `Payments Provider` Object Properties
+  - [`rates` field in `Payments Provider` Object Properties](#link)
 - [Installments](#link)
   - [Installments Object Properties](#link)
     - [Specification](#link)
