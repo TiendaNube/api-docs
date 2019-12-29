@@ -10,7 +10,7 @@ Payments companies have many different and sometimes complex features which add 
 
 In our Platform, a Payment Provider is created for a specific `Store`.
 
-#### Quick Document Index
+##### Quick Document Index
 
 - [Payments Provider](#link)
   - [Payments Provider Object Properties](#link)
@@ -31,7 +31,7 @@ In our Platform, a Payment Provider is created for a specific `Store`.
 
 
 
-## Payments Provider Object Properties
+### Payments Provider Object Properties
 
 | Field                  | Type                      | Description                                                                                                          |
 |:-----------------------|:--------------------------|:---------------------------------------------------------------------------------------------------------------------|
@@ -49,7 +49,7 @@ In our Platform, a Payment Provider is created for a specific `Store`.
 
 > _*Note:*_ All URLs must be Secure URLs.
 
-# Logos
+## Logos
 At the moment, our Platformm requires the following versions of the `Payments Provider` logo.
 
 | Key     | URL content description                                                                                |
@@ -57,7 +57,7 @@ At the moment, our Platformm requires the following versions of the `Payments Pr
 | 400x120 | PNG file with Transparent Brackground. Dimensions not greater than 400px x 120px. _(As of 01/01/2019)_ |
 | 160x100 | PNG file with White Background. Dimensions must be 160px x 100px. _(As of 01/01/2019)_                 |
 
-## `logo_urls` field in `Payments Provider` Object Properties
+### `logo_urls` field in `Payments Provider` Object Properties
 At the moment, this object should look like the following example:
 
 ```json
@@ -67,10 +67,11 @@ At the moment, this object should look like the following example:
 }
 ```
 
-# Currencies
+## Currencies
 Every amount value needs to be complemented by a currency.
 
-## `Currency Codes`
+### `Currency Codes`
+
 `Currency Codes` must be specified according to [ISO.4217](https://en.wikipedia.org/wiki/ISO_4217). A few examples of these are:
 
 - `ARS`: Argentinean Peso
@@ -79,7 +80,7 @@ Every amount value needs to be complemented by a currency.
 - `COP`: Colombian Peso
 - `MXN`: Mexican Peso
 
-# `Payment Methods`
+## Payment Methods
 There are many companies providing different `Payment Methods` of different types. The currently supported `Payment Methods Types` by our Platform are:
 
 - `credit_card`
@@ -92,7 +93,7 @@ There are many companies providing different `Payment Methods` of different type
 
 `Payment Providers` integrate our platform with different [`Payment Methods`](#link) of different `Payment Method Types`. Depending on the type of `Payment Provider` (Subadquirente, Gateway, Adquirente), they may provide one or many Payment Methods for each `Payment Methods Type`. Check the list of [Supported Payment Methods by Payment Method Type](#link).
 
-## `supported_methods` field in `Payments Provider` Object Properties
+### `supported_methods` field in `Payments Provider` Object Properties
 An example of the value of this field would be:
 
 ```json
@@ -104,7 +105,7 @@ An example of the value of this field would be:
 }
 ```
 
-# Rates
+## Rates
 `Payment Providers` may charge Merchants with different rates per payment transaction depending on the `Payment Method Type` and the time the Merchant chooses to withdraw the money. Hence, for each `Payment Method Type` there would be a list of rates depending on the withdrawal time specified in days.
 
 | Field                    | Type             | Description                                                            |
@@ -116,7 +117,7 @@ An example of the value of this field would be:
 
 _*Note:*_ `Number as String` would be a Number in String format for better decimal precision handling.
 
-## `rates` field in `Payments Provider` Object Properties
+### `rates` field in `Payments Provider` Object Properties
 An example of the value of this field would be:
 
 ```json
@@ -131,7 +132,7 @@ An example of the value of this field would be:
 }
 ```
 
-# Money
+## Money
 Sums of money are represented by, both, an amount and a currency.
 
 ## Money Object Properties
@@ -141,11 +142,11 @@ Sums of money are represented by, both, an amount and a currency.
 | `value`    | Number as String | Value as a string for better decimal precision handling. Example: `value: "49.99"`              |
 | `currency` | String           | [`Currency Code`](#link) string in [ISO.4217](https://en.wikipedia.org/wiki/ISO_4217) standard. |
 
-# Installments
+## Installments
 
 Most `Payment Providers` provide different installment based payments options.
 
-## Installments Object Properties
+### Installments Object Properties
 
 | Field                   | Type              | Description                                                                                                              |
 |:------------------------|:------------------|:-------------------------------------------------------------------------------------------------------------------------|
@@ -155,10 +156,10 @@ Most `Payment Providers` provide different installment based payments options.
 
 > _*Note:*_ An example of `min_installment_value` would be `BRL: 5`. For instance, if the total amount to be payed is `50 BRL`, then the Customer can choose to make this payment in up to 10 installments because the value of each of them would be `50 / 10 = 5`. However, the can Customer won't be able to choose to spread the payment into 12 installments because `50 / 12 = 4.17` and `4.17 < 5`.
 
-### Specification
+#### Specification
 The two possible values are [`simple`](#link) and [`detailed`](#link), depending on the business rules that apply to each installment. When different banks or cards provide different interest rates or other similar properties, installments descriptions may need a some extra information.
 
-#### Simple `specification`
+##### Simple Specification
 The `simple` `specification` is used when installments don't have any business rules that apply to them. In this case, the only difference between the different options are the number of installments and the interest rate, which is applied to the total amount. In this case, a list of `NumberOfInstallments:interest_rate` `key:value` pairs is all that needs to be specified. Example:
 
 ```json
@@ -171,7 +172,7 @@ The `simple` `specification` is used when installments don't have any business r
     "1": "0.0",
     "2": "0.0",
     "3": "0.0",
-    "4": "0.065", // 6% / 100 = 0.065 -> Expressed as a string, hence "0.065".
+    "4": "0.065",
     "5": "0.075",
     "6": "0.085",
     "7": "0.095",
@@ -186,10 +187,10 @@ The `simple` `specification` is used when installments don't have any business r
 
 > _*Note:*_ `interest_rates` are percentages expressed in fractions of 1 in `String` format for better decimal precision handling. For instance, an interest rate of `6.5%` would be expressed as `6.5 / 100 = 0.065`, which stringified would be "0.065".
 
-#### Detailed Specification
+##### Detailed Specification
 The `detailed` `specification` allows the use of more specific business rules. This `specification` is intended to support future business rules as well, so expect this feature to support more fields in the future. Also, feel free to discuss more functionalities with Nuvemshop's Platform Team.
 
-##### Detailed Specification Object Properties
+###### Detailed Specification Object Properties
 
 | Field           | Type               | Description                                                           |
 |:----------------|:-------------------|:----------------------------------------------------------------------|
@@ -220,3 +221,98 @@ The `detailed` `specification` allows the use of more specific business rules. T
   ]
 }
 ```
+
+## Appendix
+
+### Supported Payment Methods by Payment Method Type
+The following is the list of Payment Methods currently supported by our platform.
+
+#### Credit Card
+- `visa`
+- `mastercard`
+- `amex`
+- `diners`
+- `nativa`
+- `argencard`
+- `cabal`
+- `cordial`
+- `cordobesa`
+- `falabella`
+- `hsbc_access_now`
+- `tarjeta_naranja`
+- `tarjeta_saenz`
+- `tarjeta_shopping`
+- `tarjeta_walmart`
+- `provencred`
+- `nativa`
+- `rebanking`
+- `aura`
+- `elo`
+- `hiper`
+- `hipercard`
+- `discover`
+- `oipaggo`
+- `magna`
+
+#### Debit Card
+- `visa_debit`
+- `maestro`
+- `cabal_debit`
+
+#### Boleto
+- `boleto`
+
+#### Ticket
+- `rapipago`
+- `pagofacil`
+- `servipag`
+- `efecty`
+- `viabaloto`
+- `7eleven`
+- `oxxo`
+
+#### Bank Transfer
+- `banelco`
+- `link`
+- `provincianet`
+- `pse`
+
+#### Banks
+- `hsbc`
+- `galicia`
+- `icbc`
+- `itau`
+- `bbva`
+- `macro`
+- `santander`
+- `scotiabank`
+- `banco_chaco`
+- `banco_chubut`
+- `banco_ciudad`
+- `banco_coinag`
+- `banco_columbia`
+- `banco_comafi`
+- `banco_comercio`
+- `banco_entre_rios`
+- `banco_hipotecario`
+- `banco_industrial`
+- `banco_la_pampa`
+- `banco_municipal`
+- `banco_nacion`
+- `banco_patagonia`
+- `banco_provincia`
+- `banco_sanjuan`
+- `banco_santa_cruz`
+- `banco_santa_fe`
+- `banco_tierra_de_fuego`
+- `banco_tucuman`
+- `bica`
+- `cencosud`
+- `citi`
+- `supervielle`
+- `banco_do_brasil`
+- `banrisul`
+- `bradesco`
+- `caixa`
+- `itau`
+- `banamex`
