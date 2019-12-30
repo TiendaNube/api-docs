@@ -1,5 +1,28 @@
 # Payments Provider
 
+##### Index
+
+- [Models & Objects](#link)
+  - [Payments Provider](#link)
+    - [Payments Provider Object Properties](#link)
+  - [Logos](#link)
+    - [`logo_urls` field in `Payments Provider` Object Properties](#link)
+  - [Currencies](#link)
+    - [Currency Codes](#link)
+  - [`Payment Methods`](#link)
+    - [`supported_methods` field in `Payments Provider` Object Properties](#link)
+  - [`Rates`](#link)
+    - [`rates` field in `Payments Provider` Object Properties](#link)
+  - [Installments](#link)
+    - [Installments Object Properties](#link)
+      - [Specification](#link)
+        - [Simple `specification`](#link)
+        - [Detailed `specification`](#link)
+
+## Models & Objects
+
+### Payments Provider
+
 A Payments Provider, shorter name for Payments Services Provider, represents any entity which provides all the necessary resources and infrastructure for Merchants and Consumers to exectute `Transactions` between them. This entities could be any of the following:
 
 - Subadquirente
@@ -10,28 +33,7 @@ Payments companies have many different and sometimes complex features which add 
 
 In our Platform, a Payment Provider is created for a specific `Store`.
 
-##### Quick Document Index
-
-- [Payments Provider](#link)
-  - [Payments Provider Object Properties](#link)
-- [Logos](#link)
-  - [`logo_urls` field in `Payments Provider` Object Properties](#link)
-- [Currencies](#link)
-  - [Currency Codes](#link)
-- [`Payment Methods`](#link)
-  - [`supported_methods` field in `Payments Provider` Object Properties](#link)
-- [`Rates`](#link)
-  - [`rates` field in `Payments Provider` Object Properties](#link)
-- [Installments](#link)
-  - [Installments Object Properties](#link)
-    - [Specification](#link)
-      - [Simple `specification`](#link)
-      - [Detailed `specification`](#link)
-
-
-
-
-### Payments Provider Object Properties
+#### Payments Provider Object Properties
 
 | Field                  | Type                      | Description                                                                                                          |
 |:-----------------------|:--------------------------|:---------------------------------------------------------------------------------------------------------------------|
@@ -49,7 +51,7 @@ In our Platform, a Payment Provider is created for a specific `Store`.
 
 > _*Note:*_ All URLs must be Secure URLs.
 
-## Logos
+### Logos
 At the moment, our Platformm requires the following versions of the `Payments Provider` logo.
 
 | Key     | URL content description                                                                                |
@@ -57,7 +59,7 @@ At the moment, our Platformm requires the following versions of the `Payments Pr
 | 400x120 | PNG file with Transparent Brackground. Dimensions not greater than 400px x 120px. _(As of 01/01/2019)_ |
 | 160x100 | PNG file with White Background. Dimensions must be 160px x 100px. _(As of 01/01/2019)_                 |
 
-### `logo_urls` field in `Payments Provider` Object Properties
+#### `logo_urls` field in `Payments Provider` Object Properties
 At the moment, this object should look like the following example:
 
 ```json
@@ -67,10 +69,10 @@ At the moment, this object should look like the following example:
 }
 ```
 
-## Currencies
+### Currencies
 Every amount value needs to be complemented by a currency.
 
-### `Currency Codes`
+#### `Currency Codes`
 
 `Currency Codes` must be specified according to [ISO.4217](https://en.wikipedia.org/wiki/ISO_4217). A few examples of these are:
 
@@ -80,7 +82,7 @@ Every amount value needs to be complemented by a currency.
 - `COP`: Colombian Peso
 - `MXN`: Mexican Peso
 
-## Payment Methods
+### Payment Methods
 There are many companies providing different `Payment Methods` of different types. The currently supported `Payment Methods Types` by our Platform are:
 
 - `credit_card`
@@ -93,7 +95,7 @@ There are many companies providing different `Payment Methods` of different type
 
 `Payment Providers` integrate our platform with different [`Payment Methods`](#link) of different `Payment Method Types`. Depending on the type of `Payment Provider` (Subadquirente, Gateway, Adquirente), they may provide one or many Payment Methods for each `Payment Methods Type`. Check the list of [Supported Payment Methods by Payment Method Type](#link).
 
-### `supported_methods` field in `Payments Provider` Object Properties
+#### `supported_methods` field in `Payments Provider` Object Properties
 An example of the value of this field would be:
 
 ```json
@@ -105,7 +107,7 @@ An example of the value of this field would be:
 }
 ```
 
-## Rates
+### Rates
 `Payment Providers` may charge Merchants with different rates per payment transaction depending on the `Payment Method Type` and the time the Merchant chooses to withdraw the money. Hence, for each `Payment Method Type` there would be a list of rates depending on the withdrawal time specified in days.
 
 | Field                    | Type             | Description                                                            |
@@ -117,7 +119,7 @@ An example of the value of this field would be:
 
 _*Note:*_ `Number as String` would be a Number in String format for better decimal precision handling.
 
-### `rates` field in `Payments Provider` Object Properties
+#### `rates` field in `Payments Provider` Object Properties
 An example of the value of this field would be:
 
 ```json
@@ -132,21 +134,21 @@ An example of the value of this field would be:
 }
 ```
 
-## Money
+### Money
 Sums of money are represented by, both, an amount and a currency.
 
-## Money Object Properties
+### Money Object Properties
 
 | Field      | Type             | Description                                                                                     |
 |:-----------|:-----------------|:------------------------------------------------------------------------------------------------|
 | `value`    | Number as String | Value as a string for better decimal precision handling. Example: `value: "49.99"`              |
 | `currency` | String           | [`Currency Code`](#link) string in [ISO.4217](https://en.wikipedia.org/wiki/ISO_4217) standard. |
 
-## Installments
+### Installments
 
 Most `Payment Providers` provide different installment based payments options.
 
-### Installments Object Properties
+#### Installments Object Properties
 
 | Field                   | Type              | Description                                                                                                              |
 |:------------------------|:------------------|:-------------------------------------------------------------------------------------------------------------------------|
@@ -156,10 +158,10 @@ Most `Payment Providers` provide different installment based payments options.
 
 > _*Note:*_ An example of `min_installment_value` would be `BRL: 5`. For instance, if the total amount to be payed is `50 BRL`, then the Customer can choose to make this payment in up to 10 installments because the value of each of them would be `50 / 10 = 5`. However, the can Customer won't be able to choose to spread the payment into 12 installments because `50 / 12 = 4.17` and `4.17 < 5`.
 
-#### Specification
+##### Specification
 The two possible values are [`simple`](#link) and [`detailed`](#link), depending on the business rules that apply to each installment. When different banks or cards provide different interest rates or other similar properties, installments descriptions may need a some extra information.
 
-##### Simple Specification
+###### Simple Specification
 The `simple` `specification` is used when installments don't have any business rules that apply to them. In this case, the only difference between the different options are the number of installments and the interest rate, which is applied to the total amount. In this case, a list of `NumberOfInstallments:interest_rate` `key:value` pairs is all that needs to be specified. Example:
 
 ```json
@@ -187,10 +189,10 @@ The `simple` `specification` is used when installments don't have any business r
 
 > _*Note:*_ `interest_rates` are percentages expressed in fractions of 1 in `String` format for better decimal precision handling. For instance, an interest rate of `6.5%` would be expressed as `6.5 / 100 = 0.065`, which stringified would be "0.065".
 
-##### Detailed Specification
+###### Detailed Specification
 The `detailed` `specification` allows the use of more specific business rules. This `specification` is intended to support future business rules as well, so expect this feature to support more fields in the future. Also, feel free to discuss more functionalities with Nuvemshop's Platform Team.
 
-###### Detailed Specification Object Properties
+_Detailed Specification Object Properties:_
 
 | Field           | Type               | Description                                                           |
 |:----------------|:-------------------|:----------------------------------------------------------------------|
