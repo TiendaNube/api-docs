@@ -21,19 +21,21 @@
   - 1.6 [DELETE /_{store_id}_/payment_providers/_{payment_provider_id}_](#link)
     - [Request](#link)
     - [Response](#link)
-- 2. [Resource Description](#link)
+- 2. [Resource Objects Description](#link)
   - 2.1 [Payments Provider](#link)
     - 2.1.1 [Payments Provider Object Properties](#link)
   - 2.2 [Logos](#link)
     - 2.2.1 [`logo_urls` field in `Payments Provider` Object Properties](#link)
   - 2.3 [Currencies](#link)
     - 2.3.1 [Currency Codes](#link)
-  - 2.4 [`Payment Methods`](#link)
+  - 2.4 [Payment Methods](#link)
     - 2.4.1 [`supported_methods` field in `Payments Provider` Object Properties](#link)
-  - 2.5 [`Rates`](#link)
+  - 2.5 [Rates](#link)
     - 2.5.1 [`rates` field in `Payments Provider` Object Properties](#link)
-  - 2.6 [Installments](#link)
-    - 2.6.1 [Installments Object Properties](#link)
+  - 2.6 [Money](#link)
+    - 2.6.1 Money Object Properties
+  - 2.7 [Installments](#link)
+    - 2.7.1 [Installments Object Properties](#link)
       - [Specification](#link)
         - [Simple `specification`](#link)
         - [Detailed `specification`](#link)
@@ -91,9 +93,9 @@
 ##### HTTP Errors List
 
 
-## Models & Objects
+## 2. Resource Objects Description
 
-### Payments Provider
+### 2.1 Payments Provider
 
 A Payments Provider, shorter name for Payments Services Provider, represents any entity which provides all the necessary resources and infrastructure for Merchants and Consumers to exectute `Transactions` between them. This entities could be any of the following:
 
@@ -105,7 +107,7 @@ Payments companies have many different and sometimes complex features which add 
 
 In our Platform, a Payment Provider is created for a specific `Store`.
 
-#### Payments Provider Object Properties
+#### 2.1.1 Payments Provider Object Properties
 
 | Field                  | Type                      | Description                                                                                                          |
 |:-----------------------|:--------------------------|:---------------------------------------------------------------------------------------------------------------------|
@@ -123,7 +125,7 @@ In our Platform, a Payment Provider is created for a specific `Store`.
 
 > _*Note:*_ All URLs must be Secure URLs.
 
-### Logos
+### 2.2 Logos
 At the moment, our Platformm requires the following versions of the `Payments Provider` logo.
 
 | Key     | URL content description                                                                                |
@@ -131,7 +133,7 @@ At the moment, our Platformm requires the following versions of the `Payments Pr
 | 400x120 | PNG file with Transparent Brackground. Dimensions not greater than 400px x 120px. _(As of 01/01/2019)_ |
 | 160x100 | PNG file with White Background. Dimensions must be 160px x 100px. _(As of 01/01/2019)_                 |
 
-#### `logo_urls` field in `Payments Provider` Object Properties
+#### 2.2.1 `logo_urls` field in `Payments Provider` Object Properties
 At the moment, this object should look like the following example:
 
 ```json
@@ -141,10 +143,10 @@ At the moment, this object should look like the following example:
 }
 ```
 
-### Currencies
+### 2.3 Currencies
 Every amount value needs to be complemented by a currency.
 
-#### Currency Codes
+#### 2.3.1 Currency Codes
 
 `Currency Codes` must be specified according to [ISO.4217](https://en.wikipedia.org/wiki/ISO_4217). A few examples of these are:
 
@@ -154,7 +156,7 @@ Every amount value needs to be complemented by a currency.
 - `COP`: Colombian Peso
 - `MXN`: Mexican Peso
 
-### Payment Methods
+### 2.4 Payment Methods
 There are many companies providing different `Payment Methods` of different types. The currently supported `Payment Methods Types` by our Platform are:
 
 - `credit_card`
@@ -167,7 +169,7 @@ There are many companies providing different `Payment Methods` of different type
 
 `Payment Providers` integrate our platform with different [`Payment Methods`](#link) of different `Payment Method Types`. Depending on the type of `Payment Provider` (Subadquirente, Gateway, Adquirente), they may provide one or many Payment Methods for each `Payment Methods Type`. Check the list of [Supported Payment Methods by Payment Method Type](#link).
 
-#### `supported_methods` field in `Payments Provider` Object Properties
+#### 2.4.1 `supported_methods` field in `Payments Provider` Object Properties
 An example of the value of this field would be:
 
 ```json
@@ -179,7 +181,7 @@ An example of the value of this field would be:
 }
 ```
 
-### Rates
+### 2.5 Rates
 `Payment Providers` may charge Merchants with different rates per payment transaction depending on the `Payment Method Type` and the time the Merchant chooses to withdraw the money. Hence, for each `Payment Method Type` there would be a list of rates depending on the withdrawal time specified in days.
 
 | Field                    | Type             | Description                                                            |
@@ -191,7 +193,7 @@ An example of the value of this field would be:
 
 _*Note:*_ `Number as String` would be a Number in String format for better decimal precision handling.
 
-#### `rates` field in `Payments Provider` Object Properties
+#### 2.5.1 `rates` field in `Payments Provider` Object Properties
 An example of the value of this field would be:
 
 ```json
@@ -206,21 +208,21 @@ An example of the value of this field would be:
 }
 ```
 
-### Money
+### 2.6 Money
 Sums of money are represented by, both, an amount and a currency.
 
-### Money Object Properties
+#### 2.6.1 Money Object Properties
 
 | Field      | Type             | Description                                                                                     |
 |:-----------|:-----------------|:------------------------------------------------------------------------------------------------|
 | `value`    | Number as String | Value as a string for better decimal precision handling. Example: `value: "49.99"`              |
 | `currency` | String           | [`Currency Code`](#link) string in [ISO.4217](https://en.wikipedia.org/wiki/ISO_4217) standard. |
 
-### Installments
+### 2.7 Installments
 
 Most `Payment Providers` provide different installment based payments options.
 
-#### Installments Object Properties
+#### 2.7.1 Installments Object Properties
 
 | Field                   | Type              | Description                                                                                                              |
 |:------------------------|:------------------|:-------------------------------------------------------------------------------------------------------------------------|
@@ -296,9 +298,9 @@ _Detailed Specification Object Properties:_
 }
 ```
 
-## Appendix
+## 3. Appendix
 
-### Supported Payment Methods by Payment Method Type
+### 3.1 Supported Payment Methods by Payment Method Type
 The following is the list of Payment Methods currently supported by our platform.
 
 #### Credit Card
