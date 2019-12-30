@@ -2,22 +2,94 @@
 
 ##### Index
 
-- [Models & Objects](#link)
-  - [Payments Provider](#link)
-    - [Payments Provider Object Properties](#link)
-  - [Logos](#link)
-    - [`logo_urls` field in `Payments Provider` Object Properties](#link)
-  - [Currencies](#link)
-    - [Currency Codes](#link)
-  - [`Payment Methods`](#link)
-    - [`supported_methods` field in `Payments Provider` Object Properties](#link)
-  - [`Rates`](#link)
-    - [`rates` field in `Payments Provider` Object Properties](#link)
-  - [Installments](#link)
-    - [Installments Object Properties](#link)
+- 1. [Endpoints](#link)
+  - 1.1 [POST /_{store_id}_/payment_providers](#link)
+    - [Request](#link)
+    - [Response](#link)
+  - 1.2 [GET /_{store_id}_/payment_providers](#link)
+    - [Request](#link)
+    - [Response](#link)
+  - 1.3 [GET /_{store_id}_/payment_providers/_{payment_provider_id}_](#link)
+    - [Request](#link)
+    - [Response](#link)
+  - 1.4 [GET /_{store_id}_/payment_providers/_{payment_provider_id}_](#link)
+    - [Request](#link)
+    - [Response](#link)
+  - 1.5 [PUT /_{store_id}_/payment_providers/_{payment_provider_id}_](#link)
+    - [Request](#link)
+    - [Response](#link)
+  - 1.6 [DELETE /_{store_id}_/payment_providers/_{payment_provider_id}_](#link)
+    - [Request](#link)
+    - [Response](#link)
+- 2. [Resource Description](#link)
+  - 2.1 [Payments Provider](#link)
+    - 2.1.1 [Payments Provider Object Properties](#link)
+  - 2.2 [Logos](#link)
+    - 2.2.1 [`logo_urls` field in `Payments Provider` Object Properties](#link)
+  - 2.3 [Currencies](#link)
+    - 2.3.1 [Currency Codes](#link)
+  - 2.4 [`Payment Methods`](#link)
+    - 2.4.1 [`supported_methods` field in `Payments Provider` Object Properties](#link)
+  - 2.5 [`Rates`](#link)
+    - 2.5.1 [`rates` field in `Payments Provider` Object Properties](#link)
+  - 2.6 [Installments](#link)
+    - 2.6.1 [Installments Object Properties](#link)
       - [Specification](#link)
         - [Simple `specification`](#link)
         - [Detailed `specification`](#link)
+- 3. [Appendix](@link)
+  - 3.1 [Supported Payment Methods by Payment Method Type](#link)
+
+## 1. Endpoints
+
+### 1.1 POST /_{store_id}_/payment_providers
+
+#### Request
+
+#### Response
+
+##### HTTP Errors List
+
+### 1.2 GET /_{store_id}_/payment_providers
+
+#### Request
+
+#### Response
+
+##### HTTP Errors List
+
+### 1.3 GET /_{store_id}_/payment_providers/_{payment_provider_id}_
+
+#### Request
+
+#### Response
+
+##### HTTP Errors List
+
+### 1.4 GET /_{store_id}_/payment_providers/_{payment_provider_id}_
+
+#### Request
+
+#### Response
+
+##### HTTP Errors List
+
+### 1.5 PUT /_{store_id}_/payment_providers/_{payment_provider_id}_
+
+#### Request
+
+#### Response
+
+##### HTTP Errors List
+
+### 1.6 DELETE /_{store_id}_/payment_providers/_{payment_provider_id}_
+
+#### Request
+
+#### Response
+
+##### HTTP Errors List
+
 
 ## Models & Objects
 
@@ -72,7 +144,7 @@ At the moment, this object should look like the following example:
 ### Currencies
 Every amount value needs to be complemented by a currency.
 
-#### `Currency Codes`
+#### Currency Codes
 
 `Currency Codes` must be specified according to [ISO.4217](https://en.wikipedia.org/wiki/ISO_4217). A few examples of these are:
 
