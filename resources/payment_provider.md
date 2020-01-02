@@ -1,50 +1,8 @@
-# Payments Provider
+# Payment Provider
 
-##### Index
+## Endpoints
 
-- 1. [Endpoints](#link)
-  - 1.1 [POST /_{store_id}_/payment_providers](#link)
-    - [Request](#link)
-    - [Response](#link)
-  - 1.2 [GET /_{store_id}_/payment_providers](#link)
-    - [Request](#link)
-    - [Response](#link)
-  - 1.3 [GET /_{store_id}_/payment_providers/_{payment_provider_id}_](#link)
-    - [Request](#link)
-    - [Response](#link)
-  - 1.4 [GET /_{store_id}_/payment_providers/_{payment_provider_id}_](#link)
-    - [Request](#link)
-    - [Response](#link)
-  - 1.5 [PUT /_{store_id}_/payment_providers/_{payment_provider_id}_](#link)
-    - [Request](#link)
-    - [Response](#link)
-  - 1.6 [DELETE /_{store_id}_/payment_providers/_{payment_provider_id}_](#link)
-    - [Request](#link)
-    - [Response](#link)
-- 2. [Resource Objects Description](#link)
-  - 2.1 [Payments Provider](#link)
-    - 2.1.1 [Payments Provider Object Properties](#link)
-  - 2.2 [Logos](#link)
-    - 2.2.1 [`logo_urls` field in `Payments Provider` Object Properties](#link)
-  - 2.3 [Currencies](#link)
-    - 2.3.1 [Currency Codes](#link)
-  - 2.4 [Payment Methods](#link)
-    - 2.4.1 [`supported_methods` field in `Payments Provider` Object Properties](#link)
-  - 2.5 [Rates](#link)
-    - 2.5.1 [`rates` field in `Payments Provider` Object Properties](#link)
-  - 2.6 [Money](#link)
-    - 2.6.1 Money Object Properties
-  - 2.7 [Installments](#link)
-    - 2.7.1 [Installments Object Properties](#link)
-      - [Specification](#link)
-        - [Simple `specification`](#link)
-        - [Detailed `specification`](#link)
-- 3. [Appendix](@link)
-  - 3.1 [Supported Payment Methods by Payment Method Type](#link)
-
-## 1. Endpoints
-
-### 1.1 POST /_{store_id}_/payment_providers
+### POST /_{store_id}_/payment_providers
 
 #### Request
 
@@ -52,7 +10,7 @@
 
 ##### HTTP Errors List
 
-### 1.2 GET /_{store_id}_/payment_providers
+### GET /_{store_id}_/payment_providers
 
 #### Request
 
@@ -60,7 +18,7 @@
 
 ##### HTTP Errors List
 
-### 1.3 GET /_{store_id}_/payment_providers/_{payment_provider_id}_
+### GET /_{store_id}_/payment_providers/_{payment_provider_id}_
 
 #### Request
 
@@ -68,7 +26,7 @@
 
 ##### HTTP Errors List
 
-### 1.4 GET /_{store_id}_/payment_providers/_{payment_provider_id}_
+### GET /_{store_id}_/payment_providers/_{payment_provider_id}_
 
 #### Request
 
@@ -76,7 +34,7 @@
 
 ##### HTTP Errors List
 
-### 1.5 PUT /_{store_id}_/payment_providers/_{payment_provider_id}_
+### PUT /_{store_id}_/payment_providers/_{payment_provider_id}_
 
 #### Request
 
@@ -84,7 +42,7 @@
 
 ##### HTTP Errors List
 
-### 1.6 DELETE /_{store_id}_/payment_providers/_{payment_provider_id}_
+### DELETE /_{store_id}_/payment_providers/_{payment_provider_id}_
 
 #### Request
 
@@ -93,11 +51,11 @@
 ##### HTTP Errors List
 
 
-## 2. Resource Objects Description
+## Resource Objects Description
 
-### 2.1 Payments Provider
+### Payment Provider
 
-A Payments Provider, shorter name for Payments Services Provider, represents any entity which provides all the necessary resources and infrastructure for Merchants and Consumers to exectute `Transactions` between them. This entities could be any of the following:
+A Payment Provider, shorter name for Payments Services Provider, represents any entity which provides all the necessary resources and infrastructure for Merchants and Consumers to exectute `Transactions` between them. This entities could be any of the following:
 
 - Subadquirente
 - Gateway
@@ -107,33 +65,33 @@ Payments companies have many different and sometimes complex features which add 
 
 In our Platform, a Payment Provider is created for a specific `Store`.
 
-#### 2.1.1 Payments Provider Object Properties
+#### Payment Provider Object Properties
 
-| Field                  | Type                      | Description                                                                                                          |
-|:-----------------------|:--------------------------|:---------------------------------------------------------------------------------------------------------------------|
-| `id`                   | String                    | Unique identifier of the `Payments Provider` object.                                                                 |
-| `name`                 | String                    | Display name which Merchants and Consumers will see.                                                                 |
-| `description`          | String                    | Short paragraph which provides Merchants with a short description of the `Payments Provider`.                        |
-| `logo_urls`            | Object                    | `Version: URL` `key:value` pair for each version of the [Logos](#link) for the frontend.                             |
-| `configuration_url`    | String                    | [Optional] `Payments Provider` Configuration UI URL.                                                                 |
-| `support_url`          | String                    | [Optional] `Payments Provider` Support URL.                                                                          |
-| `checkout_js`          | String&#124;Array(String) | URL of each JS file to be included in the [checkout](#link) frontend.                                                |
-| `supported_currencies` | String&#124;Array(String) | [ISO.4217](https://en.wikipedia.org/wiki/ISO_4217) [Currency Codes](#link) supported by the `Payments Provider`.     |
-| `supported_methods`    | Object                    | `PaymentMethodType: [PaymentMethodCodes]` `key:array` pair for each [Payment Methods](#link) available to Consumers. |
-| `rates`                | Object                    | [Rates](#link) that build up the service cost to the Merchant.                                                       |
-| `installments`         | Object                    | [Installments](#link) available to Consumers.                                                                        |
+| Field                  | Type          | Description                                                                                                          |
+|:-----------------------|:--------------|:---------------------------------------------------------------------------------------------------------------------|
+| `id`                   | String        | Unique identifier of the `Payment Provider` object.                                                                  |
+| `name`                 | String        | Display name which Merchants and Consumers will see.                                                                 |
+| `description`          | String        | Short paragraph which provides Merchants with a short description of the `Payment Provider`.                         |
+| `logo_urls`            | Object        | `Version: URL` `key:value` pair for each version of the [Logos](#link) for the frontend.                             |
+| `configuration_url`    | String        | [Optional] `Payment Provider` Configuration UI URL.                                                                  |
+| `support_url`          | String        | [Optional] `Payment Provider` Support URL.                                                                           |
+| `checkout_js`          | Array(String) | URL of each JS file to be included in the [checkout](#link) frontend.                                                |
+| `supported_currencies` | Array(String) | [ISO.4217](https://en.wikipedia.org/wiki/ISO_4217) [Currency Codes](#link) supported by the `Payment Provider`.      |
+| `supported_methods`    | Object        | `PaymentMethodType: [PaymentMethodCodes]` `key:array` pair for each [Payment Methods](#link) available to Consumers. |
+| `rates`                | Object        | [Rates](#link) that build up the service cost to the Merchant.                                                       |
+| `installments`         | Object        | [Installments](#link) available to Consumers.                                                                        |
 
 > _*Note:*_ All URLs must be Secure URLs.
 
-### 2.2 Logos
-At the moment, our Platformm requires the following versions of the `Payments Provider` logo.
+### Logos
+At the moment, our Platformm requires the following versions of the `Payment Provider` logo.
 
 | Key     | URL content description                                                                                |
 |:--------|:-------------------------------------------------------------------------------------------------------|
 | 400x120 | PNG file with Transparent Brackground. Dimensions not greater than 400px x 120px. _(As of 01/01/2019)_ |
 | 160x100 | PNG file with White Background. Dimensions must be 160px x 100px. _(As of 01/01/2019)_                 |
 
-#### 2.2.1 `logo_urls` field in `Payments Provider` Object Properties
+#### `logo_urls` field in `Payment Provider` Object Properties
 At the moment, this object should look like the following example:
 
 ```json
@@ -143,10 +101,10 @@ At the moment, this object should look like the following example:
 }
 ```
 
-### 2.3 Currencies
+### Currencies
 Every amount value needs to be complemented by a currency.
 
-#### 2.3.1 Currency Codes
+#### Currency Codes
 
 `Currency Codes` must be specified according to [ISO.4217](https://en.wikipedia.org/wiki/ISO_4217). A few examples of these are:
 
@@ -156,7 +114,7 @@ Every amount value needs to be complemented by a currency.
 - `COP`: Colombian Peso
 - `MXN`: Mexican Peso
 
-### 2.4 Payment Methods
+### Payment Methods
 There are many companies providing different `Payment Methods` of different types. The currently supported `Payment Methods Types` by our Platform are:
 
 - `credit_card`
@@ -169,7 +127,7 @@ There are many companies providing different `Payment Methods` of different type
 
 `Payment Providers` integrate our platform with different [`Payment Methods`](#link) of different `Payment Method Types`. Depending on the type of `Payment Provider` (Subadquirente, Gateway, Adquirente), they may provide one or many Payment Methods for each `Payment Methods Type`. Check the list of [Supported Payment Methods by Payment Method Type](#link).
 
-#### 2.4.1 `supported_methods` field in `Payments Provider` Object Properties
+#### `supported_methods` field in `Payment Provider` Object Properties
 An example of the value of this field would be:
 
 ```json
@@ -181,7 +139,7 @@ An example of the value of this field would be:
 }
 ```
 
-### 2.5 Rates
+### Rates
 `Payment Providers` may charge Merchants with different rates per payment transaction depending on the `Payment Method Type` and the time the Merchant chooses to withdraw the money. Hence, for each `Payment Method Type` there would be a list of rates depending on the withdrawal time specified in days.
 
 | Field                    | Type             | Description                                                            |
@@ -193,7 +151,7 @@ An example of the value of this field would be:
 
 _*Note:*_ `Number as String` would be a Number in String format for better decimal precision handling.
 
-#### 2.5.1 `rates` field in `Payments Provider` Object Properties
+#### `rates` field in `Payment Provider` Object Properties
 An example of the value of this field would be:
 
 ```json
@@ -208,27 +166,27 @@ An example of the value of this field would be:
 }
 ```
 
-### 2.6 Money
+### Money
 Sums of money are represented by, both, an amount and a currency.
 
-#### 2.6.1 Money Object Properties
+#### Money Object Properties
 
 | Field      | Type             | Description                                                                                     |
 |:-----------|:-----------------|:------------------------------------------------------------------------------------------------|
 | `value`    | Number as String | Value as a string for better decimal precision handling. Example: `value: "49.99"`              |
 | `currency` | String           | [`Currency Code`](#link) string in [ISO.4217](https://en.wikipedia.org/wiki/ISO_4217) standard. |
 
-### 2.7 Installments
+### Installments
 
 Most `Payment Providers` provide different installment based payments options.
 
-#### 2.7.1 Installments Object Properties
+#### Installments Object Properties
 
-| Field                   | Type              | Description                                                                                                              |
-|:------------------------|:------------------|:-------------------------------------------------------------------------------------------------------------------------|
-| `type`                  | String            | Either `simple` or `detailed`, depending on the business rules that define them.                                         |
-| `min_installment_value` | String            | [Optional] `CurrencyCode: Amount` `key:Number` pair of the minimum value an installment can be for that `Currency Code`. |
-| `specification`         | Object&#124;Array | Check [`Specification`](#link) below for a description of the possible contents of this Object.                          |
+| Field                   | Type   | Description                                                                                                              |
+|:------------------------|:-------|:-------------------------------------------------------------------------------------------------------------------------|
+| `type`                  | String | Either `simple` or `detailed`, depending on the business rules that define them.                                         |
+| `min_installment_value` | String | [Optional] `CurrencyCode: Amount` `key:Number` pair of the minimum value an installment can be for that `Currency Code`. |
+| `specification`         | Object | Check [`Specification`](#link) below for a description of the possible contents of this Object.                          |
 
 > _*Note:*_ An example of `min_installment_value` would be `BRL: 5`. For instance, if the total amount to be payed is `50 BRL`, then the Customer can choose to make this payment in up to 10 installments because the value of each of them would be `50 / 10 = 5`. However, the can Customer won't be able to choose to spread the payment into 12 installments because `50 / 12 = 4.17` and `4.17 < 5`.
 
@@ -268,11 +226,11 @@ The `detailed` `specification` allows the use of more specific business rules. T
 
 _Detailed Specification Object Properties:_
 
-| Field           | Type               | Description                                                           |
-|:----------------|:-------------------|:----------------------------------------------------------------------|
-| `installments`  | Number as String   | Number of installments.                                               |
-| `interest_rate` | String             | Rates to be applied to the total amount for this installments option. |
-| `applies_to`    | String&#124;Arrays | List of `Payment Methods` for which this installments option applies. |
+| Field           | Type             | Description                                                           |
+|:----------------|:-----------------|:----------------------------------------------------------------------|
+| `installments`  | Number as String | Number of installments.                                               |
+| `interest_rate` | String           | Rates to be applied to the total amount for this installments option. |
+| `applies_to`    | Array            | List of `Payment Methods` for which this installments option applies. |
 
 
 ```json
@@ -298,9 +256,9 @@ _Detailed Specification Object Properties:_
 }
 ```
 
-## 3. Appendix
+## Appendix
 
-### 3.1 Supported Payment Methods by Payment Method Type
+### Supported Payment Methods by Payment Method Type
 The following is the list of Payment Methods currently supported by our platform.
 
 #### Credit Card
