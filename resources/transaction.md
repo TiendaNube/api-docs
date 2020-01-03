@@ -56,12 +56,12 @@ All types of Transactions have the same attributes, but may differ in the values
 | --------------------- | --------------------------------------------------------------------------------------------------------- |
 | provider_id           | ID of the payment provider that processed this transaction.                                               |
 | amount                | Money object containing the value of this transaction. See [Money](#Money).                                                     |
-| type                  | One of "credit_card", "debit_card", "boleto", "ticket", "wire_transfer", "cash", "wallet" or "refund". See [Transaction Types](#Transaction_Types).    |
-| status                | Array containing the series of status of this transaction. See [Transaction Status](#Transaction_Status).                                                                   |
+| type                  | One of "credit_card", "debit_card", "boleto", "ticket", "wire_transfer", "cash", "wallet" or "refund". See [Transaction Types](#Transaction-Types).    |
+| status                | Array containing the series of status of this transaction. See [Transaction Status](#Transaction-Status).                                                                   |
 | external_id           | [Optional] ID used by the payment provider.                                                               |
 | external_url          | [Optional] URL for the payment provider's website with the details on this transaction for the merchant.  |
 | created_at            | [Optional] Creation date for this transaction. Defaults to current time.                                 |
-| context               | [Optional] Object containing context information that could be useful for fraud analysis. See [Payment Context](#Payment_Context).           |
+| context               | [Optional] Object containing context information that could be useful for fraud analysis. See [Payment Context](#Payment-Context).           |
 
 Some transaction types have specific *extra* fields.
 
