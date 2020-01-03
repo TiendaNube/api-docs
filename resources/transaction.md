@@ -77,7 +77,7 @@ Some transaction types have specific *extra* fields.
 | value    | Value as a string. E.g. "49.99"                             |
 | currency | ISO 4217 code for the currency, such as ARS, BRL, USD, etc. |
 
-### Payent Context
+### Payment Context
 | Field    | Description                                                         |
 | ---------| ------------------------------------------------------------------- |
 | ip              | [Optional] IP of the device that initiated this transaction. |
@@ -90,11 +90,11 @@ Each type of transaction has a finite series of possible status:
 
 #### Credit Card/Debit Card Transactions
 
-<img src="https://i.imgur.com/pfi1CE5.png" alt="transaction_status_01" height="100"/>
+<img src="https://i.imgur.com/pfi1CE5.png" alt="transaction_status_01" height="90"/>
 
 #### Cash/Boleto/Wire Transfer/Ticket/Wallet Transactions
 
-<img src="https://i.imgur.com/N1kvoMN.png" alt="transaction_status_01" height="90"/>
+<img src="https://i.imgur.com/N1kvoMN.png" alt="transaction_status_01" height="85"/>
 
 #### Refund Transaction
 
