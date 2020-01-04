@@ -46,7 +46,7 @@ Get a specific transaction for a given order.
 
 ### Transaction
 
-Each movement of money is modeled through a Transaction object, which can be of different types (for example, credit card, cash, wire transfer, refund, etc.). Since not all Transactions are atomic, each type can include a finite series of possible states.
+Each movement of money is modeled through a Transaction object, which can be of different types (E.g. credit card, cash, wire transfer, refund, etc.). Since not all Transactions are atomic, each type can include a finite series of possible states.
 
 A Payment Provider can create the number of transactions it needs for a given order, and can update their status as they change over time.
 
@@ -69,7 +69,7 @@ Some transaction types have specific *extra* fields.
 | --------------------- | --------------------------------------------------------------------------------------------------------------------------- |
 | external_resource_url | [Optional - Only for `boleto` and `ticket`] URL of the boleto or ticket which can be shown to the consumer to resume the payment. |
 | original_transaction  | [Optional - Only for `refund`] ID of the transaction that is being refunded.                                                    |
-| payment_method_type   | [Optional - Only for `refund`] Payment method type used for refund (credit_card, cash, etc.).                                    |
+| payment_method_type   | [Optional - Only for `refund`] Payment method type used for refund. See [Payment Methods](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Payment-Methods).                                      |
 
 ### Money
 | Field    | Description                                                 |
@@ -82,7 +82,7 @@ Some transaction types have specific *extra* fields.
 | ---------| ------------------------------------------------------------------- |
 | ip              | [Optional] IP of the device that initiated this transaction. |
 | source         | [Optional] One of `web_desktop`, `web_mobile` or `pos`.       |
-| payment_method | [Optional] Payment method used for this transaction.          |
+| payment_method | [Optional] Payment method used for this transaction. See [Payment Methods](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Payment-Methods).         |
 
 ### Transaction Status
 
@@ -114,11 +114,11 @@ The series of possible status for this transaction is the same as for Cash / Tic
 
 ### Transaction Types
 
-* **Credit Card:**
-* **Debit Card:**
-* **Boleto:**
-* **Ticket:**
-* **Wire Transfer:**
-* **Cash:**
-* **Wallet:**
-* **Refund:**
+* **Credit Card:** Transaction in which the consumer uses a credit card as payment method (E.g. VISA, Mastercard, AMEX).
+* **Debit Card:** Transaction in which the consumer uses a debit card as payment method (E.g. VISA Debit, Maestro)
+* **Boleto:** Transaction in which the consumer uses a Boleto Bancário as payment method. Boleto is a Brazilian payment method based on cash.
+* **Ticket:** Transaction in which the consumer uses a ticket as payment method. This ticket can be paid through a non-bank collection channel (E.g. Rapipago, Pago Fácil, OXXO)
+* **Wire Transfer:** Transaction in which the consumer uses a wire transfer as payment method.
+* **Cash:** Transaction in which the consumer uses cash as payment method.
+* **Wallet:** Transaction in which the consumer uses a wallet as payment method. A wallet is an application that allows you to transfer cryptocurrencies.
+* **Refund:** Transaction in which the merchant returns money to the consumer. This refund may involve any payment method.
