@@ -72,7 +72,7 @@ E.g.
 
 **201 Created** - the request was successful and a resource was created.
 
-**Body:**
+##### Body
 
 URL to redirect the merchant to the Tiendanube Admin Panel.
 
@@ -106,7 +106,7 @@ Get all Payment Providers for a given store.
 
 **200 OK** - the request was successful.
 
-**Body:**
+##### Body
 
 [Payment Provider Object](#Payment-Provider)
 
@@ -122,7 +122,7 @@ Get a specific Payment Provider for a given store.
 
 **200 OK** - the request was successful.
 
-**Body:**
+##### Body
 
 [Payment Provider Object](#Payment-Provider)
 
