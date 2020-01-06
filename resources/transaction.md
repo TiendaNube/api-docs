@@ -2,45 +2,186 @@
 
 ## Endpoints
 
-### POST /{*store_id*}/orders/{*id*}/transactions
+#### Parameters List
+
+* **store_id:** ID of the store that generated the transaction.
+* **order_id:** ID of the order related to the transaction.
+* **transaction_id:** Transaction ID.
+
+### POST /{*store_id*}/orders/{*order_id*}/transactions
 
 Create a transaction with *pending* status.
 
 #### Request
 
+E.g.
+
+```json
+{
+  "provider_id": 1234,
+  "amount": {
+    "value": "132.95",
+    "currency": "ARS"
+  },
+  "type": "credit_card",
+  "status": [
+    "pending"
+  ],
+  "external_id": 5678,
+  "external_url": "https://externalurl.com/creditcard",
+  "created_at": "2020-01-25T12:30:15.000Z",
+  "context": {
+    "ip": "192.168.0.25",
+    "source": "web_desktop",
+    "payment_method": "credit_card"
+  }
+}
+```
+
 #### Response
 
-##### HTTP Errors List
+**201 Created** - the request was successful and a resource was created.
 
-### PUT /{*store_id*}/orders/{*id*}/transactions/{*id*}
+### PUT /{*store_id*}/orders/{*order_id*}/transactions/{*transaction_id*}
 
 Update the status of a transaction. Only the status field can be updated.
 
 #### Request
 
+E.g.
+
+```json
+{
+  "provider_id": 1234,
+  "amount": {
+    "value": "132.95",
+    "currency": "ARS"
+  },
+  "type": "credit_card",
+  "status": [
+    "pending", 
+    "authorized", 
+    "captured"
+  ],
+  "external_id": 5678,
+  "external_url": "https://externalurl.com/creditcard",
+  "created_at": "2020-01-25T12:30:15.000Z",
+  "context": {
+    "ip": "192.168.0.25",
+    "source": "web_desktop",
+    "payment_method": "credit_card"
+  }
+}
+```
+
 #### Response
 
-##### HTTP Errors List
+**200 OK** - the request was successful 
 
-### GET /{*store_id*}/orders/{*id*}/transactions
+### GET /{*store_id*}/orders/{*order_id*}/transactions
 
 List transactions for a given order.
 
 #### Request
 
+{}
+
 #### Response
 
-##### HTTP Errors List
+**200 OK** - the request was successful
 
-### GET /{*store_id*}/orders/{*id*}/transactions/{*id*}
+E.g.
+
+```json
+[
+	{
+	  "provider_id": 1234,
+	  "amount": {
+	    "value": "132.95",
+	    "currency": "ARS"
+	  },
+	  "type": "credit_card",
+	  "status": [
+	    "pending", 
+	    "authorized", 
+	    "captured"
+	  ],
+	  "external_id": 5678,
+	  "external_url": "https://externalurl.com/creditcard",
+	  "created_at": "2020-01-25T12:30:15.000Z",
+	  "context": {
+	    "ip": "192.168.0.25",
+	    "source": "web_desktop",
+	    "payment_method": "credit_card"
+	  }
+	},
+	{
+	  "provider_id": 1234,
+	  "amount": {
+	    "value": "500.00",
+	    "currency": "ARS"
+	  },
+	  "type": "ticket",
+	  "status": [
+	    "pending", 
+	    "paid"
+	  ],
+	  "external_id": 9045,
+	  "external_url": "https://externalurl.com/ticket",
+	  "created_at": "2020-01-25T12:41:55.000Z",
+	  "context": {
+	    "ip": "192.168.0.25",
+	    "source": "web_desktop",
+	    "payment_method": "ticket"
+	  }
+	}
+]	
+```
+
+### GET /{*store_id*}/orders/{*order_id*}/transactions/{*transaction_id*}
 
 Get a specific transaction for a given order.
 
 #### Request
 
+{}
+
 #### Response
 
-##### HTTP Errors List
+**200 OK** - the request was successful
+
+E.g.
+
+```json
+{
+  "provider_id": 1234,
+  "amount": {
+    "value": "500.00",
+    "currency": "ARS"
+  },
+  "type": "ticket",
+  "status": [
+    "pending", 
+    "paid"
+  ],
+  "external_id": 9045,
+  "external_url": "https://externalurl.com/ticket",
+  "created_at": "2020-01-25T12:41:55.000Z",
+  "context": {
+    "ip": "192.168.0.25",
+    "source": "web_desktop",
+    "payment_method": "ticket"
+  }
+}
+```
+
+## HTTP Errors List
+
+* **204 No Content** - the request was successful but there is no representation to return (i.e. the response is empty).
+* **400 Bad Request** - the request could not be understood or was missing required parameters.
+* **401 Unauthorized** - authentication failed or user doesn't have permissions for requested operation.403 Forbidden - access denied.
+* **404 Not Found** - resource was not found.
+* **405 Method Not Allowed** - requested method is not supported for resource.
 
 ## Resource Objects Description
 
@@ -84,34 +225,6 @@ Some transaction types have specific *extra* fields.
 | source         | [Optional] One of `web_desktop`, `web_mobile` or `pos`.       |
 | payment_method | [Optional] Payment method used for this transaction. See [Payment Methods](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Payment-Methods).         |
 
-### Transaction Status
-
-Each type of transaction has a finite series of possible status:
-
-#### Credit Card/Debit Card Transactions
-
-<img src="https://i.imgur.com/pfi1CE5.png" alt="transaction_status_01" height="90"/>
-
-* **Pending:**
-* **Authorized:**
-* **Rejected:**
-* **Captured:**
-* **Voided:**
-* **In Dispute:**
-* **Chargeback:**
-
-#### Cash/Boleto/Wire Transfer/Ticket/Wallet Transactions
-
-<img src="https://i.imgur.com/N1kvoMN.png" alt="transaction_status_01" height="85"/>
-
-* **Pending:**
-* **Paid:**
-* **Voided:**
-
-#### Refund Transaction
-
-The series of possible status for this transaction is the same as for Cash / Ticket / Wire Transfer / Ticket / Wallet, but in this case, the money goes from the merchant to the consumer.
-
 ### Transaction Types
 
 * **Credit Card:** Transaction in which the consumer uses a credit card as payment method (E.g. VISA, Mastercard, AMEX).
@@ -122,3 +235,31 @@ The series of possible status for this transaction is the same as for Cash / Tic
 * **Cash:** Transaction in which the consumer uses cash as payment method.
 * **Wallet:** Transaction in which the consumer uses a wallet as payment method. A wallet is an application that allows you to transfer cryptocurrencies.
 * **Refund:** Transaction in which the merchant returns money to the consumer. This refund may involve any payment method.
+
+### Transaction Status
+
+Each type of transaction has a finite series of possible status:
+
+#### Credit Card/Debit Card Transactions
+
+<img src="https://i.imgur.com/pfi1CE5.png" alt="transaction_status_01" height="90"/>
+
+* **Pending:** The consumer's submission and payment have both been received; payment has been sent out for processing, but the payment gateway has not yet confirmed that the payment has gone through.
+* **Authorized:** The consumer's credit or debit card payment has been processed and accepted.
+* **Rejected:** The consumer's payment was not accepted when it was processed by the bank or credit card company.
+* **Captured:** The consumer's checking, savings or other bank account payment has been processed and accepted.
+* **Voided:** The consumer's payment was cancelled by the merchant before it settles through a consumer's debit or credit card account.
+* **In Dispute:** The customer questions the validity of the transaction that was registered to his account and decides to cancelled it through the issuer.
+* **Chargeback:** The money in the merchant's account is held due to a dispute initiated by the consumer.
+
+#### Cash/Boleto/Wire Transfer/Ticket/Wallet Transactions
+
+<img src="https://i.imgur.com/N1kvoMN.png" alt="transaction_status_01" height="85"/>
+
+* **Pending:** The consumer's submission and payment have both been received; payment has been sent out for processing, but the payment gateway has not yet confirmed that the payment has gone through.
+* **Paid:** The consumer's payment has been processed and accepted.
+* **Voided:** The consumer's payment was cancelled by the merchant before the consumer paid it.
+
+#### Refund Transaction
+
+The series of possible status for this transaction is the same as for Cash / Ticket / Wire Transfer / Ticket / Wallet, but in this case, the money goes from the merchant to the consumer.
