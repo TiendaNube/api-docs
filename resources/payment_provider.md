@@ -108,7 +108,14 @@ Get all Payment Providers for a given store.
 
 ##### Body
 
-[Payment Provider Object](#Payment-Provider)
+```json
+[
+	{ Payment Provider 1 },
+	{ Payment Provider 2 },
+	...
+	{ Payment Provider n}
+]	
+```
 
 ### GET /{*store_id*}/payment_providers/{*payment_provider_id*}
 
