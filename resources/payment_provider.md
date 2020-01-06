@@ -108,7 +108,7 @@ Get all Payment Providers for a given store.
 
 ##### Body
 
-```json
+```
 [
 	{ Payment Provider 1 },
 	{ Payment Provider 2 },
