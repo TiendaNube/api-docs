@@ -162,7 +162,7 @@ In our platform, a Payment Provider is created for a specific `store`.
 | `name`                 | String        | Display name which merchants and consumers will see.                                                                 |
 | `description`          | String        | Short paragraph which provides merchants with a description of the Payment Provider.                         |
 | `logo_urls`            | Object        | Object containing `key:value` pair for each version of the logos for the frontend. See [Logos](#Logos).                             |
-| `checkout_js`          | Array(String) | URL of each JS file to be included in the checkout frontend. See [Checkout](#Checkout).                                                |
+| `checkout_js`          | Array(String) | URL of each JS file to be included in the checkout frontend. See [Checkout](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/checkout).                                                |
 | `supported_currencies` | Array(String) | ISO.4217 currency codes supported by the Payment Provider. See [Currency Codes](#Currency-Codes).      |
 | `supported_methods`    | Object        | Object containing `key:array` pair for each payment method available to consumers. See [Payment Methods](#Payment-Methods). |
 | `rates`                | Object        | Object containing the rates that build up the service cost to the merchant. See [Rates](#Rates).                                                  |
@@ -345,10 +345,6 @@ E.g.
   ]
 }
 ```
-
-### Checkout
-
-#### TODO
 
 ## Appendix
 
