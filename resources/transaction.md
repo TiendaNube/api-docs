@@ -18,7 +18,7 @@ E.g.
 
 ```json
 {
-  "provider_id": 1234,
+  "provider_id": "1234",
   "amount": {
     "value": "132.95",
     "currency": "ARS"
@@ -27,7 +27,7 @@ E.g.
   "status": [
     "pending"
   ],
-  "external_id": 5678,
+  "external_id": "5678",
   "external_url": "https://externalurl.com/creditcard",
   "created_at": "2020-01-25T12:30:15.000Z",
   "context": {
@@ -52,7 +52,7 @@ E.g.
 
 ```json
 {
-  "provider_id": 1234,
+  "provider_id": "1234",
   "amount": {
     "value": "132.95",
     "currency": "ARS"
@@ -63,7 +63,7 @@ E.g.
     "authorized", 
     "captured"
   ],
-  "external_id": 5678,
+  "external_id": "5678",
   "external_url": "https://externalurl.com/creditcard",
   "created_at": "2020-01-25T12:30:15.000Z",
   "context": {
@@ -95,7 +95,7 @@ E.g.
 ```json
 [
 	{
-	  "provider_id": 1234,
+	  "provider_id": "1234",
 	  "amount": {
 	    "value": "132.95",
 	    "currency": "ARS"
@@ -106,7 +106,7 @@ E.g.
 	    "authorized", 
 	    "captured"
 	  ],
-	  "external_id": 5678,
+	  "external_id": "5678",
 	  "external_url": "https://externalurl.com/creditcard",
 	  "created_at": "2020-01-25T12:30:15.000Z",
 	  "context": {
@@ -116,7 +116,7 @@ E.g.
 	  }
 	},
 	{
-	  "provider_id": 1234,
+	  "provider_id": "1234",
 	  "amount": {
 	    "value": "500.00",
 	    "currency": "ARS"
@@ -126,7 +126,7 @@ E.g.
 	    "pending", 
 	    "paid"
 	  ],
-	  "external_id": 9045,
+	  "external_id": "9045",
 	  "external_url": "https://externalurl.com/ticket",
 	  "created_at": "2020-01-25T12:41:55.000Z",
 	  "context": {
@@ -154,7 +154,7 @@ E.g.
 
 ```json
 {
-  "provider_id": 1234,
+  "provider_id": "1234",
   "amount": {
     "value": "500.00",
     "currency": "ARS"
@@ -164,7 +164,7 @@ E.g.
     "pending", 
     "paid"
   ],
-  "external_id": 9045,
+  "external_id": "9045",
   "external_url": "https://externalurl.com/ticket",
   "created_at": "2020-01-25T12:41:55.000Z",
   "context": {
@@ -211,6 +211,8 @@ Some transaction types have specific *extra* fields.
 | external_resource_url | [Optional - Only for `boleto` and `ticket`] URL of the boleto or ticket which can be shown to the consumer to resume the payment. |
 | original_transaction  | [Optional - Only for `refund`] ID of the transaction that is being refunded.                                                    |
 | payment_method_type   | [Optional - Only for `refund`] Payment method type used for refund. See [Payment Methods](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Payment-Methods).                                      |
+
+> _*Note:*_ All URLs must be secure URLs (https).
 
 ### Money
 | Field    | Description                                                 |
