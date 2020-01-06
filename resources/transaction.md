@@ -30,7 +30,7 @@ E.g.
     "pending"
   ],
   "external_id": "5678",
-  "external_url": "https://mypayments.com/creditcard",
+  "external_url": "https://myapp.mypayments.com/creditcard",
   "created_at": "2020-01-25T12:30:15.000Z",
   "context": {
     "ip": "192.168.0.25",
@@ -104,14 +104,14 @@ All transactions types have the same attributes, but may differ in the values th
 
 | Field                  | Type          | Description                                                                                                          |
 |:-----------------------|:--------------|:---------------------------------------------------------------------------------------------------------------------|
-| provider_id           | String          | Payment Provider ID that processed this Transaction.                                               |
-| amount                | Object          | Object containing the value of this Transaction. See [Money](#Money).                                                     |
-| type                  | String          | One of `credit_card`, `debit_card`, `boleto`, `ticket`, `wire_transfer`, `cash`, `wallet` or `refund`. See [Transaction Types](#Transaction-Types).    |
-| status                | Array(String)          | The series of status of this transaction. See [Transaction Status](#Transaction-Status).                                                                   |
-| external_id           | String          | [Optional] ID used by the payment provider.                                                               |
-| external_url          | String          | [Optional] URL for the Payment Provider's website with the details on this transaction for the merchant.  |
-| created_at            | Date          | [Optional] Creation date for this transaction. Defaults to current time.                                 |
-| context               | Object          | [Optional] Object containing context information that could be useful for fraud analysis. See [Payment Context](#Payment-Context).           |
+| `provider_id`           | String          | Payment Provider ID that processed this Transaction.                                               |
+| `amount`                | Object          | Object containing the value of this Transaction. See [Money](#Money).                                                     |
+| `type`                  | String          | One of `credit_card`, `debit_card`, `boleto`, `ticket`, `wire_transfer`, `cash`, `wallet` or `refund`. See [Transaction Types](#Transaction-Types).    |
+| `status`                | Array(String)          | The series of status of this transaction. See [Transaction Status](#Transaction-Status).                                                                   |
+| `external_id`           | String          | [Optional] ID used by the payment provider.                                                               |
+| `external_url`          | String          | [Optional] URL for the Payment Provider's website with the details on this transaction for the merchant.  |
+| `created_at`            | Date          | [Optional] Creation date for this transaction. Defaults to current time.                                 |
+| `context`               | Object          | [Optional] Object containing context information that could be useful for fraud analysis. See [Payment Context](#Payment-Context).           |
 
 > ***Note:*** All URLs must be secure URLs (https).
 
@@ -119,24 +119,24 @@ Some transaction types have specific *extra* fields.
 
 | Field                  | Type          | Description                                                                                                          |
 |:-----------------------|:--------------|:---------------------------------------------------------------------------------------------------------------------|
-| external_resource_url | String          | [Optional - Only for `boleto` and `ticket`] URL of the boleto or ticket which can be shown to the consumer to resume the payment. |
-| original_transaction  | String          | [Optional - Only for `refund`] ID of the transaction that is being refunded.                                                    |
-| payment_method_type   | String          | [Optional - Only for `refund`] Payment method type used for refund. See [Payment Methods](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Payment-Methods).                                      |
+| `external_resource_url` | String          | [Optional - Only for `boleto` and `ticket`] URL of the boleto or ticket which can be shown to the consumer to resume the payment. |
+| `original_transaction`  | String          | [Optional - Only for `refund`] ID of the transaction that is being refunded.                                                    |
+| `payment_method_type`   | String          | [Optional - Only for `refund`] Payment method type used for refund. See [Payment Methods](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Payment-Methods).                                      |
 
 ### Money
 
 | Field    | Type   | Description                                                 |
 | ---------|--------| ----------------------------------------------------------- |
-| value    | String | Value as a string. E.g. "49.99"                             |
-| currency | String | ISO 4217 code for the currency, such as ARS, BRL, USD, etc. |
+| `value`    | String | Value as a string. E.g. "49.99"                             |
+| `currency` | String | ISO 4217 code for the currency, such as ARS, BRL, USD, etc. |
 
 ### Payment Context
 
 | Field          | Type    | Description                                                         |
 | ---------------| --------|------------------------------------------------------------------- |
-| ip             | String  | [Optional] IP of the device that initiated this transaction. |
-| source         | String  | [Optional] One of `web_desktop`, `web_mobile` or `pos`.       |
-| payment_method | String  | [Optional] Payment method used for this transaction. See [Payment Methods](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Payment-Methods).         |
+| `ip`             | String  | [Optional] IP of the device that initiated this transaction. |
+| `source`         | String  | [Optional] One of `web_desktop`, `web_mobile` or `pos`.       |
+| `payment_method` | String  | [Optional] Payment method used for this transaction. See [Payment Methods](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Payment-Methods).         |
 
 ### Transaction Types
 
