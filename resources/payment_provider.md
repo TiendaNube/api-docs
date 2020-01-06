@@ -319,7 +319,7 @@ E.g.
 
 ###### Detailed Specification
 
-The *detailed specification* allows the use of more specific business rules. This specification is intended to support future business rules as well, so expect this feature to support more fields in the future. Also, feel free to discuss more functionalities with *Nuvemshop's Platform Team*.
+The *detailed specification* allows the use of more specific business rules. This specification is intended to support future business rules as well, so expect this feature to support more fields in the future. Also, feel free to discuss more functionalities with *Tiendanube's Platform Team*.
 
 | Field           | Type             | Description                                                           |
 |:----------------|:-----------------|:----------------------------------------------------------------------|
