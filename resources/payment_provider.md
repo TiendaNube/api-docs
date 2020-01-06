@@ -9,41 +9,142 @@
 
 ### POST /{*store_id*}/payment_providers
 
-#### Request
-
-#### Response
-
-### GET /{*store_id*}/payment_providers
+Create a new Payment Provider associated with a store.
 
 #### Request
 
+[Payment Provider Object](#Payment-Provider)
+
+E.g.
+
+```json
+{
+  "id": "1234",
+  "name": "My Payments",
+  "description": "Some short description for merchants.",
+  "logo_urls": {
+    "400x120": "https://myapp.mypayments.com/logo1.png",
+    "160x100": "https://myapp.mypayments.com/logo2.png"
+  },
+  "checkout_js": {...},
+  "supported_currencies": ["ARS", "BRL"],
+  "supported_methods": {
+    "credit_card": ["visa", "mastercard", "amex"],
+    "debit_card": ["visa_debit", "maestro"],
+    "boleto": ["boleto"],
+    "ticket": ["rapipago", "rapipago", "oxxo"],
+  },
+  "rates": {
+    "credit_card": [
+      {"percent_fee": "2.99", "flat_fee": {"value": "0.39", "currency": "BRL"}, "days_to_withdraw_money": 30},
+      {"percent_fee": "3.99", "flat_fee": {"value": "0.39", "currency": "BRL"}, "days_to_withdraw_money": 14}
+    ],
+    "boleto": [
+      {"flat_fee": {"value": "2.99", "currency": "BRL"}, "days_to_withdraw_money": 2}
+    ]
+  },
+  "installments": {
+    "type": "simple",
+    "specification": {
+      "1": "0.0",
+      "2": "0.0",
+      "3": "0.0",
+      "4": "0.065",
+      "5": "0.075",
+      "6": "0.085",
+      "7": "0.095",
+      "8": "0.105",
+      "9": "0.115",
+      "10": "0.125",
+      "11": "0.135",
+      "12": "0.145"
+    },
+      "min_installment_value": {
+      "BRL": 5
+    }
+  },
+  "configuration_url": "https://myapp.mypayments.com/configuration",
+  "support_url": "https://myapp.mypayments.com/support"
+}
+```
+
 #### Response
 
-### GET /{*store_id*}/payment_providers/{*payment_provider_id*}
+**201 Created** - the request was successful and a resource was created.
 
-#### Request
+**Body:**
 
-#### Response
+URL to redirect the merchant to the Tiendanube Admin Panel.
 
-### GET /{*store_id*}/payment_providers/{*payment_provider_id*}
-
-#### Request
-
-#### Response
+```json
+{
+  "return_url": "https://mystore.mitiendanube.com/admin/..."
+}
+```
 
 ### PUT /{*store_id*}/payment_providers/{*payment_provider_id*}
 
+Update a Payment Provider. This is especially useful to update the installments specs.
+
 #### Request
 
+[Payment Provider Object](#Payment-Provider)
+
 #### Response
+
+**200 OK** - the request was successful and the resource was updated.
+
+### GET /{*store_id*}/payment_providers
+
+Get all Payment Providers for a given store.
+
+#### Request
+
+{}
+
+#### Response
+
+**200 OK** - the request was successful.
+
+**Body:**
+
+[Payment Provider Object](#Payment-Provider)
+
+### GET /{*store_id*}/payment_providers/{*payment_provider_id*}
+
+Get a specific Payment Provider for a given store.
+
+#### Request
+
+{}
+
+#### Response
+
+**200 OK** - the request was successful.
+
+**Body:**
+
+[Payment Provider Object](#Payment-Provider)
 
 ### DELETE /{*store_id*}/payment_providers/{*payment_provider_id*}
 
+Delete a Payment Provider.
+
 #### Request
+
+{}
 
 #### Response
 
-### HTTP Errors List
+**200 OK** - the request was successful and the resource was deleted.
+
+## HTTP Errors List
+
+* **204 No Content** - the request was successful but there is no representation to return (i.e. the response is empty).
+* **400 Bad Request** - the request could not be understood or was missing required parameters.
+* **401 Unauthorized** - authentication failed or user doesn't have permissions for requested operation.403 Forbidden - access denied.
+* **404 Not Found** - resource was not found.
+* **405 Method Not Allowed** - requested method is not supported for resource.
 
 ## Resource Objects Description
 
@@ -90,8 +191,8 @@ E.g.
 
 ```json
 {
-  "400x120": "https://myapp.mypayments.com/example_logo1.png",
-  "160x100": "https://myapp.mypayments.com/example_logo2.png"
+  "400x120": "https://myapp.mypayments.com/logo1.png",
+  "160x100": "https://myapp.mypayments.com/logo2.png"
 }
 ```
 
@@ -129,7 +230,7 @@ E.g.
   "credit_card": ["visa", "mastercard", "amex"],
   "debit_card": ["visa_debit", "maestro"],
   "boleto": ["boleto"],
-  "ticket": ["rapipago", "rapipago", "oxxo"],
+  "ticket": ["rapipago", "pagofacil", "oxxo"],
 }
 ```
 
