@@ -46,7 +46,7 @@ E.g.
 
 ### PUT /{*store_id*}/orders/{*order_id*}/transactions/{*transaction_id*}
 
-Update the status of a transaction. Only the status field can be updated.
+Update the status of a Transaction. Only the status field can be updated.
 
 #### Request
 
@@ -58,7 +58,7 @@ Update the status of a transaction. Only the status field can be updated.
 
 ### GET /{*store_id*}/orders/{*order_id*}/transactions
 
-List transactions for a given order.
+List Transactions for a given order.
 
 #### Request
 
@@ -72,7 +72,7 @@ Array of [Transaction Objects](#Transaction)
 
 ### GET /{*store_id*}/orders/{*order_id*}/transactions/{*transaction_id*}
 
-Get a specific transaction for a given order.
+Get a specific Transaction for a given order.
 
 #### Request
 
@@ -98,29 +98,29 @@ Get a specific transaction for a given order.
 
 Each movement of money is modeled through a Transaction object, which can be of different types (E.g. credit card, cash, wire transfer, refund, etc.). Since not all Transactions are atomic, each type can include a finite series of possible states.
 
-A Payment Provider can create the number of transactions it needs for a given order, and can update their status as they change over time.
+A Payment Provider can create the number of Transactions it needs for a given order, and can update their status as they change over time.
 
-All transactions types have the same attributes, but may differ in the values that their *status* field can take.
+All Transactions types have the same attributes, but may differ in the values that their *status* field can take.
 
 | Field                  | Type          | Description                                                                                                          |
 |:-----------------------|:--------------|:---------------------------------------------------------------------------------------------------------------------|
 | `provider_id`           | String          | Payment Provider ID that processed this Transaction.                                               |
 | `amount`                | Object          | Object containing the value of this Transaction. See [Money](#Money).                                                     |
 | `type`                  | String          | One of `credit_card`, `debit_card`, `boleto`, `ticket`, `wire_transfer`, `cash`, `wallet` or `refund`. See [Transaction Types](#Transaction-Types).    |
-| `status`                | Array(String)          | The series of status of this transaction. See [Transaction Status](#Transaction-Status).                                                                   |
-| `external_id`           | String          | [Optional] ID used by the payment provider.                                                               |
-| `external_url`          | String          | [Optional] URL for the Payment Provider's website with the details on this transaction for the merchant.  |
-| `created_at`            | Date          | [Optional] Creation date for this transaction. Defaults to current time.                                 |
+| `status`                | Array(String)          | The series of status of this Transaction. See [Transaction Status](#Transaction-Status).                                                                   |
+| `external_id`           | String          | [Optional] ID used by the Payment Provider.                                                               |
+| `external_url`          | String          | [Optional] URL for the Payment Provider's website with the details on this Transaction for the merchant.  |
+| `created_at`            | Date          | [Optional] Creation date for this Transaction. Defaults to current time.                                 |
 | `context`               | Object          | [Optional] Object containing context information that could be useful for fraud analysis. See [Payment Context](#Payment-Context).           |
 
 > ***Note:*** All URLs must be secure URLs (https).
 
-Some transaction types have specific *extra* fields.
+Some Transaction types have specific *extra* fields.
 
 | Field                  | Type          | Description                                                                                                          |
 |:-----------------------|:--------------|:---------------------------------------------------------------------------------------------------------------------|
 | `external_resource_url` | String          | [Optional - Only for `boleto` and `ticket`] URL of the boleto or ticket which can be shown to the consumer to resume the payment. |
-| `original_transaction`  | String          | [Optional - Only for `refund`] ID of the transaction that is being refunded.                                                    |
+| `original_transaction`  | String          | [Optional - Only for `refund`] ID of the Transaction that is being refunded.                                                    |
 | `payment_method_type`   | String          | [Optional - Only for `refund`] Payment method type used for refund. See [Payment Methods](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Payment-Methods).                                      |
 
 ### Money
@@ -134,9 +134,9 @@ Some transaction types have specific *extra* fields.
 
 | Field          | Type    | Description                                                         |
 | ---------------| --------|------------------------------------------------------------------- |
-| `ip`             | String  | [Optional] IP of the device that initiated this transaction. |
+| `ip`             | String  | [Optional] IP of the device that initiated this Transaction. |
 | `source`         | String  | [Optional] One of `web_desktop`, `web_mobile` or `pos`.       |
-| `payment_method` | String  | [Optional] Payment method used for this transaction. See [Payment Methods](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Payment-Methods).         |
+| `payment_method` | String  | [Optional] Payment method used for this Transaction. See [Payment Methods](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Payment-Methods).         |
 
 ### Transaction Types
 
@@ -151,7 +151,7 @@ Some transaction types have specific *extra* fields.
 
 ### Transaction Status
 
-Each type of transaction has a finite series of possible status:
+Each type of Transaction has a finite series of possible status:
 
 #### Credit Card/Debit Card Transactions
 
@@ -162,7 +162,7 @@ Each type of transaction has a finite series of possible status:
 * **Rejected:** The consumer's payment was not accepted when it was processed by the bank or credit card company.
 * **Captured:** The consumer's checking, savings or other bank account payment has been processed and accepted.
 * **Voided:** The consumer's payment was cancelled by the merchant before it settles through a consumer's debit or credit card account.
-* **In Dispute:** The customer questions the validity of the transaction that was registered to his account and decides to cancelled it through the issuer.
+* **In Dispute:** The customer questions the validity of the Transaction that was registered to his account and decides to cancelled it through the issuer.
 * **Chargeback:** The money in the merchant's account is held due to a dispute initiated by the consumer.
 
 #### Cash/Boleto/Wire Transfer/Ticket/Wallet Transactions
@@ -175,4 +175,4 @@ Each type of transaction has a finite series of possible status:
 
 #### Refund Transaction
 
-The series of possible status for this transaction is the same as for Cash / Ticket / Wire Transfer / Ticket / Wallet, but in this case, the money goes from the merchant to the consumer.
+The series of possible status for this Transaction is the same as for Cash / Ticket / Wire Transfer / Ticket / Wallet, but in this case, the money goes from the merchant to the consumer.
