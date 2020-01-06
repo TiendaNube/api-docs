@@ -352,6 +352,10 @@ E.g.
 }
 ```
 
+### Checkout
+
+#### TODO
+
 ## Appendix
 
 ### Supported Payment Methods by Payment Method Type
