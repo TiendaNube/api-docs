@@ -72,15 +72,13 @@ E.g.
 
 **201 Created** - the request was successful and a resource was created.
 
-##### Body
-
-URL to redirect the merchant to the Tiendanube Admin Panel.
-
 ```json
 {
   "return_url": "https://mystore.mitiendanube.com/admin/..."
 }
 ```
+
+URL to redirect the merchant to the Tiendanube Admin Panel.
 
 ### PUT /{*store_id*}/payment_providers/{*payment_provider_id*}
 
@@ -106,16 +104,7 @@ Get all Payment Providers for a given store.
 
 **200 OK** - the request was successful.
 
-##### Body
-
-```
-[
-	{ Payment Provider 1 },
-	{ Payment Provider 2 },
-	...
-	{ Payment Provider n}
-]	
-```
+Array of [Payment Provider Objects](#Payment-Provider)
 
 ### GET /{*store_id*}/payment_providers/{*payment_provider_id*}
 
@@ -128,8 +117,6 @@ Get a specific Payment Provider for a given store.
 #### Response
 
 **200 OK** - the request was successful.
-
-##### Body
 
 [Payment Provider Object](#Payment-Provider)
 
