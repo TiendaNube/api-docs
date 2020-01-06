@@ -4,13 +4,13 @@
 
 #### Parameters List
 
-* **store_id:** ID of the store that generated the transaction.
-* **order_id:** ID of the order related to the transaction.
+* **store_id:** ID of the store that generated the Transaction.
+* **order_id:** ID of the order related to the Transaction.
 * **transaction_id:** Transaction ID.
 
 ### POST /{*store_id*}/orders/{*order_id*}/transactions
 
-Create a transaction with *pending* status.
+Create a new Transaction with *pending* status.
 
 #### Request
 
