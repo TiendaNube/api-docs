@@ -8,7 +8,7 @@ When you define a [Payment Provider](https://github.com/TiendaNube/api-docs/blob
 
 ### Redirect to External Checkout
 
-Let's take a look at a simple script for a hypothetical integration with a payment provider that redirects the user to *'acmepayments.com'* to finish the purchase in their checkout. This is what we call a `redirect` checkout.
+Let's take a look at a simple script for a hypothetical integration with a Payment Provider that redirects the user to *'acmepayments.com'* to finish the purchase in their checkout. This is what we call a `redirect` checkout.
 
 ```js
 LoadPaymentMethod(function(Checkout, Methods) {
@@ -18,7 +18,7 @@ LoadPaymentMethod(function(Checkout, Methods) {
   var AcmeRedirect = new Methods.RedirectPayment({
     name: 'ACME Payments',
     
-    // This function will be called when the consumer finishes the checkout flow so you can initiate the transaction.
+    // This function will be called when the consumer finishes the checkout flow so you can initiate the Transaction.
     
     onSubmit: function(callback) {
     
@@ -131,7 +131,7 @@ LoadPaymentMethod(function(Checkout, Methods) {
       }
     }, 700),
 
-    // This function will be called when the consumer finishes the checkout flow so you can initiate the transaction.
+    // This function will be called when the consumer finishes the checkout flow so you can initiate the Transaction.
     
     onSubmit: function(callback) {
     
