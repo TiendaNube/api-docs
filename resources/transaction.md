@@ -204,6 +204,8 @@ All transactions types have the same attributes, but may differ in the values th
 | created_at            | [Optional] Creation date for this transaction. Defaults to current time.                                 |
 | context               | [Optional] Object containing context information that could be useful for fraud analysis. See [Payment Context](#Payment-Context).           |
 
+> ***Note:*** All URLs must be secure URLs (https).
+
 Some transaction types have specific *extra* fields.
 
 | Field                 | Description                                                                                                                 |
@@ -212,15 +214,15 @@ Some transaction types have specific *extra* fields.
 | original_transaction  | [Optional - Only for `refund`] ID of the transaction that is being refunded.                                                    |
 | payment_method_type   | [Optional - Only for `refund`] Payment method type used for refund. See [Payment Methods](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Payment-Methods).                                      |
 
-> _*Note:*_ All URLs must be secure URLs (https).
-
 ### Money
+
 | Field    | Description                                                 |
 | ---------| ----------------------------------------------------------- |
 | value    | Value as a string. E.g. "49.99"                             |
 | currency | ISO 4217 code for the currency, such as ARS, BRL, USD, etc. |
 
 ### Payment Context
+
 | Field    | Description                                                         |
 | ---------| ------------------------------------------------------------------- |
 | ip              | [Optional] IP of the device that initiated this transaction. |
