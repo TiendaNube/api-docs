@@ -150,7 +150,7 @@ A Payment Provider, shorter name for Payments Services Provider, represents any 
 - **Gateway**
 - **Adquirente**
 
-Payments companies have many different and sometimes complex features which add value to the purchase experience, mainly providing multiple payments options and simpler checkout flows. They also provide merchants with tools to make better management of their transactions as well as their incomes.
+Payments companies have many different and sometimes complex features which add value to the purchase experience, mainly providing multiple payments options and simpler checkout flows. They also provide merchants with tools to make better management of their Transactions as well as their incomes.
 
 In our platform, a Payment Provider is created for a specific `store`.
 
@@ -230,12 +230,12 @@ E.g.
 
 ### Rates
 
-Payment Providers may charge merchants with different rates per payment transaction depending on the payment method type and the time the merchant chooses to withdraw the money. Hence, for each payment method type there would be a list of rates depending on the withdrawal time specified in days.
+Payment Providers may charge merchants with different rates per Transaction depending on the payment method type and the time the merchant chooses to withdraw the money. Hence, for each payment method type there would be a list of rates depending on the withdrawal time specified in days.
 
 | Field                    | Type             | Description                                                            |
 |:-------------------------|:-----------------|:-----------------------------------------------------------------------|
 | `percent_fee`            | String | Percentage fee charged per payment. E.g. `"3.82"`.    |
-| `days_to_withdraw_money` | Number           | Days since transaction until de merchant can withdraw the money.       |
+| `days_to_withdraw_money` | Number           | Days since Transaction creation until de merchant can withdraw the money.       |
 | `flat_fee`               | Money            | [Optional] Object containing the flat fee charged per payment. See [Money](#Money).  |
 | `plus_tax`               | Boolean          | [Optional] Indicates whether VAT will be added to the specified rates. |
 
