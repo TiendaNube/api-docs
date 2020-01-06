@@ -14,6 +14,8 @@ Create a new Transaction with *pending* status.
 
 #### Request
 
+[Transaction Object](#Transaction)
+
 E.g.
 
 ```json
@@ -28,7 +30,7 @@ E.g.
     "pending"
   ],
   "external_id": "5678",
-  "external_url": "https://externalurl.com/creditcard",
+  "external_url": "https://mypayments.com/creditcard",
   "created_at": "2020-01-25T12:30:15.000Z",
   "context": {
     "ip": "192.168.0.25",
@@ -48,35 +50,11 @@ Update the status of a transaction. Only the status field can be updated.
 
 #### Request
 
-E.g.
-
-```json
-{
-  "provider_id": "1234",
-  "amount": {
-    "value": "132.95",
-    "currency": "ARS"
-  },
-  "type": "credit_card",
-  "status": [
-    "pending", 
-    "authorized", 
-    "captured"
-  ],
-  "external_id": "5678",
-  "external_url": "https://externalurl.com/creditcard",
-  "created_at": "2020-01-25T12:30:15.000Z",
-  "context": {
-    "ip": "192.168.0.25",
-    "source": "web_desktop",
-    "payment_method": "credit_card"
-  }
-}
-```
+[Transaction Object](#Transaction)
 
 #### Response
 
-**200 OK** - the request was successful 
+**200 OK** - the request was successful and the resource was updated.
 
 ### GET /{*store_id*}/orders/{*order_id*}/transactions
 
@@ -90,53 +68,7 @@ List transactions for a given order.
 
 **200 OK** - the request was successful
 
-E.g.
-
-```json
-[
-	{
-	  "provider_id": "1234",
-	  "amount": {
-	    "value": "132.95",
-	    "currency": "ARS"
-	  },
-	  "type": "credit_card",
-	  "status": [
-	    "pending", 
-	    "authorized", 
-	    "captured"
-	  ],
-	  "external_id": "5678",
-	  "external_url": "https://externalurl.com/creditcard",
-	  "created_at": "2020-01-25T12:30:15.000Z",
-	  "context": {
-	    "ip": "192.168.0.25",
-	    "source": "web_desktop",
-	    "payment_method": "credit_card"
-	  }
-	},
-	{
-	  "provider_id": "1234",
-	  "amount": {
-	    "value": "500.00",
-	    "currency": "ARS"
-	  },
-	  "type": "ticket",
-	  "status": [
-	    "pending", 
-	    "paid"
-	  ],
-	  "external_id": "9045",
-	  "external_url": "https://externalurl.com/ticket",
-	  "created_at": "2020-01-25T12:41:55.000Z",
-	  "context": {
-	    "ip": "192.168.0.25",
-	    "source": "web_desktop",
-	    "payment_method": "ticket"
-	  }
-	}
-]	
-```
+Array of [Transaction Objects](#Transaction)
 
 ### GET /{*store_id*}/orders/{*order_id*}/transactions/{*transaction_id*}
 
@@ -150,30 +82,7 @@ Get a specific transaction for a given order.
 
 **200 OK** - the request was successful
 
-E.g.
-
-```json
-{
-  "provider_id": "1234",
-  "amount": {
-    "value": "500.00",
-    "currency": "ARS"
-  },
-  "type": "ticket",
-  "status": [
-    "pending", 
-    "paid"
-  ],
-  "external_id": "9045",
-  "external_url": "https://externalurl.com/ticket",
-  "created_at": "2020-01-25T12:41:55.000Z",
-  "context": {
-    "ip": "192.168.0.25",
-    "source": "web_desktop",
-    "payment_method": "ticket"
-  }
-}
-```
+[Transaction Object](#Transaction)
 
 ## HTTP Errors List
 
@@ -193,41 +102,41 @@ A Payment Provider can create the number of transactions it needs for a given or
 
 All transactions types have the same attributes, but may differ in the values that their *status* field can take.
 
-| Field                 | Description                                                                                               |
-| --------------------- | --------------------------------------------------------------------------------------------------------- |
-| provider_id           | ID of the payment provider that processed this transaction.                                               |
-| amount                | Money object containing the value of this transaction. See [Money](#Money).                                                     |
-| type                  | One of `credit_card`, `debit_card`, `boleto`, `ticket`, `wire_transfer`, `cash`, `wallet` or `refund`. See [Transaction Types](#Transaction-Types).    |
-| status                | Array containing the series of status of this transaction. See [Transaction Status](#Transaction-Status).                                                                   |
-| external_id           | [Optional] ID used by the payment provider.                                                               |
-| external_url          | [Optional] URL for the payment provider's website with the details on this transaction for the merchant.  |
-| created_at            | [Optional] Creation date for this transaction. Defaults to current time.                                 |
-| context               | [Optional] Object containing context information that could be useful for fraud analysis. See [Payment Context](#Payment-Context).           |
+| Field                  | Type          | Description                                                                                                          |
+|:-----------------------|:--------------|:---------------------------------------------------------------------------------------------------------------------|
+| provider_id           | String          | Payment Provider ID that processed this Transaction.                                               |
+| amount                | Object          | Object containing the value of this Transaction. See [Money](#Money).                                                     |
+| type                  | String          | One of `credit_card`, `debit_card`, `boleto`, `ticket`, `wire_transfer`, `cash`, `wallet` or `refund`. See [Transaction Types](#Transaction-Types).    |
+| status                | Array(String)          | The series of status of this transaction. See [Transaction Status](#Transaction-Status).                                                                   |
+| external_id           | String          | [Optional] ID used by the payment provider.                                                               |
+| external_url          | String          | [Optional] URL for the Payment Provider's website with the details on this transaction for the merchant.  |
+| created_at            | Date          | [Optional] Creation date for this transaction. Defaults to current time.                                 |
+| context               | Object          | [Optional] Object containing context information that could be useful for fraud analysis. See [Payment Context](#Payment-Context).           |
 
 > ***Note:*** All URLs must be secure URLs (https).
 
 Some transaction types have specific *extra* fields.
 
-| Field                 | Description                                                                                                                 |
-| --------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| external_resource_url | [Optional - Only for `boleto` and `ticket`] URL of the boleto or ticket which can be shown to the consumer to resume the payment. |
-| original_transaction  | [Optional - Only for `refund`] ID of the transaction that is being refunded.                                                    |
-| payment_method_type   | [Optional - Only for `refund`] Payment method type used for refund. See [Payment Methods](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Payment-Methods).                                      |
+| Field                  | Type          | Description                                                                                                          |
+|:-----------------------|:--------------|:---------------------------------------------------------------------------------------------------------------------|
+| external_resource_url | String          | [Optional - Only for `boleto` and `ticket`] URL of the boleto or ticket which can be shown to the consumer to resume the payment. |
+| original_transaction  | String          | [Optional - Only for `refund`] ID of the transaction that is being refunded.                                                    |
+| payment_method_type   | String          | [Optional - Only for `refund`] Payment method type used for refund. See [Payment Methods](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Payment-Methods).                                      |
 
 ### Money
 
-| Field    | Description                                                 |
-| ---------| ----------------------------------------------------------- |
-| value    | Value as a string. E.g. "49.99"                             |
-| currency | ISO 4217 code for the currency, such as ARS, BRL, USD, etc. |
+| Field    | Type   | Description                                                 |
+| ---------|--------| ----------------------------------------------------------- |
+| value    | String | Value as a string. E.g. "49.99"                             |
+| currency | String | ISO 4217 code for the currency, such as ARS, BRL, USD, etc. |
 
 ### Payment Context
 
-| Field    | Description                                                         |
-| ---------| ------------------------------------------------------------------- |
-| ip              | [Optional] IP of the device that initiated this transaction. |
-| source         | [Optional] One of `web_desktop`, `web_mobile` or `pos`.       |
-| payment_method | [Optional] Payment method used for this transaction. See [Payment Methods](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Payment-Methods).         |
+| Field          | Type    | Description                                                         |
+| ---------------| --------|------------------------------------------------------------------- |
+| ip             | String  | [Optional] IP of the device that initiated this transaction. |
+| source         | String  | [Optional] One of `web_desktop`, `web_mobile` or `pos`.       |
+| payment_method | String  | [Optional] Payment method used for this transaction. See [Payment Methods](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Payment-Methods).         |
 
 ### Transaction Types
 
