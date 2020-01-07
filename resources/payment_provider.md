@@ -26,9 +26,9 @@ E.g.
     "400x120": "https://myapp.mypayments.com/logo1.png",
     "160x100": "https://myapp.mypayments.com/logo2.png"
   },
-  "checkout_js": {...},
+  "checkout_js_urls": {...},
   "supported_currencies": ["ARS", "BRL"],
-  "supported_methods": {
+  "supported_payment_methods": {
     "credit_card": ["visa", "mastercard", "amex"],
     "debit_card": ["visa_debit", "maestro"],
     "boleto": ["boleto"],
@@ -90,7 +90,7 @@ Update a Payment Provider. This is especially useful to update the installments 
 
 #### Response
 
-**200 OK** - the request was successful and the resource was updated.
+**200 OK** - the request was successful.
 
 ### GET /{*store_id*}/payment_providers
 
@@ -130,13 +130,13 @@ Delete a Payment Provider.
 
 #### Response
 
-**200 OK** - the request was successful and the resource was deleted.
+**204 No Content** - the request was successful but there is no representation to return (i.e. the response is empty).
 
 ## HTTP Errors List
 
-* **204 No Content** - the request was successful but there is no representation to return (i.e. the response is empty).
 * **400 Bad Request** - the request could not be understood or was missing required parameters.
-* **401 Unauthorized** - authentication failed or user doesn't have permissions for requested operation.403 Forbidden - access denied.
+* **401 Unauthorized** - authentication failed or user doesn't have permissions for requested operation.
+* **403 Forbidden** - access denied.
 * **404 Not Found** - resource was not found.
 * **405 Method Not Allowed** - requested method is not supported for resource.
 
@@ -162,9 +162,9 @@ In our platform, a Payment Provider is created for a specific `store`.
 | `name`                 | String        | Display name which merchants and consumers will see.                                                                 |
 | `description`          | String        | Short paragraph which provides merchants with a description of the Payment Provider.                         |
 | `logo_urls`            | Object        | Object containing `key:value` pair for each version of the logos for the frontend. See [Logos](#Logos).                             |
-| `checkout_js`          | Array(String) | URL of each JS file to be included in the checkout frontend. See [Checkout](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/checkout).                                                |
+| `checkout_js_urls`          | Array(String) | URL of each JS file to be included in the checkout frontend. See [Checkout](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/checkout).                                                |
 | `supported_currencies` | Array(String) | ISO.4217 currency codes supported by the Payment Provider. See [Currency Codes](#Currency-Codes).      |
-| `supported_methods`    | Object        | Object containing `key:array` pair for each payment method available to consumers. See [Payment Methods](#Payment-Methods). |
+| `supported_payment_methods`    | Object        | Object containing `key:array` pair for each payment method available to consumers. See [Payment Methods](#Payment-Methods). |
 | `rates`                | Object        | Object containing the rates that build up the service cost to the merchant. See [Rates](#Rates).                                                  |
 | `installments`         | Object        | Object containing the installments available to consumers. See [Installments](#Installments).                                                                        |
 | `configuration_url`    | String        | [Optional] Payment Provider configuration UI URL.                                                                  |
