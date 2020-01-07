@@ -2,7 +2,7 @@
 
 Since there are a lot of possible flows for integrating a payment solution with our platform, we've decided to give the Payment Provider's app full control of how to handle the integration.
 
-When you define a [Payment Provider](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md) you must specify one or more JS files in the field `checkout_js`. These scripts will be loaded during the checkout process and can interact with it through some primitives described below.
+When you define a [Payment Provider](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md) you must specify one or more JS files in the field `checkout_js_urls`. These scripts will be loaded during the checkout process and can interact with it through some primitives described below.
 
 ## Examples
 
