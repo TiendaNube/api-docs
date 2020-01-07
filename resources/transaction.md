@@ -54,7 +54,7 @@ Update the status of a Transaction. Only the status field can be updated.
 
 #### Response
 
-**200 OK** - the request was successful and the resource was updated.
+**204 No Content** - the request was successful but there is no representation to return (i.e. the response is empty).
 
 ### GET /{*store_id*}/orders/{*order_id*}/transactions
 
@@ -86,9 +86,9 @@ Get a specific Transaction for a given order.
 
 ## HTTP Errors List
 
-* **204 No Content** - the request was successful but there is no representation to return (i.e. the response is empty).
 * **400 Bad Request** - the request could not be understood or was missing required parameters.
-* **401 Unauthorized** - authentication failed or user doesn't have permissions for requested operation.403 Forbidden - access denied.
+* **401 Unauthorized** - authentication failed or user doesn't have permissions for requested operation.
+* **403 Forbidden** - access denied.
 * **404 Not Found** - resource was not found.
 * **405 Method Not Allowed** - requested method is not supported for resource.
 
