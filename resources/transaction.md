@@ -26,9 +26,7 @@ E.g.
     "currency": "ARS"
   },
   "type": "credit_card",
-  "status": [
-    "pending"
-  ],
+  "status": "pending",
   "external_id": "5678",
   "external_url": "https://myapp.mypayments.com/creditcard",
   "created_at": "2020-01-25T12:30:15.000Z",
@@ -96,7 +94,7 @@ Get a specific Transaction for a given order.
 
 ### Transaction
 
-Each movement of money is modeled through a Transaction object, which can be of different types (E.g. credit card, cash, wire transfer, refund, etc.). Since not all Transactions are atomic, each type can include a finite series of possible states.
+Each movement of money is modeled through a Transaction object, which can be of different types (E.g. credit card, cash, wire transfer, refund, etc.). Since not all Transactions are atomic, each type has a Finite-state Machine (FSM) that defines its status.
 
 A Payment Provider can create the number of Transactions it needs for a given order, and can update their status as they change over time.
 
@@ -107,7 +105,7 @@ All Transactions types have the same attributes, but may differ in the values th
 | `provider_id`           | String          | Payment Provider ID that processed this Transaction.                                               |
 | `amount`                | Object          | Object containing the value of this Transaction. See [Money](#Money).                                                     |
 | `type`                  | String          | One of `credit_card`, `debit_card`, `boleto`, `ticket`, `wire_transfer`, `cash`, `wallet` or `refund`. See [Transaction Types](#Transaction-Types).    |
-| `status`                | Array(String)          | The series of status of this Transaction. See [Transaction Status](#Transaction-Status).                                                                   |
+| `status`                | String          | The state of the FSM in which the Transaction is. See [Transaction Status](#Transaction-Status).                                                                   |
 | `external_id`           | String          | [Optional] ID used by the Payment Provider.                                                               |
 | `external_url`          | String          | [Optional] URL for the Payment Provider's website with the details on this Transaction for the merchant.  |
 | `created_at`            | Date          | [Optional] Creation date for this Transaction. Defaults to current time.                                 |
@@ -151,7 +149,7 @@ Some Transaction types have specific *extra* fields.
 
 ### Transaction Status
 
-Each type of Transaction has a finite series of possible status:
+Each type of Transaction has a Finite-state Machine (FSM) that defines its status:
 
 #### Credit Card/Debit Card Transactions
 
@@ -167,12 +165,12 @@ Each type of Transaction has a finite series of possible status:
 
 #### Cash/Boleto/Wire Transfer/Ticket/Wallet Transactions
 
-<img src="https://i.imgur.com/N1kvoMN.png" alt="transaction_status_01" height="85"/>
+<img src="https://i.imgur.com/vephWFb.png" alt="transaction_status_01" height="85"/>
 
 * **Pending:** The consumer's submission and payment have both been received; payment has been sent out for processing, but the payment gateway has not yet confirmed that the payment has gone through.
-* **Paid:** The consumer's payment has been processed and accepted.
+* **Confirmed:** The consumer's payment has been processed and accepted.
 * **Voided:** The consumer's payment was cancelled by the merchant before the consumer paid it.
 
 #### Refund Transaction
 
-The series of possible status for this Transaction is the same as for Cash / Ticket / Wire Transfer / Ticket / Wallet, but in this case, the money goes from the merchant to the consumer.
+The FSM for this Transaction is the same as for Cash / Ticket / Wire Transfer / Ticket / Wallet, but in this case, the money goes from the merchant to the consumer.
