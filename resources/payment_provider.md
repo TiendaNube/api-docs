@@ -32,7 +32,7 @@ E.g.
     "credit_card": ["visa", "mastercard", "amex"],
     "debit_card": ["visa_debit", "maestro"],
     "boleto": ["boleto"],
-    "ticket": ["rapipago", "rapipago", "oxxo"],
+    "ticket": ["rapipago", "rapipago", "oxxo"]
   },
   "rates": {
     "credit_card": [
