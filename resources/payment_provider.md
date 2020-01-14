@@ -26,7 +26,11 @@ E.g.
     "400x120": "https://myapp.mypayments.com/logo1.png",
     "160x100": "https://myapp.mypayments.com/logo2.png"
   },
-  "checkout_js_urls": {...},
+  "checkout_js_urls": [
+    "https://myapp.mypayments.com/checkout1.js",
+    "https://myapp.mypayments.com/checkout2.js",
+    "https://myapp.mypayments.com/checkout3.js"
+  ],
   "supported_currencies": ["ARS", "BRL"],
   "supported_payment_methods": {
     "credit_card": ["visa", "mastercard", "amex"],
@@ -162,7 +166,7 @@ In our platform, a Payment Provider is created for a specific `store`.
 | `name`                 | String        | Display name which merchants and consumers will see.                                                                 |
 | `description`          | String        | Short paragraph which provides merchants with a description of the Payment Provider.                         |
 | `logo_urls`            | Object        | Object containing `key:value` pair for each version of the logos for the frontend. See [Logos](#Logos).                             |
-| `checkout_js_urls`          | Array(String) | URL of each JS file to be included in the checkout frontend. See [Checkout](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/checkout).                                                |
+| `checkout_js_urls`          | Array(String) | URL of each JS file to be included in the checkout frontend. See [Checkout](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/checkout_js.md).                                                |
 | `supported_currencies` | Array(String) | ISO.4217 currency codes supported by the Payment Provider. See [Currency Codes](#Currency-Codes).      |
 | `supported_payment_methods`    | Object        | Object containing `key:array` pair for each payment method available to consumers. See [Payment Methods](#Payment-Methods). |
 | `rates`                | Object        | Object containing the rates that build up the service cost to the merchant. See [Rates](#Rates).                                                  |
