@@ -19,7 +19,6 @@ E.g.
 
 ```json
 {
-  "id": "1234",
   "name": "My Payments",
   "description": "Some short description for merchants.",
   "logo_urls": {
