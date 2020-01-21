@@ -159,25 +159,25 @@ In our platform, a Payment Provider is created for a specific `store`.
 
 #### Payment Provider Object Properties
 
-| Field                  | Type          | Description                                                                                                          |
-|:-----------------------|:--------------|:---------------------------------------------------------------------------------------------------------------------|
-| `id`                   | String        | Unique identifier of the Payment Provider object.                                                                  |
-| `name`                 | String        | Display name which merchants and consumers will see.                                                                 |
-| `description`          | String        | Short paragraph which provides merchants with a description of the Payment Provider.                         |
-| `logo_urls`            | Object        | Object containing `key:value` pair for each version of the logos for the frontend. See [Logos](#Logos).                             |
-| `checkout_js_urls`          | Array(String) | URL of each JS file to be included in the checkout frontend. See [Checkout](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/checkout_js.md).                                                |
-| `supported_currencies` | Array(String) | ISO.4217 currency codes supported by the Payment Provider. See [Currency Codes](#Currency-Codes).      |
-| `supported_payment_methods`    | Object        | Object containing `key:array` pair for each payment method available to consumers. See [Payment Methods](#Payment-Methods). |
-| `rates`                | Object        | Object containing the rates that build up the service cost to the merchant. See [Rates](#Rates).                                                  |
-| `installments`         | Object        | Object containing the installments available to consumers. See [Installments](#Installments).                                                                        |
-| `configuration_url`    | String        | [Optional] Payment Provider configuration UI URL.                                                                  |
-| `support_url`          | String        | [Optional] Payment Provider support URL.                                                                           |
+| Field                       | Type          | Description                                                                                                                                                                |
+|:----------------------------|:--------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `id`                        | String        | Unique identifier of the Payment Provider object.                                                                                                                          |
+| `name`                      | String        | Display name which merchants and consumers will see.                                                                                                                       |
+| `description`               | String        | Short paragraph which provides merchants with a description of the Payment Provider.                                                                                       |
+| `logo_urls`                 | Object        | Object containing `key:value` pair for each version of the logos for the frontend. Only supports HTTPS URLS. See [Logos](#Logos).                                          |
+| `checkout_js_urls`          | Array(String) | HTTPS URL of each JS file to be included in the checkout frontend. See [Checkout](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/checkout_js.md). |
+| `supported_currencies`      | Array(String) | ISO.4217 currency codes supported by the Payment Provider. See [Currency Codes](#Currency-Codes).                                                                          |
+| `supported_payment_methods` | Object        | Object containing `key:array` pair for each payment method available to consumers. See [Payment Methods](#Payment-Methods).                                                |
+| `rates`                     | Object        | Object containing the rates that build up the service cost to the merchant. See [Rates](#Rates).                                                                           |
+| `installments`              | Object        | Object containing the installments available to consumers. See [Installments](#Installments).                                                                              |
+| `configuration_url`         | String        | [Optional] Payment Provider configuration UI HTTPS URL.                                                                                                                    |
+| `support_url`               | String        | [Optional] Payment Provider support HTTPS URL.                                                                                                                             |
 
 > ***Note:*** All URLs must be secure URLs (https).
 
 ### Logos
 
-At the moment, our platform requires two versions of the Payment Provider logo. Each image must be sent as a `key:value` pair, being the key the dimension of the image and the value, the URL of its content.
+At the moment, our platform requires two versions of the Payment Provider logo. Each image must be sent as a `key:value` pair, being the key the dimension of the image and the value, the HTTPS URL of its content.
 
 | Dimension     | URL Content Description                                                                                |
 |:--------|:-------------------------------------------------------------------------------------------------------|
