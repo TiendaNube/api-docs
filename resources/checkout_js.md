@@ -493,6 +493,7 @@ All of the instances of `Methods` take can take the following arguments.
 
 | Name         | Description                                                                                                             |
 | ------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| `name`         | Method name.                                                                                                            |
 | `scripts`      | List of external js files to be loaded before registering this method.                                                  |
 | `onLoad`       | Function to be invoked after registering this method.                                                                   |
 | `onDataChange` | Function to be invoked whenever there's a change in `Checkout.data`.                                                    |
