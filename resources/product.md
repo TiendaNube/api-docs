@@ -1,7 +1,7 @@
 Product
 ======
 
-A Product is an item for sale in a Tienda Nube/Nuvem Shop's store. It can be either a good or a service.
+A Product is an item for sale in a Tiendanube/Nuvemshop's store. It can be either a good or a service.
 
 Properties
 ----------
