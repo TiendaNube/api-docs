@@ -138,14 +138,14 @@ Some Transaction types have specific *extra* fields.
 
 ### Transaction Types
 
-* **Credit Card:** Transaction in which the consumer uses a credit card as payment method (E.g. VISA, Mastercard, AMEX).
-* **Debit Card:** Transaction in which the consumer uses a debit card as payment method (E.g. VISA Debit, Maestro)
-* **Boleto:** Transaction in which the consumer uses a Boleto Bancário as payment method. Boleto is a Brazilian payment method based on cash.
-* **Ticket:** Transaction in which the consumer uses a ticket as payment method. This ticket can be paid through a non-bank collection channel (E.g. Rapipago, Pago Fácil, OXXO)
-* **Wire Transfer:** Transaction in which the consumer uses a wire transfer as payment method.
-* **Cash:** Transaction in which the consumer uses cash as payment method.
-* **Wallet:** Transaction in which the consumer uses a wallet as payment method. A wallet is an application that allows you to transfer cryptocurrencies.
-* **Refund:** Transaction in which the merchant returns money to the consumer. This refund may involve any payment method.
+* `credit_card`: Transaction in which the consumer uses a credit card as payment method (E.g. VISA, Mastercard, AMEX).
+* `debit_card`: Transaction in which the consumer uses a debit card as payment method (E.g. VISA Debit, Maestro)
+* `boleto`: Transaction in which the consumer uses a Boleto Bancário as payment method. Boleto is a Brazilian payment method based on cash.
+* `ticket`: Transaction in which the consumer uses a ticket as payment method. This ticket can be paid through a non-bank collection channel (E.g. Rapipago, Pago Fácil, OXXO)
+* `wire_transfer`: Transaction in which the consumer uses a wire transfer as payment method.
+* `cash`: Transaction in which the consumer uses cash as payment method.
+* `wallet`: Transaction in which the consumer uses a wallet as payment method. A wallet is an application that allows you to transfer cryptocurrencies.
+* `refund`: Transaction in which the merchant returns money to the consumer. This refund may involve any payment method.
 
 ### Transaction Status
 
@@ -155,22 +155,22 @@ Each type of Transaction has a Finite-state Machine (FSM) that defines its statu
 
 <img src="https://i.imgur.com/pfi1CE5.png" alt="transaction_status_01" height="90"/>
 
-* **Pending:** The consumer's submission and payment have both been received; payment has been sent out for processing, but the payment gateway has not yet confirmed that the payment has gone through.
-* **Authorized:** The consumer's credit or debit card payment has been processed and accepted.
-* **Rejected:** The consumer's payment was not accepted when it was processed by the bank or credit card company.
-* **Captured:** The consumer's checking, savings or other bank account payment has been processed and accepted.
-* **Voided:** The consumer's payment was cancelled by the merchant before it settles through a consumer's debit or credit card account.
-* **In Dispute:** The customer questions the validity of the Transaction that was registered to his account and decides to cancelled it through the issuer.
-* **Chargeback:** The money in the merchant's account is held due to a dispute initiated by the consumer.
+* `pending`: The consumer's submission and payment have both been received; payment has been sent out for processing, but the payment gateway has not yet confirmed that the payment has gone through.
+* `authorized`: The consumer's credit or debit card payment has been processed and accepted.
+* `rejected`: The consumer's payment was not accepted when it was processed by the bank or credit card company.
+* `captured`: The consumer's checking, savings or other bank account payment has been processed and accepted.
+* `voided`: The consumer's payment was cancelled by the merchant before it settles through a consumer's debit or credit card account.
+* `in_dispute`: The customer questions the validity of the Transaction that was registered to his account and decides to cancelled it through the issuer.
+* `chargeback`: The money in the merchant's account is held due to a dispute initiated by the consumer.
 
 #### Cash/Boleto/Wire Transfer/Ticket/Wallet Transactions
 
 <img src="https://i.imgur.com/vephWFb.png" alt="transaction_status_01" height="85"/>
 
-* **Pending:** The consumer's submission and payment have both been received; payment has been sent out for processing, but the payment gateway has not yet confirmed that the payment has gone through.
-* **Confirmed:** The consumer's payment has been processed and accepted.
-* **Voided:** The consumer's payment was cancelled by the merchant before the consumer paid it.
+* `pending`: The consumer's submission and payment have both been received; payment has been sent out for processing, but the payment gateway has not yet confirmed that the payment has gone through.
+* `paid`: The consumer's payment has been processed and accepted.
+* `voided`: The consumer's payment was cancelled by the merchant before the consumer paid it.
 
 #### Refund Transaction
 
-The FSM for this Transaction is the same as for Cash / Ticket / Wire Transfer / Ticket / Wallet, but in this case, the money goes from the merchant to the consumer.
+The FSM for this Transaction is the same as for `cash` / `boleto` / `wire_transfer` / `ticket` / `wallet` types, but in this case, the money goes from the merchant to the consumer.
