@@ -15,7 +15,7 @@ Authorization flow
 
 The authorization flow is pretty standard, except for the first step:
 
-1. The user, from his TiendaNube/NuvemShop admin, clicks on a button to install your app. Or, alternatively, he goes to https://www.tiendanube.com/apps/(app_id)/authorize (if he is not logged in, he is prompted to do so).
+1. The user, from his Tiendanube/Nuvemshop admin, clicks on a button to install your app. Or, alternatively, he goes to https://www.tiendanube.com/apps/(app_id)/authorize (if he is not logged in, he is prompted to do so).
 2. He is redirected to a page where he has to authorize the scopes your app needs (if he has already done it, this step is skipped).
 3. He is redirected to your app's redirection URL with an authorization code, which expires in 30 seconds.
 4. Using your app's credentials and the authorization code, you can obtain an access token by making a POST request to https://www.tiendanube.com/apps/authorize/token. (Don't forget to also send `grant_type=authorization_code`, see the example below).
