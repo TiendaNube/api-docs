@@ -1,7 +1,7 @@
 Store
 ======
 
-The Store resource contains general settings and information about a Tienda Nube/Nuvem Shop's store.
+The Store resource contains general settings and information about a Tiendanube/Nuvemshop's store.
 
 Properties
 ----------
@@ -27,7 +27,7 @@ Properties
 | business_name     | Business name of the company who owns the store                                               |
 | business_address  | Business address of the company who owns the store                                            |
 | customer_accounts | "optional" if the customer is allowed to checkout as guest. "mandatory" if not.               |
-| plan_name         | Name of the Tienda Nube/Nuvem Shop's plan the store is on                                     |
+| plan_name         | Name of the Tiendanube/Nuvemshop's plan the store is on                                     |
 | country           | Store's country in [ISO 3166-1 format](http://en.wikipedia.org/wiki/ISO_3166-1)               |
 | languages         | Store available languages with its currency and whether or not is active                      |
 | domains           | List of store's domains                                                                       |
