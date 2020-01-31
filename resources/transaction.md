@@ -168,7 +168,7 @@ Each type of Transaction has a Finite-state Machine (FSM) that defines its statu
 <img src="https://i.imgur.com/vephWFb.png" alt="transaction_status_01" height="85"/>
 
 * `pending`: The consumer's submission and payment have both been received; payment has been sent out for processing, but the payment gateway has not yet confirmed that the payment has gone through.
-* `paid`: The consumer's payment has been processed and accepted.
+* `confirmed`: The consumer's payment has been processed and accepted.
 * `voided`: The consumer's payment was cancelled by the merchant before the consumer paid it.
 
 #### Refund Transaction
