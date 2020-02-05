@@ -25,46 +25,60 @@ E.g.
     "400x120": "https://myapp.mypayments.com/logo1.png",
     "160x100": "https://myapp.mypayments.com/logo2.png"
   },
-  "checkout_js_urls": [
+  "checkout_js": [
     "https://myapp.mypayments.com/checkout1.js",
     "https://myapp.mypayments.com/checkout2.js",
     "https://myapp.mypayments.com/checkout3.js"
   ],
   "supported_currencies": ["ARS", "BRL"],
-  "supported_payment_methods": {
-    "credit_card": ["visa", "mastercard", "amex"],
-    "debit_card": ["visa_debit", "maestro"],
-    "boleto": ["boleto"],
-    "ticket": ["rapipago", "pagofacil", "oxxo"]
-  },
-  "rates": {
-    "credit_card": [
-      {"percent_fee": "2.99", "flat_fee": {"value": "0.39", "currency": "BRL"}, "days_to_withdraw_money": 30},
-      {"percent_fee": "3.99", "flat_fee": {"value": "0.39", "currency": "BRL"}, "days_to_withdraw_money": 14}
-    ],
-    "boleto": [
-      {"flat_fee": {"value": "2.99", "currency": "BRL"}, "days_to_withdraw_money": 2}
-    ]
-  },
-  "installments": {
-    "type": "simple",
-    "specification": {
-      "1": "0.0",
-      "2": "0.0",
-      "3": "0.0",
-      "4": "0.065",
-      "5": "0.075",
-      "6": "0.085",
-      "7": "0.095",
-      "8": "0.105",
-      "9": "0.115",
-      "10": "0.125",
-      "11": "0.135",
-      "12": "0.145"
-    },
-      "min_installment_value": {
-      "BRL": 5
+  "supported_methods": [
+    {
+      "payment_method_type": "credit_card",
+      "payment_methods": [
+        "visa"
+      ]
     }
+  ],
+  "rates": [
+    {
+      "payment_method_type": "credit_card",
+      "rates_definition": [
+        {
+          "percent_fee": 30,
+          "flat_fee": {
+            "amount": 1000,
+            "currency": "ARS"
+          },
+          "plus_tax": true,
+          "days_to_withdraw_money": 4
+        }
+      ]
+    }
+  ],
+  "installments": {
+    "specification": [
+      {
+        "installments": 1,
+        "interest_rate": 0,
+        "applies_to": []
+      },
+      {
+        "installments": 2,
+        "interest_rate": 0,
+        "applies_to": []
+      },
+      {
+        "installments": 3,
+        "interest_rate": 0,
+        "applies_to": []
+      },
+    ],
+    "min_installment_value": [
+      {
+        "currency": "ARS",
+        "amount": 100
+      }
+    ]
   },
   "configuration_url": "https://myapp.mypayments.com/configuration",
   "support_url": "https://myapp.mypayments.com/support"
@@ -165,9 +179,9 @@ In our platform, a Payment Provider is created for a specific `store`.
 | `name`                      | String        | Display name which merchants and consumers will see.                                                                                                                       |
 | `description`               | String        | Short paragraph which provides merchants with a description of the Payment Provider.                                                                                       |
 | `logo_urls`                 | Object        | Object containing `key:value` pair for each version of the logos for the frontend. Only supports HTTPS URLS. See [Logos](#Logos).                                          |
-| `checkout_js_urls`          | Array(String) | HTTPS URL of each JS file to be included in the checkout frontend. See [Checkout](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/checkout_js.md). |
+| `checkout_js`          | Array(String) | HTTPS URL of each JS file to be included in the checkout frontend. See [Checkout](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/checkout_js.md). |
 | `supported_currencies`      | Array(String) | ISO.4217 currency codes supported by the Payment Provider. See [Currency Codes](#Currency-Codes).                                                                          |
-| `supported_payment_methods` | Object        | Object containing `key:array` pair for each payment method available to consumers. See [Payment Methods](#Payment-Methods).                                                |
+| `supported_methods` | Object        | Object containing `key:array` pair for each payment method available to consumers. See [Payment Methods](#Payment-Methods).                                                |
 | `rates`                     | Object        | Object containing the rates that build up the service cost to the merchant. See [Rates](#Rates).                                                                           |
 | `installments`              | Object        | Object containing the installments available to consumers. See [Installments](#Installments).                                                                              |
 | `configuration_url`         | String        | [Optional] Payment Provider configuration UI HTTPS URL.                                                                                                                    |
