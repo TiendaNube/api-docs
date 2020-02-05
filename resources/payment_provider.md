@@ -22,8 +22,8 @@ Properties
 | `logo_urls`                 | Object        | Object containing `key:value` pair for each version of the logos for the frontend. Only supports HTTPS URLS. See [Logos](#Logos).                                          |
 | `checkout_js`          | Array(String) | HTTPS URL of each JS file to be included in the checkout frontend. See [Checkout](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/checkout_js.md). |
 | `supported_currencies`      | Array(String) | ISO.4217 currency codes supported by the Payment Provider. See [Currency Codes](#Currency-Codes).                                                                          |
-| `supported_methods` | Object        | Object containing `key:array` pair for each payment method available to consumers. See [Payment Methods](#Payment-Methods).                                                |
-| `rates`                     | Object        | Object containing the rates that build up the service cost to the merchant. See [Rates](#Rates).                                                                           |
+| `supported_methods` | Array(Object)        | List of available payment methods for each payment method type. See [Payment Methods](#Payment-Methods).                                                |
+| `rates`                     | Array(Object)        | List of rates definitions for each payment method type. See [Rates](#Rates).                                                                           |
 | `installments`              | Object        | Object containing the installments available to consumers. See [Installments](#Installments).                                                                              |
 | `configuration_url`         | String        | [Optional] Payment Provider configuration UI HTTPS URL.                                                                                                                    |
 | `support_url`               | String        | [Optional] Payment Provider support HTTPS URL.                                                                                                                             |
@@ -78,12 +78,16 @@ Depending on the kind of Payment Provider (Subadquirente, Gateway, Adquirente), 
 E.g.
 
 ```json
-{
-  "credit_card": ["visa", "mastercard", "amex"],
-  "debit_card": ["visa_debit", "maestro"],
-  "boleto": ["boleto"],
-  "ticket": ["rapipago", "pagofacil", "oxxo"],
-}
+[
+    {
+      "payment_method_type": "credit_card",
+      "payment_methods": ["visa", "mastercard", "amex"]
+    },
+    {
+      "payment_method_type": "debit_card",
+      "payment_methods": ["visa_debit", "maestro"]
+    }
+  ]
 ```
 
 ### Rates
@@ -102,15 +106,22 @@ Payment Providers may charge merchants with different rates per Transaction depe
 E.g.
 
 ```json
-{
-  "credit_card": [
-    {"percent_fee": "2.99", "flat_fee": {"value": "0.39", "currency": "BRL"}, "days_to_withdraw_money": 30},
-    {"percent_fee": "3.99", "flat_fee": {"value": "0.39", "currency": "BRL"}, "days_to_withdraw_money": 14}
-  ],
-  "boleto": [
-    {"flat_fee": {"value": "2.99", "currency": "BRL"}, "days_to_withdraw_money": 2}
+[
+    {
+      "payment_method_type": "credit_card",
+      "rates_definition": [
+        {
+          "percent_fee": 30,
+          "flat_fee": {
+            "amount": 1000,
+            "currency": "ARS"
+          },
+          "plus_tax": true,
+          "days_to_withdraw_money": 4
+        }
+      ]
+    }
   ]
-}
 ```
 
 ### Money
@@ -161,9 +172,12 @@ E.g.
     "11": "0.135",
     "12": "0.145"
   },
-    "min_installment_value": {
-      "BRL": 5
-  }
+    "min_installment_value": [
+      {
+        "currency": "ARS",
+        "amount": 100
+      }
+    ]
 }
 ```
 
@@ -200,7 +214,13 @@ E.g.
       "interest_rate": "0.61",
       "applies_to": ["galicia", "icbc", "santander", "banco_provincia", ...]
     }
-  ]
+  ],
+  "min_installment_value": [
+      {
+        "currency": "ARS",
+        "amount": 100
+      }
+    ]
 }
 ```
 
@@ -256,6 +276,7 @@ Create a new Payment Provider associated with a store.
     }
   ],
   "installments": {
+    "type": "detailed",
     "specification": [
       {
         "installments": 1,
@@ -271,7 +292,7 @@ Create a new Payment Provider associated with a store.
         "installments": 3,
         "interest_rate": 0,
         "applies_to": []
-      },
+      }
     ],
     "min_installment_value": [
       {
