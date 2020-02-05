@@ -13,7 +13,7 @@ Create a new Payment Provider associated with a store.
 
 #### Request
 
-[Payment Provider Object](#Payment-Provider)
+[Payment Provider Object](#payment-provider-1)
 
 ```json
 {
@@ -101,7 +101,7 @@ Update a Payment Provider. This is especially useful to update the installments 
 
 #### Request
 
-[Payment Provider Object](#Payment-Provider)
+[Payment Provider Object](#payment-provider-1)
 
 #### Response
 
@@ -121,7 +121,7 @@ Get all Payment Providers for a given store.
 
 `HTTP/1.1 200 OK`
 
-Array of [Payment Provider Objects](#Payment-Provider)
+Array of [Payment Provider Objects](#payment-provider-1)
 
 ### GET /{*store_id*}/payment_providers/{*payment_provider_id*}
 
@@ -137,7 +137,7 @@ Get a specific Payment Provider for a given store.
 
 `HTTP/1.1 200 OK`
 
-[Payment Provider Object](#Payment-Provider)
+[Payment Provider Object](#payment-provider-1)
 
 ### DELETE /{*store_id*}/payment_providers/{*payment_provider_id*}
 
