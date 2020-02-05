@@ -15,8 +15,6 @@ Create a new Payment Provider associated with a store.
 
 [Payment Provider Object](#Payment-Provider)
 
-E.g.
-
 ```json
 {
   "name": "My Payments",
@@ -87,11 +85,11 @@ E.g.
 
 #### Response
 
-**201 Created** - the request was successful and a resource was created.
+`HTTP/1.1 201 Created`
 
 ```json
 {
-  "return_url": "https://mystore.mitiendanube.com/admin/..."
+  "return_url": "https://mystore.lojavirtualnuvem.com.br/admin/..."
 }
 ```
 
@@ -115,11 +113,13 @@ Get all Payment Providers for a given store.
 
 #### Request
 
+```json
 {}
+```
 
 #### Response
 
-**200 OK** - the request was successful.
+`HTTP/1.1 200 OK`
 
 Array of [Payment Provider Objects](#Payment-Provider)
 
@@ -129,11 +129,13 @@ Get a specific Payment Provider for a given store.
 
 #### Request
 
+```json
 {}
+```
 
 #### Response
 
-**200 OK** - the request was successful.
+`HTTP/1.1 200 OK`
 
 [Payment Provider Object](#Payment-Provider)
 
@@ -143,11 +145,13 @@ Delete a Payment Provider.
 
 #### Request
 
+```json
 {}
+```
 
 #### Response
 
-**204 No Content** - the request was successful but there is no representation to return (i.e. the response is empty).
+`HTTP/1.1 204 No Content` - the request was successful but there is no representation to return (i.e. the response is empty).
 
 ## HTTP Errors List
 
@@ -321,7 +325,7 @@ E.g.
     "12": "0.145"
   },
     "min_installment_value": {
-    "BRL": 5
+      "BRL": 5
   }
 }
 ```
@@ -374,7 +378,11 @@ The following is the list of payment methods currently supported by our platform
 - `mastercard`
 - `amex`
 - `diners`
-- `nativa`
+- `aura`
+- `elo`
+- `hiper`
+- `hipercard`
+- `oipaggo`
 - `argencard`
 - `cabal`
 - `cordial`
@@ -388,13 +396,8 @@ The following is the list of payment methods currently supported by our platform
 - `provencred`
 - `nativa`
 - `rebanking`
-- `aura`
-- `elo`
-- `hiper`
-- `hipercard`
-- `discover`
-- `oipaggo`
 - `magna`
+- `discover`
 
 #### Debit Card
 - `visa_debit`
@@ -420,10 +423,14 @@ The following is the list of payment methods currently supported by our platform
 - `pse`
 
 #### Banks
+- `banco_do_brasil`
+- `banrisul`
+- `bradesco`
+- `caixa`
+- `itau`
 - `hsbc`
 - `galicia`
 - `icbc`
-- `itau`
 - `bbva`
 - `macro`
 - `santander`
@@ -452,9 +459,4 @@ The following is the list of payment methods currently supported by our platform
 - `cencosud`
 - `citi`
 - `supervielle`
-- `banco_do_brasil`
-- `banrisul`
-- `bradesco`
-- `caixa`
-- `itau`
 - `banamex`
