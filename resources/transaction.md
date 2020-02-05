@@ -3,7 +3,7 @@ Transaction
 
 Each movement of money is modeled through a Transaction object, which can be of different types (e.g. credit card, cash, wire transfer, refund, etc.). Since not all Transactions are atomic, each type has a Finite-state Machine (FSM) that defines its status.
 
-A Payment Provider can create the number of Transactions it needs for a given order, and can update their status as they change over time.
+A [Payment Provider](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md) can create the number of Transactions it needs for a given order, and can update their status as they change over time.
 
 Properties
 ---------
@@ -49,13 +49,13 @@ Some Transaction types have specific *extra* fields.
 ### Transaction Types
 
 * `credit_card`: Transaction in which the consumer uses a credit card as payment method (E.g. VISA, Mastercard, AMEX).
-* `debit_card`: Transaction in which the consumer uses a debit card as payment method (E.g. VISA Debit, Maestro)
+* `debit_card`: Transaction in which the consumer uses a debit card as payment method (E.g. VISA Debit, Maestro).
 * `boleto`: Transaction in which the consumer uses a Boleto Bancário as payment method. Boleto is a Brazilian payment method based on cash.
-* `ticket`: Transaction in which the consumer uses a ticket as payment method. This ticket can be paid through a non-bank collection channel (E.g. Rapipago, Pago Fácil, OXXO)
+* `ticket`: Transaction in which the consumer uses a ticket as payment method. This ticket can be paid through a non-bank collection channel (E.g. Rapipago, Pago Fácil, OXXO).
 * `wire_transfer`: Transaction in which the consumer uses a wire transfer as payment method.
 * `cash`: Transaction in which the consumer uses cash as payment method.
 * `wallet`: Transaction in which the consumer uses a wallet as payment method. A wallet is an application that allows you to transfer cryptocurrencies.
-* `refund`: Transaction in which the merchant returns money to the consumer. This refund may involve any payment method.
+* `refund`: Transaction in which the merchant returns money to the consumer. A refund may involve any payment method.
 
 ### Transaction Status
 
@@ -91,7 +91,7 @@ Endpoints
 
 ### POST /{*store_id*}/orders/{*order_id*}/transactions
 
-Create a new Transaction with *pending* status.
+Create a new Transaction for a given order.
 
 #### Request
 
@@ -137,7 +137,7 @@ Update the status of a Transaction. Only the status field can be updated.
 
 ### GET /{*store_id*}/orders/{*order_id*}/transactions
 
-List Transactions for a given order.
+List all Transactions of a given order.
 
 #### Request
 
@@ -151,7 +151,7 @@ Array of [Transaction Objects](#Transaction)
 
 ### GET /{*store_id*}/orders/{*order_id*}/transactions/{*transaction_id*}
 
-Get a specific Transaction for a given order.
+Get a specific Transaction of a given order.
 
 #### Request
 
