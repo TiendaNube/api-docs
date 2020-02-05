@@ -1,169 +1,5 @@
-# Payment Provider
-
-## Endpoints
-
-#### Parameters List
-
-* **store_id:** Store ID linked to the Payment Provider.
-* **payment_provider_id:** Payment Provider ID.
-
-### POST /{*store_id*}/payment_providers
-
-Create a new Payment Provider associated with a store.
-
-#### Request
-
-[Payment Provider Object](#payment-provider-1)
-
-```json
-{
-  "name": "My Payments",
-  "description": "Some short description for merchants.",
-  "logo_urls": {
-    "400x120": "https://myapp.mypayments.com/logo1.png",
-    "160x100": "https://myapp.mypayments.com/logo2.png"
-  },
-  "checkout_js": [
-    "https://myapp.mypayments.com/checkout1.js",
-    "https://myapp.mypayments.com/checkout2.js",
-    "https://myapp.mypayments.com/checkout3.js"
-  ],
-  "supported_currencies": ["ARS", "BRL"],
-  "supported_methods": [
-    {
-      "payment_method_type": "credit_card",
-      "payment_methods": [
-        "visa"
-      ]
-    }
-  ],
-  "rates": [
-    {
-      "payment_method_type": "credit_card",
-      "rates_definition": [
-        {
-          "percent_fee": 30,
-          "flat_fee": {
-            "amount": 1000,
-            "currency": "ARS"
-          },
-          "plus_tax": true,
-          "days_to_withdraw_money": 4
-        }
-      ]
-    }
-  ],
-  "installments": {
-    "specification": [
-      {
-        "installments": 1,
-        "interest_rate": 0,
-        "applies_to": []
-      },
-      {
-        "installments": 2,
-        "interest_rate": 0,
-        "applies_to": []
-      },
-      {
-        "installments": 3,
-        "interest_rate": 0,
-        "applies_to": []
-      },
-    ],
-    "min_installment_value": [
-      {
-        "currency": "ARS",
-        "amount": 100
-      }
-    ]
-  },
-  "configuration_url": "https://myapp.mypayments.com/configuration",
-  "support_url": "https://myapp.mypayments.com/support"
-}
-```
-
-#### Response
-
-`HTTP/1.1 201 Created`
-
-```json
-{
-  "return_url": "https://mystore.lojavirtualnuvem.com.br/admin/..."
-}
-```
-
-URL to redirect the merchant to the Tiendanube Admin Panel.
-
-### PUT /{*store_id*}/payment_providers/{*payment_provider_id*}
-
-Update a Payment Provider. This is especially useful to update the installments specs.
-
-#### Request
-
-[Payment Provider Object](#payment-provider-1)
-
-#### Response
-
-**204 No Content** - the request was successful but there is no representation to return (i.e. the response is empty).
-
-### GET /{*store_id*}/payment_providers
-
-Get all Payment Providers for a given store.
-
-#### Request
-
-```json
-{}
-```
-
-#### Response
-
-`HTTP/1.1 200 OK`
-
-Array of [Payment Provider Objects](#payment-provider-1)
-
-### GET /{*store_id*}/payment_providers/{*payment_provider_id*}
-
-Get a specific Payment Provider for a given store.
-
-#### Request
-
-```json
-{}
-```
-
-#### Response
-
-`HTTP/1.1 200 OK`
-
-[Payment Provider Object](#payment-provider-1)
-
-### DELETE /{*store_id*}/payment_providers/{*payment_provider_id*}
-
-Delete a Payment Provider.
-
-#### Request
-
-```json
-{}
-```
-
-#### Response
-
-`HTTP/1.1 204 No Content` - the request was successful but there is no representation to return (i.e. the response is empty).
-
-## HTTP Errors List
-
-* **400 Bad Request** - the request could not be understood or was missing required parameters.
-* **401 Unauthorized** - authentication failed or user doesn't have permissions for requested operation.
-* **403 Forbidden** - access denied.
-* **404 Not Found** - resource was not found.
-* **405 Method Not Allowed** - requested method is not supported for resource.
-
-## Resource Objects Description
-
-### Payment Provider
+Payment Provider
+================
 
 A Payment Provider, shorter name for Payments Services Provider, represents any entity which provides all the necessary resources and infrastructure for merchants and consumers to exectute [Transactions](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/transaction.md) between them. This entities could be any of the following:
 
@@ -175,7 +11,8 @@ Payments companies have many different and sometimes complex features which add 
 
 In our platform, a Payment Provider is created for a specific `store`.
 
-#### Payment Provider Object Properties
+Properties
+----------
 
 | Field                       | Type          | Description                                                                                                                                                                |
 |:----------------------------|:--------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -367,7 +204,167 @@ E.g.
 }
 ```
 
-## Appendix
+
+
+Endpoints
+---------
+
+### POST /{*store_id*}/payment_providers
+
+Create a new Payment Provider associated with a store.
+
+#### Request
+
+[Payment Provider Object](#Properties)
+
+```json
+{
+  "name": "My Payments",
+  "description": "Some short description for merchants.",
+  "logo_urls": {
+    "400x120": "https://myapp.mypayments.com/logo1.png",
+    "160x100": "https://myapp.mypayments.com/logo2.png"
+  },
+  "checkout_js": [
+    "https://myapp.mypayments.com/checkout1.js",
+    "https://myapp.mypayments.com/checkout2.js",
+    "https://myapp.mypayments.com/checkout3.js"
+  ],
+  "supported_currencies": ["ARS", "BRL"],
+  "supported_methods": [
+    {
+      "payment_method_type": "credit_card",
+      "payment_methods": [
+        "visa"
+      ]
+    }
+  ],
+  "rates": [
+    {
+      "payment_method_type": "credit_card",
+      "rates_definition": [
+        {
+          "percent_fee": 30,
+          "flat_fee": {
+            "amount": 1000,
+            "currency": "ARS"
+          },
+          "plus_tax": true,
+          "days_to_withdraw_money": 4
+        }
+      ]
+    }
+  ],
+  "installments": {
+    "specification": [
+      {
+        "installments": 1,
+        "interest_rate": 0,
+        "applies_to": []
+      },
+      {
+        "installments": 2,
+        "interest_rate": 0,
+        "applies_to": []
+      },
+      {
+        "installments": 3,
+        "interest_rate": 0,
+        "applies_to": []
+      },
+    ],
+    "min_installment_value": [
+      {
+        "currency": "ARS",
+        "amount": 100
+      }
+    ]
+  },
+  "configuration_url": "https://myapp.mypayments.com/configuration",
+  "support_url": "https://myapp.mypayments.com/support"
+}
+```
+
+#### Response
+
+`HTTP/1.1 201 Created`
+
+```json
+{
+  "return_url": "https://mystore.lojavirtualnuvem.com.br/admin/..."
+}
+```
+
+URL to redirect the merchant to the Tiendanube Admin Panel.
+
+### PUT /{*store_id*}/payment_providers/{*payment_provider_id*}
+
+Update a Payment Provider. This is especially useful to update the installments specs.
+
+#### Request
+
+[Payment Provider Object](#Properties)
+
+#### Response
+
+**204 No Content** - the request was successful but there is no representation to return (i.e. the response is empty).
+
+### GET /{*store_id*}/payment_providers
+
+Get all Payment Providers for a given store.
+
+#### Request
+
+```json
+{}
+```
+
+#### Response
+
+`HTTP/1.1 200 OK`
+
+Array of [Payment Provider Objects](#Properties)
+
+### GET /{*store_id*}/payment_providers/{*payment_provider_id*}
+
+Get a specific Payment Provider for a given store.
+
+#### Request
+
+```json
+{}
+```
+
+#### Response
+
+`HTTP/1.1 200 OK`
+
+[Payment Provider Object](#Properties)
+
+### DELETE /{*store_id*}/payment_providers/{*payment_provider_id*}
+
+Delete a Payment Provider.
+
+#### Request
+
+```json
+{}
+```
+
+#### Response
+
+`HTTP/1.1 204 No Content` - the request was successful but there is no representation to return (i.e. the response is empty).
+
+## HTTP Errors List
+
+* **400 Bad Request** - the request could not be understood or was missing required parameters.
+* **401 Unauthorized** - authentication failed or user doesn't have permissions for requested operation.
+* **403 Forbidden** - access denied.
+* **404 Not Found** - resource was not found.
+* **405 Method Not Allowed** - requested method is not supported for resource.
+
+Appendix
+--------
 
 ### Supported Payment Methods by Payment Method Type
 
