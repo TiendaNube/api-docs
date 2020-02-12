@@ -10,41 +10,42 @@ Properties
 
 All Transactions types have the same attributes, but may differ in the values that their *status* field can take.
 
-| Field                  | Type          | Description                                                                                                          |
-|:-----------------------|:--------------|:---------------------------------------------------------------------------------------------------------------------|
-| `provider_id`           | String          | Payment Provider ID that processed this Transaction.                                               |
-| `amount`                | Object          | Object containing the value of this Transaction. See [Money](#Money).                                                     |
-| `type`                  | String          | One of `credit_card`, `debit_card`, `boleto`, `ticket`, `wire_transfer`, `cash`, `wallet` or `refund`. See [Transaction Types](#Transaction-Types).    |
-| `status`                | String          | The state of the FSM in which the Transaction is. See [Transaction Status](#Transaction-Status).                                                                   |
-| `external_id`           | String          | [Optional] ID used by the Payment Provider.                                                               |
-| `external_url`          | String          | [Optional] URL for the Payment Provider's website with the details on this Transaction for the merchant.  |
-| `created_at`            | Date          | [Optional] Creation date for this Transaction. Defaults to current time.                                 |
-| `context`               | Object          | [Optional] Object containing context information that could be useful for fraud analysis. See [Payment Context](#Payment-Context).           |
+| Field          | Type   | Description                                                  |
+| :------------- | :----- | :----------------------------------------------------------- |
+| `provider_id`  | String | ID of the Payment Provider that processed this Transaction.  |
+| `amount`       | Object | Object containing the value of this Transaction. See [Money](#Money). |
+| `type`         | String | One of `credit_card`, `debit_card`, `boleto`, `ticket`, `wire_transfer`, `cash`, `wallet` or `refund`. See [Transaction Types](#Transaction-Types). |
+| `status`       | String | The state of the FSM in which the Transaction is. See [Transaction Status](#Transaction-Status). |
+| `external_id`  | String | [Optional] ID used by the Payment Provider.                  |
+| `external_url` | String | [Optional] URL for the Payment Provider's website with the details on this Transaction for the merchant. |
+| `created_at`   | Date   | [Optional] Creation date for this Transaction. Defaults to current time. |
+| `context`      | Object | [Optional] Object containing context information that could be useful for fraud analysis. See [Payment Context](#Payment-Context). |
 
 > ***Note:*** All URLs must be secure URLs (https).
 
 Some Transaction types have specific *extra* fields.
 
-| Field                  | Type          | Description                                                                                                          |
-|:-----------------------|:--------------|:---------------------------------------------------------------------------------------------------------------------|
-| `external_resource_url` | String          | [Optional - Only for `boleto` and `ticket`] URL of the boleto or ticket which can be shown to the consumer to resume the payment. |
-| `original_transaction`  | String          | [Optional - Only for `refund`] ID of the Transaction that is being refunded.                                                    |
-| `payment_method_type`   | String          | [Optional - Only for `refund`] Payment method type used for refund. See [Payment Methods](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Payment-Methods).                                      |
+| Field                   | Type    | Description                                                  |
+| :---------------------- | :------ | :----------------------------------------------------------- |
+| `installments`          | Integer | [Optional - Only for `credit_card`] Number of instalments.   |
+| `original_transaction`  | String  | [Optional - Only for `refund`] ID of the Transaction that is being refunded. |
+| `payment_method_type`   | String  | [Optional - Only for `refund`] Payment method type used for refund. See [Payment Methods](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Payment-Methods). |
+| `external_resource_url` | String  | [Optional - Only for `boleto` and `ticket`] URL of the boleto or ticket which can be shown to the consumer to resume the payment. |
 
 ### Money
 
-| Field    | Type   | Description                                                 |
-| ---------|--------| ----------------------------------------------------------- |
+| Field      | Type   | Description                                                 |
+| ---------- | ------ | ----------------------------------------------------------- |
 | `value`    | String | Value as a string. E.g. "49.99"                             |
 | `currency` | String | ISO 4217 code for the currency, such as ARS, BRL, USD, etc. |
 
 ### Payment Context
 
-| Field          | Type    | Description                                                         |
-| ---------------| --------|------------------------------------------------------------------- |
-| `ip`             | String  | [Optional] IP of the device that initiated this Transaction. |
-| `source`         | String  | [Optional] One of `web_desktop`, `web_mobile` or `pos`.       |
-| `payment_method` | String  | [Optional] Payment method used for this Transaction. See [Payment Methods](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Payment-Methods).         |
+| Field            | Type   | Description                                                  |
+| ---------------- | ------ | ------------------------------------------------------------ |
+| `ip`             | String | [Optional] IP of the device that initiated this Transaction. |
+| `source`         | String | [Optional] One of `web_desktop`, `web_mobile` or `pos`.      |
+| `payment_method` | String | [Optional] Payment method used for this Transaction. See [Payment Methods](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Payment-Methods). |
 
 ### Transaction Types
 
@@ -89,7 +90,7 @@ The FSM for this Transaction is the same as for `cash` / `boleto` / `wire_transf
 Endpoints
 ---------
 
-### POST /{*store_id*}/orders/{*order_id*}/transactions
+### POST /orders/{*order_id*}/transactions
 
 Create a new Transaction for a given order.
 
@@ -101,41 +102,60 @@ E.g.
 
 ```json
 {
-  "provider_id": "1234",
+  "provider_id": "815905d6-3518-479d-8ed6-5e0e4e6f305d",
   "amount": {
     "value": "132.95",
     "currency": "ARS"
   },
   "type": "credit_card",
+  "installments": 3,
   "status": "pending",
-  "external_id": "5678",
-  "external_url": "https://myapp.mypayments.com/creditcard",
+  "external_id": "1234",
+  "external_url": "https://mypayments.com/creditcard",
   "created_at": "2020-01-25T12:30:15.000Z",
   "context": {
     "ip": "192.168.0.25",
     "source": "web_desktop",
-    "payment_method": "credit_card"
+    "payment_method": "bbva"
   }
 }
 ```
 
 #### Response
 
-**201 Created** - the request was successful and a resource was created.
+`HTTP/1.1 201 Created`
 
-### PUT /{*store_id*}/orders/{*order_id*}/transactions/{*transaction_id*}
+E.g.
+
+```json
+{
+  "id": "776a2a49-42ca-4e75-992d-15eaf89a2a2c"
+}
+```
+
+Unique identifier of the created Transaction. 
+
+
+
+### PUT /orders/{*order_id*}/transactions/{*transaction_id*}
 
 Update the status of a Transaction. Only the status field can be updated.
 
 #### Request
 
-[Transaction Object](#Transaction)
+E.g.
+
+```json
+{
+  "status": "authorized"
+}
+```
 
 #### Response
 
-**204 No Content** - the request was successful but there is no representation to return (i.e. the response is empty).
+`HTTP/1.1 204 No Content` - the request was successful but there is no representation to return (i.e. the response is empty).
 
-### GET /{*store_id*}/orders/{*order_id*}/transactions
+### GET /orders/{*order_id*}/transactions
 
 List all Transactions of a given order.
 
@@ -145,11 +165,11 @@ List all Transactions of a given order.
 
 #### Response
 
-**200 OK** - the request was successful
+`HTTP/1.1 200 OK`
 
 Array of [Transaction Objects](#Transaction)
 
-### GET /{*store_id*}/orders/{*order_id*}/transactions/{*transaction_id*}
+### GET /orders/{*order_id*}/transactions/{*transaction_id*}
 
 Get a specific Transaction of a given order.
 
@@ -159,7 +179,7 @@ Get a specific Transaction of a given order.
 
 #### Response
 
-**200 OK** - the request was successful
+`HTTP/1.1 200 OK`
 
 [Transaction Object](#Transaction)
 
