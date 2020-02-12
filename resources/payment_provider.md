@@ -208,6 +208,8 @@ Create a new Payment Provider associated with a store.
 
 [Payment Provider Object](#Properties)
 
+E.g.
+
 ```json
 {
   "name": "My Payments",
@@ -273,6 +275,8 @@ Create a new Payment Provider associated with a store.
 #### Response
 
 `HTTP/1.1 201 Created`
+
+E.g.
 
 ```json
 {
