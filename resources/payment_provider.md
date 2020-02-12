@@ -245,11 +245,7 @@ Create a new Payment Provider associated with a store.
     "400x120": "https://myapp.mypayments.com/logo1.png",
     "160x100": "https://myapp.mypayments.com/logo2.png"
   },
-  "checkout_js": [
-    "https://myapp.mypayments.com/checkout1.js",
-    "https://myapp.mypayments.com/checkout2.js",
-    "https://myapp.mypayments.com/checkout3.js"
-  ],
+  "checkout_js_url": "https://myapp.mypayments.com/checkout1.min.js",
   "supported_currencies": ["ARS", "BRL"],
   "supported_methods": [
     {
