@@ -19,7 +19,7 @@ Properties
 | `name`                      | String        | Display name which merchants and consumers will see.         |
 | `description`               | String        | Short paragraph which provides merchants with a description of the Payment Provider. |
 | `logo_urls`                 | Object        | Object containing `key:value` pair for each version of the logos for the frontend. Only supports HTTPS URLs. See [Logos](#Logos). |
-| `checkout_js_urls`          | String        | HTTPS URL of each JS file to be included in the checkout frontend. See [Checkout JS](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/checkout_js.md). |
+| `checkout_js_url`           | String        | HTTPS URL of the JS file to be included in the checkout frontend. See [Checkout JS](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/checkout_js.md). |
 | `supported_currencies`      | Array(String) | ISO.4217 currency codes supported by the Payment Provider. See [Currency Codes](#Currency-Codes). |
 | `supported_payment_methods` | Array(Object) | List of available payment methods for each payment method type. See [Payment Methods](#Payment-Methods). |
 | `installments`              | Object        | Object containing the installments available to consumers. See [Installments](#Installments). |
@@ -40,8 +40,8 @@ At the moment, our platform requires two versions of the Payment Provider logo. 
 
 | Dimension | URL Content Description                                      |
 | :-------- | :----------------------------------------------------------- |
-| 400x120   | PNG file with Transparent Brackground. Dimensions not greater than 400px (width) x 120px (height). *(As of 01/01/2019)*. |
-| 160x100   | PNG file with White Background. Dimensions must be 160px (width) x 100px (height). *(As of 01/01/2019)*. |
+| `400x120` | PNG file with Transparent Brackground. Dimensions not greater than 400px (width) x 120px (height). *(As of 01/01/2019)*. |
+| `160x100` | PNG file with White Background. Dimensions must be 160px (width) x 100px (height). *(As of 01/01/2019)*. |
 
 E.g.
 
@@ -118,13 +118,13 @@ E.g.
         "payment_method_type": "credit_card",
         "rates_definition": [
             {
-                "percent_fee": 30,
+                "percent_fee": "30.35",
                 "flat_fee": {
                     "currency": "ARS",
-                    "value": "1000,00"
+                    "value": "1000"
                 },
                 "plus_tax": true,
-                "days_to_withdraw_money": 4
+                "days_to_withdraw_money": 10
             }
         ]
     }
@@ -170,12 +170,12 @@ E.g.
   "specification": [
     {
       "installments": 3,
-      "interest_rate": "0.0",
+      "interest_rate": "0.00",
       "applies_to": ["bbva"]
     },
     {
       "installments": 6,
-      "interest_rate": "0.0",
+      "interest_rate": "0.00",
       "applies_to": ["hsbc"]
     },
     {
@@ -187,7 +187,7 @@ E.g.
   "min_installment_value": [
       {
         "currency": "ARS",
-        "amount": "100"
+        "amount": "100.00"
       }
     ]
 }
@@ -213,21 +213,17 @@ Create a new Payment Provider associated with a store.
   "name": "My Payments",
   "description": "Some short description for merchants.",
   "logo_urls": {
-    "400x120": "https://myapp.mypayments.com/logo1.png",
-    "160x100": "https://myapp.mypayments.com/logo2.png"
+    "400x120": "https://mypayments.com/logo1.png",
+    "160x100": "https://mypayments.com/logo2.png"
   },
-  "checkout_js": [
-    "https://myapp.mypayments.com/checkout1.js",
-    "https://myapp.mypayments.com/checkout2.js",
-    "https://myapp.mypayments.com/checkout3.js"
-  ],
-  "supported_currencies": ["ARS", "BRL"],
+  "configuration_url": "https://mypayments.com/configuration",
+  "support_url": "https://mypayments.com/support",
+  "checkout_js_url": "https://mypayments.com/checkout.min.js",
+  "supported_currencies": ["ARS"],
   "supported_methods": [
     {
       "payment_method_type": "credit_card",
-      "payment_methods": [
-        "visa"
-      ]
+      "payment_methods": ["visa"]
     }
   ],
   "rates": [
@@ -235,45 +231,42 @@ Create a new Payment Provider associated with a store.
       "payment_method_type": "credit_card",
       "rates_definition": [
         {
-          "percent_fee": 30,
+          "percent_fee": "30.50",
           "flat_fee": {
-            "amount": 1000,
+            "amount": "1000.00",
             "currency": "ARS"
           },
           "plus_tax": true,
-          "days_to_withdraw_money": 4
+          "days_to_withdraw_money": 10
         }
       ]
     }
   ],
   "installments": {
-    "type": "detailed",
     "specification": [
-      {
-        "installments": 1,
-        "interest_rate": 0,
-        "applies_to": []
-      },
-      {
-        "installments": 2,
-        "interest_rate": 0,
-        "applies_to": []
-      },
-      {
-        "installments": 3,
-        "interest_rate": 0,
-        "applies_to": []
-      }
-    ],
+    {
+      "installments": 3,
+      "interest_rate": "0.00",
+      "applies_to": ["bbva"]
+    },
+    {
+      "installments": 6,
+      "interest_rate": "0.00",
+      "applies_to": ["hsbc"]
+    },
+    {
+      "installments": 12,
+      "interest_rate": "0.61",
+      "applies_to": ["galicia", "icbc", "santander", "banco_provincia"]
+    }
+  ],
     "min_installment_value": [
       {
         "currency": "ARS",
-        "amount": 100
+        "amount": "100.00"
       }
     ]
-  },
-  "configuration_url": "https://myapp.mypayments.com/configuration",
-  "support_url": "https://myapp.mypayments.com/support"
+  }
 }
 ```
 
@@ -283,11 +276,11 @@ Create a new Payment Provider associated with a store.
 
 ```json
 {
-  "return_url": "https://mystore.lojavirtualnuvem.com.br/admin/..."
+  "id": "815905d6-3518-479d-8ed6-5e0e4e6f305d"
 }
 ```
 
-URL to redirect the merchant to the Tiendanube Admin Panel.
+Unique identifier of the created Payment Provider. 
 
 ### PUT /payment_providers/{*payment_provider_id*}
 
