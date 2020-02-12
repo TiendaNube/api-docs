@@ -292,7 +292,7 @@ Update a Payment Provider. This is especially useful to update the installments 
 
 #### Response
 
-**204 No Content** - the request was successful but there is no representation to return (i.e. the response is empty).
+`HTTP/1.1 204 No Content` - the request was successful but there is no representation to return (i.e. the response is empty).
 
 ### GET /payment_providers
 
