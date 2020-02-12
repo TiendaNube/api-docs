@@ -274,7 +274,7 @@ E.g.
 
 #### Response
 
-`HTTP/1.1 201 Created` - the request was successful and a resource was created.
+`HTTP/1.1 201 Created`
 
 E.g.
 
@@ -310,7 +310,7 @@ Get all Payment Providers for a given store.
 
 #### Response
 
-`HTTP/1.1 200 OK` - the request was successful
+`HTTP/1.1 200 OK`
 
 Array of [Payment Provider Objects](#Properties)
 
@@ -326,7 +326,7 @@ Get a specific Payment Provider for a given store.
 
 #### Response
 
-`HTTP/1.1 200 OK` - the request was successful
+`HTTP/1.1 200 OK`
 
 [Payment Provider Object](#Properties)
 
