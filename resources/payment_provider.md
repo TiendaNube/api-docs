@@ -14,30 +14,34 @@ In our platform, a Payment Provider is created for a specific `store`.
 Properties
 ----------
 
-| Field                       | Type          | Description                                                                                                                                                                |
-|:----------------------------|:--------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `id`                        | String        | Unique identifier of the Payment Provider object.                                                                                                                          |
-| `name`                      | String        | Display name which merchants and consumers will see.                                                                                                                       |
-| `description`               | String        | Short paragraph which provides merchants with a description of the Payment Provider.                                                                                       |
-| `logo_urls`                 | Object        | Object containing `key:value` pair for each version of the logos for the frontend. Only supports HTTPS URLS. See [Logos](#Logos).                                          |
-| `checkout_js_url`          | String | HTTPS URL of the JS file to be included in the checkout frontend. See [Checkout](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/checkout_js.md). |
-| `supported_currencies`      | Array(String) | ISO.4217 currency codes supported by the Payment Provider. See [Currency Codes](#Currency-Codes).                                                                          |
-| `supported_methods` | Array(Object)        | List of available payment methods for each payment method type. See [Payment Methods](#Payment-Methods).                                                |
-| `rates`                     | Array(Object)        | List of rates definitions for each payment method type. See [Rates](#Rates).                                                                           |
-| `installments`              | Object        | Object containing the installments available to consumers. See [Installments](#Installments).                                                                              |
-| `configuration_url`         | String        | [Optional] Payment Provider configuration UI HTTPS URL.                                                                                                                    |
-| `support_url`               | String        | [Optional] Payment Provider support HTTPS URL.                                                                                                                             |
+| Field                       | Type          | Description                                                  |
+| :-------------------------- | :------------ | :----------------------------------------------------------- |
+| `name`                      | String        | Display name which merchants and consumers will see.         |
+| `description`               | String        | Short paragraph which provides merchants with a description of the Payment Provider. |
+| `logo_urls`                 | Object        | Object containing `key:value` pair for each version of the logos for the frontend. Only supports HTTPS URLs. See [Logos](#Logos). |
+| `checkout_js_urls`          | String        | HTTPS URL of each JS file to be included in the checkout frontend. See [Checkout JS](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/checkout_js.md). |
+| `supported_currencies`      | Array(String) | ISO.4217 currency codes supported by the Payment Provider. See [Currency Codes](#Currency-Codes). |
+| `supported_payment_methods` | Array(Object) | List of available payment methods for each payment method type. See [Payment Methods](#Payment-Methods). |
+| `installments`              | Object        | Object containing the installments available to consumers. See [Installments](#Installments). |
+| `rates`                     | Array(Object) | List of rates definitions for each payment method type. See [Rates](#Rates). |
+| `configuration_url`         | String        | [Optional] Payment Provider configuration UI HTTPS URL.      |
+| `support_url`               | String        | [Optional] Payment Provider support HTTPS URL.               |
+| `id`                        | String        | [Informational] Unique identifier of the Payment Provider object. |
+| `storeId`                   | Integer       | [Informational] Id of the store to which the Payment Provider belongs. |
+| `enabled`                   | Boolean       | [Informational] Indicates whether Payment Provider is enabled in the store. |
 
 > ***Note:*** All URLs must be secure URLs (https).
+
+> ***Note:*** Informational properties will only appear in GET responses, which means that should not be included in POST/PUT requests.
 
 ### Logos
 
 At the moment, our platform requires two versions of the Payment Provider logo. Each image must be sent as a `key:value` pair, being the key the dimension of the image and the value, the HTTPS URL of its content.
 
-| Dimension     | URL Content Description                                                                                |
-|:--------|:-------------------------------------------------------------------------------------------------------|
-| 400x120 | PNG file with Transparent Brackground. Dimensions not greater than 400px (width) x 120px (height). *(As of 01/01/2019)*. |
-| 160x100 | PNG file with White Background. Dimensions must be 160px (width) x 100px (height). *(As of 01/01/2019)*.                 |
+| Dimension | URL Content Description                                      |
+| :-------- | :----------------------------------------------------------- |
+| 400x120   | PNG file with Transparent Brackground. Dimensions not greater than 400px (width) x 120px (height). *(As of 01/01/2019)*. |
+| 160x100   | PNG file with White Background. Dimensions must be 160px (width) x 100px (height). *(As of 01/01/2019)*. |
 
 E.g.
 
@@ -50,9 +54,7 @@ E.g.
 
 ### Currency Codes
 
-Every amount value needs to be complemented by a currency.
-
-Currency codes must be specified according to [ISO 4217](https://www.currency-iso.org/en/home/tables/table-a1.html). A few examples of these are:
+Every amount value needs to be complemented by a currency. Supported currency codes must be specified according to [ISO 4217](https://www.currency-iso.org/en/home/tables/table-a1.html). A few examples of these are:
 
 - `ARS`: Argentinean Peso
 - `BRL`: Brazilian Real
@@ -63,7 +65,7 @@ Currency codes must be specified according to [ISO 4217](https://www.currency-is
 
 ### Payment Methods
 
-There are many companies providing payment methods of different types. The currently supported payment methods types by our platform are:
+There are many companies providing payment methods of different types. Currently, our platform supports the following payment methods types:
 
 - `credit_card`
 - `debit_card`
@@ -94,88 +96,98 @@ E.g.
 
 Payment Providers may charge merchants with different rates per Transaction depending on the payment method type and the time the merchant chooses to withdraw the money. Hence, for each payment method type there would be a list of rates depending on the withdrawal time specified in days.
 
-| Field                    | Type             | Description                                                            |
-|:-------------------------|:-----------------|:-----------------------------------------------------------------------|
-| `percent_fee`            | String | Percentage fee charged per payment. E.g. `"3.82"`.    |
-| `days_to_withdraw_money` | Number           | Days since Transaction creation until de merchant can withdraw the money.       |
-| `flat_fee`               | Money            | [Optional] Object containing the flat fee charged per payment. See [Money](#Money).  |
-| `plus_tax`               | Boolean          | [Optional] Indicates whether VAT will be added to the specified rates. |
+| Field                 | Type          | Description                                                  |
+| :-------------------- | :------------ | :----------------------------------------------------------- |
+| `payment_method_type` | String        | Payment method to which the rates definition refer.          |
+| `rates_definition`    | Array(Object) | Object containing the rates details. See [Rates Definition](#Rates-Definition) section bellow. |
 
-> ***Note:*** Decimal numbers will be represented as string format for better decimal precision handling.
+#### Rates Definition
+
+| Field                    | Type    | Description                                                  |
+| :----------------------- | :------ | :----------------------------------------------------------- |
+| `percent_fee`            | Number  | Percentage fee charged per payment. E.g. `20.45`.            |
+| `days_to_withdraw_money` | Integer | Days since Transaction creation until de merchant can withdraw the money. |
+| `flat_fee`               | Money   | [Optional] Object containing the flat fee charged per payment. See [Money](#Money). |
+| `plus_tax`               | Boolean | [Optional] Indicates whether VAT will be added to the specified rates. |
 
 E.g.
 
 ```json
 [
     {
-      "payment_method_type": "credit_card",
-      "rates_definition": [
-        {
-          "percent_fee": 30,
-          "flat_fee": {
-            "amount": 1000,
-            "currency": "ARS"
-          },
-          "plus_tax": true,
-          "days_to_withdraw_money": 4
-        }
-      ]
+        "payment_method_type": "credit_card",
+        "rates_definition": [
+            {
+                "percent_fee": 30,
+                "flat_fee": {
+                    "currency": "ARS",
+                    "value": "1000,00"
+                },
+                "plus_tax": true,
+                "days_to_withdraw_money": 4
+            }
+        ]
     }
-  ]
+]
 ```
 
 ### Money
 
 Sums of money will be represented by an amount and its respective currency.
 
-| Field      | Type             | Description                                                                                     |
-|:-----------|:-----------------|:------------------------------------------------------------------------------------------------|
-| `value`    | String | Value as a string. E.g `"49.99"`              |
-| `currency` | String           | ISO 4217 code for the currency, such as ARS, BRL, USD, etc. |
+| Field      | Type   | Description                                                 |
+| :--------- | :----- | :---------------------------------------------------------- |
+| `amount`   | String | Value as a string. E.g `"49.99"`                            |
+| `currency` | String | ISO 4217 code for the currency, such as ARS, BRL, USD, etc. |
+
+> ***Note:*** Decimal numbers will be represented as string format for better decimal precision handling. It must contain two decimal places and use a point as decimal separator.
 
 ### Installments
 
 Most Payment Providers provide different installment based payments options.
 
-| Field                   | Type   | Description                                                                                                              |
-|:------------------------|:-------|:-------------------------------------------------------------------------------------------------------------------------|
-| `type`                  | String | Either `simple` or `detailed`, depending on the business rules that define it.                                         |
-| `specification`         | Object | Check [Specification](#Specification) section below for a description of the possible contents of this Object.                          |
-| `min_installment_value` | String | [Optional] `key:value` pair where the key is a currency code and the value is the minimum amount an installment can have for that currency. |
+| Field                   | Type          | Description                                                  |
+| :---------------------- | :------------ | :----------------------------------------------------------- |
+| `specification`         | Array(Object) | Check [Specification](#Specification) section below for a description of the possible contents of this field. |
+| `min_installment_value` | Array(Money)  | [Optional] List of minimum installment values accepted by each currency. See [Money](#Money) for items format. |
 
-> ***Note:*** An example of `min_installment_value` would be `BRL: 5`. For instance, if the total amount to be payed is `50 BRL`, then the consumer can choose to make the payment in up to 10 installments because the value of each of them would be `50 / 10 = 5`. However, the consumer won't be able to choose to spread the payment into 12 installments because `50 / 12 = 4.17` and `4.17 < 5`.
+> ***Note:*** An example for `min_installment_value` would be `"currency": "BRL` and `"amount": "5"` . For instance, if the total amount to be payed is `50 BRL`, then the consumer can choose to make the payment in up to 10 installments because the value of each of them would be `50 / 10 = 5`. However, the consumer won't be able to choose to spread the payment into 12 installments because `50 / 12 = 4.17` and `4.17 < 5`.
 
 ##### Specification
 
-The two possible values are [`simple`](#Simple-Specification) and [`detailed`](#Detailed-Specification), depending on the business rules that apply to each installment. When different banks or cards provide different interest rates or other similar properties, installments descriptions may need some extra information.
+The specification field allows the use of specific business rules. This specification is intended to support future business rules as well, so expect this feature to support more fields in the future. Therefore, feel free to discuss more functionalities with *Tiendanube's Platform Team*.
 
-###### Simple Specification
-
-The *simple specification* is used when installments don't have any business rules that apply to them. In this case, the only difference between the different options are the number of installments and the interest rate, which is applied to the total amount. In this case, a list of  `key:value` pairs is all that needs to be specified. The key must be a number of installments and the value must indicate the interest rate for it.
+| Field           | Type          | Description                                                  |
+| :-------------- | :------------ | :----------------------------------------------------------- |
+| `installments`  | Integer       | Number of installments.                                      |
+| `interest_rate` | String        | Rates to be applied to the total amount for this installments option. |
+| `applies_to`    | Array(String) | List of [payment methods](#Payment-Methods) for which this installments option applies. |
 
 E.g.
 
 ```json
 {
-  "type": "simple",
-  "specification": {
-    "1": "0.0",
-    "2": "0.0",
-    "3": "0.0",
-    "4": "0.065",
-    "5": "0.075",
-    "6": "0.085",
-    "7": "0.095",
-    "8": "0.105",
-    "9": "0.115",
-    "10": "0.125",
-    "11": "0.135",
-    "12": "0.145"
-  },
-    "min_installment_value": [
+  "specification": [
+    {
+      "installments": 3,
+      "interest_rate": "0.0",
+      "applies_to": ["bbva"]
+    },
+    {
+      "installments": 6,
+      "interest_rate": "0.0",
+      "applies_to": ["hsbc"]
+    },
+    {
+      "installments": 12,
+      "interest_rate": "0.61",
+      "applies_to": ["galicia", "icbc", "santander", "banco_provincia"]
+    }
+  ],
+  "min_installment_value": [
       {
         "currency": "ARS",
-        "amount": 100
+        "amount": "100"
       }
     ]
 }
@@ -183,53 +195,12 @@ E.g.
 
 > ***Note:*** Interest rates are percentages expressed in fractions of 1 in `String` format for better decimal precision handling. For instance, an interest rate of `6.5%` would be expressed as `6.5 / 100 = 0.065`, which stringified would be "0.065".
 
-###### Detailed Specification
-
-The *detailed specification* allows the use of more specific business rules. This specification is intended to support future business rules as well, so expect this feature to support more fields in the future. Also, feel free to discuss more functionalities with *Tiendanube's Platform Team*.
-
-| Field           | Type             | Description                                                           |
-|:----------------|:-----------------|:----------------------------------------------------------------------|
-| `installments`  | String | Number of installments in string format.                                               |
-| `interest_rate` | String           | Rates to be applied to the total amount for this installments option. |
-| `applies_to`    | Array(String)            | List of [payment methods](#Payment-Methods) for which this installments option applies. |
-
-E.g.
-
-```json
-{
-  "type": "detailed",
-  "specification": [
-    {
-      "installments": "6",
-      "interest_rate": "0.0",
-      "applies_to": ["hsbc"]
-    },
-    {
-      "installments": "3",
-      "interest_rate": "0.0",
-      "applies_to": ["bbva"]
-    },
-    {
-      "installments": "12",
-      "interest_rate": "0.61",
-      "applies_to": ["galicia", "icbc", "santander", "banco_provincia", ...]
-    }
-  ],
-  "min_installment_value": [
-      {
-        "currency": "ARS",
-        "amount": 100
-      }
-    ]
-}
-```
-
 
 
 Endpoints
 ---------
 
-### POST /{*store_id*}/payment_providers
+### POST /payment_providers
 
 Create a new Payment Provider associated with a store.
 
@@ -245,7 +216,11 @@ Create a new Payment Provider associated with a store.
     "400x120": "https://myapp.mypayments.com/logo1.png",
     "160x100": "https://myapp.mypayments.com/logo2.png"
   },
-  "checkout_js_url": "https://myapp.mypayments.com/checkout1.min.js",
+  "checkout_js": [
+    "https://myapp.mypayments.com/checkout1.js",
+    "https://myapp.mypayments.com/checkout2.js",
+    "https://myapp.mypayments.com/checkout3.js"
+  ],
   "supported_currencies": ["ARS", "BRL"],
   "supported_methods": [
     {
@@ -314,7 +289,7 @@ Create a new Payment Provider associated with a store.
 
 URL to redirect the merchant to the Tiendanube Admin Panel.
 
-### PUT /{*store_id*}/payment_providers/{*payment_provider_id*}
+### PUT /payment_providers/{*payment_provider_id*}
 
 Update a Payment Provider. This is especially useful to update the installments specs.
 
@@ -326,7 +301,7 @@ Update a Payment Provider. This is especially useful to update the installments 
 
 **204 No Content** - the request was successful but there is no representation to return (i.e. the response is empty).
 
-### GET /{*store_id*}/payment_providers
+### GET /payment_providers
 
 Get all Payment Providers for a given store.
 
@@ -342,7 +317,7 @@ Get all Payment Providers for a given store.
 
 Array of [Payment Provider Objects](#Properties)
 
-### GET /{*store_id*}/payment_providers/{*payment_provider_id*}
+### GET /payment_providers/{*payment_provider_id*}
 
 Get a specific Payment Provider for a given store.
 
@@ -358,7 +333,7 @@ Get a specific Payment Provider for a given store.
 
 [Payment Provider Object](#Properties)
 
-### DELETE /{*store_id*}/payment_providers/{*payment_provider_id*}
+### DELETE /payment_providers/{*payment_provider_id*}
 
 Delete a Payment Provider.
 
@@ -388,6 +363,7 @@ Appendix
 The following is the list of payment methods currently supported by our platform.
 
 #### Credit Card
+
 - `visa`
 - `mastercard`
 - `amex`
@@ -414,14 +390,17 @@ The following is the list of payment methods currently supported by our platform
 - `discover`
 
 #### Debit Card
+
 - `visa_debit`
 - `maestro`
 - `cabal_debit`
 
 #### Boleto Bancário
+
 - `boleto`
 
 #### Ticket
+
 - `rapipago`
 - `pagofacil`
 - `servipag`
@@ -431,12 +410,14 @@ The following is the list of payment methods currently supported by our platform
 - `oxxo`
 
 #### Bank Transfer
+
 - `banelco`
 - `link`
 - `provincianet`
 - `pse`
 
 #### Banks
+
 - `banco_do_brasil`
 - `banrisul`
 - `bradesco`
