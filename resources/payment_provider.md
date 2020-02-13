@@ -105,7 +105,7 @@ Payment Providers may charge merchants with different rates per Transaction depe
 
 | Field                    | Type    | Description                                                  |
 | :----------------------- | :------ | :----------------------------------------------------------- |
-| `percent_fee`            | Number  | Percentage fee charged per payment. E.g. `20.45`.            |
+| `percent_fee`            | Number  | Percentage fee charged per payment.                          |
 | `days_to_withdraw_money` | Integer | Days since Transaction creation until de merchant can withdraw the money. |
 | `flat_fee`               | Money   | [Optional] Object containing the flat fee charged per payment. See [Money](#Money). |
 | `plus_tax`               | Boolean | [Optional] Indicates whether VAT will be added to the specified rates. |
@@ -121,7 +121,7 @@ E.g.
                 "percent_fee": "30.35",
                 "flat_fee": {
                     "currency": "ARS",
-                    "value": "1000"
+                    "value": "1000.00"
                 },
                 "plus_tax": true,
                 "days_to_withdraw_money": 10
@@ -148,7 +148,7 @@ Most Payment Providers provide different installment based payments options.
 
 | Field                   | Type          | Description                                                  |
 | :---------------------- | :------------ | :----------------------------------------------------------- |
-| `specification`         | Array(Object) | Check [Specification](#Specification) section below for a description of the possible contents of this field. |
+| `specification`         | Array(Object) | Check [Specification](#Specification) section below for a description of this field. |
 | `min_installment_value` | Array(Money)  | [Optional] List of minimum installment values accepted by each currency. See [Money](#Money) for items format. |
 
 > ***Note:*** An example for `min_installment_value` would be `"currency": "BRL` and `"amount": "5"` . For instance, if the total amount to be payed is `50 BRL`, then the consumer can choose to make the payment in up to 10 installments because the value of each of them would be `50 / 10 = 5`. However, the consumer won't be able to choose to spread the payment into 12 installments because `50 / 12 = 4.17` and `4.17 < 5`.
@@ -160,8 +160,8 @@ The specification field allows the use of specific business rules. This specific
 | Field           | Type          | Description                                                  |
 | :-------------- | :------------ | :----------------------------------------------------------- |
 | `installments`  | Integer       | Number of installments.                                      |
-| `interest_rate` | String        | Rates to be applied to the total amount for this installments option. |
-| `applies_to`    | Array(String) | List of [payment methods](#Payment-Methods) for which this installments option applies. |
+| `interest_rate` | String        | Rate to be applied to the total amount for this installments option. |
+| `applies_to`    | Array(String) | List of [payment methods](#Payment-Methods) to which this installments option applies. |
 
 E.g.
 
@@ -175,12 +175,12 @@ E.g.
     },
     {
       "installments": 6,
-      "interest_rate": "0.00",
+      "interest_rate": "0.32",
       "applies_to": ["hsbc"]
     },
     {
       "installments": 12,
-      "interest_rate": "0.61",
+      "interest_rate": "0.64",
       "applies_to": ["galicia", "icbc", "santander", "banco_provincia"]
     }
   ],
@@ -202,7 +202,7 @@ Endpoints
 
 ### POST /payment_providers
 
-Create a new Payment Provider associated with a store.
+Create a Payment Provider for a given store.
 
 #### Request
 
@@ -253,12 +253,12 @@ E.g.
     },
     {
       "installments": 6,
-      "interest_rate": "0.00",
+      "interest_rate": "0.32",
       "applies_to": ["hsbc"]
     },
     {
       "installments": 12,
-      "interest_rate": "0.61",
+      "interest_rate": "0.64",
       "applies_to": ["galicia", "icbc", "santander", "banco_provincia"]
     }
   ],
@@ -288,7 +288,7 @@ Unique identifier of the created Payment Provider.
 
 ### PUT /payment_providers/{*payment_provider_id*}
 
-Update a Payment Provider. This is especially useful to update the installments specs.
+Update a Payment Provider for a given store. This is especially useful to update the installments specs.
 
 #### Request
 
@@ -332,7 +332,7 @@ Get a specific Payment Provider for a given store.
 
 ### DELETE /payment_providers/{*payment_provider_id*}
 
-Delete a Payment Provider.
+Delete a Payment Provider for a given store.
 
 #### Request
 
@@ -413,7 +413,7 @@ The following is the list of payment methods currently supported by our platform
 - `provincianet`
 - `pse`
 
-#### Banks
+#### Bank
 
 - `banco_do_brasil`
 - `banrisul`
