@@ -107,7 +107,7 @@ Payment Providers may charge merchants with different rates per Transaction depe
 | :----------------------- | :------ | :----------------------------------------------------------- |
 | `percent_fee`            | Number  | Percentage fee charged per payment.                          |
 | `days_to_withdraw_money` | Integer | Days since Transaction creation until de merchant can withdraw the money. |
-| `flat_fee`               | Money   | [Optional] Object containing the flat fee charged per payment. See [Money](#Money). |
+| `flat_fee`               | Object  | [Optional] Object containing the flat fee charged per payment. See [Money](#Money). |
 | `plus_tax`               | Boolean | [Optional] Indicates whether VAT will be added to the specified rates. |
 
 E.g.
@@ -149,7 +149,7 @@ Most Payment Providers provide different installment based payments options.
 | Field                   | Type          | Description                                                  |
 | :---------------------- | :------------ | :----------------------------------------------------------- |
 | `specification`         | Array(Object) | Check [Specification](#Specification) section below for a description of this field. |
-| `min_installment_value` | Array(Money)  | [Optional] List of minimum installment values accepted by each currency. See [Money](#Money) for items format. |
+| `min_installment_value` | Array(Object) | [Optional] List of minimum installment values accepted by each currency. See [Money](#Money) for items format. |
 
 > ***Note:*** An example for `min_installment_value` would be `"currency": "BRL` and `"amount": "5"` . For instance, if the total amount to be payed is `50 BRL`, then the consumer can choose to make the payment in up to 10 installments because the value of each of them would be `50 / 10 = 5`. However, the consumer won't be able to choose to spread the payment into 12 installments because `50 / 12 = 4.17` and `4.17 < 5`.
 
