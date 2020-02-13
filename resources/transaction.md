@@ -17,8 +17,8 @@ All Transactions types have the same attributes, but may differ in the values th
 | `type`         | String | One of `credit_card`, `debit_card`, `boleto`, `ticket`, `wire_transfer`, `cash`, `wallet` or `refund`. See [Transaction Types](#Transaction-Types). |
 | `status`       | String | The state of the FSM in which the Transaction is. See [Transaction Status](#Transaction-Status). |
 | `external_id`  | String | [Optional] ID used by the Payment Provider.                  |
-| `external_url` | String | [Optional] URL for the Payment Provider's website with the details on this Transaction for the merchant. |
-| `created_at`   | Date   | [Optional] Creation date for this Transaction. Defaults to current time. |
+| `external_url` | String | [Optional] URL for the Payment Provider's website with the details of this Transaction for the merchant. |
+| `created_at`   | Date   | [Optional] Creation date of this Transaction. Defaults to current time. |
 | `context`      | Object | [Optional] Object containing context information that could be useful for fraud analysis. See [Payment Context](#Payment-Context). |
 
 > ***Note:*** All URLs must be secure URLs (https).
@@ -36,8 +36,10 @@ Some Transaction types have specific *extra* fields.
 
 | Field      | Type   | Description                                                 |
 | ---------- | ------ | ----------------------------------------------------------- |
-| `value`    | String | Value as a string. E.g. "49.99"                             |
+| `value`    | String | Value as a string. E.g. `"49.99"`                           |
 | `currency` | String | ISO 4217 code for the currency, such as ARS, BRL, USD, etc. |
+
+> ***Note:*** Decimal numbers will be represented as string format for better decimal precision handling. It must contain two decimal places and use a point as decimal separator.
 
 ### Payment Context
 
@@ -92,7 +94,7 @@ Endpoints
 
 ### POST /orders/{*order_id*}/transactions
 
-Create a new Transaction for a given order.
+Create a Transaction for a given order.
 
 #### Request
 
@@ -139,7 +141,7 @@ Unique identifier of the created Transaction.
 
 ### PUT /orders/{*order_id*}/transactions/{*transaction_id*}
 
-Update the status of a Transaction. Only the status field can be updated.
+Update the status of a Transaction. This is the only field that can be updated and must respect the [FSM](Transaction-Status) of the transaction.
 
 #### Request
 
