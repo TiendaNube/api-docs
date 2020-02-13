@@ -2,7 +2,7 @@
 
 Since there are a lot of possible flows for integrating a payment solution with our platform, we've decided to give the Payment Provider's app full control of how to handle the integration.
 
-When you define a [Payment Provider](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md) you must specify one or more JS files in the field `checkout_js_urls`. These scripts will be loaded during the checkout process and can interact with it through some primitives described below.
+When you define a [Payment Provider](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md) you must specify a JS file in the field `checkout_js_url`. This script will be loaded during the checkout process and can interact with it through some primitives described below.
 
 ## Examples
 
@@ -53,6 +53,7 @@ LoadPaymentMethod(function(Checkout, Methods) {
 ```
 
 ### Credit Card Payment
+
 This is a more complex example, since this is a richer interaction with more control over the user experience.
 
 The entire flow happens without leaving the Tiendanube checkout, in what we call a `transparent` checkout. This type of payment renders a form where the consumer inputs their credit card information and with which you can interact. In this example, whenever the consumer inputs or changes the credit card number we fetch the first 6 digits and populate the list of available installments.
@@ -107,7 +108,7 @@ LoadPaymentMethod(function(Checkout, Methods) {
       amount: Checkout.data.totalPrice,
       bin: getCardNumberBin()
     }).then(function(response) {
-      Checkout.setCheckoutData({ installments: response });
+      Checkout.setInstallments({ installments: response });
     })
   }
 
@@ -127,7 +128,7 @@ LoadPaymentMethod(function(Checkout, Methods) {
         refreshInstallments()
       } else if (!getCardNumberBin()) {
         // Clear installments if customer remove credit card number
-        Checkout.setCheckoutData({ installments: null });
+        Checkout.setInstallments({ installments: null });
       }
     }, 700),
 
@@ -176,13 +177,13 @@ LoadPaymentMethod(function(Checkout, Methods) {
 
 The `LoadPaymentMethod` function takes a callback with two arguments, `Checkout` and `Methods`. Here's what's available in each of them.
 
-| Name             | Description                                                                                |
-| ---------------- | ------------------------------------------------------------------------------------------ |
-| `addMethod`        | Register the integration in the checkout.                                                  |
-| `setCheckoutData`  | **TODO: Replace this with something like `setInstallments`.**                                    |
-| `data`             | Object containing the data of the shopping cart, the consumer and more. See [Data](#Data). |
-| `http`             | Function to perform AJAX requests. See [HTTP](#HTTP).                                                         |
-| `utils`            | Collection of helper functions. See [Utils](#Utils).                                     |
+| Name              | Description                                                  |
+| ----------------- | ------------------------------------------------------------ |
+| `addMethod`       | Register the integration in the checkout.                    |
+| `setInstallments` | Update the attributes of the object `data.installments`. See [Installments](#Installments). |
+| `data`            | Object containing the data of the shopping cart, the consumer and more. See [Data](#Data). |
+| `http`            | Function to perform AJAX requests. See [HTTP](#HTTP).        |
+| `utils`           | Collection of helper functions. See [Utils](#Utils).         |
 
 ### HTTP
 
@@ -198,16 +199,13 @@ Checkout.http.post('https://acmepayments.com/charge', {
 
 ### Utils
 
-**TODO: Document these**
-
 - **Throttle**  
 - **LoadScript**  
 - **FlattenObject**
 
 ### Data
-Here's an example of the data available in this object.
 
-**TODO: Simplify this, we don't need to expose everything.**
+Here's an example of the data available in this object.
 
 ```js
 data: {
@@ -428,11 +426,10 @@ data: {
 
 This is the second argument to the callback in `LoadPaymentMethod`. It contains the different possible integration flows, the difference among each of them being the UI that is rendered and the data that's available to you as `Checkout.data.form`.
 
-| Name            | Description                                                                                                  |
-| --------------- | ------------------------------------------------------------------------------------------------------------ |
-| `CustomPayment`   | **TODO What would this be? Is there a use case for it in PAPI?**                                                 |
-| `RedirectPayment` | For integration flows that redirect the consumer to a different website.                                     |
-| `ModalPayment`    | For integration flows that open a modal with an iframe.                                                      |
+| Name              | Description                                                  |
+| ----------------- | ------------------------------------------------------------ |
+| `RedirectPayment` | For integration flows that redirect the consumer to a different website. |
+| `ModalPayment`    | For integration flows that open a modal with an iframe.      |
 | `Transparent`     | For integration flows that render a form and integrate mostly through js to maintain the UX of the checkout. |
 
 ### RedirectPayment, ModalPayment and CustomPayment
@@ -443,37 +440,35 @@ These flows don't provide any inputs. The difference is how they're rendered in 
 
 There're three options availalbe in `Methods.Transparent`.
 
-| Name           | Description                                                           |
-| -------------- | --------------------------------------------------------------------- |
-| `CreditPayment`  | For credit or debit card payments.                                    |
+| Name             | Description                                                  |
+| ---------------- | ------------------------------------------------------------ |
+| `CreditPayment`  | For credit or debit card payments.                           |
 | `DebitPayment`   | For redirecting the consumer to the bank's system for debit payments. |
-| `OfflinePayment` | For boleto or ticket type payments.                                   |
+| `OfflinePayment` | For boleto or ticket type payments.                          |
 
 #### CreditPayment
 
 These are the fields rendered and available through `Checkout.data.form`.
 
-| Name                | Description                                     |
-| ------------------- | ----------------------------------------------- |
-| `brand`               | Type of card: `visa`, `mastercard`, etc.            |
+| Name                  | Description                                      |
+| --------------------- | ------------------------------------------------ |
+| `brand`               | Type of card: `visa`, `mastercard`, etc.         |
 | `cardNumber`          | Card number.                                     |
 | `cardHolderName`      | Card holder's name.                              |
 | `cardExpiration`      | Card's expiration date in `mm/yy` format.        |
 | `cardCvv`             | Card's verification code.                        |
 | `cardInstallments`    | Number of installments selected by the consumer. |
-| `cardHolderIdType`    | **TODO How to use this?**                           |
 | `cardHolderIdNumber`  | Card holder's CPF, DNI or equivalent.            |
 | `cardHolderBirthDate` | Card holder's birthday in `dd/mm/yy` format.     |
 | `cardHolderPhone`     | Card holder's phone number.                      |
 | `bankId`              | Card's issuing bank.                             |
-| `issuerId`            | **TODO What is this?**                              |
 
 #### DebitPayment
 
 These are the fields rendered and available through `Checkout.data.form`.
 
-| Name           | Description                              |
-| -------------- | ---------------------------------------- |
+| Name             | Description                               |
+| ---------------- | ----------------------------------------- |
 | `bank`           | Bank to debit from.                       |
 | `holderName`     | Account holder's name.                    |
 | `holderIdNumber` | Account holder's CPF, DNI, or equivalent. |
@@ -482,8 +477,8 @@ These are the fields rendered and available through `Checkout.data.form`.
 
 These are the fields rendered and available through `Checkout.data.form`.
 
-| Name           | Description                        |
-| -------------- | ---------------------------------- |
+| Name             | Description                         |
+| ---------------- | ----------------------------------- |
 | `holderName`     | Consumer's name.                    |
 | `holderIdNumber` | Consumer's CPF, DNI, or equivalent. |
 
@@ -491,30 +486,25 @@ These are the fields rendered and available through `Checkout.data.form`.
 
 All of the instances of `Methods` take can take the following arguments.
 
-| Name         | Description                                                                                                             |
-| ------------ | ----------------------------------------------------------------------------------------------------------------------- |
-| `name`         | Method name.                                                                                                            |
-| `scripts`      | List of external js files to be loaded before registering this method.                                                  |
-| `onLoad`       | Function to be invoked after registering this method.                                                                   |
-| `onDataChange` | Function to be invoked whenever there's a change in `Checkout.data`.                                                    |
+| Name           | Description                                                  |
+| -------------- | ------------------------------------------------------------ |
+| `name`         | Method name.                                                 |
+| `scripts`      | List of external js files to be loaded before registering this method. |
+| `onLoad`       | Function to be invoked after registering this method.        |
+| `onDataChange` | Function to be invoked whenever there's a change in `Checkout.data`. |
 | `onSubmit`     | Function to be invoked whenever the consumer clicks on "Finish checkout" and all mandatory fields are filled correctly. |
 
 #### OnSubmit
+
 The function passed to `onSubmit` received a parameter called `callback`, which must be invoked to return control to the checkout flow with information regarding the success of the payment attempt.
 
 This `callback` function can be invoked with an object containing the following attributes.
 
-| Name            | Description                                                                                                                                |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| `success`         | If true, the checkout process continues and the order is complete. Otherwise, shown a customizable error message to the consumer.          |
-| `message`         | If `success` is false, this message will be displayed to the consumer.                                                                     |
-| `redirect`        | External url for the consumer to be redirected to in order to finish the purchase in an external checkout.                                 |
-| `close`           | **TODO The Transactions endpoint already solves this.**                                                                                        |
-| `confirmed`       | **TODO What does this mean? What's the difference between sending true and false? Sounds like the Transactions endpoint already solves this.** |
-| `recovered`       | **TODO What is this? Sounds like it shouldn't be an argument.**                                                                                |
-| `extraBoletoUrl`  | **TODO The Transactions endpoint already solves this.**                                                                                        |
-| `extraAuthorized` | **TODO Don't know what this is but it sounds like the Transactions endpoint already solves this.**                                             |
-| `skipRedirect`    | **TODO Isn't this the same as not providing `redirect`?**                                                                                      |
+| Name       | Description                                                  |
+| ---------- | ------------------------------------------------------------ |
+| `success`  | If true, the checkout process continues and the order is complete. Otherwise, shown a customizable error message to the consumer. |
+| `message`  | If `success` is false, this message will be displayed to the consumer. |
+| `redirect` | External url for the consumer to be redirected to in order to finish the purchase in an external checkout. |
 
 #### Sample Arguments
 
@@ -551,18 +541,16 @@ LoadPaymentMethod(function (Checkout, Methods) {
 
 ## Installments
 
-**TODO We'll want to revise this and replace it with a function `Checkout.setInstallments`.**
-
-In order to offer installment options you must update the object `data.installments` by calling `setCheckoutData`. For example:
+In order to offer installment options you must update the object `data.installments` by calling `setInstallments`. For example:
 
 ```js
-Checkout.setCheckoutData({ installments: [] })
+Checkout.setInstallments({ installments: [] })
 ```
 
 Each element of the list must be an object with the following fields.
 
-| Name              | Description                     |
-| ----------------- | ------------------------------- |
+| Name                | Description                      |
+| ------------------- | -------------------------------- |
 | `quantity`          | Number of installments.          |
 | `installmentAmount` | Value of a single installment.   |
 | `totalAmount`       | Total value of all installments. |
