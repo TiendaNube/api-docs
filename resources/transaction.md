@@ -141,7 +141,7 @@ Unique identifier of the created Transaction.
 
 ### PUT /orders/{*order_id*}/transactions/{*transaction_id*}
 
-Update the status of a Transaction. This is the only field that can be updated and must respect the [FSM](Transaction-Status) of the transaction.
+Update the status of a Transaction. This is the only field that can be updated and must respect the [FSM](#Transaction-Status) of the transaction.
 
 #### Request
 
