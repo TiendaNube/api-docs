@@ -222,7 +222,7 @@ E.g.
   "support_url": "https://mypayments.com/support",
   "checkout_js_url": "https://mypayments.com/checkout.min.js",
   "supported_currencies": ["ARS"],
-  "supported_methods": [
+  "supported_payment_methods": [
     {
       "payment_method_type": "credit_card",
       "payment_methods": ["visa"]
