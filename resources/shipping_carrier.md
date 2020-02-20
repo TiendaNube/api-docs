@@ -157,6 +157,7 @@ The response object rates must be a JSON array of objects with the following fie
            "id_required": true,
            "accepts_cod": true,
            "address": {
+               "name": "My local",
                "address": "My address",
                "number": "345",
                "floor": null,
@@ -211,6 +212,7 @@ The response object rates must be a JSON array of objects with the following fie
            "phone_required": true,
            "id_required": true,
            "address": {
+               "name": "Another local",
                "address": "Another address",
                "number": "123",
                "floor": null,
