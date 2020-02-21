@@ -22,8 +22,8 @@ Properties
 | `checkout_js_url`           | String        | HTTPS URL of the JS file to be included in the checkout frontend. See [Checkout JS](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/checkout_js.md). |
 | `supported_currencies`      | Array(String) | ISO.4217 currency codes supported by the Payment Provider. See [Currency Codes](#Currency-Codes). |
 | `supported_payment_methods` | Array(Object) | List of available payment methods for each payment method type. See [Payment Methods](#Payment-Methods). |
-| `installments`              | Object        | Object containing the installments available to consumers. See [Installments](#Installments). |
-| `rates`                     | Array(Object) | List of rates definitions for each payment method type. See [Rates](#Rates). |
+| `rates`                     | Array(Object) | List of rates definitions for each payment method type. See [Rates](#Rates).| 
+| `installments`              | Object        | [Optional] Object containing the installments available to consumers. See [Installments](#Installments). |
 | `configuration_url`         | String        | [Optional] Payment Provider configuration UI HTTPS URL.      |
 | `support_url`               | String        | [Optional] Payment Provider support HTTPS URL.               |
 | `id`                        | String        | [Informational] Unique identifier of the Payment Provider object. |
@@ -133,11 +133,11 @@ E.g.
 
 ### Money
 
-Sums of money will be represented by an amount and its respective currency.
+Sums of money will be represented by a value and its respective currency.
 
 | Field      | Type   | Description                                                 |
 | :--------- | :----- | :---------------------------------------------------------- |
-| `amount`   | String | Value as a string. E.g `"49.99"`                            |
+| `value`   | String | Value as a string. E.g `"49.99"`                            |
 | `currency` | String | ISO 4217 code for the currency, such as ARS, BRL, USD, etc. |
 
 > ***Note:*** Decimal numbers will be represented as string format for better decimal precision handling. It must contain two decimal places and use a point as decimal separator.
@@ -187,7 +187,7 @@ E.g.
   "min_installment_value": [
       {
         "currency": "ARS",
-        "amount": "100.00"
+        "value": "100.00"
       }
     ]
 }
@@ -235,7 +235,7 @@ E.g.
         {
           "percent_fee": "30.50",
           "flat_fee": {
-            "amount": "1000.00",
+            "value": "1000.00",
             "currency": "ARS"
           },
           "plus_tax": true,
@@ -265,7 +265,7 @@ E.g.
     "min_installment_value": [
       {
         "currency": "ARS",
-        "amount": "100.00"
+        "value": "100.00"
       }
     ]
   }
