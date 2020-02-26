@@ -10,6 +10,7 @@ The metafields can only be associated with the following entities:
 * Category
 * Page
 * Order
+* Customer
 
 To do that you need to set the owner_resource to one of the above, an example would be owner_resource='Product'.
 
