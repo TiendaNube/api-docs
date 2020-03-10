@@ -404,6 +404,7 @@ Create an Order.
 | payment_status     | The order's payment status ([Payment Status](#Payment-Status)).                                                                       | Yes    | 
 | status             | The order status ([Order Status](#Order-Status)).                                                                                     | Yes    |
 | products           | A list of order products ([Product](#Product)).                                                                                       | Yes    |
+| total              | The sum of all products prices, shipping costs and discounts. Must be positive. If not specified, it's calculated considering the provided costs and discounts. | No    |
 | inventory_behaviour| The inventory behaviour that the order must perform ([Inventory Behaviour](#Inventory-Behaviour)).                                    | No     |
 | customer           | The customer object ([Customer](#Customer)).                                                                                          | Yes    |
 | note               | An additional customer note for the order.                                                                                            | No     |
@@ -448,10 +449,11 @@ Create an Order.
 
 
 #### Product
-| Value       | Description              | Type    | Required |
-|-------------|--------------------------|---------|----------|
-| variant_id  | The product variant ID   | Integer | Yes      |
-| quantity    | The product quantity     | Integer | Yes      |
+| Value       | Description                                                       | Type    | Required |
+|-------------|-------------------------------------------------------------------|---------|----------|
+| variant_id  | The product variant ID                                            | Integer | Yes      |
+| quantity    | The product quantity                                              | Integer | Yes      |
+| price       | The item price. Defaults to tiendanube's product variant price.   | Double  | No       |
 
 #### Order Status
 
