@@ -134,6 +134,7 @@ Receive a list of all Orders.
 | per_page       | Amount of results                                                                                           |
 | fields         | Comma-separated list of fields to include in the response                                                   |
 | q              | Search Orders by the given number; or containing the given text in the customer name or email               |
+| app_id         | Show Orders created by a given app                                                                           |
 
 
 #### GET /orders
