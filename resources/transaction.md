@@ -18,25 +18,27 @@ All Transactions types have the same attributes, but may differ in the values th
 | `status`       | String | The state of the FSM in which the Transaction is. See [Transaction Status](#Transaction-Status). |
 | `external_id`  | String | [Optional] ID used by the Payment Provider.                  |
 | `external_url` | String | [Optional] URL for the Payment Provider's website with the details of this Transaction for the merchant. |
-| `created_at`   | Date   | [Optional] Creation date of this Transaction. Defaults to current time. |
+| `created_at`   | Date   | [Optional] ISO 8601 date for the creation date of this Transaction. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
 | `context`      | Object | [Optional] Object containing context information that could be useful for fraud analysis. See [Payment Context](#Payment-Context). |
 
 > ***Note:*** All URLs must be secure URLs (https).
 
+
+
 Some Transaction types have specific *extra* fields.
 
-| Field                   | Type    | Description                                                  |
-| :---------------------- | :------ | :----------------------------------------------------------- |
-| `installments`          | Integer | [Optional - Only for `credit_card`] Number of instalments.   |
-| `original_transaction`  | String  | [Optional - Only for `refund`] ID of the Transaction that is being refunded. |
-| `payment_method_type`   | String  | [Optional - Only for `refund`] Payment method type used for refund. See [Payment Methods](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Payment-Methods). |
-| `external_resource_url` | String  | [Optional - Only for `boleto` and `ticket`] URL of the boleto or ticket which can be shown to the consumer to resume the payment. |
+| Field                   | Type   | Description                                                  |
+| :---------------------- | :----- | :----------------------------------------------------------- |
+| `installments`          | Object | [Optional - Only for `credit_card`] See [Installments](#Installments). |
+| `original_transaction`  | String | [Optional - Only for `refund`] ID of the Transaction that is being refunded. |
+| `payment_method_type`   | String | [Optional - Only for `refund`] Payment method type used for refund. See [Payment Methods](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Payment-Methods). |
+| `external_resource_url` | String | [Optional - Only for `boleto` and `ticket`] URL of the boleto or ticket which can be shown to the consumer to resume the payment. |
 
 ### Money
 
 | Field      | Type   | Description                                                 |
 | ---------- | ------ | ----------------------------------------------------------- |
-| `value`    | String | Value as a string. E.g. `"49.99"`                           |
+| `value`    | String | Amount of money as a string. E.g. `"49.99"`                 |
 | `currency` | String | ISO 4217 code for the currency, such as ARS, BRL, USD, etc. |
 
 > ***Note:*** Decimal numbers will be represented as string format for better decimal precision handling. It must contain two decimal places and use a point as decimal separator.
@@ -49,6 +51,13 @@ Some Transaction types have specific *extra* fields.
 | `source`         | String | [Optional] One of `web_desktop`, `web_mobile` or `pos`.      |
 | `payment_method` | String | [Optional] Payment method used for this Transaction. See [Payment Methods](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Payment-Methods). |
 
+### Installments
+
+| Field      | Type   | Description                                              |
+| ---------- | ------ | -------------------------------------------------------- |
+| `quantity` | Number | The number of installments. E.g. `3`.                    |
+| `interest` | String | The interest applied to each installment. E.g. `"0.15"`. |
+
 ### Transaction Types
 
 * `credit_card`: Transaction in which the consumer uses a credit card as payment method (E.g. VISA, Mastercard, AMEX).
@@ -57,7 +66,7 @@ Some Transaction types have specific *extra* fields.
 * `ticket`: Transaction in which the consumer uses a ticket as payment method. This ticket can be paid through a non-bank collection channel (E.g. Rapipago, Pago Fácil, OXXO).
 * `wire_transfer`: Transaction in which the consumer uses a wire transfer as payment method.
 * `cash`: Transaction in which the consumer uses cash as payment method.
-* `wallet`: Transaction in which the consumer uses a wallet as payment method. A wallet is an application that allows you to transfer cryptocurrencies.
+* `wallet`: Transaction in which the consumer uses a wallet as payment method. A wallet is an application that allows you to transfer money.
 * `refund`: Transaction in which the merchant returns money to the consumer. A refund may involve any payment method.
 
 ### Transaction Status
@@ -110,7 +119,10 @@ E.g.
     "currency": "ARS"
   },
   "type": "credit_card",
-  "installments": 3,
+  "installments": {
+  	"quantity": 3,
+  	"interest": "0.15"
+  },
   "status": "pending",
   "external_id": "1234",
   "external_url": "https://mypayments.com/creditcard",
@@ -192,3 +204,4 @@ Get a specific Transaction of a given order.
 * **403 Forbidden** - access denied.
 * **404 Not Found** - resource was not found.
 * **405 Method Not Allowed** - requested method is not supported for resource.
+
