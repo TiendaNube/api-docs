@@ -161,7 +161,7 @@ The specification field allows the use of specific business rules. This specific
 | :-------------- | :------------ | :----------------------------------------------------------- |
 | `installments`  | Integer       | Number of installments.                                      |
 | `interest_rate` | String        | Rate to be applied to the total amount for this installments option. |
-| `applies_to`    | Array(String) | List of [payment methods](#Payment-Methods) to which this installments option applies. |
+| `applies_to`    | Array(String) | List of [banks](#bank) to which this installments option applies. |
 
 E.g.
 
