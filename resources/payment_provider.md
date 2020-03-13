@@ -22,12 +22,11 @@ Properties
 | `checkout_js_url`           | String        | HTTPS URL of the JS file to be included in the checkout frontend. See [Checkout JS](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/checkout_js.md). |
 | `supported_currencies`      | Array(String) | ISO.4217 currency codes supported by the Payment Provider. See [Currency Codes](#Currency-Codes). |
 | `supported_payment_methods` | Array(Object) | List of available payment methods for each payment method type. See [Payment Methods](#Payment-Methods). |
-| `rates`                     | Array(Object) | List of rates definitions for each payment method type. See [Rates](#Rates).| 
-| `installments`              | Object        | [Optional] Object containing the installments available to consumers. See [Installments](#Installments). |
+| `rates`                     | Array(Object) | List of rates definitions for each payment method type. See [Rates](#Rates). |
 | `configuration_url`         | String        | [Optional] Payment Provider configuration UI HTTPS URL.      |
 | `support_url`               | String        | [Optional] Payment Provider support HTTPS URL.               |
 | `id`                        | String        | [Informational] Unique identifier of the Payment Provider object. |
-| `store_id`                   | Integer       | [Informational] Id of the store to which the Payment Provider belongs. |
+| `store_id`                  | Integer       | [Informational] Id of the store to which the Payment Provider belongs. |
 | `enabled`                   | Boolean       | [Informational] Indicates whether Payment Provider is enabled in the store. |
 
 > ***Note:*** All URLs must be secure URLs (https).
@@ -63,7 +62,7 @@ Every amount value needs to be complemented by a currency. Supported currency co
 - `MXN`: Mexican Peso
 - `USD`: American Dollar
 
-### Payment Methods
+### Payment Methods Types
 
 There are many companies providing payment methods of different types. Currently, our platform supports the following payment methods types:
 
@@ -75,7 +74,17 @@ There are many companies providing payment methods of different types. Currently
 - `cash`
 - `wallet`
 
-Depending on the kind of Payment Provider (Subadquirente, Gateway, Adquirente), they may integrate to our platform one or many payment pethods for each payment method type. Check the list of [Supported Payment Methods by Payment Method Type](#Supported-Payment-Methods-by-Payment Method-Type).
+Depending on the kind of Payment Provider (Subadquirente, Gateway, Adquirente), they may integrate to our platform one or many payment pethods for each payment method type.
+
+### Payment Methods
+
+Depending on the kind of Payment Provider (Subadquirente, Gateway, Adquirente), they may integrate to our platform one or many payment pethods for each payment method type. If applicable, the installments data supported by the payment method type is detailed here.
+
+| Field                 | Type          | Description                                                  |
+| :-------------------- | :------------ | :----------------------------------------------------------- |
+| `payment_method_type` | String        | One of the available [Payment Method Types](#Payment-Method-Types). |
+| `payment_methods`     | Array(String) | The list of supported payments methods by the given payment method type. See [Supported Payment Methods by Payment Method Type](#Supported-Payment-Methods-by-Payment Method-Type). |
+| `installments`        | Object        | [Optional] Object containing the installments available to consumers. See [Installments](#Installments). |
 
 E.g.
 
@@ -83,7 +92,32 @@ E.g.
 [
     {
       "payment_method_type": "credit_card",
-      "payment_methods": ["visa", "mastercard", "amex"]
+      "payment_methods": ["visa", "mastercard", "amex"],
+      "installments": {
+        "min_installment_value": [
+          {
+            "currency": "ARS",
+            "value": "100.00"
+          }
+        ],
+        "specification": [
+          {
+            "installments": 1,
+            "interest_rate": "0.00",
+            "applies_to": ["bbva", "itau", "santander", "galicia"]
+          },
+          {
+            "installments": 3,
+            "interest_rate": "0.00",
+            "applies_to": ["bbva", "itau"]
+          },
+          {
+            "installments": 6,
+            "interest_rate": "0.45",
+            "applies_to": ["santander", "galicia"]
+          },
+        ]
+      }
     },
     {
       "payment_method_type": "debit_card",
@@ -98,7 +132,7 @@ Payment Providers may charge merchants with different rates per Transaction depe
 
 | Field                 | Type          | Description                                                  |
 | :-------------------- | :------------ | :----------------------------------------------------------- |
-| `payment_method_type` | String        | Payment method to which the rates definition refer.          |
+| `payment_method_type` | String        | Payment method type to which the rates definition refer. See [Payment Method Types](#Payment-Method-Types). |
 | `rates_definition`    | Array(Object) | Object containing the rates details. See [Rates Definition](#Rates-Definition) section bellow. |
 
 #### Rates Definition
@@ -137,7 +171,7 @@ Sums of money will be represented by a value and its respective currency.
 
 | Field      | Type   | Description                                                 |
 | :--------- | :----- | :---------------------------------------------------------- |
-| `value`   | String | Value as a string. E.g `"49.99"`                            |
+| `value`    | String | Amount of money as a string. E.g `"49.99"`                  |
 | `currency` | String | ISO 4217 code for the currency, such as ARS, BRL, USD, etc. |
 
 > ***Note:*** Decimal numbers will be represented as string format for better decimal precision handling. It must contain two decimal places and use a point as decimal separator.
@@ -212,63 +246,79 @@ E.g.
 
 ```json
 {
-  "name": "My Payments",
-  "description": "Some short description for merchants.",
-  "logo_urls": {
-    "400x120": "https://mypayments.com/logo1.png",
-    "160x100": "https://mypayments.com/logo2.png"
-  },
-  "configuration_url": "https://mypayments.com/configuration",
-  "support_url": "https://mypayments.com/support",
-  "checkout_js_url": "https://mypayments.com/checkout.min.js",
-  "supported_currencies": ["ARS"],
-  "supported_payment_methods": [
-    {
-      "payment_method_type": "credit_card",
-      "payment_methods": ["visa"]
-    }
-  ],
-  "rates": [
-    {
-      "payment_method_type": "credit_card",
-      "rates_definition": [
+    "name": "My Payments",
+    "description": "Some short description for merchants.",
+    "logo_urls": {
+        "400x120": "https://mypayments.com/logo1.png",
+        "160x100": "https://mypayments.com/logo2.png"
+    },
+    "configuration_url": "https://mypayments.com/configuration",
+    "support_url": "https://mypayments.com/support",
+    "checkout_js_url": "https://mypayments.com/checkout.min.js",
+    "supported_currencies": [
+        "ARS"
+    ],
+    "supported_payment_methods": [
         {
-          "percent_fee": "30.50",
-          "flat_fee": {
-            "value": "1000.00",
-            "currency": "ARS"
-          },
-          "plus_tax": true,
-          "days_to_withdraw_money": 10
+            "payment_method_type": "credit_card",
+            "payment_methods": [
+                "visa",
+                "mastercard"
+            ],
+            "installments": {
+                "min_installment_value": [
+                    {
+                        "currency": "ARS",
+                        "value": "100.00"
+                    }
+                ],
+                "specification": [
+                    {
+                        "installments": 1,
+                        "interest_rate": "0.00",
+                        "applies_to": [
+                            "bbva",
+                            "itau",
+                            "santander",
+                            "galicia"
+                        ]
+                    },
+                    {
+                        "installments": 3,
+                        "interest_rate": "0.00",
+                        "applies_to": [
+                            "bbva",
+                            "itau"
+                        ]
+                    },
+                    {
+                        "installments": 6,
+                        "interest_rate": "0.45",
+                        "applies_to": [
+                            "santander",
+                            "galicia"
+                        ]
+                    }
+                ]
+            }
         }
-      ]
-    }
-  ],
-  "installments": {
-    "specification": [
-    {
-      "installments": 3,
-      "interest_rate": "0.00",
-      "applies_to": ["bbva"]
-    },
-    {
-      "installments": 6,
-      "interest_rate": "0.32",
-      "applies_to": ["hsbc"]
-    },
-    {
-      "installments": 12,
-      "interest_rate": "0.64",
-      "applies_to": ["galicia", "icbc", "santander", "banco_provincia"]
-    }
-  ],
-    "min_installment_value": [
-      {
-        "currency": "ARS",
-        "value": "100.00"
-      }
+    ],
+    "rates": [
+        {
+            "payment_method_type": "credit_card",
+            "rates_definition": [
+                {
+                    "percent_fee": "30.50",
+                    "flat_fee": {
+                        "value": "1000.00",
+                        "currency": "ARS"
+                    },
+                    "plus_tax": true,
+                    "days_to_withdraw_money": 10
+                }
+            ]
+        }
     ]
-  }
 }
 ```
 
