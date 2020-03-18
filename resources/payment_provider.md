@@ -22,7 +22,7 @@ Properties
 | `checkout_js_url`           | String        | HTTPS URL of the JS file to be included in the checkout frontend. See [Checkout JS](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/checkout_js.md). |
 | `supported_currencies`      | Array(String) | ISO.4217 currency codes supported by the Payment Provider. See [Currency Codes](#Currency-Codes). |
 | `supported_payment_methods` | Array(Object) | List of available payment methods for each payment method type. See [Payment Methods](#Payment-Methods). |
-| `rates`                     | Array(Object) | List of rates definitions for each payment method type. See [Rates](#Rates). |
+| `rates`                     | Array(Object) | List of rates definitions for merchants by payment method type. See [Rates](#Rates). |
 | `configuration_url`         | String        | [Optional] Payment Provider configuration UI HTTPS URL.      |
 | `support_url`               | String        | [Optional] Payment Provider support HTTPS URL.               |
 | `id`                        | String        | [Informational] Unique identifier of the Payment Provider object. |
