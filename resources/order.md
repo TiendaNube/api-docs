@@ -402,9 +402,10 @@ Create an Order.
 | currency           | The order currency code ([ISO 4217 format](https://en.wikipedia.org/wiki/ISO_4217)). The default is the store currency.               | No     |
 | language           | The language code ([ISO 639-1 format](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)). The default is the store main language.| No     | 
 | gateway            | The order's payment gateway ([Payment Gateway](#Payment-Gateway)).                                                                    | Yes    |
-| payment_status     | The order's payment status ([Payment Status](#Payment-Status)).                                                                       | Yes    | 
-| status             | The order status ([Order Status](#Order-Status)).                                                                                     | Yes    |
-| products           | A list of order products ([Product](#Product)).                                                                                       | Yes    |
+| payment_status     | The order's payment status ([Payment Status](#Payment-Status)). The default is `paid`.                                                                       | No     | 
+| status             | The order's status ([Order Status](#Order-Status)). The default is `open`.                                                                                     | No     |
+| fulfillment_status | The order's status ([Order Status](#Order-Status)). The default is `unpacked`.                                                                                     | No     |
+| products           | Order's products list ([Product](#Product)).                                                                                       | Yes    |
 | total              | The sum of all products prices, shipping costs and discounts. Must be positive. If not specified, it's calculated considering the provided costs and discounts. | No    |
 | inventory_behaviour| The inventory behaviour that the order must perform ([Inventory Behaviour](#Inventory-Behaviour)).                                    | No     |
 | customer           | The customer object ([Customer](#Customer)).                                                                                          | Yes    |
