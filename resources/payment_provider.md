@@ -23,8 +23,9 @@ Properties
 | `supported_currencies`      | Array(String) | ISO.4217 currency codes supported by the Payment Provider. See [Currency Codes](#Currency-Codes). |
 | `supported_payment_methods` | Array(Object) | List of available payment methods for each payment method type. See [Payment Methods](#Payment-Methods). |
 | `rates`                     | Array(Object) | List of rates definitions for merchants by payment method type. See [Rates](#Rates). |
-| `configuration_url`         | String        | [Optional] Payment Provider configuration UI HTTPS URL.      |
-| `support_url`               | String        | [Optional] Payment Provider support HTTPS URL.               |
+| `rates_url`                 | String        | HTTPS URL of the Payment Provider's rate information site.   |
+| `configuration_url`         | String        | [Optional] HTTPS URL of the Payment Provider configuration UI. |
+| `support_url`               | String        | [Optional] Payment Provider support site HTTPS URL.          |
 | `id`                        | String        | [Informational] Unique identifier of the Payment Provider object. |
 | `store_id`                  | Integer       | [Informational] Id of the store to which the Payment Provider belongs. |
 | `enabled`                   | Boolean       | [Informational] Indicates whether Payment Provider is enabled in the store. |
@@ -254,6 +255,7 @@ E.g.
     },
     "configuration_url": "https://mypayments.com/configuration",
     "support_url": "https://mypayments.com/support",
+  	"rates_url": "https://mypayments.com/rates",
     "checkout_js_url": "https://mypayments.com/checkout.min.js",
     "supported_currencies": [
         "ARS"
