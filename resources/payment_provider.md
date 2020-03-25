@@ -255,7 +255,7 @@ E.g.
     },
     "configuration_url": "https://mypayments.com/configuration",
     "support_url": "https://mypayments.com/support",
-  	"rates_url": "https://mypayments.com/rates",
+    "rates_url": "https://mypayments.com/rates",
     "checkout_js_url": "https://mypayments.com/checkout.min.js",
     "supported_currencies": [
         "ARS"
