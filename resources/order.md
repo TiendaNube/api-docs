@@ -121,6 +121,7 @@ Receive a list of all Orders.
 | -------------- | ----------------------------------------------------------------------------------------------------------- |
 | since_id       | Restrict results to after the specified ID                                                                  |
 | status         | Show Orders with a given state. "any" is the default                                                        |
+| channels       | Restrict results to the specified sales channel. "any" is the default (it means orders from pos, api, store, etc) |
 | payment_status | Show Orders with a given payment state. "any" is the default (it means authorized, pending and paid orders) |
 | shipping_status| Show Orders with a given shipping state. "any" is the default                                               |
 | created_at_min | Show Orders created after date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))                   |
