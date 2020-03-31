@@ -3,9 +3,9 @@ Payment Provider
 
 A Payment Provider, shorter name for Payments Services Provider, represents any entity which provides all the necessary resources and infrastructure for merchants and consumers to exectute [Transactions](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/transaction.md) between them. This entities could be any of the following:
 
-- **Subadquirente**
+- **Aggregator**
+- **Acquirer**
 - **Gateway**
-- **Adquirente**
 
 Payments companies have many different and sometimes complex features which add value to the purchase experience, mainly providing multiple payments options and simpler checkout flows. They also provide merchants with tools to make better management of their Transactions as well as their incomes.
 
