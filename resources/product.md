@@ -10,7 +10,7 @@ Properties
 | -------------- | ------------------------------------------------------------------------------------------------- |
 | id             | The unique numeric identifier for the Product                                                     |
 | name           | List of the names of the Product, in every language supported by the store                        |
-| descripton     | List of the descriptions of the Product, as HTML, in every language supported by the store        |
+| description    | List of the descriptions of the Product, as HTML, in every language supported by the store        |
 | handle         | List of the url-friendly strings generated from the Product's names, in every language supported by the store |
 | variants       | List of [Product Variant](https://github.com/tiendanube/api-docs/blob/master/resources/product_variant.md) objects representing the different version of the Product |
 | images         | List of [Product Image](https://github.com/tiendanube/api-docs/blob/master/resources/product_image.md) objects representing the Product's images                 |
