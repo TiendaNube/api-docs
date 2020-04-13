@@ -41,7 +41,7 @@ A `Store` can have `n` number of `Payment Providers`. `Stores` have their own `P
 
 `Payment Providers` contain all the configuration to display `payment_methods`, calculate prices, discounts, installments, among others, on the storefront and it also contains properties required for the Checkout process.
 
-The App installation flow is a standard OAuth 2 flow. The details on the App installation flow can be found [here](https://github.com/TiendaNube/api-docs/blob/master/resources/authentication.md) and details on creating a Payment Provider can be found [here](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#post-store_idpayment_providers).
+The App installation flow is a standard OAuth 2 flow. The details on the App installation flow can be found [here](../../resources/authentication.md) and details on creating a Payment Provider can be found [here](../../resources/payment_provider.md#post-store_idpayment_providers).
 
 During this flow, the App is expected to create the Payment Provider on the merchant’s store.
 
@@ -75,7 +75,7 @@ P -->>- F: 301: {success_url}
 
 ### Payment Provider Configuration
 
-You can find the list  of Payment Provider object of properties and their description in our API’s Documentation, [here](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#payment-provider-1). All of the Payment Provider object properties MUST have valid and real values.
+You can find the list  of Payment Provider object of properties and their description in our API’s Documentation, [here](../../resources/payment_provider.md#payment-provider-1). All of the Payment Provider object properties MUST have valid and real values.
 
 We strongly suggest taking a close look at each of the Payment Provider’s object properties to identify which ones may involve special handling and which ones may depend on the merchant’s account configuration on the Payment Provider’s side. Here's a quick overview of some of the ones we think need extra attention:
 
@@ -89,7 +89,7 @@ The Payment Provider has two checkout related properties:
 
 - `checkout_js_url`: The handlers for each `checkout_option` (such as `onLoad`, `onSubmit`, etc) are implemented through the JS API. This property contains a Secure (`HTTPS`) URL pointing to the file with this implementations so our Checkout can run them on the frontend. This URL will be requested from the frontend, which means that the JS file must be hosted on a CDN capable of handling high traffic.
 
-***Note:*** The API docs on the Checkout JS API can be found [here](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/checkout_js.md). Find more details how to implement your SDKs on the checkout JS file on the next section.
+***Note:*** The API docs on the Checkout JS API can be found [here](../../resources/checkout_js.md). Find more details how to implement your SDKs on the checkout JS file on the next section.
 
 #### Storefront Scripts
 
@@ -97,7 +97,7 @@ Note that are frontend has two main components:
 - Storefront
 - Checkout
 
-> In case any frontend Javascript scripts unrelated to the checkout process, like, for example, a fraud prevention script such as a digital footprint, needed to be added to the merchant website’s storefront, our API has a resource for that purpose. Details on how to implement it can be found following [this link](https://github.com/TiendaNube/api-docs/blob/master/resources/script.md).
+> In case any frontend Javascript scripts unrelated to the checkout process, like, for example, a fraud prevention script such as a digital footprint, needed to be added to the merchant website’s storefront, our API has a resource for that purpose. Details on how to implement it can be found following [this link](../../resources/script.md).
 > 
 > Any requests to the Scripts Resource API should be sent during the App’s installation process. Your app will need an extra scope to access this resource: `write_scripts`. You must set it at the App's configuration form on the Partner's Portal.
 
@@ -152,7 +152,7 @@ This option gives the buyer a more store-branded experience which improves the u
 
 As explained before, the developer is in charge of the frontend and backend implementations. The developer should make a frontend implementation according to our JS APIs specifications. The JS implementation file must be hosted on a CDN that must be able to handle potentially high traffic concurrency with, of course, a secure URL.
 
-[In this link](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/checkout_js.md) you can find very detailed information on how the Checkout JS API is implemented and through a URL as the `checkout_js_url` property of the `Payment Provider` object.
+[In this link](../../resources/checkout_js.md) you can find very detailed information on how the Checkout JS API is implemented and through a URL as the `checkout_js_url` property of the `Payment Provider` object.
 
 #### Adding a Checkout Payment Option
 
@@ -193,7 +193,7 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
 })
 ```
 
-**A full description of the available PaymentOptions can be found [here](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/checkout_js.md#methods).**
+**A full description of the available PaymentOptions can be found [here](../../resources/checkout_js.md#methods).**
 
 ##### Redirect Method Implementation Example
 Let’s assume we’ve created an app called “Acme Payment App” and now we want to implement a Redirect Payment Option so the user can use their wallet credit or some other method like card or boleto, to pay for an order, but from Acme's website.
@@ -276,11 +276,9 @@ LoadCheckoutPaymentContext(function(Checkout, Methods) {
 });
 ```
 
-`PaymentOptions.Transparent.CardPayment` already takes care of rendering the card form and information about installments (“parcelamentos”) which may be relevant to the user. The argument object property fields lets you select which optional input fields are rendered on the form. More information [here](https://github.com/TiendaNube/checkout-payment-lib#creditpayment-1). A list of the fields found on `Checkout.data.form` for the `CardMethod` can be found [here](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/checkout_js.md#creditpayment).
+`PaymentOptions.Transparent.CardPayment` already takes care of rendering the card form and information about installments (“parcelamentos”) which may be relevant to the user. The argument object property fields lets you select which optional input fields are rendered on the form. More information [here](https://github.com/TiendaNube/checkout-payment-lib#creditpayment-1). A list of the fields found on `Checkout.data.form` for the `CardMethod` can be found [here](../../resources/checkout_js.md#creditpayment).
 
 The handler `onDataChange` takes a function which will be called every time the object `Checkout.data` is modified. This function should implement business rules to validate the syntax of the card’s information and to update the installments information that is displayed to the buyer if necessary.
-
-The code is a bit long, so [this Gist](https://gist.github.com/carlosbarilatti/d3bd0864299fa021554151deb8a39cfd) provides a clear example of the onDataChange property usage and an example of the onSubmit function.
 
 ```javascript
 // AcmePaymentsCardMethod.js
@@ -395,7 +393,7 @@ The object `Checkout.data.form` provides access to all the form fields. The paym
 
 Payment Platforms usually have a set of instructions that need to be implemented on the backend side and they work together with the frontend implementation. Instead of doing these implementations natively, our APIs allow the developer to make a 3rd party backend implementations on 3rd party infrastructures and access our resources to create transactions in orders and update them as their status changes over time.
 
-Meet the `Transaction`. An `Order` can have many `Transactions`. Some that were successful, some that failed, some pending, and some in other different states depending on each Transaction’s possible states. The `Transaction Resource` can be accessed [through our API](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/transaction.md#transaction).
+Meet the `Transaction`. An `Order` can have many `Transactions`. Some that were successful, some that failed, some pending, and some in other different states depending on each Transaction’s possible states. The `Transaction Resource` can be accessed [through our API](../../resources/transaction.md#transaction).
 
 #### Creating a Transaction
 The App’s backend must `POST` a `Transaction` in our platform as soon a one is created on their side, or before. There are several properties that must be included to provide the Merchant with good tracking of the status of the transaction and each of these properties is equally important so they all must have valid and real values.
@@ -456,7 +454,7 @@ NA ->>- AB: 200: Updated (transaction)
 
 #### Transaction Properties
 
-We believe it’s extremely important to provide the merchant with as much visibility as possible of the different types of transactions (*payment*; *chargeback*; *refund*) an `Order` may have and their statuses. Each of the data fields described on the [object description](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/transaction.md#Payment-Context) is equally important and must be specified when a `Transaction` is created.
+We believe it’s extremely important to provide the merchant with as much visibility as possible of the different types of transactions (*payment*; *chargeback*; *refund*) an `Order` may have and their statuses. Each of the data fields described on the [object description](../../resources/transaction.md#Payment-Context) is equally important and must be specified when a `Transaction` is created.
 
 #### Transaction Id: Updating a Transaction
 
@@ -468,13 +466,13 @@ The `PUT` request to a `Transaction` allows only one property: `status`. The pos
 
 #### Transaction’s Statuses according to their Type
 
-The full description can be found [here](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/transaction.md#transaction-status). Each `Type` has a “State Machine” with a flow that must be respected or, else, an error may occur. We’ve designed our State Machine to be as abstract as possible. Some Payment Providers may not support all the possible statuses but only some of them.
+The full description can be found [here](../../resources/transaction.md#transaction-status). Each `Type` has a “State Machine” with a flow that must be respected or, else, an error may occur. We’ve designed our State Machine to be as abstract as possible. Some Payment Providers may not support all the possible statuses but only some of them.
 
 Any IPNs or Transaction Webhooks should be handled by the App’s Backend and, when an updated state is detected, the App’s backend must update the corresponding `Transaction` through our API, making a `PUT` request as explained above.
 
 #### Credit/Debit Card Chargebacks
 
-It’s worth mentioning that the Credit/Debit Card state machine supports chargebacks. In our model, a `chargeback` may be the state of a `Transaction` of Credit/Debit Card type and it’s expected previous state `in_dispute`. The details on these states can be found [here](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/transaction.md#credit-carddebit-card-transactions).
+It’s worth mentioning that the Credit/Debit Card state machine supports chargebacks. In our model, a `chargeback` may be the state of a `Transaction` of Credit/Debit Card type and it’s expected previous state `in_dispute`. The details on these states can be found [here](../../resources/transaction.md#credit-carddebit-card-transactions).
 
 ## Infrastructure
 It is important to take into account that Nuvemshop is a platform with 30K+ stores. This means the implemented backend will need to be able to handle pretty high-traffic loads. All the necessary scaling, performance monitoring and alert triggering architecture must be implemented.
