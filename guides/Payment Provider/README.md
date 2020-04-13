@@ -1,6 +1,8 @@
 
 # Payment Provider App Development Guide
 
+Revision: 0.85
+
 ## Introduction
 
 This document provides an explanation of what a Payment App is and will guide you through the development process.
@@ -27,10 +29,10 @@ The steps to create a Payment App are the following:
 4.  You might want to include a good description of your offered payment services, since our platform may bring new clients to your business.
 5.  Make sure to choose the “Payments” category.
 6.  Since you are creating a Payment App, make sure the App has the following scopes enabled on the Portal:
-  - `read_payments`
-  - `write_payments`
-  - `read_orders`
-  - `write_orders`
+    - `read_payments`
+    - `write_payments`
+    - `read_orders`
+    - `write_orders`
     
 
 ## Step 2: App installation and Payment Provider creation flow
@@ -131,7 +133,7 @@ Pretty much a standard redirect payment flow:
 2. The Payment Provider proceses the order, creates a *payment preference* and returns a redirect URL.
 3. The buyer is redirected to the Payment Provider’s website.
 4. The buyer follows the checkout flow.
-  - If the buyer has an account on the Payment Provider and Wallet features are supported, this flow has a very smooth UX.
+    - If the buyer has an account on the Payment Provider and Wallet features are supported, this flow has a very smooth UX.
 5. The buyer is redirected back to the merchant's website and lands on a success, failure or cancel page.
 
 Some Payment Providers offer SDKs which render a lightbox or modal with an embedded iframe containing the Payment Provider’s checkout UI on the Merchant’s website, giving the buyer a more transparent-like experience. In this case, though the buyer never really leaves the merchant's website, the checkout flow is run under the Payment Provider's domain.
