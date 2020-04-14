@@ -18,8 +18,8 @@ Properties
 | brand .        | The Product's brand                                                                               |
 | published      | *true* if the Product is published in the store. *false* otherwise                                |
 | free_shipping  | *true* if the Product is elegible for free shipping. *false* otherwise                            |
-| seo_title      | The SEO friendly title for the Product                                                            |
-| seo_description| The SEO friendly description for the Product                                                      |
+| seo_title      | The SEO friendly title for the Product. Up to 70 characters                                       |
+| seo_description| The SEO friendly description for the Product. Up to 320 characters                                |
 | attributes     | List of the names of the attributes whose values define the variants. E.g.: Color, Size, etc      |
 | tags           | String with all the Product's tags, separated by commas                                           |
 | created_at     | Date when the Product was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)     | 
