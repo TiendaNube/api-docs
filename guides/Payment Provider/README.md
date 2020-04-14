@@ -51,27 +51,7 @@ The following implementation example sequence helps illustrate the process:
 - *Nuvemshop API*: Self described.
 - *Payment App*: Any hosts on the Payment Provider’s side.
 
-```mermaid
-sequenceDiagram
-participant F as Front
-participant I as Nuvemshop IdP
-participant A as Nuvemshop API
-participant P as Payment App
-F ->>+ I: GET apps/{appId}/authorize(credentials)
-Note over I: Merchant will be<br/>prompted to log in if<br/>necessary.
-I ->> I: validate(credentials)
-I -->>- F: 301: {redirect_uri}(code, success_url, failure_url, cancel_url)
-F ->>+ P: POST {redirect_uri}(code, success_url, failure_url, cancel_url)
-Note over P: App login flow and<br/>credentials validation<br/>should be handled<br/>at this point.
-P ->>+ I: POST /apps/authorize/token(code, client_id, client_secret, grant_type)
-I -->>- P: 200: (access_token, token_type, scopes, user_id)
-Note over P: For future usage:
-P ->> P: persist(access_token, user_id)
-Note over P: Payment Provider<br>creation:
-P ->>+ A: POST {store_id}/payment_providers(access_token, params)
-A ->>- P: 201: Created (Payment Provider)
-P -->>- F: 301: {success_url}
-```
+![App Installation and Payment Provider Creation Sequence](./mmd/PaymentProvider-InstallationAndCreation.mmd.jpg)
 
 ### Payment Provider Configuration
 
@@ -115,11 +95,11 @@ Nuvemshop provides all the necessary REST and JS APIs to allow 3rd Party develop
 
 To illustrate the “app concept”, let's say we have a `Payment Provider` called “Acme Payments”. Here’s a classic implementation diagram:
 
-![Classic Implementation Diagram](./images/AppDevelopmentGuide-ClassicImplementation.png)
+![Classic Implementation Diagram](./images/PaymentProvider-ClassicImplementation.png)
 
 And here’s the Nuvemshop App implementation diagram:
 
-![App Implementation Diagram](./images/AppDevelopmentGuide-AppImplementation.png)
+![App Implementation Diagram](./images/PaymentProvider-AppImplementation.png)
 
 ### Available Checkout Payment Options
 
@@ -400,57 +380,13 @@ The App’s backend must `POST` a `Transaction` in our platform as soon a one is
 
 As a reference, here are two examples of the implementation of the `POST Transaction` request.
 
-With transparent checkout:
+With transparent payment option:
 
-```mermaid
-sequenceDiagram
-participant B as Browser
-participant NF as Nuvemshop JS
-participant AF as Payment App JS
-participant AB as Payment App BE
-participant NA as Nuvemshop API
-B ->>+ NF: submitPaymentForm()
-NF ->>+ AF: onSubmit(callback)
-AF ->> AF: process(Checkout)
-AF ->>+ AB: {App Specific Requests}(order)
-AB ->> AB: createTransaction(order)
-AB ->>+ NA: POST /{store_id}/orders/{order_id}/transactions
-NA ->>- AB: 201: Created (transaction)
-AB -->>- AF: {App Specific Response}
-AF -->>- NF: Callback()
-NF -->>- B: Result
-Note over AB: When Payment<br/>status is updated. 
-AB ->>+ NA: PUT /{store_id}/orders/{order_id}/transactions/{id}(status)
-NA ->>- AB: 200: Updated (transaction)
-```
+![Transparent Payment Option Sequence](./mmd/PaymentProvider-TransparentPaymentOption.mmd.jpg)
 
-With redirect checkout:
+With redirect payment option:
 
-```mermaid
-sequenceDiagram
-participant B as Browser
-participant NF as Nuvemshop JS
-participant AF as Payment App JS
-participant AB as Payment App BE
-participant NA as Nuvemshop API
-B ->>+ NF: submitPaymentForm()
-NF ->>+ AF: onSubmit(callback)
-AF ->> AF: process(Checkout)
-AF ->>+ AB: {App Specific Requests}(order)
-AB -->>- AF: {App Specific Response}
-AF -->>- NF: Callback(redirect_uri)
-NF -->>- B: 301: {redirect_uri}(callback_url)
-B ->>+ AB: {redirect_uri}(callback_url)
-AB -->>- B: 200: App Checkout flow
-B ->>+ AB: {Payment confirmation request}
-AB ->> AB: createTransaction(order)
-AB ->>+ NA: POST /{store_id}/orders/{order_id}/transactions
-NA ->>- AB: 201: Created (transaction)
-AB -->>- B: 301: {callback_url} 
-Note over AB: When Payment<br/>status is updated. 
-AB ->>+ NA: PUT /{store_id}/orders/{order_id}/transactions/{id}(status)
-NA ->>- AB: 200: Updated (transaction)
-```
+![Redirect Payment Option Sequence](./mmd/PaymentProvider-RedirectPaymentOption.mmd.jpg)
 
 #### Transaction Properties
 
