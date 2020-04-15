@@ -16,16 +16,16 @@ Want to get started with API integration? Here's a quick check list:
 Making a request
 ----------------
 
-All URLs start with `https://api.tiendanube.com/v1/{store_id}` or `https://api.nuvemshop.com.br/v1/{store_id}`. **SSL only**. The path is prefixed with the store id and the API version. If we change the API in backward-incompatible ways, we'll bump the version marker and maintain stable support for the old URLs.
+All URLs start with `https://api.tiendanube.com/{api_version}/{store_id}` or `https://api.nuvemshop.com.br/{api_version}/{store_id}`. **SSL only**. The path is prefixed with the API version adn the store id. If we change the API in backward-incompatible ways, we'll bump the version marker and maintain stable support for the old URLs.
 
-So if you want to access the store with id 123456 via the API the url will be `https://api.tiendanube.com/v1/123456` or `https://api.nuvemshop.com.br/v1/123456`.
+So if you want to access the store with id 123456 via the API v2 version the url will be `https://api.tiendanube.com/v2/123456` or `https://api.nuvemshop.com.br/v2/123456`.
 
 To make a request for all the store's products you would do the following in curl:
 
 ```shell
 curl -H 'Authentication: bearer ACCESS_TOKEN ' \
   -H 'User-Agent: MyApp (name@email.com)' \
-  https://api.tiendanube.com/v1/123456/products
+  https://api.tiendanube.com/v2/123456/products
 ```
 
 where `ACCESS_TOKEN` is the store's access token for your app (see Authentication).
@@ -37,7 +37,7 @@ curl -H 'Authentication: bearer ACCESS_TOKEN ' \
   -H 'Content-Type: application/json' \
   -H 'User-Agent: MyApp (name@email.com)' \
   -d '{ "name": "My new product" }' \
-  https://api.tiendanube.com/v1/123456/products
+  https://api.tiendanube.com/v2/123456/products
 ```
 
 Authentication
@@ -147,7 +147,7 @@ You **should** use the `Link` URLs instead of building your own.
 HTTP Verbs
 ----------
 
-Where possible, API v1 strives to use appropriate HTTP verbs for each action.
+Where possible, our API strives to use appropriate HTTP verbs for each action.
 
 * `HEAD` : Can be issued against any resource to get just the HTTP header info.
 * `GET` : Used for retrieving resources.
@@ -160,7 +160,7 @@ Languages and Internationalization
 ----------------------------------
 Stores can potentially have multiple languages. This means that some properties of the Product and Category endpoints will be objects detailing the value for each language.
 
-For example,
+For example (using API's v1):
 
 ```shell
 curl -H 'Authentication: bearer ACCESS_TOKEN ' \
