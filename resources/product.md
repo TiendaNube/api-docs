@@ -375,6 +375,11 @@ Receive a single Product
   ]
 }
 ```
+### GET /products/sku/#{sku}
+
+Returns the first Product found where one of it's variants have the given sku
+
+#### GET /products/sku/1234
 
 ### POST /products
 
