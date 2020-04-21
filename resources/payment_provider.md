@@ -72,7 +72,7 @@ Every amount value needs to be complemented by a currency. Supported currency co
 
 
 
-### Payment Methods Types
+### Payment Method Types
 
 There are many companies providing payment methods of different types. Currently, our platform supports the following payment methods types:
 
