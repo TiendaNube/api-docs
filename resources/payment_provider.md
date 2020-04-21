@@ -11,6 +11,8 @@ Payments companies have many different and sometimes complex features which add 
 
 In our platform, a Payment Provider is created for a specific `store`.
 
+
+
 Properties
 ----------
 
@@ -24,6 +26,7 @@ Properties
 | `supported_payment_methods` | Array(Object) | List of available payment methods for each payment method type. See [Payment Methods](#Payment-Methods). |
 | `rates`                     | Array(Object) | List of rates definitions for merchants by payment method type. See [Rates](#Rates). |
 | `rates_url`                 | String        | HTTPS URL of the Payment Provider's rate information site.   |
+| `checkout_options`          | Array(Object) | Object containing the available payment options for the checkout frontend. See [Checkout Options](#Checkout-Options). |
 | `configuration_url`         | String        | [Optional] HTTPS URL of the Payment Provider configuration UI. |
 | `support_url`               | String        | [Optional] Payment Provider support site HTTPS URL.          |
 | `id`                        | String        | [Informational] Unique identifier of the Payment Provider object. |
@@ -33,6 +36,8 @@ Properties
 > ***Note:*** All URLs must be secure URLs (https).
 
 > ***Note:*** Informational properties will only appear in GET responses, which means that should not be included in POST/PUT requests.
+
+
 
 ### Logos
 
@@ -52,6 +57,8 @@ E.g.
 }
 ```
 
+
+
 ### Currency Codes
 
 Every amount value needs to be complemented by a currency. Supported currency codes must be specified according to [ISO 4217](https://www.currency-iso.org/en/home/tables/table-a1.html). A few examples of these are:
@@ -62,6 +69,8 @@ Every amount value needs to be complemented by a currency. Supported currency co
 - `COP`: Colombian Peso
 - `MXN`: Mexican Peso
 - `USD`: American Dollar
+
+
 
 ### Payment Methods Types
 
@@ -76,6 +85,8 @@ There are many companies providing payment methods of different types. Currently
 - `wallet`
 
 Depending on the kind of Payment Provider (Subadquirente, Gateway, Adquirente), they may integrate to our platform one or many payment pethods for each payment method type.
+
+
 
 ### Payment Methods
 
@@ -127,6 +138,8 @@ E.g.
   ]
 ```
 
+
+
 ### Rates
 
 Payment Providers may charge merchants with different rates per Transaction depending on the payment method type and the time the merchant chooses to withdraw the money. Hence, for each payment method type there would be a list of rates depending on the withdrawal time specified in days.
@@ -166,6 +179,8 @@ E.g.
 ]
 ```
 
+
+
 ### Money
 
 Sums of money will be represented by a value and its respective currency.
@@ -176,6 +191,8 @@ Sums of money will be represented by a value and its respective currency.
 | `currency` | String | ISO 4217 code for the currency, such as ARS, BRL, USD, etc. |
 
 > ***Note:*** Decimal numbers will be represented as string format for better decimal precision handling. It must contain two decimal places and use a point as decimal separator.
+
+
 
 ### Installments
 
@@ -232,6 +249,44 @@ E.g.
 
 
 
+### Checkout Options
+
+Payment Providers can implement multiple payment options wich will be displayed in the store checkout. Each of these implementations will be found in the JS file indicated in the `checkout_js_url` field. This object contains the data that the checkout frontend needs to render these payment options.
+
+| Field                            | Type          | Description                                                  |
+| :------------------------------- | :------------ | :----------------------------------------------------------- |
+| `id`                             | String        | Payment option UUID. It must be unique between payment providers of the same app and match the ID indicated in the `chechkout_js_url` file. |
+| `name`                           | String        | Payment option name to be displayed in the store checkout.   |
+| `description`                    | String        | [Optional] Payment option description to be displayed in the store checkout. |
+| `logo_url`                       | String        | [Optional] HTTPS URL of the Payment Provider logo.           |
+| `supported_billing_countries`    | Array(String) | List of [ISO_3166-1](https://es.wikipedia.org/wiki/ISO_3166-1) country codes where the payment option will be available. |
+| `supported_payment_method_types` | Array(String) | Payment method types supported by the payment option. See [Payment Method Types](#Payment-Method-Types). |
+
+E.g.
+
+```
+[
+    {
+      "id": "mypayments_transparent_card",
+      "name": "My Payments",
+      "description": "Some description for transparent card option",
+      "logo_url": "https://cdn.mypayments.com/apps/tiendanube/logo.png",
+      "supported_billing_countries": ["AR"],
+      "supported_payment_method_types": ["credit_card", "debit_card"]
+    },
+    {
+      "id": "mypayments_redirect",
+      "name": "My Payments",
+      "description": "Some description for redirect option",
+      "logo_url": "https://cdn.mypayments.com/apps/tiendanube/logo.png",
+      "supported_billing_countries": ["AR"],
+      "supported_payment_method_types": ["credit_card", "debit_card", "ticket", "wallet"]
+    }
+  ]
+```
+
+
+
 Endpoints
 ---------
 
@@ -258,14 +313,15 @@ E.g.
     "rates_url": "https://mypayments.com/rates",
     "checkout_js_url": "https://mypayments.com/checkout.min.js",
     "supported_currencies": [
-        "ARS"
+        "ARS", "BRL"
     ],
     "supported_payment_methods": [
         {
             "payment_method_type": "credit_card",
             "payment_methods": [
                 "visa",
-                "mastercard"
+                "mastercard",
+              	"amex"
             ],
             "installments": {
                 "min_installment_value": [
@@ -303,6 +359,14 @@ E.g.
                     }
                 ]
             }
+        },
+        {
+          "payment_method_type": "debit_card",
+          "payment_methods": ["visa_debit", "maestro"]
+        },
+        {
+          "payment_method_type": "boleto",
+          "payment_methods": ["boleto"]
         }
     ],
     "rates": [
@@ -310,17 +374,52 @@ E.g.
             "payment_method_type": "credit_card",
             "rates_definition": [
                 {
-                    "percent_fee": "30.50",
+                    "percent_fee": "15.25",
                     "flat_fee": {
-                        "value": "1000.00",
+                        "value": "5.00",
                         "currency": "ARS"
                     },
                     "plus_tax": true,
                     "days_to_withdraw_money": 10
+                },
+                {
+                    "percent_fee": "30.50",
+                    "flat_fee": {
+                        "value": "10.00",
+                        "currency": "BRL"
+                    },
+                    "plus_tax": false,
+                    "days_to_withdraw_money": 5
                 }
             ]
         }
-    ]
+    ],
+    "checkout_options": [
+    {
+      "id": "mypayments_transparent_card",
+      "name": "My Payments",
+      "description": "Some description for transparent card option",
+      "logo_url": "https://cdn.mypayments.com/apps/tiendanube/logo.png",
+      "supported_billing_countries": ["AR"],
+      "supported_payment_method_types": ["credit_card", "debit_card"]
+    },
+    {
+      "id": "mypayments_transparent_offline",
+      "name": "My Payments",
+      "description": "Some description for transparent offline option",
+      "logo_url": "https://cdn.mypayments.com/apps/tiendanube/logo.png",
+      "supported_billing_countries": ["BR"],
+      "supported_payment_method_types": ["boleto"]
+    },
+    {
+      "id": "mypayments_redirect",
+      "name": "My Payments",
+      "description": "Some description for redirect option",
+      "logo_url": "https://cdn.mypayments.com/apps/tiendanube/logo.png",
+      "supported_billing_countries": ["AR", "BR"],
+      "supported_payment_method_types": ["credit_card", "wire_transfer", "wallet"]
+    }
+  ]
 }
 ```
 
