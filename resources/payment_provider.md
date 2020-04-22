@@ -76,13 +76,14 @@ Every amount value needs to be complemented by a currency. Supported currency co
 
 There are many companies providing payment methods of different types. Currently, our platform supports the following payment methods types:
 
+- `bank_debit`
+- `boleto`
+- `cash`
 - `credit_card`
 - `debit_card`
-- `boleto`
 - `ticket`
-- `wire_transfer`
-- `cash`
 - `wallet`
+- `wire_transfer`
 
 Depending on the kind of Payment Provider (Subadquirente, Gateway, Adquirente), they may integrate to our platform one or many payment pethods for each payment method type.
 
