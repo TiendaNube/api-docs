@@ -12,7 +12,6 @@ Payments companies have many different and sometimes complex features which add 
 In our platform, a Payment Provider is created for a specific `store`.
 
 
-
 Properties
 ----------
 
@@ -38,7 +37,6 @@ Properties
 > ***Note:*** Informational properties will only appear in GET responses, which means that should not be included in POST/PUT requests.
 
 
-
 ### Logos
 
 At the moment, our platform requires two versions of the Payment Provider logo. Each image must be sent as a `key:value` pair, being the key the dimension of the image and the value, the HTTPS URL of its content.
@@ -58,7 +56,6 @@ E.g.
 ```
 
 
-
 ### Currency Codes
 
 Every amount value needs to be complemented by a currency. Supported currency codes must be specified according to [ISO 4217](https://www.currency-iso.org/en/home/tables/table-a1.html). A few examples of these are:
@@ -69,7 +66,6 @@ Every amount value needs to be complemented by a currency. Supported currency co
 - `COP`: Colombian Peso
 - `MXN`: Mexican Peso
 - `USD`: American Dollar
-
 
 
 ### Payment Method Types
@@ -85,8 +81,7 @@ There are many companies providing payment methods of different types. Currently
 - `wallet`
 - `wire_transfer`
 
-Depending on the kind of Payment Provider (Subadquirente, Gateway, Adquirente), they may integrate to our platform one or many payment pethods for each payment method type.
-
+Depending on the kind of Payment Provider (Aggregator, Acquirer, Gateway), they may integrate to our platform one or many payment pethods for each payment method type.
 
 
 ### Payment Methods
@@ -140,7 +135,6 @@ E.g.
 ```
 
 
-
 ### Rates
 
 Payment Providers may charge merchants with different rates per Transaction depending on the payment method type and the time the merchant chooses to withdraw the money. Hence, for each payment method type there would be a list of rates depending on the withdrawal time specified in days.
@@ -181,7 +175,6 @@ E.g.
 ```
 
 
-
 ### Money
 
 Sums of money will be represented by a value and its respective currency.
@@ -192,7 +185,6 @@ Sums of money will be represented by a value and its respective currency.
 | `currency` | String | ISO 4217 code for the currency, such as ARS, BRL, USD, etc. |
 
 > ***Note:*** Decimal numbers will be represented as string format for better decimal precision handling. It must contain two decimal places and use a point as decimal separator.
-
 
 
 ### Installments
@@ -249,7 +241,6 @@ E.g.
 > ***Note:*** Interest rates are percentages expressed in fractions of 1 in `String` format for better decimal precision handling. For instance, an interest rate of `6.5%` would be expressed as `6.5 / 100 = 0.065`, which stringified would be "0.065".
 
 
-
 ### Checkout Options
 
 Payment Providers can implement multiple payment options wich will be displayed in the store checkout. Each of these implementations will be found in the JS file indicated in the `checkout_js_url` field. This object contains the data that the checkout frontend needs to render these payment options.
@@ -285,7 +276,6 @@ E.g.
     }
   ]
 ```
-
 
 
 Endpoints
@@ -496,6 +486,7 @@ Delete a Payment Provider for a given store.
 
 `HTTP/1.1 204 No Content` - the request was successful but there is no representation to return (i.e. the response is empty).
 
+
 ## HTTP Errors List
 
 * **400 Bad Request** - the request could not be understood or was missing required parameters.
@@ -503,6 +494,7 @@ Delete a Payment Provider for a given store.
 * **403 Forbidden** - access denied.
 * **404 Not Found** - resource was not found.
 * **405 Method Not Allowed** - requested method is not supported for resource.
+
 
 Appendix
 --------
