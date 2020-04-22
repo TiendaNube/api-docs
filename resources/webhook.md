@@ -7,9 +7,9 @@ A Webhook is a tool that allows you to receive a notification for a certain even
 | -------------- | ------------------------------------------------------------------------------------------------ |
 | App            | uninstalled/suspended/resumed                                                                    |
 | Category       | created/updated/deleted                                                                          |
-| Order          | created/updated/paid/fulfilled/cancelled                                                         |
+| Order          | created/updated/paid/packed/fulfilled/cancelled                                                  |
 | Product        | created/updated/deleted                                                                          |
-| Domain        | updated                                                                                          |
+| Domain         | updated                                                                                          |
 | Theme          | updated                                                                                          |
 
 To register for the product created event, for example, you should send `product/created` in the event field.
@@ -73,7 +73,7 @@ Also, every webhook will send custom parameters, as follows:
 
 * __id__: Category's id
 
-#### order/created - order/updated - order/paid - order/fulfilled - order/cancelled
+#### order/created - order/updated - order/paid - order/packed - order/fulfilled - order/cancelled
 
 * __id__: Order's id
 
