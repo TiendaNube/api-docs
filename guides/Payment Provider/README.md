@@ -1,9 +1,11 @@
 
+
 # Payment Provider App Development Guide
 
-Revision: 0.85
-
 ### Glossary
+
+#### Payment Provider
+Actually, short for Payment Service Provider, is any entity the provides the means to allow a buyer to pay the merchant for purchased goods or hired services. The means include all the necessary information to inform the potential buyer for the available methods, installments, promotions, etc, as well as the means to actually make a payment.
 
 #### Payment Method Type
 It can be any of, but not limited to:
@@ -16,8 +18,11 @@ It can be any of, but not limited to:
 - Cash
 - Others
 
+#### Payment Method
+For instance, if the Payment Method Type is Credit Card, then an example of plain Payment Method would be Visa, Mastecard or American Express. For some types, for example like Bank Debit, only have one Payment Method which happens to be Bank Debit. Though it's redundant, it leaves space for future variations.
 
-#### Payment Provider
+#### Payment Option
+Once a Payment Method has been chosen, a Payment Option is needed to complete the payment. For example, if you want to pay for Visa, the buyer can fill up the credit card form in the store's website or go to the Payment Provider's checkout and follow the steps on their page and finally be redirected back to the store's website.
 
 
 ## Introduction
@@ -69,6 +74,38 @@ The following implementation example sequence helps illustrate the process:
 - *Payment App*: Any hosts on the Payment Provider’s side.
 
 ![App Installation and Payment Provider Creation Sequence](./mmd/PaymentProvider-InstallationAndCreation.mmd.jpg)
+
+#### Intalling an app
+
+##### (1) Get the Authorization Code
+
+Use the following URL to start the app installation flow in a store:
+
+`https://${store_name}.mitiendanube.com/admin/apps/${app_id}/authorize`
+
+> Note: Using placeholders for:
+> - `${store_name}`
+> - `${app_id}`
+
+After the Merchant approves the permissions, the Merchant is redirected to the App's redirect URI, which you can find in your app's configuration, with the `code` attached as a query string.
+
+##### (2) Get the `access_token`
+
+```bash
+curl --location --request POST 'https://www.tiendanube.com/apps/authorize/token' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'client_id=${client_id}' \
+--data-urlencode 'client_secret=${client_secret}' \
+--data-urlencode 'grant_type=authorization_code' \
+--data-urlencode 'code=${client_secret}'
+```
+
+> **Note 1:** Using placeholders for:
+> - `${code}`: From the query string of the Redirect URL.
+> - `${client_secret}`
+> - `${client_id}`
+
+> **Note 2:** `${client_id}` and `${app_id}` represent the same value.
 
 ### Payment Provider Configuration
 
