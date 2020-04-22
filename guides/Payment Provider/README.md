@@ -3,6 +3,23 @@
 
 Revision: 0.85
 
+### Glossary
+
+#### Payment Method Type
+It can be any of, but not limited to:
+- Credit Card
+- Debit Card
+- Bank Debit
+- Boleto (Brasil only)
+- Ticket (Argentina ony, e.g. _Pago Fácil_, _RapiPago_, etc)
+- Wire Transfer
+- Cash
+- Others
+
+
+#### Payment Provider
+
+
 ## Introduction
 
 This document provides an explanation of what a Payment App is and will guide you through the development process.
