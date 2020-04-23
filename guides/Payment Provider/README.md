@@ -289,7 +289,7 @@ Most of our APIs are based on REST interfaces. However, our Checkout APIs are ba
 
 The Payment Provider has two checkout related properties:
 
-- `checkout_options`: List of Payment Options (such a `Transparent`, `Redirect`, `Modal`), and their properties which include some like `name`, `logo_url` and `supported_methods` (`card`, `boleto`, `bank_debit`, `ticket`), among others.
+- `checkout_options`: List of Payment Options (such a `Transparent`, `External`, `Modal`), and their properties which include some like `name`, `logo_url` and `supported_method_types` (`card`, `boleto`, `bank_debit`, `ticket`), among others.
 
 - `checkout_js_url`: The handlers for each `checkout_option` (such as `onLoad`, `onSubmit`, etc) are implemented through the JS API. This property contains a Secure (`HTTPS`) URL pointing to the file with this implementations so our Checkout can run them on the frontend. This URL will be requested from the frontend, which means that the JS file must be hosted on a CDN capable of handling high traffic.
 
@@ -303,7 +303,7 @@ Note that are frontend has two main components:
 
 > In case any frontend Javascript scripts unrelated to the checkout process, like, for example, a fraud prevention script such as a digital footprint, needed to be added to the merchant website’s storefront, our API has a resource for that purpose. Details on how to implement it can be found following [this link](../../resources/script.md).
 > 
-> Any requests to the Scripts Resource API should be sent during the App’s installation process. Your app will need an extra scope to access this resource: `write_scripts`. You must set it at the App's configuration form on the Partner's Portal.
+> Any requests to the Scripts Resource API should be sent during the App’s installation process. Your app will need an extra scope to access this resource: `write_scripts`. You must enable it at the App's configuration form on the Partner's Portal.
 
 #### Supported Currencies
 
@@ -327,9 +327,9 @@ And here’s the Nuvemshop App implementation diagram:
 
 ### Available Checkout Payment Options
 
-Currently, there are two mainstream Checkout Payment Options. Below are quick descriptions of these to put some context and make sure the reader is aligned with both concepts.
+Currently, there are three mainstream Checkout Payment Options. Below are quick descriptions of these to give some context and to align the reader with these concepts.
 
-#### Redirect Checkout Payment Option
+#### External Payment Option
 
 Pretty much a standard redirect payment flow:
 
@@ -340,9 +340,7 @@ Pretty much a standard redirect payment flow:
     - If the buyer has an account on the Payment Provider and Wallet features are supported, this flow has a very smooth UX.
 5. The buyer is redirected back to the merchant's website and lands on a success, failure or cancel page.
 
-Some Payment Providers offer SDKs which render a lightbox or modal with an embedded iframe containing the Payment Provider’s checkout UI on the Merchant’s website, giving the buyer a more transparent-like experience. In this case, though the buyer never really leaves the merchant's website, the checkout flow is run under the Payment Provider's domain.
-
-#### Transparent Checkout Payment Option
+#### Transparent Payment Option
 
 This more recent approach keeps the buyer at the Merchant’s website during all the checkout process:
 
@@ -352,11 +350,18 @@ This more recent approach keeps the buyer at the Merchant’s website during all
 
 This option gives the buyer a more store-branded experience which improves the user experience quality.
 
+#### Modal Payment Option
+Some Payment Providers offer SDKs which render a lightbox or modal with an embedded iframe containing the Payment Provider’s checkout UI on the Merchant’s website, giving the buyer a more transparent-like experience. In this case, though the buyer never really leaves the merchant's website, the checkout flow is run under the Payment Provider's domain.
+
+This option allows the app to take full control of the front to render all the necessary elements to start the payment process.
+
+> **Note:** Requires a very intense internal certification process.
+
 ### Checkout Payment Options Implementation (Checkout JS API)
 
-As explained before, the developer is in charge of the frontend and backend implementations. The developer should make a frontend implementation according to our JS APIs specifications. The JS implementation file must be hosted on a CDN that must be able to handle potentially high traffic concurrency with, of course, a secure URL.
+As explained before, the developer is in charge of the JS and REST implementations. The developer's JS implementation must follow our JS APIs specifications in order to properly integrate with our checkout. The file containing the app's JS implementation must be hosted on a CDN which must be able to handle potentially high traffic concurrency with, of course, a secure URL.
 
-[In this link](../../resources/checkout_js.md) you can find very detailed information on how the Checkout JS API is implemented and through a URL as the `checkout_js_url` property of the `Payment Provider` object.
+[In this link](../../resources/checkout_js.md) you can find very detailed information on how the Checkout JS API is implemented and provided through a URL as the `checkout_js_url` property of the `Payment Provider` object, which our checkout will fetch when needed.
 
 #### Adding a Checkout Payment Option
 
@@ -399,30 +404,30 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
 
 **A full description of the available PaymentOptions can be found [here](../../resources/checkout_js.md#methods).**
 
-##### Redirect Method Implementation Example
-Let’s assume we’ve created an app called “Acme Payment App” and now we want to implement a Redirect Payment Option so the user can use their wallet credit or some other method like card or boleto, to pay for an order, but from Acme's website.
+##### External Payment Implementation Example
+Let’s assume we’ve created an app called “Acme Payment App” and now we want to implement an External Payment Option so the user can use their wallet credit or some other method like a card or boleto, to pay for an order, but from Acme's website.
 
-First, we’ll start by creating an instance of `PaymentOptions.RedirectPayment` and adding it to the Checkout by using the `Checkout.addPaymentOption(...)` method:
+First, we’ll start by creating an instance of `PaymentOptions.ExternalPayment` and adding it to the Checkout by using the `Checkout.addPaymentOption(...)` method:
 
 ```javascript
-// AcmeRedirectOption.js
+// AcmeExternalPaymentOption.js
 LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
   // We create a new instance of the redirect option.
-  var AcmeRedirectOption = new PaymentOptions.RedirectPayment({
+  var AcmeExternalPaymentOption = new PaymentOptions.ExternalPayment({
   })
   // Finally, we add the JS part of our option, i.e. the handlers, to the Checkout object to it can render it according to the configuration set on the Payment provider.
-  Checkout.addPaymentOption(AcmeRedirectOption);
+  Checkout.addPaymentOption(AcmeExternalPaymentOption);
 });
 ```
 
-`PaymentOptions.RedirectPayment` takes an object as an argument, such a this one:
+`PaymentOptions.ExternalPayment` takes an object as an argument, such a this one, which includes the handlers for the events our checkout will trigger:
 
 ```javascript
-// AcmeRedirectOption.js
+// AcmeExternalPaymentOption.js
 LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
   
   // We create a new instance of the redirect option.
-  var AcmeRedirectOption = new PaymentOptions.RedirectPayment({
+  var AcmeExternalPaymentOption = new PaymentOptions.ExternalPayment({
     
     // The option's unique id as set on it's configuration on the Payment Provider so Checkout can match them and merge them.
     id: 'acme_redirect',
@@ -431,21 +436,24 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
     onSubmit: function(callback) {
 
       // We gather the minimum needed information.
-      let acmeRelevantData = {
+      lext acmeRelevantData = {
+        // You should include all the relevant data here.
         orderId: Checkout.order.cart.id,
+        paymentProviderId: Checkout.payment_provider_id,
         currency: Checkout.order.cart.currency,
         total: Checkout.order.cart.prices.total
       }
 
       // We use the Checkout http lib to post a request to our server
       // and fetch the redirect_url
-      Checkout.http.post('https://app.acmepayments.com/generate-checkout-url', acmeRelevantData)
-        .then(function(response) {
+      fetch('https://app.acme.com/generate-checkout-url', {method: 'POST', data: acmeRelevantData})
+        .then(response => response.json())
+        .then(function(responseBody){
           
           // Once you get the redirect_url, invoke the callback passing it in the     
           callback({ // object argument with result params.
             success: true,
-            redirect: response.redirect_url
+            redirect: responseBody.redirect_url
           });
         })
         .catch(function(error) {
@@ -459,7 +467,7 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
   })
   
   // Finally, we add the JS part of our option, i.e. the handlers, to the Checkout object to it can render it according to the configuration set on the Payment provider.
-  Checkout.addPaymentOption(AcmeRedirectOption);
+  Checkout.addPaymentOption(AcmeExternalPaymentOption);
 });
 ```
 
@@ -469,7 +477,7 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
 As with any other method, we start by instantiating the one we want to add and then add it using `Checkout.addPaymentOption()`:
 
 ```javascript
-// AcmeRedirectOption.js
+// AcmeCardPaymentOption.js
 LoadCheckoutPaymentContext(function(Checkout, Methods) {
 
   var AcmeCardOption = new Methods.Transparent.CardPayment({
@@ -593,7 +601,9 @@ Some SDKs have mechanisms to render forms using field names as required. To prot
 
 The object `Checkout.data.form` provides access to all the form fields. The payment method implementation must map each of the provided fields to the Payment Provider specific ones. In cases where a form with specific attributes needs to be submitted, we recommend using workarounds such as dynamically creating a hidden HTML form and submitting it using JS.
 
-### Transaction Implementation
+### Transaction Implementation (WORK IN PROGRESS)
+
+**_NOTE:_ THIS SECTION IS SUBJECT TO MAJOR BREAKING CHANGES IN THE NEAR FEATURE.**
 
 Payment Platforms usually have a set of instructions that need to be implemented on the backend side and they work together with the frontend implementation. Instead of doing these implementations natively, our APIs allow the developer to make a 3rd party backend implementations on 3rd party infrastructures and access our resources to create transactions in orders and update them as their status changes over time.
 
@@ -608,7 +618,7 @@ With transparent payment option:
 
 ![Transparent Payment Option Sequence](./mmd/PaymentProvider-TransparentPaymentOption.mmd.jpg)
 
-With redirect payment option:
+With external payment option:
 
 ![Redirect Payment Option Sequence](./mmd/PaymentProvider-RedirectPaymentOption.mmd.jpg)
 
