@@ -426,7 +426,7 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
 // AcmeExternalPaymentOption.js
 LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
   
-  // We create a new instance of the redirect option.
+  // We create a new instance of the external payment option.
   var AcmeExternalPaymentOption = new PaymentOptions.ExternalPayment({
     
     // The option's unique id as set on it's configuration on the Payment Provider so Checkout can match them and merge them.
@@ -436,7 +436,7 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
     onSubmit: function(callback) {
 
       // We gather the minimum needed information.
-      lext acmeRelevantData = {
+      let acmeRelevantData = {
         // You should include all the relevant data here.
         orderId: Checkout.order.cart.id,
         paymentProviderId: Checkout.payment_provider_id,
@@ -537,8 +537,8 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
     });
   };
 
-  // Now, our Method and it's argument object.
-  var AcmeCardMethod = new PaymentOptions.Transparent.CardPayment({
+  // Now, our Payment Option and it's argument object.
+  var AcmeCardPaymentOption = new PaymentOptions.Transparent.CardPayment({
     
     // The option's unique id as set on it's configuration on the Payment Provider so Checkout can match them and merge them.
     id: "acme_transparent_card",
