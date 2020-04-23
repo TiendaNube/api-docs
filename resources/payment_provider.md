@@ -24,7 +24,7 @@ Properties
 | `supported_payment_methods` | Array(Object) | List of available payment methods for each payment method type. See [Payment Methods](#Payment-Methods). |
 | `rates`                     | Array(Object) | List of rates definitions for merchants by payment method type. See [Rates](#Rates). |
 | `rates_url`                 | String        | HTTPS URL of the Payment Provider's rate information site.   |
-| `checkout_js_url`           | String        | HTTPS URL of the JS file to be included in the checkout frontend. See [Checkout JS](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/checkout_js.md). |
+| `checkout_js_url`           | String        | HTTPS URL of the JS file to be included in the checkout frontend. See [Checkout JS](./checkout.md). |
 | `checkout_options`          | Array(Object) | Object containing the available payment options for the checkout frontend. See [Checkout Options](#Checkout-Options). |
 | `configuration_url`         | String        | [Optional] HTTPS URL of the Payment Provider configuration UI. |
 | `support_url`               | String        | [Optional] Payment Provider support site HTTPS URL.          |
@@ -91,7 +91,7 @@ Depending on the kind of Payment Provider (Subadquirente, Gateway, Adquirente), 
 | Field                 | Type          | Description                                                  |
 | :-------------------- | :------------ | :----------------------------------------------------------- |
 | `payment_method_type` | String        | One of the available [Payment Method Types](#Payment-Method-Types). |
-| `payment_methods`     | Array(String) | The list of supported payments methods by the given payment method type. See [Supported Payment Methods by Payment Method Type](#Supported-Payment-Methods-by-Payment Method-Type). |
+| `payment_methods`     | Array(String) | The list of supported payments methods by the given payment method type. See [Supported Payment Methods by Payment Method Type](#Supported-Payment-Methods-by-Payment-Method-Type). |
 | `installments`        | Object        | [Optional] Object containing the installments available to consumers. See [Installments](#Installments). |
 
 E.g.
