@@ -112,6 +112,7 @@ curl --location --request POST 'https://www.tiendanube.com/apps/authorize/token'
 You can find the list  of Payment Provider object of properties and their description in our API’s Documentation, [here](../../resources/payment_provider.md#payment-provider-1). All of the Payment Provider object properties MUST have valid and real values.
 
 Quick example:
+
 ```bash
 curl --location --request POST 'https://api.tiendanube.com/v1/1077387/payment_providers' \
 --header 'Authentication: bearer ${access_token}' \
