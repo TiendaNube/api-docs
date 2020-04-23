@@ -1,54 +1,70 @@
-# Checkout JS
+# Checkout
 
-Since there are a lot of possible flows for integrating a payment solution with our platform, we've decided to give the Payment Provider's app full control of how to handle the integration.
 
-When you define a [Payment Provider](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md) you must specify a JS file in the field `checkout_js_url`. This script will be loaded during the checkout process and can interact with it through some primitives described below.
+## Payment Option (Javascript Interface)
+Our Checkout flow offers different Payment Options that provides buyers with the means to pay for an order with the Payment Method of their choice. Payments App developers can create their own Payment Options.
+
+Payment Options configuration params are set via our [Payment Provider REST API](./payment_provider.md) by adding [`checkout_options`](./payment_provider.md#Checkout-Options) to the created Payment Provider.
+
+Our Checkout triggers a variety of Javascript Eventos for which we provide a Javacsript API that allow the App Developer to handle these events freely to initiate the payment process. Hence, the app developer can implement their _(most likely)_ already existing and wideley tested Javascript SDKs.
+
+The file with the implemented handlers for the different options must be hosted on a CDN that must be capable of handling high traffic loads. The URL to this file must be stated in the [Payment Provider REST API](./payment_provider.md) `checkout_js_url` property.
 
 ## Examples
 
-### Redirect to External Checkout
+### External Payment Option
 
 Let's take a look at a simple script for a hypothetical integration with a Payment Provider that redirects the user to *'acmepayments.com'* to finish the purchase in their checkout. This is what we call a `redirect` checkout.
 
-```js
-LoadPaymentMethod(function(Checkout, Methods) {
+```javascript
+// File: AcmeExternalPaymentOption.js
 
-  // Define an object to encapsulate the integration.
+// Call this function and pass a function as a parameter to get access
+// to the Checkout context and the Payment Options objects.
+LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
   
-  var AcmeRedirect = new Methods.RedirectPayment({
-    name: 'ACME Payments',
+  // We create a new instance of the external payment option.
+  var AcmeExternalPaymentOption = new PaymentOptions.ExternalPayment({
     
-    // This function will be called when the consumer finishes the checkout flow so you can initiate the Transaction.
-    
+    // The option's unique id as set on it's configuration on the Payment Provider so Checkout can match them and merge them.
+    id: 'acme_redirect',
+
+    // This function handles the order submission event.
     onSubmit: function(callback) {
-    
-      // Let's imagine the app providies this endpoint to generate an ACME Payments checkout URL.
-      
-      Checkout.http.post('https://app.acmepayments.com/generate-checkout-url', Checkout.data)
-        .then(function(response){
-        
-          // Now that we have the ACME Payments checkout, invoke the callback telling it we want to redirect to its URL.
+
+      // We gather the minimum needed information.
+      let acmeRelevantData = {
+        // You should include all the relevant data here.
+        orderId: Checkout.order.cart.id,
+        paymentProviderId: Checkout.payment_provider_id,
+        currency: Checkout.order.cart.currency,
+        total: Checkout.order.cart.prices.total
+      }
+
+      // We use the Checkout http lib to post a request to our server
+      // and fetch the redirect_url
+      fetch('https://app.acme.com/generate-checkout-url', {method: 'POST', data: acmeRelevantData})
+        .then(response => response.json())
+        .then(function(responseBody){
           
-          callback({
+          // Once you get the redirect_url, invoke the callback passing it in the     
+          callback({ // object argument with result params.
             success: true,
-            redirect: response.redirect_url
+            redirect: responseBody.redirect_url
           });
         })
-        .catch(function(error){
-        
+        .catch(function(error) {
+
           // Handle a potential error in the HTTP request.
-          
           callback({
             success: false
           });
         });
     }
-  });
-
-  // Register the object in the checkout.
+  })
   
-  Checkout.addMethod(AcmeRedirect);
-
+  // Finally, we add the JS part of our option, i.e. the handlers, to the Checkout object to it can render it according to the configuration set on the Payment provider.
+  Checkout.addPaymentOption(AcmeExternalPaymentOption);
 });
 ```
 
@@ -58,21 +74,18 @@ This is a more complex example, since this is a richer interaction with more con
 
 The entire flow happens without leaving the Tiendanube checkout, in what we call a `transparent` checkout. This type of payment renders a form where the consumer inputs their credit card information and with which you can interact. In this example, whenever the consumer inputs or changes the credit card number we fetch the first 6 digits and populate the list of available installments.
 
-```js
-LoadPaymentMethod(function(Checkout, Methods) {
+```javascript
+// AcmePaymentsCardMethod.js
+LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
 
   var currentTotalPrice = Checkout.data.order.cart.prices.total;
-  var currencCreditCardBin = null;
+  var currencCardBin = null;
 
-  /**
-   * First, we define some helper functions.
-   */
+  // SOME HELPER FUNCTIONS
 
   // Get credit card number from transparent form.
-  
   var getCardNumber = function() {
     var cardNumber = '';
-
     if (Checkout.data.form.cardNumber) {
       cardNumber = Checkout.data.form.cardNumber.split(' ').join('');
     }
@@ -80,96 +93,87 @@ LoadPaymentMethod(function(Checkout, Methods) {
   };
 
   // Get the first 6 digits from the credit card number.
-  
   var getCardNumberBin = function() {
     return getCardNumber().substring(0, 6);
   };
 
   // Check whether the BIN (first 6 digits of the credit card number) has changed. If so, we'll want to update the available installments.
-  
   var mustRefreshInstallments = function() {
-    var creditCardBin = getCardNumberBin();
-
-    var hasCreditCardBin = creditCardBin && creditCardBin.length >= 6;
+    var cardBin = getCardNumberBin();
+    var hasCardBin = cardBin && cardBin.length >= 6;
     var hasPrice = Boolean(Checkout.data.totalPrice);
-    var changedCreditCardBin = creditCardBin !== currencCreditCardBin;
+    var changedCardBin = cardBin !== currencCardBin;
     var changedPrice = Checkout.data.totalPrice !== currentTotalPrice;
-
-    return (hasCreditCardBin && hasPrice) && (changedCreditCardBin || changedPrice);
+    return (hasCardBin && hasPrice) && (changedCardBin || changedPrice);
   };
 
   // Update the list of installments available to the consumer.
-  
   var refreshInstallments = function() {
-  
-    // Let's imagine the app provides this endpoint to obtain installments.
     
-    Checkout.http.post('https://app.acmepayments.com/installments', {
+    // Let's imagine the app provides this endpoint to obtain installments.
+    Checkout.http.post('https://app.acmepayments.com/card/installments', {
       amount: Checkout.data.totalPrice,
       bin: getCardNumberBin()
     }).then(function(response) {
-      Checkout.setInstallments({ installments: response });
-    })
-  }
+        Checkout.setCheckoutData(response.installments);
+    });
+  };
 
-  /**
-   * Now, onto the integration flows.
-   */
-
-  // Define an object to encapsulate the integration.
-  
-  var AcmeTransparentCreditCard = new Methods.Transparent.CreditPayment({
-    name: 'ACME Credit Payment',
-
-    // This function will be called when the checkout data changes, such as the price or the value of the credit card form inputs.
+  // Now, our Payment Option and it's argument object.
+  var AcmeCardPaymentOption = new PaymentOptions.Transparent.CardPayment({
     
+    // The option's unique id as set on it's configuration on the Payment Provider so Checkout can match them and merge them.
+    id: "acme_transparent_card",
+  
+  // Event handler for form field input
     onDataChange: Checkout.utils.throttle(function() {
       if (mustRefreshInstallments()) {
         refreshInstallments()
       } else if (!getCardNumberBin()) {
         // Clear installments if customer remove credit card number
-        Checkout.setInstallments({ installments: null });
+        Checkout.setCheckoutData(null);
       }
-    }, 700),
-
-    // This function will be called when the consumer finishes the checkout flow so you can initiate the Transaction.
+    }),
     
     onSubmit: function(callback) {
-    
+      // We gather the card info we need
+      var acmeCardRelevantData = {
+        orderId: Checkout.order.cart.id,
+        currency: Checkout.order.cart.currency,
+        total: Checkout.order.cart.prices.total,
+        card: {
+          number: Checkout.data.form.cardNumber,
+          name: Checkout.data.form.cardHolderName,
+          expiration: Checkout.data.form.cardExpiration,
+          cvv: Checkout.data.form.cardCvv,
+          installments: Checkout.data.form.cardInstallments
+        }
+      }
       // Let's imagine the app provides this endpoint to process credit card payments.
-      
-      Checkout.http.post('https://app.acmepayments.com/charge', Checkout.data.form)
+      Checkout.http.post('https://app.acmepayments.com/charge',acmeCardRelevantData)
         .then(function(response) {
-          if (response.success){
-          
+          if (response.success) {
             // If the charge was successful, invoke the callback indicating we want to close order.
-            
             callback({
-              success: true,
-              close: true,
-              confirmed: true
+              success: true
             });
           } else {
             callback({
               success: false
             });
           }
-        })
-        .catch(function(error){
-        
-          // Handle a potential error in the HTTP request.
-          
-          callback({
-            success: false
-          });
-        });
-    }
-  });
+       })
+       .catch(function(error) {
+         // Handle a potential error in the HTTP request.
+         callback({
+           success: false
+         });
+       });
+     }
+  })
 
-  // Register the object in the checkout.
-  
-  Checkout.addMethod(AcmeTransparentCreditCard);
-
+  // And, we add the method to the available options.
+  Checkout.addPaymentOption(AcmeCardMethod);
 });
 ```
 
@@ -177,13 +181,13 @@ LoadPaymentMethod(function(Checkout, Methods) {
 
 The `LoadPaymentMethod` function takes a callback with two arguments, `Checkout` and `Methods`. Here's what's available in each of them.
 
-| Name              | Description                                                  |
-| ----------------- | ------------------------------------------------------------ |
-| `addMethod`       | Register the integration in the checkout.                    |
-| `setInstallments` | Update the attributes of the object `data.installments`. See [Installments](#Installments). |
-| `data`            | Object containing the data of the shopping cart, the consumer and more. See [Data](#Data). |
-| `http`            | Function to perform AJAX requests. See [HTTP](#HTTP).        |
-| `utils`           | Collection of helper functions. See [Utils](#Utils).         |
+| Name                  | Description                                                  |
+| --------------------- |   ---------------------------------------------------------- |
+| `addPaymentOption`    | Register the option so the checkout can inject the configuration params and render it. |
+| `setInstallments`     | Update the attributes of the object `data.installments`. See [Installments](#Installments). |
+| `data`                | Object containing the data of the shopping cart, the consumer and more. See [Data](#Data). |
+| `http`                | Function to perform AJAX requests. See [HTTP](#HTTP).        |
+| `utils`               | Collection of helper functions. See [Utils](#Utils).         |
 
 ### HTTP
 
@@ -424,11 +428,11 @@ data: {
 
 ## Methods
 
-This is the second argument to the callback in `LoadPaymentMethod`. It contains the different possible integration flows, the difference among each of them being the UI that is rendered and the data that's available to you as `Checkout.data.form`.
+This is the second argument to the callback in `LoadCheckoutPaymentContext`. It contains the different possible integration flows, the difference among each of them being the UI that is rendered and the data that's available to you as `Checkout.data.form`.
 
 | Name              | Description                                                  |
 | ----------------- | ------------------------------------------------------------ |
-| `RedirectPayment` | For integration flows that redirect the consumer to a different website. |
+| `ExternalPayment` | For integration flows that redirect the consumer to a different website. |
 | `ModalPayment`    | For integration flows that open a modal with an iframe.      |
 | `Transparent`     | For integration flows that render a form and integrate mostly through js to maintain the UX of the checkout. |
 
@@ -438,15 +442,16 @@ These flows don't provide any inputs. The difference is how they're rendered in 
 
 ### Transparent
 
-There're three options availalbe in `Methods.Transparent`.
+There're three options availalbe in `PaymentOptions.Transparent`.
 
 | Name             | Description                                                  |
 | ---------------- | ------------------------------------------------------------ |
-| `CreditPayment`  | For credit or debit card payments.                           |
+| `CardPayment`  | For credit or debit card payments.                           |
 | `DebitPayment`   | For redirecting the consumer to the bank's system for debit payments. |
-| `OfflinePayment` | For boleto or ticket type payments.                          |
+| `BoletoPayment` | For payments with Boleto.                          |
+| `TicketPayment` | For payments with Boleto.                          |
 
-#### CreditPayment
+#### CardPayment
 
 These are the fields rendered and available through `Checkout.data.form`.
 
@@ -473,18 +478,27 @@ These are the fields rendered and available through `Checkout.data.form`.
 | `holderName`     | Account holder's name.                    |
 | `holderIdNumber` | Account holder's CPF, DNI, or equivalent. |
 
-#### OfflinePayment
+#### BoletoPayment
 
 These are the fields rendered and available through `Checkout.data.form`.
 
 | Name             | Description                         |
 | ---------------- | ----------------------------------- |
 | `holderName`     | Consumer's name.                    |
-| `holderIdNumber` | Consumer's CPF, DNI, or equivalent. |
+| `holderIdNumber` | Consumer's CPF, CNPJ or equivalent. |
+
+#### TicketPayment
+
+These are the fields rendered and available through `Checkout.data.form`.
+
+| Name             | Description                         |
+| ---------------- | ----------------------------------- |
+| `holderName`     | Consumer's name.                    |
+| `holderIdNumber` | Consumer's DNI, CUIT or equivalent. |
 
 ### Arguments
 
-All of the instances of `Methods` take can take the following arguments.
+All of the instances of `PaymentOptions` take can take the following arguments.
 
 | Name           | Description                                                  |
 | -------------- | ------------------------------------------------------------ |
@@ -494,7 +508,7 @@ All of the instances of `Methods` take can take the following arguments.
 | `onDataChange` | Function to be invoked whenever there's a change in `Checkout.data`. |
 | `onSubmit`     | Function to be invoked whenever the consumer clicks on "Finish checkout" and all mandatory fields are filled correctly. |
 
-#### OnSubmit
+#### onSubmit
 
 The function passed to `onSubmit` received a parameter called `callback`, which must be invoked to return control to the checkout flow with information regarding the success of the payment attempt.
 
@@ -510,12 +524,12 @@ This `callback` function can be invoked with an object containing the following 
 
 Here's an example summarizing all the definitions above.
 
-```js
-LoadPaymentMethod(function (Checkout, Methods) {
+```javascript
+LoadCheckoutPaymentContext(function (Checkout, PaymentOptions) {
 
-	var Custom =  new Methods.CustomPayment({
-		name: 'custom',
-		scripts: 'https://meuscriptonline.com/payment.js',
+	var Custom =  new PaymentOptions.CustomPayment({
+		id: 'acme_custom',
+
 		onLoad: function() {
 			// Do something after the script loads
 			// Example: generate a token
@@ -528,13 +542,13 @@ LoadPaymentMethod(function (Checkout, Methods) {
 		onSubmit: function(callback) {
 			// Do something when user submit payment
 			callback({
-				success: true/false,
+				success: true, // or false
 				...
 			})
 		}
 	});
 
-	Checkout.addMethod(Custom);
+	Checkout.addPaymentOption(Custom);
 	
 });
 ```
