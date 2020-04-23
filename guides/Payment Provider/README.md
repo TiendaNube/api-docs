@@ -1,5 +1,3 @@
-
-
 # Payment Provider App Development Guide
 
 ### Glossary
@@ -110,6 +108,178 @@ curl --location --request POST 'https://www.tiendanube.com/apps/authorize/token'
 ### Payment Provider Configuration
 
 You can find the list  of Payment Provider object of properties and their description in our API’s Documentation, [here](../../resources/payment_provider.md#payment-provider-1). All of the Payment Provider object properties MUST have valid and real values.
+
+Quick example:
+```bash
+curl --location --request POST 'https://api.tiendanube.com/v1/1077387/payment_providers' \
+--header 'Authentication: bearer ${access_token}' \
+--header 'User-Agent: ${app_name} (${partner_email})' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "name": "Acme Payments",
+  "description": "Beat the roadrunner with Acme Payments.",
+  "logo_urls": {
+    "400x120": "https://cdn.acme.com/nuvemshop/images/logo-400x120.png",
+    "160x100": "https://cdn.acme.com/nuvemshop/images/logo-160x100.png"
+  },
+  "configuration_url": "https://acme.com/users/me",
+  "support_url": "https://acme.com/support",
+  "checkout_js_url": "https://cdn.acme.com/nuvemshop/js/checkout-options.min.js",
+  "checkout_options": [
+    {
+      "id": "acme_aggregator_external",
+      "name": "Acme Checkout",
+      "description": "",
+      "logo_url": "https://cdn.acme.com/nuvemshop/images/logo-external.png",
+      "supported_billing_countries": [
+        "BR"
+      ],
+      "payment_method_types": [
+        "bank_debit",
+        "boleto",
+        "credit_card",
+        "wallet"
+      ]
+    },
+    {
+      "id": "acme_subadquirente_transparent_card",
+      "name": "Acme Card",
+      "description": "",
+      "supported_billing_countries": [
+        "BR"
+      ],
+      "payment_method_types": [
+        "credit_card"
+      ]
+    }
+  ],
+  "supported_currencies": [
+    "BRL"
+  ],
+  "supported_payment_methods": [
+    {
+      "payment_method_type": "credit_card",
+      "payment_methods": [
+        "visa",
+        "mastercard",
+        "amex"
+      ],
+      "installments": {
+        "specification": [
+          {
+            "installments": 3,
+            "interest_rate": "0.00"
+          },
+          {
+            "installments": 6,
+            "interest_rate": "0.00"
+          },
+          {
+            "installments": 9,
+            "interest_rate": "15.54"
+          },
+          {
+            "installments": 12,
+            "interest_rate": "20.48"
+          }
+        ],
+        "min_installment_value": [
+          {
+            "currency": "BR",
+            "value": "50.00"
+          }
+        ]
+      }
+    },
+    {
+      "payment_method_type": "bank_debit",
+      "payment_methods": [
+        "banco_do_brasil",
+        "itau",
+        "santander"
+      ]
+    },
+    {
+      "payment_method_type": "boleto"
+    },
+    {
+      "payment_method_type": "wallet"
+    },
+    {
+      "payment_method_type": "credit_card",
+      "payment_method": ["visa", "mastercard", "amex"]
+    }
+  ],
+  "rates_url": "https://acme.com/users/me/rates",
+  "rates": [
+    {
+      "payment_method_type": "wallet",
+      "rates_definition": [
+        {
+          "percent_fee": "0.39",
+          "flat_fee": {
+            "value": "0.00",
+            "currency": "BRL"
+          },
+          "plus_tax": true,
+          "days_to_withdraw_money": 0
+        }
+      ]
+    },
+    {
+      "payment_method_type": "bank_debit",
+      "rates_definition": [
+        {
+          "percent_fee": "0.00",
+          "flat_fee": {
+            "value": "2.19",
+            "currency": "ARS"
+          },
+          "plus_tax": true,
+          "days_to_withdraw_money": 2
+        }
+      ]
+    },
+    {
+      "payment_method_type": "boleto",
+      "rates_definition": [
+        {
+          "percent_fee": "0.00",
+          "flat_fee": {
+            "value": "2.19",
+            "currency": "ARS"
+          },
+          "plus_tax": true,
+          "days_to_withdraw_money": 2
+        }
+      ]
+    },
+    {
+      "payment_method_type": "credit_card",
+      "rates_definition": [
+        {
+          "percent_fee": "3.09",
+          "flat_fee": {
+            "value": "0.39",
+            "currency": "BRL"
+          },
+          "plus_tax": true,
+          "days_to_withdraw_money": 30
+        },
+        {
+          "percent_fee": "4.09",
+          "flat_fee": {
+            "value": "0.39",
+            "currency": "BRL"
+          },
+          "plus_tax": true,
+          "days_to_withdraw_money": 14
+        }
+      ]
+    }
+  ]
+}'
+```
 
 We strongly suggest taking a close look at each of the Payment Provider’s object properties to identify which ones may involve special handling and which ones may depend on the merchant’s account configuration on the Payment Provider’s side. Here's a quick overview of some of the ones we think need extra attention:
 
