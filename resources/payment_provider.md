@@ -30,6 +30,7 @@ Properties
 | `support_url`               | String        | [Optional] Payment Provider support site HTTPS URL.          |
 | `id`                        | String        | [Informational] Unique identifier of the Payment Provider object. |
 | `store_id`                  | Integer       | [Informational] Id of the store to which the Payment Provider belongs. |
+| `appId`                     | String        | [Informational] Id of the app to which the Payment Provider belongs. |
 | `enabled`                   | Boolean       | [Informational] Indicates whether Payment Provider is enabled in the store. |
 
 > ***Note:*** All URLs must be secure URLs (https).
