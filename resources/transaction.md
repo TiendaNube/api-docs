@@ -60,14 +60,15 @@ Some Transaction types have specific *extra* fields.
 
 ### Transaction Types
 
+* `bank_debit`: Transaction in which the consumer uses bank debit as payment method.
+* `boleto`: Transaction in which the consumer uses a Boleto Bancário as payment method. Boleto is a Brazilian payment method based on cash.
+* `cash`: Transaction in which the consumer uses cash as payment method.
 * `credit_card`: Transaction in which the consumer uses a credit card as payment method (E.g. VISA, Mastercard, AMEX).
 * `debit_card`: Transaction in which the consumer uses a debit card as payment method (E.g. VISA Debit, Maestro).
-* `boleto`: Transaction in which the consumer uses a Boleto Bancário as payment method. Boleto is a Brazilian payment method based on cash.
-* `ticket`: Transaction in which the consumer uses a ticket as payment method. This ticket can be paid through a non-bank collection channel (E.g. Rapipago, Pago Fácil, OXXO).
-* `wire_transfer`: Transaction in which the consumer uses a wire transfer as payment method.
-* `cash`: Transaction in which the consumer uses cash as payment method.
-* `wallet`: Transaction in which the consumer uses a wallet as payment method. A wallet is an application that allows you to transfer money.
 * `refund`: Transaction in which the merchant returns money to the consumer. A refund may involve any payment method.
+* `ticket`: Transaction in which the consumer uses a ticket as payment method. This ticket can be paid through a non-bank collection channel (E.g. Rapipago, Pago Fácil, OXXO).
+* `wallet`: Transaction in which the consumer uses a wallet as payment method. A wallet is an application that allows you to transfer money.
+* `wire_transfer`: Transaction in which the consumer uses a wire transfer as payment method.
 
 ### Transaction Status
 
@@ -75,19 +76,17 @@ Each type of Transaction has a Finite-state Machine (FSM) that defines its statu
 
 #### Credit Card/Debit Card Transactions
 
-<img src="https://i.imgur.com/pfi1CE5.png" alt="transaction_status_01" height="90"/>
+<img src="images/card_statuses.png" alt="card_statuses" height="90"/>
 
 * `pending`: The consumer's submission and payment have both been received; payment has been sent out for processing, but the payment gateway has not yet confirmed that the payment has gone through.
 * `authorized`: The consumer's credit or debit card payment has been processed and accepted.
 * `rejected`: The consumer's payment was not accepted when it was processed by the bank or credit card company.
 * `captured`: The consumer's checking, savings or other bank account payment has been processed and accepted.
 * `voided`: The consumer's payment was cancelled by the merchant before it settles through a consumer's debit or credit card account.
-* `in_dispute`: The customer questions the validity of the Transaction that was registered to his account and decides to cancelled it through the issuer.
-* `chargeback`: The money in the merchant's account is held due to a dispute initiated by the consumer.
 
 #### Cash/Boleto/Wire Transfer/Ticket/Wallet Transactions
 
-<img src="https://i.imgur.com/vephWFb.png" alt="transaction_status_01" height="85"/>
+<img src="images/offline_statuses.png" alt="offline_statuses" height="90"/>
 
 * `pending`: The consumer's submission and payment have both been received; payment has been sent out for processing, but the payment gateway has not yet confirmed that the payment has gone through.
 * `confirmed`: The consumer's payment has been processed and accepted.
@@ -97,6 +96,12 @@ Each type of Transaction has a Finite-state Machine (FSM) that defines its statu
 
 The FSM for this Transaction is the same as for `cash` / `boleto` / `wire_transfer` / `ticket` / `wallet` types, but in this case, the money goes from the merchant to the consumer.
 
+#### Fraud FSM
+
+<img src="images/fraud_statuses.png" alt="fraud_statuses" height="85"/>
+
+* `in_suspected_fraud`: The validity of the transaction has been questioned and it was registered as a fraud suspect.
+* `in_fraud_analisys`: The Transaction is being analyzed to determine if it is fraudulent or not.
 
 Endpoints
 ---------
