@@ -14,12 +14,14 @@ All Transactions types have the same attributes, but may differ in the values th
 | :------------- | :----- | :----------------------------------------------------------- |
 | `provider_id`  | String | ID of the Payment Provider that processed this Transaction.  |
 | `amount`       | Object | Object containing the value of this Transaction. See [Money](#Money). |
-| `type`         | String | One of `credit_card`, `debit_card`, `boleto`, `ticket`, `wire_transfer`, `cash`, `wallet` or `refund`. See [Transaction Types](#Transaction-Types). |
-| `status`       | String | The state of the FSM in which the Transaction is. See [Transaction Status](#Transaction-Status). |
+| `type`         | String | One of `credit_card`, `debit_card`, `boleto`, `bank_debit`, `ticket`, `wire_transfer`, `cash`, `wallet` or `refund`. See [Transaction Types](#Transaction-Types). |
+| `status`       | Object | The state of the FSM in which the Transaction is. See [Transaction Status](#Transaction-Status). |
 | `external_id`  | String | [Optional] ID used by the Payment Provider.                  |
 | `external_url` | String | [Optional] URL for the Payment Provider's website with the details of this Transaction for the merchant. |
 | `created_at`   | Date   | [Optional] ISO 8601 date for the creation date of this Transaction. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
 | `context`      | Object | [Optional] Object containing context information that could be useful for fraud analysis. See [Payment Context](#Payment-Context). |
+| `id`      | String | [Informational] Unique identifier of the Transaction object. |
+| `appId`      | String | [Informational] Id of the app to which the Transaction belongs. |
 
 > ***Note:*** All URLs must be secure URLs (https).
 
@@ -29,10 +31,10 @@ Some Transaction types have specific *extra* fields.
 
 | Field                   | Type   | Description                                                  |
 | :---------------------- | :----- | :----------------------------------------------------------- |
-| `installments`          | Object | [Optional - Only for `credit_card`] See [Installments](#Installments). |
+| `installments`          | Object | [Optional - Only for `credit_card`] Object containing the installments data related to this Transaction. See [Installments](#Installments). |
 | `original_transaction`  | String | [Optional - Only for `refund`] ID of the Transaction that is being refunded. |
 | `payment_method_type`   | String | [Optional - Only for `refund`] Payment method type used for refund. See [Payment Methods](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Payment-Methods). |
-| `external_resource_url` | String | [Optional - Only for `boleto` and `ticket`] URL of the boleto or ticket which can be shown to the consumer to resume the payment. |
+| `external_resource_url` | String | [Optional - Only for `boleto` and `ticket`] URL of the boleto or ticket to show to the consumer to resume the payment. |
 
 ### Money
 
@@ -103,6 +105,14 @@ The FSM for this Transaction is the same as for `cash` / `boleto` / `wire_transf
 * `in_suspected_fraud`: The validity of the transaction has been questioned and it was registered as a fraud suspect.
 * `in_fraud_analisys`: The Transaction is being analyzed to determine if it is fraudulent or not.
 
+| Field            | Type   | Description                                                  |
+| ---------------- | ------ | ------------------------------------------------------------ |
+| `id`             | String | One of `pending`, `authorized`, `captured`, `rejected`, `confirmed`, `voided`, `in_suspected_fraud` or `in_fraud_analisys`. |
+| `reason`         | String | [Optional] Description to explain a Transaction status update.      |
+| `risk_factor` | Integer | [Optional - Only for `in_suspected_fraud`] Percentage value from 0 to 100 to indicate the risk of fraud.   |
+| `approve_url` | String | [Optional - Only for `in_suspected_fraud`] HTTPS URL to redirect the merchant in case of approving the risk of the Transaction.   |
+| `disapprove_url` | Integer | [Optional - Only for `in_suspected_fraud`] HTTPS URL to redirect the merchant in case of disapproving the risk of the Transaction.   |
+
 Endpoints
 ---------
 
@@ -124,11 +134,14 @@ E.g.
     "currency": "ARS"
   },
   "type": "credit_card",
-  "installments": {
-  	"quantity": 3,
-  	"interest": "0.15"
+  "status": {
+    "id": "pending",
+    "reason": "Some reason for pending status."
   },
-  "status": "pending",
+  "installments": {
+    "quantity": 3,
+    "interest": "0.15"
+  },
   "external_id": "1234",
   "external_url": "https://mypayments.com/creditcard",
   "created_at": "2020-01-25T12:30:15.000Z",
