@@ -111,7 +111,7 @@ The FSM for this Transaction is the same as for `cash` / `boleto` / `wire_transf
 | `reason`         | String | [Optional] Description to explain a Transaction status update.      |
 | `risk_factor` | Integer | [Optional - Only for `in_suspected_fraud`] Percentage value from 0 to 100 to indicate the risk of fraud.   |
 | `approve_url` | String | [Optional - Only for `in_suspected_fraud`] HTTPS URL to redirect the merchant in case of approving the risk of the Transaction.   |
-| `disapprove_url` | Integer | [Optional - Only for `in_suspected_fraud`] HTTPS URL to redirect the merchant in case of disapproving the risk of the Transaction.   |
+| `disapprove_url` | String | [Optional - Only for `in_suspected_fraud`] HTTPS URL to redirect the merchant in case of disapproving the risk of the Transaction.   |
 
 Endpoints
 ---------
@@ -136,7 +136,7 @@ E.g.
   "type": "credit_card",
   "status": {
     "id": "pending",
-    "reason": "Some reason for pending status."
+    "reason": "Some reason for this status update."
   },
   "installments": {
     "quantity": 3,
@@ -179,7 +179,10 @@ E.g.
 
 ```json
 {
-  "status": "authorized"
+  "status": {
+    "id": "authorized",
+    "reason": "Some reason for this status update."
+  }
 }
 ```
 
