@@ -1,0 +1,21 @@
+```mermaid
+sequenceDiagram
+participant B as Browser
+participant NF as Nuvemshop JS
+participant AF as Payment App JS
+participant AB as Payment App BE
+participant NA as Nuvemshop API
+B ->>+ NF: submitPaymentForm()
+NF ->>+ AF: onSubmit(callback)
+AF ->> AF: process(Checkout)
+AF ->>+ AB: {App Specific Requests}(order)
+AB ->> AB: createTransaction(order)
+AB ->>+ NA: POST /{store_id}/orders/{order_id}/transactions
+NA ->>- AB: 201: Created (transaction)
+AB -->>- AF: {App Specific Response}
+AF -->>- NF: Callback()
+NF -->>- B: Result
+Note over AB: When Payment<br/>status is updated. 
+AB ->>+ NA: PUT /{store_id}/orders/{order_id}/transactions/{id}(status)
+NA ->>- AB: 200: Updated (transaction)
+```
