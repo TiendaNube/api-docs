@@ -204,10 +204,6 @@ curl --location --request POST 'https://api.tiendanube.com/v1/1077387/payment_pr
     },
     {
       "payment_method_type": "wallet"
-    },
-    {
-      "payment_method_type": "credit_card",
-      "payment_method": ["visa", "mastercard", "amex"]
     }
   ],
   "rates_url": "https://acme.com/users/me/rates",
