@@ -233,7 +233,7 @@ curl --location --request POST 'https://api.tiendanube.com/v1/1077387/payment_pr
           "percent_fee": "0.00",
           "flat_fee": {
             "value": "2.19",
-            "currency": "ARS"
+            "currency": "BRL"
           },
           "plus_tax": true,
           "days_to_withdraw_money": 2
@@ -247,7 +247,7 @@ curl --location --request POST 'https://api.tiendanube.com/v1/1077387/payment_pr
           "percent_fee": "0.00",
           "flat_fee": {
             "value": "2.19",
-            "currency": "ARS"
+            "currency": "BRL"
           },
           "plus_tax": true,
           "days_to_withdraw_money": 2
