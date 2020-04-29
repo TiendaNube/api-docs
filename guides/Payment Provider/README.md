@@ -125,7 +125,7 @@ curl --location --request POST 'https://api.tiendanube.com/v1/1077387/payment_pr
   "configuration_url": "https://acme.com/users/me",
   "support_url": "https://acme.com/support",
   "checkout_js_url": "https://cdn.acme.com/nuvemshop/js/checkout-options.min.js",
-  "checkout_options": [
+  "checkout_payment_options": [
     {
       "id": "acme_aggregator_external",
       "name": "Acme Checkout",
@@ -134,7 +134,7 @@ curl --location --request POST 'https://api.tiendanube.com/v1/1077387/payment_pr
       "supported_billing_countries": [
         "BR"
       ],
-      "payment_method_types": [
+      "supported_payment_method_types": [
         "bank_debit",
         "boleto",
         "credit_card",
@@ -148,7 +148,7 @@ curl --location --request POST 'https://api.tiendanube.com/v1/1077387/payment_pr
       "supported_billing_countries": [
         "BR"
       ],
-      "payment_method_types": [
+      "supported_payment_method_types": [
         "credit_card"
       ]
     }
@@ -289,7 +289,7 @@ Most of our APIs are based on REST interfaces. However, our Checkout APIs are ba
 
 The Payment Provider has two checkout related properties:
 
-- `checkout_options`: List of Payment Options (such a `Transparent`, `External`, `Modal`), and their properties which include some like `name`, `logo_url` and `supported_method_types` (`card`, `boleto`, `bank_debit`, `ticket`), among others.
+- `checkout_payment_options`: List of Payment Options (such a `Transparent`, `External`, `Modal`), and their properties which include some like `name`, `logo_url` and `supported_method_types` (`card`, `boleto`, `bank_debit`, `ticket`), among others.
 
 - `checkout_js_url`: The handlers for each `checkout_option` (such as `onLoad`, `onSubmit`, etc) are implemented through the JS API. This property contains a Secure (`HTTPS`) URL pointing to the file with this implementations so our Checkout can run them on the frontend. This URL will be requested from the frontend, which means that the JS file must be hosted on a CDN capable of handling high traffic.
 
@@ -361,7 +361,7 @@ This option allows the app to take full control of the front to render all the n
 
 As explained before, the developer is in charge of the JS and REST implementations. The developer's JS implementation must follow our JS APIs specifications in order to properly integrate with our checkout. The file containing the app's JS implementation must be hosted on a CDN which must be able to handle potentially high traffic concurrency with, of course, a secure URL.
 
-[In this link](../../resources/checkout_js.md) you can find very detailed information on how the Checkout JS API is implemented and provided through a URL as the `checkout_js_url` property of the `Payment Provider` object, which our checkout will fetch when needed.
+[In this link](../../resources/checkout.md) you can find very detailed information on how the Checkout JS API is implemented and provided through a URL as the `checkout_js_url` property of the `Payment Provider` object, which our checkout will fetch when needed.
 
 #### Adding a Checkout Payment Option
 
