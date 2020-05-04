@@ -22,12 +22,12 @@ Properties
 | `logo_urls`                 | Object        | Object containing `key:value` pair for each version of the logos for the frontend. Only supports HTTPS URLs. See [Logos](#Logos). |
 | `supported_currencies`      | Array(String) | ISO.4217 currency codes supported by the Payment Provider. See [Currency Codes](#Currency-Codes). |
 | `supported_payment_methods` | Array(Object) | List of available payment methods for each payment method type. See [Payment Methods](#Payment-Methods). |
-| `rates`                     | Array(Object) | List of rates definitions for merchants by payment method type. See [Rates](#Rates). |
-| `rates_url`                 | String        | HTTPS URL of the Payment Provider's rate information site.   |
 | `checkout_js_url`           | String        | HTTPS URL of the JS file to be included in the checkout frontend. See [Checkout JS](./checkout.md). |
 | `checkout_options`          | Array(Object) | Object containing the available payment options for the checkout frontend. See [Checkout Options](#Checkout-Options). |
 | `configuration_url`         | String        | [Optional] HTTPS URL of the Payment Provider configuration UI. |
 | `support_url`               | String        | [Optional] Payment Provider support site HTTPS URL.          |
+| `rates`                     | Array(Object) | [Optional] List of rates definitions for merchants by payment method type. See [Rates](#Rates). |
+| `rates_url`                 | String        | [Optional] HTTPS URL of the Payment Provider's rate information site.   |
 | `id`                        | String        | [Informational] Unique identifier of the Payment Provider object. |
 | `store_id`                  | Integer       | [Informational] Id of the store to which the Payment Provider belongs. |
 | `appId`                     | String        | [Informational] Id of the app to which the Payment Provider belongs. |
