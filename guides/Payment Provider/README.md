@@ -3,7 +3,7 @@
 ### Glossary
 
 #### Payment Provider
-Actually, short for Payment Service Provider, is any entity the provides the means to allow a buyer to pay the merchant for purchased goods or hired services. The means include all the necessary information to inform the potential buyer for the available methods, installments, promotions, etc, as well as the means to actually make a payment.
+Actually, short for Payment Service Provider, is any entity the provides the means to allow a buyer to pay the merchant for purchased goods or hired services. These _means_ include all the necessary information to inform the potential buyer about the available methods, installments, promotions, etc, as well as the means to actually make a payment.
 
 #### Payment Method Type
 It can be any of, but not limited to:
@@ -21,6 +21,9 @@ For instance, if the Payment Method Type is Credit Card, then an example of plai
 
 #### Payment Option
 Once a Payment Method has been chosen, a Payment Option is needed to complete the payment. For example, if you want to pay for Visa, the buyer can fill up the credit card form in the store's website or go to the Payment Provider's checkout and follow the steps on their page and finally be redirected back to the store's website.
+
+#### Payment App
+One very important concept to understand is that a _Nuvemshop_ Payment App, in development terms, is the implementation of both, Nuvemshop's APIs and the payment provider's APIs, into one same web application, both living together. These API's are both, REST (backend) and Javascript (frontend) APIs.
 
 
 ## Introduction
@@ -65,13 +68,23 @@ The App installation flow is a standard OAuth 2 flow. The details on the App ins
 
 During this flow, the App is expected to create the Payment Provider on the merchant’s store.
 
-The following implementation example sequence helps illustrate the process:
+The following sequence helps illustrate the process' concept:
 - *Front*: The web browser.
 - *Nuvemshop IdP*: Nuvemshop’s Identity Provider.
 - *Nuvemshop API*: Self described.
 - *Payment App*: Any hosts on the Payment Provider’s side.
 
 ![App Installation and Payment Provider Creation Sequence](./mmd/PaymentProvider-InstallationAndCreation.mmd.jpg)
+
+
+Here's a less abstract example:
+- *Front*: The web browser.
+- *Nuvemshop IdP*: Nuvemshop’s Identity Provider.
+- *Nuvemshop API*: Self described.
+- *App's Backend*: Actually, _"Payment Apps's Backend"_, where both REST APIs implementaitons, Nuvemshop's and the payment provider's ones, live together.
+- *Payment Provider API*: The original payment provider's API.
+
+![App Installation and Payment Provider Creation Sequence](./mmd/PaymentProvider-InstallationAndCreation-Implementation.jpg)
 
 #### Intalling an app
 
