@@ -23,7 +23,7 @@ For instance, if the Payment Method Type is Credit Card, then an example of plai
 Once a Payment Method has been chosen, a Payment Option is needed to complete the payment. For example, if you want to pay for Visa, the buyer can fill up the credit card form in the store's website or go to the Payment Provider's checkout and follow the steps on their page and finally be redirected back to the store's website.
 
 #### Payment App
-One very important concept to understand is that a _Nuvemshop_ Payment App, in development terms, is the implementation of both, Nuvemshop's APIs and the payment provider's APIs, into one same web application, both living together. These API's are both, REST (backend) and Javascript (frontend) APIs.
+One very important concept to understand is that a _Nuvemshop_ Payment App, in development terms, more often than not, implies the implementation of both, Nuvemshop's APIs and the payment provider's APIs, into one same web application, both living together. These API's are both, REST (backend) and Javascript (frontend) APIs.
 
 
 ## Introduction
