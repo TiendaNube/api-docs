@@ -402,22 +402,22 @@ Create an Order.
 |--------------------| --------------------------------------------------------------------------------------------------------------------------------------|--------|
 | currency           | The order currency code ([ISO 4217 format](https://en.wikipedia.org/wiki/ISO_4217)). The default is the store currency.               | No     |
 | language           | The language code ([ISO 639-1 format](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)). The default is the store main language.| No     | 
-| gateway            | The order's payment gateway ([Payment Gateway](#Payment-Gateway)).                                                                    | Yes    |
+| gateway            | The order's payment gateway ([Payment Gateway](#Payment-Gateway)). The default is `not-provided`.                                     | Yes    |
 | payment_status     | The order's payment status ([Payment Status](#Payment-Status)). The default is `paid`.                                                                       | No     | 
 | status             | The order's status ([Order Status](#Order-Status)). The default is `open`.                                                                                     | No     |
 | fulfillment_status | The order's status ([Order Status](#Order-Status)). The default is `unpacked`.                                                                                     | No     |
-| products           | Order's products list ([Product](#Product)).                                                                                       | Yes    |
+| products           | Order's products list ([Product](#Product)).                                                                                          | Yes    |
 | total              | The sum of all products prices, shipping costs and discounts. Must be positive. If not specified, it's calculated considering the provided costs and discounts. | No    |
 | inventory_behaviour| The inventory behaviour that the order must perform ([Inventory Behaviour](#Inventory-Behaviour)).                                    | No     |
 | customer           | The customer object ([Customer](#Customer)).                                                                                          | Yes    |
 | note               | An additional customer note for the order.                                                                                            | No     |
 | billing_address    | The customer's billing address object ([Address](#Address)).                                                                          | Yes    |
 | shipping_address   | The customer's shipping address object ([Address](#Address)).                                                                         | Yes    |
-| shipping_pickup_type | The shipping pickup type ([Shipping Type](#Shipping-Type)).                                                                         | Yes    |
-| shipping             | The shipping method ([Shipping Method](#Shipping-Method)).                                                                          | Yes    |
-| shipping_option      | The order's shipping option nice name.                                                                                              | Yes    |
+| shipping_pickup_type | The shipping pickup type ([Shipping Type](#Shipping-Type)). The default is `pickup`.                                                | Yes    |
+| shipping             | The shipping method ([Shipping Method](#Shipping-Method)).  The default is `not-provided`.                                          | Yes    |
+| shipping_option      | The order's shipping option nice name. The default is `not-provided`.                                                               | Yes    |
 | shipping_tracking_number | The order's shipping tracking number                                                                                            | No     |
-| shipping_cost_customer   | The customer's shipping cost double value. The value 0 means free shipping.                                                     | Yes    |
+| shipping_cost_customer   | The customer's shipping cost double value. The value 0 means free shipping. The default is 0.                                   | Yes    |
 | shipping_cost_owner      | The owner's shipping cost double value.                                                                                         | No     |
 | send_confirmation_email  | Send the order confirmation email to the customer . The default is false.                                                       | No     |
 | send_fulfillment_email   | Send the order fulfillment email to the customer . The default is false.                                                        | No     |
@@ -429,8 +429,8 @@ Create an Order.
 
 | Value       | Description                    | Type    | Required |
 |-------------|--------------------------------|---------|----------|
-| name        | The customer's name            | String  | Yes      |
-| email       | The customer's email address   | E-mail  | Yes      |
+| name        | The customer's name. The default is `not provided`.            | String  | Yes      |
+| email       | The customer's email address. The default is `not-provided@not-provided.com`.   | E-mail  | Yes      |
 | phone       | The customer's phone number    | String  | No       |
 | document    | The customer's document number | String  | No       |
 
@@ -438,17 +438,17 @@ Create an Order.
 
 | Value       | Description                                                                         | Type   | Required |
 |-------------|-------------------------------------------------------------------------------------|--------|----------|
-| first_name  | The customer's first name                                                           | String | Yes      |
-| last_name   | The customer's last name                                                            | String | Yes      |
-| address     | The customer's street                                                               | String | Yes      |
-| number      | The address's number                                                                | String | Yes      |
-| floor       | The address's complement                                                            | String | No       |
-| locality    | The address's locality                                                              | String | No       | 
-| city        | The address's city                                                                  | String | Yes      |
-| province    | The address's province                                                              | String | Yes      |
-| zipcode     | The address's postal code                                                           | String | Yes      |
-| country     | The address's country ([ISO 3166-1 Format](http://en.wikipedia.org/wiki/ISO_3166-1)) | String | Yes      |
-| phone       | The address's phone number                                                          | String | No       |
+| first_name  | The customer's first name. The default is `not-provided`.                                                          | String | Yes      |
+| last_name   | The customer's last name. The default is `not-provided`.                                                           | String | Yes      |
+| address     | The customer's street. The default is `not-provided`.                                                               | String | Yes      |
+| number      | The address's number. The default is `not-provided`.                                                                | String | Yes      |
+| floor       | The address's complement. The default is `not-provided`.                                                            | String | No       |
+| locality    | The address's locality. The default is `not-provided`.                                                              | String | No       | 
+| city        | The address's city. The default is `not-provided`.                                                                  | String | Yes      |
+| province    | The address's province. The default is `not-provided`.                                                              | String | Yes      |
+| zipcode     | The address's postal code. The default is `not-provided`.                                                          | String | Yes      |
+| country     | The address's country ([ISO 3166-1 Format](http://en.wikipedia.org/wiki/ISO_3166-1)). The default is `not-provided`. | String | Yes      |
+| phone       | The address's phone number.                                                          | String | No       |
 
 
 #### Product
