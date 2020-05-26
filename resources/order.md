@@ -414,8 +414,8 @@ Create an Order.
 | billing_address    | The customer's billing address object ([Address](#Address)).                                                                          | Yes    |
 | shipping_address   | The customer's shipping address object ([Address](#Address)).                                                                         | Yes    |
 | shipping_pickup_type | The shipping pickup type ([Shipping Type](#Shipping-Type)). The default is `pickup`.                                                | Yes    |
-| shipping             | The shipping method ([Shipping Method](#Shipping-Method)).  The default is `not-provided`.                                          | Yes    |
-| shipping_option      | The order's shipping option nice name. The default is `not-provided`.                                                               | Yes    |
+| shipping             | The shipping method ([Shipping Method](#Shipping-Method)).  The defaults are `Não informado` for pt_BR and `No informado` in every other cases (es_AR, es_MX, es_CO).                                          | Yes    |
+| shipping_option      | The order's shipping option nice name. The defaults are `Não informado` for pt_BR and `No informado` in every other cases (es_AR, es_MX, es_CO).                                                               | Yes    |
 | shipping_tracking_number | The order's shipping tracking number                                                                                            | No     |
 | shipping_cost_customer   | The customer's shipping cost double value. The value 0 means free shipping. The default is 0.                                   | Yes    |
 | shipping_cost_owner      | The owner's shipping cost double value.                                                                                         | No     |
@@ -429,8 +429,8 @@ Create an Order.
 
 | Value       | Description                    | Type    | Required |
 |-------------|--------------------------------|---------|----------|
-| name        | The customer's name. The default is `not provided`.            | String  | Yes      |
-| email       | The customer's email address. The default is `not-provided@not-provided.com`.   | E-mail  | Yes      |
+| name        | The customer's name. The defaults are `Não informado` for pt_BR and `No informado` in every other cases (es_AR, es_MX, es_CO).            | String  | Yes      |
+| email       | The customer's email address. The defaults are `email@naoinformado.com` for pt_BR and `email@noinformado.com` in every other cases (es_AR, es_MX, es_CO).   | E-mail  | Yes      |
 | phone       | The customer's phone number    | String  | No       |
 | document    | The customer's document number | String  | No       |
 
@@ -438,16 +438,16 @@ Create an Order.
 
 | Value       | Description                                                                         | Type   | Required |
 |-------------|-------------------------------------------------------------------------------------|--------|----------|
-| first_name  | The customer's first name. The default is `not-provided`.                                                          | String | Yes      |
-| last_name   | The customer's last name. The default is `not-provided`.                                                           | String | Yes      |
-| address     | The customer's street. The default is `not-provided`.                                                               | String | Yes      |
-| number      | The address's number. The default is `not-provided`.                                                                | String | Yes      |
-| floor       | The address's complement. The default is `not-provided`.                                                            | String | No       |
-| locality    | The address's locality. The default is `not-provided`.                                                              | String | No       | 
-| city        | The address's city. The default is `not-provided`.                                                                  | String | Yes      |
-| province    | The address's province. The default is `not-provided`.                                                              | String | Yes      |
-| zipcode     | The address's postal code. The default is `not-provided`.                                                          | String | Yes      |
-| country     | The address's country ([ISO 3166-1 Format](http://en.wikipedia.org/wiki/ISO_3166-1)). The default is `not-provided`. | String | Yes      |
+| first_name  | The customer's first name. The defaults are `Não informado` for pt_BR and `No informado` in every other cases (es_AR, es_MX, es_CO).                                                          | String | Yes      |
+| last_name   | The customer's last name. The defaults are `Não informado` for pt_BR and `No informado` in every other cases (es_AR, es_MX, es_CO).                                                           | String | Yes      |
+| address     | The customer's street. The defaults are `Não informado` for pt_BR and `No informado` in every other cases (es_AR, es_MX, es_CO).                                                               | String | Yes      |
+| number      | The address's number. The defaults are `Não informado` for pt_BR and `No informado` in every other cases (es_AR, es_MX, es_CO).                                                                | String | Yes      |
+| floor       | The address's complement. The defaults are `Não informado` for pt_BR and `No informado` in every other cases (es_AR, es_MX, es_CO).                                                            | String | No       |
+| locality    | The address's locality. The defaults are `Não informado` for pt_BR and `No informado` in every other cases (es_AR, es_MX, es_CO).                                                              | String | No       | 
+| city        | The address's city. The defaults are `Não informado` for pt_BR and `No informado` in every other cases (es_AR, es_MX, es_CO).                                                                  | String | Yes      |
+| province    | The address's province. The defaults are `Não informado` for pt_BR and `No informado` in every other cases (es_AR, es_MX, es_CO).                                                              | String | Yes      |
+| zipcode     | The address's postal code. The default is `0000`.                                                          | String | Yes      |
+| country     | The address's country ([ISO 3166-1 Format](http://en.wikipedia.org/wiki/ISO_3166-1)). The default is the store country. | String | Yes      |
 | phone       | The address's phone number.                                                          | String | No       |
 
 
