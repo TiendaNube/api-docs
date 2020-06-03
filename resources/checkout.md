@@ -24,7 +24,7 @@ Let's take a look at a simple script for a hypothetical integration with a Payme
 LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
   
   // We create a new instance of the external payment option.
-  var AcmeExternalPaymentOption = new PaymentOptions.ExternalPayment({
+  var AcmeExternalPaymentOption = PaymentOptions.ExternalPayment({
     
     // The option's unique id as set on it's configuration on the Payment Provider so Checkout can match them and merge them.
     id: 'acme_redirect',
@@ -120,7 +120,7 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
   };
 
   // Now, our Payment Option and it's argument object.
-  var AcmeCardPaymentOption = new PaymentOptions.Transparent.CardPayment({
+  var AcmeCardPaymentOption = PaymentOptions.Transparent.CardPayment({
     
     // The option's unique id as set on it's configuration on the Payment Provider so Checkout can match them and merge them.
     id: "acme_transparent_card",
