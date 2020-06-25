@@ -8,7 +8,7 @@ A [Payment Provider](https://github.com/TiendaNube/api-docs/blob/payments-api-do
 Properties
 ---------
 
-All Transactions types have the same attributes, but may differ in the values that their *events* and *info* fields can take.
+All Transactions types have the same attributes, but may generate different kinds of  *events* and contain some *info* fields specific to their type.
 
 | Field                 | Type   | Description                                                  |
 | :-------------------- | :----- | :----------------------------------------------------------- |
@@ -17,17 +17,17 @@ All Transactions types have the same attributes, but may differ in the values th
 | `first_event`         | Object | First transaction event that generated this Transaction. See [Transaction Events](#Transaction-Events). |
 | `info`                | Object | [Optional] Object containing specific info related to this Transaction. See [Transaction Info](#Transaction-Info). |
 
-The following properties are returned by our platform for informational purpose, which means that they will appear in our responses when creating, updating or obtaining a Transaction.
+The following properties are returned by our platform for informational purpose, which means that they may only appear in our responses when creating, updating or obtaining a Transaction resource.
 
 | Field             | Type          | Description                                                  |
 | ----------------- | ------------- | ------------------------------------------------------------ |
-| `id`              | String        | [Informational] Unique identifier of the Transaction object. |
-| `status`          | Object        | [Informational] The state of the FSM in which the Transaction is. See [Transaction Status](#Transaction-Status). |
-| `events`          | Array(Object) | [Informational] List of fulfillment events related to this Transaction. See [Transaction Events](#Transaction-Events). |
-| `captured_amount` | Object        | [Informational] Object containing the captured amount of this Transaction. See [Money](#Money). |
-| `refunded_amount` | Object        | [Informational] Object containing the refunded amount of this Transaction. See [Money](#Money). |
-| `failure_code`    | String        | [Informational] If the transaction failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
-| `appId`           | String        | [Informational] ID of the app to which the Transaction belongs. |
+| `id`              | String        | Unique identifier of the Transaction object.                 |
+| `status`          | Object        | The state of the FSM in which the Transaction is. See [Transaction Status](#Transaction-Status). |
+| `events`          | Array(Object) | List of fulfillment events related to this Transaction. See [Transaction Events](#Transaction-Events). |
+| `captured_amount` | Object        | Object containing the captured amount of this Transaction. See [Money](#Money). |
+| `refunded_amount` | Object        | Object containing the refunded amount of this Transaction. See [Money](#Money). |
+| `failure_code`    | String        | If the transaction failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
+| `app_id`          | String        | ID of the application to which the Transaction belongs.      |
 
 ### Payment Method
 
@@ -53,12 +53,14 @@ The following properties are returned by our platform for informational purpose,
 | Field                   | Type   | Description                                                  |
 | ----------------------- | ------ | ------------------------------------------------------------ |
 | `card`                  | Object | [Optional - Only for `credit_card` and `debit_card`] Object containing data related to the consumer's card. See [Card Info](#Card-Info). |
-| `installments`          | Object | [Optional - Only for `credit_card`] Object containing the installments data related to this Transaction. See [Installments Info](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/transaction.md#Installments-Info). |
+| `installments`          | Object | [Optional - Only for `credit_card`] Object containing the installments data related to this Transaction. See [Installments Info](#Installments-Info). |
 | `external_id`           | String | [Optional] ID used by the Payment Provider.                  |
 | `external_url`          | String | [Optional] HTTPS URL with details of this Transaction for the merchant. |
 | `external_resource_url` | String | [Optional - Only for `boleto` and `ticket`] HTTPS URL of the boleto or ticket to show to the consumer to resume the payment. |
 | `external_code`         | String | [Optional - Only for `boleto` and `ticket`] Barcode for boleto, or code for ticket. |
 | `ip`                    | String | [Optional] IP of the device that initiated this Transaction. |
+
+> ***Note:*** All URLs must be secure URLs (https).
 
 #### Card Info
 
@@ -69,7 +71,7 @@ The following properties are returned by our platform for informational purpose,
 | `expiration_year`  | Number | The expiration year of the card.                             |
 | `first_digits`     | String | The first 6 (six) digits of the card.                        |
 | `last_digits`      | String | The last 4 (four) digits of the card.                        |
-| `masked_number`    | String | Masked card number with only the last 4 (four) digits displayed. E.g. `"XXXXXXXXXXXX1234"`. |
+| `masked_number`    | String | Masked card number displaying only the last 4 (four) digits. E.g. `"XXXXXXXXXXXX1234"`. |
 | `name`             | String | Name of the card holder.                                     |
 
 #### Installments Info
@@ -84,14 +86,14 @@ The following properties are returned by our platform for informational purpose,
 | Field            | Type   | Description                                                  |
 | ---------------- | ------ | ------------------------------------------------------------ |
 | `amount`         | Object | Object containing the amount of this Transaction Event. See [Money](#Money). |
-| `type`           | String | One of the available Transaction Event Types. See [Transaction Event Type](#Transaction-Event-Type). |
+| `type`           | String | One of the available [Transaction Event Types](#Transaction-Event-Types). |
 | `status`         | Object | The state of the FSM in which the Transaction remains after this Transaction Event. See [Transaction Status](#Transaction-Status). |
-| `happend_at`     | Date   | ISO 8601 date the Transaction Event was processed. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
+| `happend_at`     | Date   | ISO 8601 date for the date the Transaction Event was processed. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
 | `info`           | Object | [Optional] Object containing specific info related to this Transaction Event. See [Transaction Event Info](#Transaction-Event-Info). |
 | `failure_code`   | String | [Optional] If the Transaction Event failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
 | `id`             | String | [Informational] Unique identifier of the Transaction Event object. |
 | `transaction_id` | String | [Informational] ID of the [Transaction](#Transaction) related to this Transaction Event. |
-| `created_at`     | Date   | [Informational] ISO 8601 date the Transaction Event was created in our platform. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
+| `created_at`     | Date   | [Informational] ISO 8601 date for the date the Transaction Event was created in our platform. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
 
 #### Money
 
@@ -107,11 +109,11 @@ The following properties are returned by our platform for informational purpose,
 * `authorization`: Authorization.
 * `capture`: Capture.
 * `in_fraud_analysis`: The transaction is being reviewed by the payment provider (no merchant action is required).
-* `request_merchant_review`: The transaction has to be approved or rejected by the merchant.
+* `mark_as_paid`: The transaction was approved by the merchant manually.
 * `refunded`: Refund.
+* `request_merchant_review`: The transaction has to be approved or rejected by the merchant.
 * `sale`: Represents authorization along with capture.
 * `void`: The authorization was voided.
-* `mark_as_paid`: The transaction was approved by the merchant manually.
 
 #### Transaction Event Info
 
@@ -162,7 +164,9 @@ Create a Transaction for a given order.
 
 `HTTP/1.1 201 Created`
 
-The created Transaction object is returned.
+The created [Transaction Object](#Transaction) is returned.
+
+
 
 ### POST /orders/{*order_id*}/transactions/{*transaction_id*}/events
 
@@ -176,7 +180,9 @@ Update the events of a Transaction.
 
 `HTTP/1.1 201 Created`
 
-The created Transaction Event object is returned.
+The created [Transaction Event Object](#Transaction-Events) is returned.
+
+
 
 ### GET /orders/{*order_id*}/transactions
 
@@ -193,6 +199,8 @@ List all Transactions of a given order.
 `HTTP/1.1 200 OK`
 
 Array of [Transaction Objects](#Transaction)
+
+
 
 ### GET /orders/{*order_id*}/transactions/{*transaction_id*}
 
