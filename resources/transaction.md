@@ -1,66 +1,42 @@
 Transaction
 ===========
 
-Each movement of money is modeled through a Transaction object, which can be of different types (e.g. credit card, cash, wire transfer, refund, etc.). Since not all Transactions are atomic, each type has a Finite-state Machine (FSM) that defines its status.
+Each movement of money is modeled through a Transaction object, which can be of different types (e.g. credit card, debit card, boleto, wire transfer, etc.). Since not all Transactions are atomic, each type has a Finite State Machine (FSM) that defines its status.
 
-A [Payment Provider](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md) can create the number of Transactions it needs for a given order, and can update their status as they change over time.
+A [Payment Provider](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md) can create the number of Transactions it needs for a given order and update their status as they change over time.
 
 Properties
 ---------
 
-All Transactions types have the same attributes, but may differ in the values that their *status* field can take.
+All Transactions types have the same attributes, but may differ in the values that their *events* and *info* fields can take.
 
-| Field          | Type   | Description                                                  |
-| :------------- | :----- | :----------------------------------------------------------- |
-| `provider_id`  | String | ID of the Payment Provider that processed this Transaction.  |
-| `amount`       | Object | Object containing the value of this Transaction. See [Money](#Money). |
-| `type`         | String | One of `credit_card`, `debit_card`, `boleto`, `bank_debit`, `ticket`, `wire_transfer`, `cash`, `wallet` or `refund`. See [Transaction Types](#Transaction-Types). |
-| `status`       | Object | The state of the FSM in which the Transaction is. See [Transaction Status](#Transaction-Status). |
-| `external_id`  | String | [Optional] ID used by the Payment Provider.                  |
-| `external_url` | String | [Optional] URL for the Payment Provider's website with the details of this Transaction for the merchant. |
-| `created_at`   | Date   | [Optional] ISO 8601 date for the creation date of this Transaction. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
-| `context`      | Object | [Optional] Object containing context information that could be useful for fraud analysis. See [Payment Context](#Payment-Context). |
-| `id`      | String | [Informational] Unique identifier of the Transaction object. |
-| `appId`      | String | [Informational] Id of the app to which the Transaction belongs. |
+| Field                 | Type   | Description                                                  |
+| :-------------------- | :----- | :----------------------------------------------------------- |
+| `payment_provider_id` | String | ID of the [Payment Provider](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md) that processed this Transaction. |
+| `payment_method`      | Object | Object containing the payment method used in this Transaction. See [Payment Method](#Payment-Method). |
+| `first_event`         | Object | First transaction event that generated this Transaction. See [Transaction Events](#Transaction-Events). |
+| `info`                | Object | [Optional] Object containing specific info related to this Transaction. See [Transaction Info](#Transaction-Info). |
 
-> ***Note:*** All URLs must be secure URLs (https).
+The following properties are returned by our platform for informational purpose, which means that they will appear in our responses when creating, updating or obtaining a Transaction.
 
+| Field             | Type          | Description                                                  |
+| ----------------- | ------------- | ------------------------------------------------------------ |
+| `id`              | String        | [Informational] Unique identifier of the Transaction object. |
+| `status`          | Object        | [Informational] The state of the FSM in which the Transaction is. See [Transaction Status](#Transaction-Status). |
+| `events`          | Array(Object) | [Informational] List of fulfillment events related to this Transaction. See [Transaction Events](#Transaction-Events). |
+| `captured_amount` | Object        | [Informational] Object containing the captured amount of this Transaction. See [Money](#Money). |
+| `refunded_amount` | Object        | [Informational] Object containing the refunded amount of this Transaction. See [Money](#Money). |
+| `failure_code`    | String        | [Informational] If the transaction failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
+| `appId`           | String        | [Informational] ID of the app to which the Transaction belongs. |
 
+### Payment Method
 
-Some Transaction types have specific *extra* fields.
+| Field  | Type   | Description                                                  |
+| ------ | ------ | ------------------------------------------------------------ |
+| `type` | String | One of the available [Payment Method Types](#Payment-Method-Types). |
+| `id`   | String | ID of the payment method used for this Transaction. See [Supported Payment Methods by Payment Method Type](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Supported-Payment-Methods-by-Payment-Method-Type). |
 
-| Field                   | Type   | Description                                                  |
-| :---------------------- | :----- | :----------------------------------------------------------- |
-| `installments`          | Object | [Optional - Only for `credit_card`] Object containing the installments data related to this Transaction. See [Installments](#Installments). |
-| `original_transaction`  | String | [Optional - Only for `refund`] ID of the Transaction that is being refunded. |
-| `payment_method_type`   | String | [Optional - Only for `refund`] Payment method type used for refund. See [Payment Methods](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Payment-Methods). |
-| `external_resource_url` | String | [Optional - Only for `boleto` and `ticket`] URL of the boleto or ticket to show to the consumer to resume the payment. |
-
-### Money
-
-| Field      | Type   | Description                                                 |
-| ---------- | ------ | ----------------------------------------------------------- |
-| `value`    | String | Amount of money as a string. E.g. `"49.99"`                 |
-| `currency` | String | ISO 4217 code for the currency, such as ARS, BRL, USD, etc. |
-
-> ***Note:*** Decimal numbers will be represented as string format for better decimal precision handling. It must contain two decimal places and use a point as decimal separator.
-
-### Payment Context
-
-| Field            | Type   | Description                                                  |
-| ---------------- | ------ | ------------------------------------------------------------ |
-| `ip`             | String | [Optional] IP of the device that initiated this Transaction. |
-| `source`         | String | [Optional] One of `web_desktop`, `web_mobile` or `pos`.      |
-| `payment_method` | String | [Optional] Payment method used for this Transaction. See [Payment Methods](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Payment-Methods). |
-
-### Installments
-
-| Field      | Type   | Description                                              |
-| ---------- | ------ | -------------------------------------------------------- |
-| `quantity` | Number | The number of installments. E.g. `3`.                    |
-| `interest` | String | The interest applied to each installment. E.g. `"0.15"`. |
-
-### Transaction Types
+#### Payment Method Types
 
 * `bank_debit`: Transaction in which the consumer uses bank debit as payment method.
 * `boleto`: Transaction in which the consumer uses a Boleto Bancário as payment method. Boleto is a Brazilian payment method based on cash.
@@ -72,46 +48,104 @@ Some Transaction types have specific *extra* fields.
 * `wallet`: Transaction in which the consumer uses a wallet as payment method. A wallet is an application that allows you to transfer money.
 * `wire_transfer`: Transaction in which the consumer uses a wire transfer as payment method.
 
-### Transaction Status
+### Transaction Info
 
-Each type of Transaction has a Finite-state Machine (FSM) that defines its status:
+| Field                   | Type   | Description                                                  |
+| ----------------------- | ------ | ------------------------------------------------------------ |
+| `card`                  | Object | [Optional - Only for `credit_card` and `debit_card`] Object containing data related to the consumer's card. See [Card Info](#Card-Info). |
+| `installments`          | Object | [Optional - Only for `credit_card`] Object containing the installments data related to this Transaction. See [Installments Info](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/transaction.md#Installments-Info). |
+| `external_id`           | String | [Optional] ID used by the Payment Provider.                  |
+| `external_url`          | String | [Optional] HTTPS URL with details of this Transaction for the merchant. |
+| `external_resource_url` | String | [Optional - Only for `boleto` and `ticket`] HTTPS URL of the boleto or ticket to show to the consumer to resume the payment. |
+| `external_code`         | String | [Optional - Only for `boleto` and `ticket`] Barcode for boleto, or code for ticket. |
+| `ip`                    | String | [Optional] IP of the device that initiated this Transaction. |
 
-#### Credit Card/Debit Card Transactions
+#### Card Info
 
-<img src="images/card_statuses.png" alt="card_statuses" height="90"/>
+| Field              | Type   | Description                                                  |
+| ------------------ | ------ | ------------------------------------------------------------ |
+| `brand`            | String | The brand of the card.                                       |
+| `expiration_month` | Number | The expiration month of the card.                            |
+| `expiration_year`  | Number | The expiration year of the card.                             |
+| `first_digits`     | String | The first 6 (six) digits of the card.                        |
+| `last_digits`      | String | The last 4 (four) digits of the card.                        |
+| `masked_number`    | String | Masked card number with only the last 4 (four) digits displayed. E.g. `"XXXXXXXXXXXX1234"`. |
+| `name`             | String | Name of the card holder.                                     |
 
-* `pending`: The consumer's submission and payment have both been received; payment has been sent out for processing, but the payment gateway has not yet confirmed that the payment has gone through.
-* `authorized`: The consumer's credit or debit card payment has been processed and accepted.
-* `rejected`: The consumer's payment was not accepted when it was processed by the bank or credit card company.
-* `captured`: The consumer's checking, savings or other bank account payment has been processed and accepted.
-* `voided`: The consumer's payment was cancelled by the merchant before it settles through a consumer's debit or credit card account.
+#### Installments Info
 
-#### Cash/Boleto/Wire Transfer/Ticket/Wallet Transactions
+| Field      | Type   | Description                                              |
+| ---------- | ------ | -------------------------------------------------------- |
+| `quantity` | Number | The number of installments. E.g. `3`.                    |
+| `interest` | String | The interest applied to each installment. E.g. `"0.15"`. |
 
-<img src="images/offline_statuses.png" alt="offline_statuses" height="90"/>
-
-* `pending`: The consumer's submission and payment have both been received; payment has been sent out for processing, but the payment gateway has not yet confirmed that the payment has gone through.
-* `confirmed`: The consumer's payment has been processed and accepted.
-* `voided`: The consumer's payment was cancelled by the merchant before the consumer paid it.
-
-#### Refund Transaction
-
-The FSM for this Transaction is the same as for `cash` / `boleto` / `wire_transfer` / `ticket` / `wallet` types, but in this case, the money goes from the merchant to the consumer.
-
-#### Fraud FSM
-
-<img src="images/fraud_statuses.png" alt="fraud_statuses" height="85"/>
-
-* `in_suspected_fraud`: The validity of the transaction has been questioned and it was registered as a fraud suspect.
-* `in_fraud_analisys`: The Transaction is being analyzed to determine if it is fraudulent or not.
+### Transaction Events
 
 | Field            | Type   | Description                                                  |
 | ---------------- | ------ | ------------------------------------------------------------ |
-| `id`             | String | One of `pending`, `authorized`, `captured`, `rejected`, `confirmed`, `voided`, `in_suspected_fraud` or `in_fraud_analisys`. |
-| `reason`         | String | [Optional] Description to explain a Transaction status update.      |
-| `risk_factor` | Integer | [Optional - Only for `in_suspected_fraud`] Percentage value from 0 to 100 to indicate the risk of fraud.   |
-| `approve_url` | String | [Optional - Only for `in_suspected_fraud`] HTTPS URL to redirect the merchant in case of approving the risk of the Transaction.   |
-| `disapprove_url` | String | [Optional - Only for `in_suspected_fraud`] HTTPS URL to redirect the merchant in case of disapproving the risk of the Transaction.   |
+| `amount`         | Object | Object containing the amount of this Transaction Event. See [Money](#Money). |
+| `type`           | String | One of the available Transaction Event Types. See [Transaction Event Type](#Transaction-Event-Type). |
+| `status`         | Object | The state of the FSM in which the Transaction remains after this Transaction Event. See [Transaction Status](#Transaction-Status). |
+| `happend_at`     | Date   | ISO 8601 date the Transaction Event was processed. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
+| `info`           | Object | [Optional] Object containing specific info related to this Transaction Event. See [Transaction Event Info](#Transaction-Event-Info). |
+| `failure_code`   | String | [Optional] If the Transaction Event failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
+| `id`             | String | [Informational] Unique identifier of the Transaction Event object. |
+| `transaction_id` | String | [Informational] ID of the [Transaction](#Transaction) related to this Transaction Event. |
+| `created_at`     | Date   | [Informational] ISO 8601 date the Transaction Event was created in our platform. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
+
+#### Money
+
+| Field      | Type   | Description                                                 |
+| ---------- | ------ | ----------------------------------------------------------- |
+| `value`    | String | Amount of money as a string. E.g. `"49.99"`                 |
+| `currency` | String | ISO 4217 code for the currency, such as ARS, BRL, USD, etc. |
+
+> ***Note:*** Decimal numbers will be represented as string format for better decimal precision handling. It must contain two decimal places and use a point as decimal separator.
+
+#### Transaction Event Types
+
+* `authorization`: Authorization.
+* `capture`: Capture.
+* `in_fraud_analysis`: The transaction is being reviewed by the payment provider (no merchant action is required).
+* `request_merchant_review`: The transaction has to be approved or rejected by the merchant.
+* `refunded`: Refund.
+* `sale`: Represents authorization along with capture.
+* `void`: The authorization was voided.
+* `mark_as_paid`: The transaction was approved by the merchant manually.
+
+#### Transaction Event Info
+
+| Field         | Type   | Description                                                  |
+| ------------- | ------ | ------------------------------------------------------------ |
+| `message`     | String | [Optional] Description to explain a Transaction Event update. |
+| `fraud_score` | String | [Optional] Decimal score between 0 to 1. The closer the score is to 1, the more likely the Transaction is fraudulent. |
+| `risk_level`  | String | [Optional] Risk level that an Order is fraudulent. One of `low`, `medium`or `high`. |
+| `accept_url`  | String | [Optional] HTTPS URL we will call to accept the Transaction from our platform. It should return a 2xx HTTP code or we will return an error to the merchant. |
+| `cancel_url`  | String | [Optional] HTTPS URL we will call to cancel the Transaction from our platform. It should return a 2xx HTTP code or we will return an error to the merchant. |
+
+### Transaction Status
+
+Each type of Transaction has a Finite State Machine (FSM) that defines its status:
+
+* `authorized`: The transaction is authorized.
+
+* `failed`: The transaction failed.
+
+* `in_fraud_analisys`: The transaction is under fraud analysis by the payment provider.
+
+* `needs_merchant_review`: The transaction needs merchant action to continue.
+
+* `paid`: The transaction is confirmed.
+
+* `partially_refunded`: The transaction is partially refunded.
+
+* `pending`: The transaction is pending.
+
+* `refunded`: The transaction is refunded.
+
+* `voided`: The transaction is voided.
+
+  
 
 Endpoints
 ---------
@@ -124,71 +158,25 @@ Create a Transaction for a given order.
 
 [Transaction Object](#Transaction)
 
-E.g.
+#### Response
 
-```json
-{
-  "provider_id": "815905d6-3518-479d-8ed6-5e0e4e6f305d",
-  "amount": {
-    "value": "132.95",
-    "currency": "ARS"
-  },
-  "type": "credit_card",
-  "status": {
-    "id": "pending",
-    "reason": "Some reason for this status update."
-  },
-  "installments": {
-    "quantity": 3,
-    "interest": "0.15"
-  },
-  "external_id": "1234",
-  "external_url": "https://mypayments.com/creditcard",
-  "created_at": "2020-01-25T12:30:15.000Z",
-  "context": {
-    "ip": "192.168.0.25",
-    "source": "web_desktop",
-    "payment_method": "bbva"
-  }
-}
-```
+`HTTP/1.1 201 Created`
+
+The created Transaction object is returned.
+
+### POST /orders/{*order_id*}/transactions/{*transaction_id*}/events
+
+Update the events of a Transaction. 
+
+#### Request
+
+[Transaction Event Object](#Transaction-Events)
 
 #### Response
 
 `HTTP/1.1 201 Created`
 
-E.g.
-
-```json
-{
-  "id": "776a2a49-42ca-4e75-992d-15eaf89a2a2c"
-}
-```
-
-Unique identifier of the created Transaction. 
-
-
-
-### PUT /orders/{*order_id*}/transactions/{*transaction_id*}
-
-Update the status of a Transaction. This is the only field that can be updated and must respect the [FSM](#Transaction-Status) of the transaction.
-
-#### Request
-
-E.g.
-
-```json
-{
-  "status": {
-    "id": "authorized",
-    "reason": "Some reason for this status update."
-  }
-}
-```
-
-#### Response
-
-`HTTP/1.1 204 No Content` - the request was successful but there is no representation to return (i.e. the response is empty).
+The created Transaction Event object is returned.
 
 ### GET /orders/{*order_id*}/transactions
 
@@ -196,7 +184,9 @@ List all Transactions of a given order.
 
 #### Request
 
+```
 {}
+```
 
 #### Response
 
@@ -210,13 +200,17 @@ Get a specific Transaction of a given order.
 
 #### Request
 
+```
 {}
+```
 
 #### Response
 
 `HTTP/1.1 200 OK`
 
 [Transaction Object](#Transaction)
+
+
 
 ## HTTP Errors List
 
@@ -226,3 +220,312 @@ Get a specific Transaction of a given order.
 * **404 Not Found** - resource was not found.
 * **405 Method Not Allowed** - requested method is not supported for resource.
 
+
+
+## Examples
+
+### Example Nº 1
+
+*Credit card transaction that was authorized + captured with a single payment.*
+
+### POST /orders/{order_id}/transactions
+
+#### Request
+
+```json
+{
+  "payment_provider_id": "815905d6-3518-479d-8ed6-5e0e4e6f305d",
+  "payment_method" : {
+      "type": "credit_card",
+      "id": "visa"
+  },
+  "info" : {
+    "card": {
+      "brand": "visa",
+      "expiration_month": 12,
+      "expiration_year": 2020,
+      "first_digits": 4444,
+      "last_digits": 1234,
+      "masked_number": "XXXXXXXXXXXX1234",
+      "name": "Ash Ketchum"
+    },
+    "installments": {
+      "quantity": 3,
+      "interest": "0.15"
+    },
+    "external_id": "1234",
+    "external_url": "https://mypayments.com/account/transactions/1234",
+    "ip": "192.168.0.25"
+  },
+  "first_event": {
+    "amount": {
+      "value": "132.95",
+      "currency": "ARS"
+    },
+    "type": "sale",
+    "status": "success",
+    "happened_at": "2020-01-25T12:30:15.000Z",
+  }
+}
+```
+
+#### Response
+
+`201 Created`
+
+```json
+{
+  "id": "124123-4518-123f-8ed6-5e0e4e6f305d",
+  "payment_provider_id": "815905d6-3518-479d-8ed6-5e0e4e6f305d",
+  "captured_amount": {
+    "value": "132.95",
+    "currency": "ARS"
+  },
+  "refunded_amount": {
+    "value": "0.00",
+    "currency": "ARS"
+  },
+  "payment_method" : {
+      "type": "credit_card",
+      "id": "visa"
+  },
+  "status": "paid",
+  "info" : {
+    "card": {
+      "brand": "visa",
+      "issuer": "santander",
+      "expiration_month": 12,
+      "expiration_year": 2020,
+      "first_digits": 4444,
+      "last_digits": 1234,
+      "masked_number": "XXXXXXXXXXXX1234",
+      "name": "Ash Ketchum"
+    },
+    "installments": {
+      "quantity": 3,
+      "interest": "0.15"
+    },
+    "external_id": "1234",
+    "external_url": "https://mypayments.com/account/transactions/1234",
+    "ip": "192.168.0.25"
+  },
+  "failure_code": null,
+  "created_at": "2020-01-25T12:30:20.000Z",
+  "events" : [
+    {
+      "id": "423123-4518-123f-8ed6-5e0e4e6f305d",
+      "transaction_id": "124123-4518-123f-8ed6-5e0e4e6f305d",
+      "amount": {
+        "value": "132.95",
+        "currency": "ARS"
+      },
+      "type": "sale",
+      "status": "success",
+      "info": null,
+      "failure_code": null,
+      "created_at": "2020-01-25T12:30:20.000Z",
+      "happened_at": "2020-01-25T12:30:15.000Z"
+    }
+  ]
+}
+```
+
+
+
+### Example Nº 2
+
+*Boleto transaction that starts pending and then is paid by the buyer.*
+
+### POST /orders/{order_id}/transactions
+
+#### Request
+
+```json
+{
+  "payment_provider_id": "815905d6-3518-479d-8ed6-5e0e4e6f305d",
+  "payment_method" : {
+      "type": "boleto",
+      "id": "bradesco"
+  },
+  "info" : {
+    "external_id": "1234",
+    "external_url": "https://mypayments.com/account/transactions/1234",
+    "external_resource_url": "https://mypayments.com/boleto/1234",
+    "external_resource_code": "00190500954014481606906809350314337370000000100",
+    "ip": "192.168.0.25"
+  },
+  "first_event": {
+    "amount": {
+      "value": "132.95",
+      "currency": "ARS"
+    },
+    "type": "sale",
+    "status": "pending",
+    "happened_at": "2020-01-25T12:30:15.000Z",
+  }
+}
+```
+
+#### Response
+
+`201 Created`
+
+```json
+{
+  "id": "124123-4518-123f-8ed6-5e0e4e6f305d",
+  "payment_provider_id": "815905d6-3518-479d-8ed6-5e0e4e6f305d",
+  "captured_amount": {
+    "value": "0.00",
+    "currency": "ARS"
+  },
+  "refunded_amount": {
+    "value": "0.00",
+    "currency": "ARS"
+  },
+  "payment_method" : {
+      "type": "boleto",
+      "id": "bradesco"
+  },
+  "status": "pending",
+  "info" : {
+    "installments": {
+      "quantity": 1,
+      "interest": "0.00"
+    },
+    "external_id": "1234",
+    "external_url": "https://mypayments.com/account/transactions/1234",
+    "external_resource_url": "https://mypayments.com/boleto/1234",
+    "external_resource_code": "00190500954014481606906809350314337370000000100",
+    "ip": "192.168.0.25"
+  },
+  "failure_code": null,
+  "created_at": "2020-01-25T12:30:20.000Z",
+  "events" : [
+    {
+      "id": "423123-4518-123f-8ed6-5e0e4e6f305d",
+      "transaction_id": "124123-4518-123f-8ed6-5e0e4e6f305d",
+      "amount": {
+        "value": "132.95",
+        "currency": "ARS"
+      },
+      "type": "sale",
+      "status": "pending",
+      "info": null,
+      "failure_code": null,
+      "created_at": "2020-01-25T12:30:20.000Z",
+      "happened_at": "2020-01-25T12:30:15.000Z"
+    }
+  ]
+}
+```
+
+### POST /orders/{order_id}/transactions/{transaction_id}/events
+
+#### Request
+
+```json
+{
+    "type": "sale",
+    "status": "success",
+    "happened_at": "2020-01-27T12:30:15.000Z",
+  }
+}
+```
+
+#### Response
+
+`201 Created`
+
+```json
+{
+  "id": "423124-4518-123f-8ed6-5e0e4e6f305d",
+  "transaction_id": "124123-4518-123f-8ed6-5e0e4e6f305d",
+  "amount": {
+    "value": "132.95",
+    "currency": "ARS"
+  },
+  "type": "sale",
+  "status": "success",
+  "info": null,
+  "failure_code": null,
+  "created_at": "2020-01-25T12:30:20.000Z",
+  "happened_at": "2020-01-25T12:30:15.000Z"
+}
+```
+
+### Example Nº 3
+
+*Obtaining a Transaction resource by ID.*
+
+### GET /orders/{order_id}/transactions/{transaction_id}
+
+#### Request
+
+```
+{}
+```
+
+#### Response
+
+```json
+{
+  "id": "124123-4518-123f-8ed6-5e0e4e6f305d",
+  "payment_provider_id": "815905d6-3518-479d-8ed6-5e0e4e6f305d",
+  "captured_amount": {
+    "value": "132.95",
+    "currency": "ARS"
+  },
+  "refunded_amount": {
+    "value": "0.00",
+    "currency": "ARS"
+  },
+  "payment_method" : {
+      "type": "boleto",
+      "id": "bradesco"
+  },
+  "status": "pending",
+  "info" : {
+    "installments": {
+      "quantity": 1,
+      "interest": "0.00"
+    },
+    "external_id": "1234",
+    "external_url": "https://mypayments.com/account/transactions/1234",
+    "external_resource_url": "https://mypayments.com/boleto/1234",
+    "external_resource_code": "00190500954014481606906809350314337370000000100",
+    "ip": "192.168.0.25"
+  },
+  "failure_code": null,
+  "created_at": "2020-01-25T12:30:20.000Z",
+  "events" : [
+    {
+      "id": "423123-4518-123f-8ed6-5e0e4e6f305d",
+      "transaction_id": "124123-4518-123f-8ed6-5e0e4e6f305d",
+      "amount": {
+        "value": "132.95",
+        "currency": "ARS"
+      },
+      "type": "sale",
+      "status": "pending",
+      "info": null,
+      "failure_code": null,
+      "created_at": "2020-01-25T12:30:20.000Z",
+      "happened_at": "2020-01-25T12:30:15.000Z"
+    },
+    {
+      "id": "423124-4518-123f-8ed6-5e0e4e6f305d",
+      "transaction_id": "124123-4518-123f-8ed6-5e0e4e6f305d",
+      "amount": {
+        "value": "132.95",
+        "currency": "ARS"
+      },
+      "type": "sale",
+      "status": "success",
+      "info": null,
+      "failure_code": null,
+      "created_at": "2020-01-25T12:30:20.000Z",
+      "happened_at": "2020-01-25T12:30:15.000Z"
+    }
+  ]
+}
+```
