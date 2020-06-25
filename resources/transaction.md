@@ -26,7 +26,7 @@ The following properties are returned by our platform for informational purpose,
 | `events`          | Array(Object) | List of fulfillment events related to this Transaction. See [Transaction Events](#Transaction-Events). |
 | `captured_amount` | Object        | Object containing the captured amount of this Transaction. See [Money](#Money). |
 | `refunded_amount` | Object        | Object containing the refunded amount of this Transaction. See [Money](#Money). |
-| `failure_code`    | String        | If the transaction failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
+| `failure_code`    | String        | If the transaction failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/failure_codes.md). |
 | `app_id`          | String        | ID of the application to which the Transaction belongs.      |
 
 ### Payment Method
@@ -90,7 +90,7 @@ The following properties are returned by our platform for informational purpose,
 | `status`         | Object | The state of the FSM in which the Transaction remains after this Transaction Event. See [Transaction Status](#Transaction-Status). |
 | `happend_at`     | Date   | ISO 8601 date for the date the Transaction Event was processed. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
 | `info`           | Object | [Optional] Object containing specific info related to this Transaction Event. See [Transaction Event Info](#Transaction-Event-Info). |
-| `failure_code`   | String | [Optional] If the Transaction Event failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
+| `failure_code`   | String | [Optional] If the Transaction Event failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/failure_codes.md). |
 | `id`             | String | [Informational] Unique identifier of the Transaction Event object. |
 | `transaction_id` | String | [Informational] ID of the [Transaction](#Transaction) related to this Transaction Event. |
 | `created_at`     | Date   | [Informational] ISO 8601 date for the date the Transaction Event was created in our platform. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
