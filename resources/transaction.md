@@ -92,6 +92,8 @@ All `Transaction` types have the same attributes, but may generate different kin
 | `failure_code`   | String | If the Transaction Event failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
 | `created_at`     | Date   | [Read-only] ISO 8601 date for the date the Transaction Event was created in our platform. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
 
+> ***Note:*** The `amount` property is required for `authorization` and `sale` Transaction Event Types, and must always be included in the `first_event` field during the Transaction creation. If no `amount` property is specified for  `void`, `refund` or `capture` Transaction Event Types, the total transaction amount is assumed.
+
 ### Money
 
 | Field      | Type   | Description                                                 |
@@ -121,7 +123,7 @@ Each type of Transaction has a Finite State Machine (FSM) that defines its statu
 * `capture`: Capture.
 * `in_fraud_analysis`: The transaction is being reviewed by the payment provider (no merchant action is required).
 * `mark_as_paid`: The transaction was approved by the merchant manually.
-* `refunded`: Refund.
+* `refund`: Refund.
 * `request_merchant_review`: The transaction has to be approved or rejected by the merchant.
 * `sale`: Represents authorization along with capture.
 * `void`: The authorization was voided.
@@ -180,8 +182,6 @@ Update the events of a Transaction.
 | `info`         | Object | [Optional] Object containing specific info related to this Transaction Event. See [Transaction Event Info](#Transaction-Event-Info). |
 | `failure_code` | String | [Optional] If the Transaction Event failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
 
-
-
 #### Response
 
 `HTTP/1.1 201 Created`
@@ -222,7 +222,6 @@ Get a specific Transaction of a given order.
 `HTTP/1.1 200 OK`
 
 [Transaction Object](#Transaction)
-
 
 ## HTTP Errors List
 
