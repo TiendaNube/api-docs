@@ -545,7 +545,7 @@ Get a specific Transaction of a given order.
 
 ### Transaction Failure Codes
 
-The following list contains all the Transaction failures codes currently supported by our platform.
+The following list contains all the Transaction failures codes currently supported by our platform, organized by data groups.
 
 ### Consumer
 
