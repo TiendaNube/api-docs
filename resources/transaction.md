@@ -1,33 +1,28 @@
 Transaction
 ===========
 
-Each movement of money is modeled through a Transaction object, which can be of different types (e.g. credit card, debit card, boleto, wire transfer, etc.). Since not all Transactions are atomic, each type has a Finite State Machine (FSM) that defines its status.
+Each movement of money is modeled through a `Transaction` object, which can be of different types (e.g. credit card, debit card, boleto, wire transfer, etc.). Each `Transaction` type has a Finite State Machine (FSM) that defines its current status. The `TransactionEvent` object represents transitions in the `Transaction`'s FSM.
 
 A [Payment Provider](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md) can create the number of Transactions it needs for a given order and update their status as they change over time.
 
 Properties
 ---------
 
-All Transactions types have the same attributes, but may generate different kinds of  *events* and contain some *info* fields specific to their type.
+All `Transaction` types have the same attributes, but may generate different kinds of  *events* and contain some *info* fields specific to their type.
 
 | Field                 | Type   | Description                                                  |
 | :-------------------- | :----- | :----------------------------------------------------------- |
+| `id`                  | String | Unique identifier of the Transaction object.                 |
+| `app_id`              | String | ID of the application to which the Transaction belongs.      | 
 | `payment_provider_id` | String | ID of the [Payment Provider](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md) that processed this Transaction. |
 | `payment_method`      | Object | Object containing the payment method used in this Transaction. See [Payment Method](#Payment-Method). |
-| `first_event`         | Object | First transaction event that generated this Transaction. See [Transaction Events](#Transaction-Events). |
 | `info`                | Object | [Optional] Object containing specific info related to this Transaction. See [Transaction Info](#Transaction-Info). |
+| `status`              | Object | The state of the FSM in which the Transaction is. See [Transaction Status](#Transaction-Status). |
+| `events`              | Array(Object) | List of fulfillment events related to this Transaction. See [Transaction Events](#Transaction-Events). |
+| `captured_amount`     | Object | Object containing the captured amount of this Transaction. See [Money](#Money). |
+| `refunded_amount`     | Object | Object containing the refunded amount of this Transaction. See [Money](#Money). |
+| `failure_code`        | String | If the transaction failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
 
-The following properties are returned by our platform for informational purpose, which means that they may only appear in our responses when creating, updating or obtaining a Transaction resource.
-
-| Field             | Type          | Description                                                  |
-| ----------------- | ------------- | ------------------------------------------------------------ |
-| `id`              | String        | Unique identifier of the Transaction object.                 |
-| `status`          | Object        | The state of the FSM in which the Transaction is. See [Transaction Status](#Transaction-Status). |
-| `events`          | Array(Object) | List of fulfillment events related to this Transaction. See [Transaction Events](#Transaction-Events). |
-| `captured_amount` | Object        | Object containing the captured amount of this Transaction. See [Money](#Money). |
-| `refunded_amount` | Object        | Object containing the refunded amount of this Transaction. See [Money](#Money). |
-| `failure_code`    | String        | If the transaction failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
-| `app_id`          | String        | ID of the application to which the Transaction belongs.      |
 
 ### Payment Method
 
@@ -67,11 +62,12 @@ The following properties are returned by our platform for informational purpose,
 | Field              | Type   | Description                                                  |
 | ------------------ | ------ | ------------------------------------------------------------ |
 | `brand`            | String | The brand of the card.                                       |
+| `issuer`           | String | [Optional] The issuer of the card.                                      |
 | `expiration_month` | Number | The expiration month of the card.                            |
 | `expiration_year`  | Number | The expiration year of the card.                             |
 | `first_digits`     | String | The first 6 (six) digits of the card.                        |
 | `last_digits`      | String | The last 4 (four) digits of the card.                        |
-| `masked_number`    | String | Masked card number displaying only the last 4 (four) digits. E.g. `"XXXXXXXXXXXX1234"`. |
+| `masked_number`    | String | [Optional] Masked card number displaying only the last 4 (four) digits. E.g. `"XXXXXXXXXXXX1234"`. |
 | `name`             | String | Name of the card holder.                                     |
 
 #### Installments Info
@@ -85,15 +81,15 @@ The following properties are returned by our platform for informational purpose,
 
 | Field            | Type   | Description                                                  |
 | ---------------- | ------ | ------------------------------------------------------------ |
+| `id`             | String | [Read only] Unique identifier of the Transaction Event object. |
+| `transaction_id` | String | [Read only] ID of the [Transaction](#Transaction) related to this Transaction Event. |
 | `amount`         | Object | Object containing the amount of this Transaction Event. See [Money](#Money). |
 | `type`           | String | One of the available [Transaction Event Types](#Transaction-Event-Types). |
-| `status`         | Object | The state of the FSM in which the Transaction remains after this Transaction Event. See [Transaction Status](#Transaction-Status). |
+| `status`         | Object | One of the available [Transaction Event Status](#Transaction-Event-Status). |
 | `happend_at`     | Date   | ISO 8601 date for the date the Transaction Event was processed. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
 | `info`           | Object | [Optional] Object containing specific info related to this Transaction Event. See [Transaction Event Info](#Transaction-Event-Info). |
 | `failure_code`   | String | [Optional] If the Transaction Event failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
-| `id`             | String | [Informational] Unique identifier of the Transaction Event object. |
-| `transaction_id` | String | [Informational] ID of the [Transaction](#Transaction) related to this Transaction Event. |
-| `created_at`     | Date   | [Informational] ISO 8601 date for the date the Transaction Event was created in our platform. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
+| `created_at`     | Date   | [Read only] ISO 8601 date for the date the Transaction Event was created in our platform. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
 
 > ***Note:*** Informational properties will only appear in our responses, which means that should not be part of the requests.
 
@@ -106,6 +102,20 @@ The following properties are returned by our platform for informational purpose,
 
 > ***Note:*** Decimal numbers will be represented as string format for better decimal precision handling. It must contain two decimal places and use a point as decimal separator.
 
+### Transaction Status
+
+Each type of Transaction has a Finite State Machine (FSM) that defines its status:
+
+* `authorized`: The transaction is authorized.
+* `failed`: The transaction failed.
+* `in_fraud_analisys`: The transaction is under fraud analysis by the payment provider.
+* `needs_merchant_review`: The transaction needs merchant action to continue.
+* `paid`: The transaction is confirmed.
+* `partially_refunded`: The transaction is partially refunded.
+* `pending`: The transaction is pending.
+* `refunded`: The transaction is refunded.
+* `voided`: The transaction is voided.
+
 #### Transaction Event Types
 
 * `authorization`: Authorization.
@@ -117,6 +127,13 @@ The following properties are returned by our platform for informational purpose,
 * `sale`: Represents authorization along with capture.
 * `void`: The authorization was voided.
 
+#### Transaction Event Status
+
+* `error`: There was an error processing the transaction event.
+* `failure`: The transaction event failed.
+* `pending`: The transaction event is pending.
+* `success`: The transaction event succeded.
+
 #### Transaction Event Info
 
 | Field         | Type   | Description                                                  |
@@ -126,29 +143,6 @@ The following properties are returned by our platform for informational purpose,
 | `risk_level`  | String | [Optional] Risk level that an Order is fraudulent. One of `low`, `medium`or `high`. |
 | `accept_url`  | String | [Optional] HTTPS URL we will call to accept the Transaction from our platform. It should return a 2xx HTTP code or we will return an error to the merchant. |
 | `cancel_url`  | String | [Optional] HTTPS URL we will call to cancel the Transaction from our platform. It should return a 2xx HTTP code or we will return an error to the merchant. |
-
-### Transaction Status
-
-Each type of Transaction has a Finite State Machine (FSM) that defines its status:
-
-* `authorized`: The transaction is authorized.
-
-* `failed`: The transaction failed.
-
-* `in_fraud_analisys`: The transaction is under fraud analysis by the payment provider.
-
-* `needs_merchant_review`: The transaction needs merchant action to continue.
-
-* `paid`: The transaction is confirmed.
-
-* `partially_refunded`: The transaction is partially refunded.
-
-* `pending`: The transaction is pending.
-
-* `refunded`: The transaction is refunded.
-
-* `voided`: The transaction is voided.
-
 
 Endpoints
 ---------
@@ -166,7 +160,6 @@ Create a Transaction for a given order.
 `HTTP/1.1 201 Created`
 
 The created [Transaction Object](#Transaction) is returned.
-
 
 ### POST /orders/{*order_id*}/transactions/{*transaction_id*}/events
 
@@ -227,11 +220,11 @@ Get a specific Transaction of a given order.
 * **405 Method Not Allowed** - requested method is not supported for resource.
 
 
-## Examples
+## Common examples
 
 ### Example Nº 1
 
-*Credit card transaction that was authorized + captured with a single payment.*
+*Credit card transaction that was authorized + captured within a single event.*
 
 ### POST /orders/{order_id}/transactions
 
