@@ -26,7 +26,7 @@ The following properties are returned by our platform for informational purpose,
 | `events`          | Array(Object) | List of fulfillment events related to this Transaction. See [Transaction Events](#Transaction-Events). |
 | `captured_amount` | Object        | Object containing the captured amount of this Transaction. See [Money](#Money). |
 | `refunded_amount` | Object        | Object containing the refunded amount of this Transaction. See [Money](#Money). |
-| `failure_code`    | String        | If the transaction failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/failure_codes.md). |
+| `failure_code`    | String        | If the transaction failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
 | `app_id`          | String        | ID of the application to which the Transaction belongs.      |
 
 ### Payment Method
@@ -90,7 +90,7 @@ The following properties are returned by our platform for informational purpose,
 | `status`         | Object | The state of the FSM in which the Transaction remains after this Transaction Event. See [Transaction Status](#Transaction-Status). |
 | `happend_at`     | Date   | ISO 8601 date for the date the Transaction Event was processed. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
 | `info`           | Object | [Optional] Object containing specific info related to this Transaction Event. See [Transaction Event Info](#Transaction-Event-Info). |
-| `failure_code`   | String | [Optional] If the Transaction Event failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/failure_codes.md). |
+| `failure_code`   | String | [Optional] If the Transaction Event failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
 | `id`             | String | [Informational] Unique identifier of the Transaction Event object. |
 | `transaction_id` | String | [Informational] ID of the [Transaction](#Transaction) related to this Transaction Event. |
 | `created_at`     | Date   | [Informational] ISO 8601 date for the date the Transaction Event was created in our platform. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
@@ -147,7 +147,6 @@ Each type of Transaction has a Finite State Machine (FSM) that defines its statu
 
 * `voided`: The transaction is voided.
 
-  
 
 Endpoints
 ---------
@@ -167,7 +166,6 @@ Create a Transaction for a given order.
 The created [Transaction Object](#Transaction) is returned.
 
 
-
 ### POST /orders/{*order_id*}/transactions/{*transaction_id*}/events
 
 Update the events of a Transaction. 
@@ -181,7 +179,6 @@ Update the events of a Transaction.
 `HTTP/1.1 201 Created`
 
 The created [Transaction Event Object](#Transaction-Events) is returned.
-
 
 
 ### GET /orders/{*order_id*}/transactions
@@ -219,7 +216,6 @@ Get a specific Transaction of a given order.
 [Transaction Object](#Transaction)
 
 
-
 ## HTTP Errors List
 
 * **400 Bad Request** - the request could not be understood or was missing required parameters.
@@ -227,7 +223,6 @@ Get a specific Transaction of a given order.
 * **403 Forbidden** - access denied.
 * **404 Not Found** - resource was not found.
 * **405 Method Not Allowed** - requested method is not supported for resource.
-
 
 
 ## Examples
@@ -337,7 +332,6 @@ Get a specific Transaction of a given order.
   ]
 }
 ```
-
 
 
 ### Example Nº 2
@@ -537,3 +531,131 @@ Get a specific Transaction of a given order.
   ]
 }
 ```
+
+
+## Appendix
+
+### Transaction Failure Codes
+
+The following list contains all the Transaction failures codes currently supported by our platform.
+
+### Consumer
+
+| Code                           |
+| ------------------------------ |
+| consumer_city_invalid          |
+| consumer_country_invalid       |
+| consumer_district_invalid      |
+| consumer_email_invalid         |
+| consumer_firstname_invalid     |
+| consumer_floor_invalid         |
+| consumer_id_invalid            |
+| consumer_id_type_invalid       |
+| consumer_id_value_invalid      |
+| consumer_lastname_invalid      |
+| consumer_phone_invalid         |
+| consumer_province_invalid      |
+| consumer_region_invalid        |
+| consumer_state_invalid         |
+| consumer_street_invalid        |
+| consumer_street_number_invalid |
+| consumer_zip_invalid           |
+
+### Payment Method
+
+#### General
+
+| Code                      |
+| ------------------------- |
+| payment_method_id_invalid |
+
+#### Bank Debit
+
+| Code                              |
+| --------------------------------- |
+| bank_debit_bank_invalid           |
+| bank_debit_method_unavailable     |
+| bank_debit_payer_id_type_invalid  |
+| bank_debit_payer_id_value_invalid |
+| bank_debit_payer_name_invalid     |
+
+#### Boleto
+
+| Code                          |
+| ----------------------------- |
+| boleto_method_unavailable     |
+| boleto_payer_id_type_invalid  |
+| boleto_payer_id_value_invalid |
+| boleto_payer_name_invalid     |
+
+#### Card
+
+| Code                               |
+| ---------------------------------- |
+| card_cvv_invalid                   |
+| card_expiration_date_invalid       |
+| card_holder_birthdate_invalid      |
+| card_holder_id_type_invalid        |
+| card_holder_id_value_invalid       |
+| card_holder_name_invalid           |
+| card_holder_phone_invalid          |
+| card_info_invalid                  |
+| card_issuer_invalid                |
+| card_method_unavailable            |
+| card_number_invalid                |
+| card_rejected                      |
+| card_rejected_deny_list            |
+| card_rejected_disabled             |
+| card_rejected_duplicated_payment   |
+| card_rejected_fraud_high_risk      |
+| card_rejected_insufficient_founds  |
+| card_rejected_invalid_installments |
+| card_rejected_max_attemps          |
+
+#### Ticket
+
+| Code                      |
+| ------------------------- |
+| ticket_method_unavailable |
+| ticket_operator_invalid   |
+
+### Shipping
+
+| Code                           |
+| ------------------------------ |
+| shipping_city_invalid          |
+| shipping_district_invalid      |
+| shipping_email_invalid         |
+| shipping_firstname_invalid     |
+| shipping_floor_invalid         |
+| shipping_lastname_invalid      |
+| shipping_method_invalid        |
+| shipping_method_unavailable    |
+| shipping_phone_invalid         |
+| shipping_province_invalid      |
+| shipping_region_invalid        |
+| shipping_state_invalid         |
+| shipping_street_invalid        |
+| shipping_street_number_invalid |
+| shipping_total_curreny_invalid |
+| shipping_total_value_invalid   |
+| shipping_zip_invalid           |
+
+### Order
+
+| Code                           |
+| ------------------------------ |
+| line_items_currency_invalid    |
+| line_items_description_invalid |
+| line_items_quantity_invalid    |
+| line_items_value_invalid       |
+| order_total_currency_invalid   |
+| order_total_value_invalid      |
+| order_total_value_too_small    |
+
+### Credentials
+
+| Code                         |
+| ---------------------------- |
+| consumer_invalid_credentials |
+| merchant_invalid_credentials |
