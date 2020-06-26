@@ -10,18 +10,18 @@ Properties
 
 All `Transaction` types have the same attributes, but may generate different kinds of  *events* and contain some *info* fields specific to their type.
 
-| Field                 | Type   | Description                                                  |
-| :-------------------- | :----- | :----------------------------------------------------------- |
-| `id`                  | String | [Read-only] Unique identifier of the Transaction object.                 |
-| `app_id`              | String | [Read-only] ID of the application to which the Transaction belongs.      | 
-| `payment_provider_id` | String | ID of the [Payment Provider](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md) that processed this Transaction. |
-| `payment_method`      | Object | Object containing the payment method used in this Transaction. See [Payment Method](#Payment-Method). |
-| `info`                | Object | [Optional] Object containing specific info related to this Transaction. See [Transaction Info](#Transaction-Info). |
-| `status`              | Object | [Read-only] The state of the FSM in which the Transaction is. See [Transaction Status](#Transaction-Status). |
+| Field                 | Type          | Description                                                  |
+| :-------------------- | :------------ | :----------------------------------------------------------- |
+| `id`                  | String        | [Read-only] Unique identifier of the Transaction object.     |
+| `app_id`              | String        | [Read-only] ID of the application to which the Transaction belongs. |
+| `payment_provider_id` | String        | ID of the [Payment Provider](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md) that processed this Transaction. |
+| `payment_method`      | Object        | Object containing the payment method used in this Transaction. See [Payment Method](#Payment-Method). |
+| `info`                | Object        | Object containing specific info related to this Transaction. See [Transaction Info](#Transaction-Info). |
+| `status`              | Object        | [Read-only] The state of the FSM in which the Transaction is. See [Transaction Status](#Transaction-Status). |
 | `events`              | Array(Object) | [Read-only] List of fulfillment events related to this Transaction. See [Transaction Events](#Transaction-Events). |
-| `captured_amount`     | Object | [Read-only] Object containing the captured amount of this Transaction. See [Money](#Money). |
-| `refunded_amount`     | Object | [Read-only] Object containing the refunded amount of this Transaction. See [Money](#Money). |
-| `failure_code`        | String | [Read-only] If the transaction failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
+| `captured_amount`     | Object        | [Read-only] Object containing the captured amount of this Transaction. See [Money](#Money). |
+| `refunded_amount`     | Object        | [Read-only] Object containing the refunded amount of this Transaction. See [Money](#Money). |
+| `failure_code`        | String        | [Read-only] If the transaction failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
 
 > ***Note:*** Read-only properties will only appear in our responses, which means that should not be part of the requests.
 
@@ -32,7 +32,7 @@ All `Transaction` types have the same attributes, but may generate different kin
 | `type` | String | One of the available [Payment Method Types](#Payment-Method-Types). |
 | `id`   | String | ID of the payment method used for this Transaction. See [Supported Payment Methods by Payment Method Type](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Supported-Payment-Methods-by-Payment-Method-Type). |
 
-#### Payment Method Types
+### Payment Method Types
 
 * `bank_debit`: Transaction in which the consumer uses bank debit as payment method.
 * `boleto`: Transaction in which the consumer uses a Boleto Bancário as payment method. Boleto is a Brazilian payment method based on cash.
@@ -58,12 +58,12 @@ All `Transaction` types have the same attributes, but may generate different kin
 
 > ***Note:*** All URLs must be secure URLs (https).
 
-#### Card Info
+### Card Info
 
 | Field              | Type   | Description                                                  |
 | ------------------ | ------ | ------------------------------------------------------------ |
 | `brand`            | String | The brand of the card.                                       |
-| `issuer`           | String | [Optional] The issuer of the card.                                      |
+| `issuer`           | String | [Optional] The issuer of the card.                           |
 | `expiration_month` | Number | The expiration month of the card.                            |
 | `expiration_year`  | Number | The expiration year of the card.                             |
 | `first_digits`     | String | The first 6 (six) digits of the card.                        |
@@ -71,7 +71,7 @@ All `Transaction` types have the same attributes, but may generate different kin
 | `masked_number`    | String | [Optional] Masked card number displaying only the last 4 (four) digits. E.g. `"XXXXXXXXXXXX1234"`. |
 | `name`             | String | Name of the card holder.                                     |
 
-#### Installments Info
+### Installments Info
 
 | Field      | Type   | Description                                              |
 | ---------- | ------ | -------------------------------------------------------- |
@@ -88,12 +88,11 @@ All `Transaction` types have the same attributes, but may generate different kin
 | `type`           | String | One of the available [Transaction Event Types](#Transaction-Event-Types). |
 | `status`         | Object | One of the available [Transaction Event Status](#Transaction-Event-Status). |
 | `happend_at`     | Date   | ISO 8601 date for the date the Transaction Event was processed. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
-| `info`           | Object | [Optional] Object containing specific info related to this Transaction Event. See [Transaction Event Info](#Transaction-Event-Info). |
-| `failure_code`   | String | [Optional] If the Transaction Event failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
+| `info`           | Object | Object containing specific info related to this Transaction Event. See [Transaction Event Info](#Transaction-Event-Info). |
+| `failure_code`   | String | If the Transaction Event failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
 | `created_at`     | Date   | [Read-only] ISO 8601 date for the date the Transaction Event was created in our platform. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
 
-
-#### Money
+### Money
 
 | Field      | Type   | Description                                                 |
 | ---------- | ------ | ----------------------------------------------------------- |
@@ -116,7 +115,7 @@ Each type of Transaction has a Finite State Machine (FSM) that defines its statu
 * `refunded`: The transaction is refunded.
 * `voided`: The transaction is voided.
 
-#### Transaction Event Types
+### Transaction Event Types
 
 * `authorization`: Authorization.
 * `capture`: Capture.
@@ -127,14 +126,14 @@ Each type of Transaction has a Finite State Machine (FSM) that defines its statu
 * `sale`: Represents authorization along with capture.
 * `void`: The authorization was voided.
 
-#### Transaction Event Status
+### Transaction Event Status
 
 * `error`: There was an error processing the transaction event.
 * `failure`: The transaction event failed.
 * `pending`: The transaction event is pending.
 * `success`: The transaction event succeded.
 
-#### Transaction Event Info
+### Transaction Event Info
 
 | Field         | Type   | Description                                                  |
 | ------------- | ------ | ------------------------------------------------------------ |
@@ -153,7 +152,12 @@ Create a Transaction for a given order.
 
 #### Request
 
-[Transaction Object](#Transaction)
+| Field                 | Type   | Description                                                  |
+| :-------------------- | :----- | :----------------------------------------------------------- |
+| `payment_provider_id` | String | [Required] ID of the [Payment Provider](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md) that processed this Transaction. |
+| `payment_method`      | Object | [Required] Object containing the payment method used in this Transaction. See [Payment Method](#Payment-Method). |
+| `first_event`         | Object | [Required] First transaction event that generated this Transaction. See [Transaction Events](#Transaction-Events). |
+| `info`                | Object | [Optional] Object containing specific info related to this Transaction. See [Transaction Info](#Transaction-Info). |
 
 #### Response
 
@@ -167,7 +171,16 @@ Update the events of a Transaction.
 
 #### Request
 
-[Transaction Event Object](#Transaction-Events)
+| Field          | Type   | Description                                                  |
+| -------------- | ------ | ------------------------------------------------------------ |
+| `type`         | String | [Required] One of the available [Transaction Event Types](#Transaction-Event-Types). |
+| `status`       | Object | [Required] One of the available [Transaction Event Status](#Transaction-Event-Status). |
+| `happend_at`   | Date   | [Required] ISO 8601 date for the date the Transaction Event was processed. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
+| `amount`       | Object | [Optional] Object containing the amount of this Transaction Event. See [Money](#Money). |
+| `info`         | Object | [Optional] Object containing specific info related to this Transaction Event. See [Transaction Event Info](#Transaction-Event-Info). |
+| `failure_code` | String | [Optional] If the Transaction Event failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
+
+
 
 #### Response
 
