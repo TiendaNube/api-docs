@@ -1,83 +1,125 @@
 Transaction Failure Codes
 ================
 
-The following list contains all the possible failures of a [Transaction](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/transaction.md) associated with a [Payment Provider](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md).
+The following lists contains all the possible failures of a Transaction associated with a Payment Provider.
 
-| Code                                 | Type      |
-| ------------------------------------ | --------- |
-| consumer_contact_email_invalid       | Syntactic |
-| consumer_id_invalid                  | Semantic  |
-| consumer_id_type_invalid             | Semantic  |
-| consumer_id_value_invalid            | Semantic  |
-| consumer_firstname_invalid           | Semantic  |
-| consumer_lastname_invalid            | Semantic  |
-| consumer_email_invalid               | Semantic  |
-| consumer_street_invalid              | Semantic  |
-| consumer_street_number_invalid       | Semantic  |
-| consumer_floor_invalid               | Semantic  |
-| consumer_city_invalid                | Semantic  |
-| consumer_region_invalid              | Semantic  |
-| consumer_state_invalid               | Semantic  |
-| consumer_district_invalid            | Semantic  |
-| consumer_country_invalid             | Semantic  |
-| consumer_phone_invalid               | Semantic  |
-| consumer_province_invalid            | Semantic  |
-| consumer_zip_invalid                 | Semantic  |
-| consumer_invalid_credentials         | System    |
-| merchant_invalid_credentials         | System    |
-| payment_provider_invalid_credentials | System    |
-| payment_method_id_invalid            | Semantic  |
-| bank_debit_bank_invalid              | Semantic  |
-| bank_debit_payer_name_invalid        | Semantic  |
-| bank_debit_payer_id_value_invalid    | Semantic  |
-| bank_debit_payer_id_type_invalid     | Semantic  |
-| bank_debit_method_unavailable        | Semantic  |
-| boleto_payer_name_invalid            | Semantic  |
-| boleto_payer_id_type_invalid         | Semantic  |
-| boleto_payer_id_value_invalid        | Semantic  |
-| boleto_method_unavailable            | Semantic  |
-| card_info_invalid                    | Semantic  |
-| card_number_invalid                  | Semantic  |
-| card_expiration_date_invalid         | Semantic  |
-| card_holder_id_type_invalid          | Semantic  |
-| card_holder_id_value_invalid         | Semantic  |
-| card_issuer_invalid                  | Semantic  |
-| card_holder_name_invalid             | Semantic  |
-| card_cvv_invalid                     | Semantic  |
-| card_holder_birthdate_invalid        | Semantic  |
-| card_holder_phone_invalid            | Semantic  |
-| card_rejected                        | Semantic  |
-| card_rejected_insufficient_founds    | Semantic  |
-| card_rejected_deny_list              | Semantic  |
-| card_rejected_disabled               | Semantic  |
-| card_rejected_fraud_high_risk        | Semantic  |
-| card_rejected_invalid_installments   | Semantic  |
-| card_rejected_duplicated_payment     | Semantic  |
-| card_rejected_max_attemps            | Semantic  |
-| card_method_unavailable              | Semantic  |
-| ticket_operator_invalid              | Semantic  |
-| ticket_method_unavailable            | Semantic  |
-| shipping_method_invalid              | Semantic  |
-| shipping_method_unavailable          | Semantic  |
-| shipping_firstname_invalid           | Semantic  |
-| shipping_lastname_invalid            | Semantic  |
-| shipping_email_invalid               | Semantic  |
-| shipping_phone_invalid               | Semantic  |
-| shipping_street_invalid              | Semantic  |
-| shipping_street_number_invalid       | Semantic  |
-| shipping_floor_invalid               | Semantic  |
-| shipping_region_invalid              | Semantic  |
-| shipping_state_invalid               | Semantic  |
-| shipping_district_invalid            | Semantic  |
-| shipping_city_invalid                | Semantic  |
-| shipping_zip_invalid                 | Semantic  |
-| shipping_total_curreny_invalid       | Semantic  |
-| shipping_total_value_invalid         | Semantic  |
-| shipping_province_invalid            | Semantic  |
-| line_items_value_invalid             | Semantic  |
-| line_items_currency_invalid          | Semantic  |
-| line_items_quantity_invalid          | Semantic  |
-| line_items_description_invalid       | Semantic  |
-| order_total_currency_invalid         | Semantic  |
-| order_total_value_invalid            | Semantic  |
-| order_total_value_too_small          | Semantic  |
+### Consumer
+
+| Code                           |
+| ------------------------------ |
+| consumer_city_invalid          |
+| consumer_country_invalid       |
+| consumer_district_invalid      |
+| consumer_email_invalid         |
+| consumer_firstname_invalid     |
+| consumer_floor_invalid         |
+| consumer_id_invalid            |
+| consumer_id_type_invalid       |
+| consumer_id_value_invalid      |
+| consumer_lastname_invalid      |
+| consumer_phone_invalid         |
+| consumer_province_invalid      |
+| consumer_region_invalid        |
+| consumer_state_invalid         |
+| consumer_street_invalid        |
+| consumer_street_number_invalid |
+| consumer_zip_invalid           |
+
+### Payment Method
+
+#### General
+
+| Code                      |
+| ------------------------- |
+| payment_method_id_invalid |
+
+#### Bank Debit
+
+| Code                              |
+| --------------------------------- |
+| bank_debit_bank_invalid           |
+| bank_debit_method_unavailable     |
+| bank_debit_payer_id_type_invalid  |
+| bank_debit_payer_id_value_invalid |
+| bank_debit_payer_name_invalid     |
+
+#### Boleto
+
+| Code                          |
+| ----------------------------- |
+| boleto_method_unavailable     |
+| boleto_payer_id_type_invalid  |
+| boleto_payer_id_value_invalid |
+| boleto_payer_name_invalid     |
+
+#### Card
+
+| Code                               |
+| ---------------------------------- |
+| card_cvv_invalid                   |
+| card_expiration_date_invalid       |
+| card_holder_birthdate_invalid      |
+| card_holder_id_type_invalid        |
+| card_holder_id_value_invalid       |
+| card_holder_name_invalid           |
+| card_holder_phone_invalid          |
+| card_info_invalid                  |
+| card_issuer_invalid                |
+| card_method_unavailable            |
+| card_number_invalid                |
+| card_rejected                      |
+| card_rejected_deny_list            |
+| card_rejected_disabled             |
+| card_rejected_duplicated_payment   |
+| card_rejected_fraud_high_risk      |
+| card_rejected_insufficient_founds  |
+| card_rejected_invalid_installments |
+| card_rejected_max_attemps          |
+
+#### Ticket
+
+| Code                      |
+| ------------------------- |
+| ticket_method_unavailable |
+| ticket_operator_invalid   |
+
+### Shipping
+
+| Code                           |
+| ------------------------------ |
+| shipping_city_invalid          |
+| shipping_district_invalid      |
+| shipping_email_invalid         |
+| shipping_firstname_invalid     |
+| shipping_floor_invalid         |
+| shipping_lastname_invalid      |
+| shipping_method_invalid        |
+| shipping_method_unavailable    |
+| shipping_phone_invalid         |
+| shipping_province_invalid      |
+| shipping_region_invalid        |
+| shipping_state_invalid         |
+| shipping_street_invalid        |
+| shipping_street_number_invalid |
+| shipping_total_curreny_invalid |
+| shipping_total_value_invalid   |
+| shipping_zip_invalid           |
+
+### Order
+
+| Code                           |
+| ------------------------------ |
+| line_items_currency_invalid    |
+| line_items_description_invalid |
+| line_items_quantity_invalid    |
+| line_items_value_invalid       |
+| order_total_currency_invalid   |
+| order_total_value_invalid      |
+| order_total_value_too_small    |
+
+### Credentials
+
+| Code                         |
+| ---------------------------- |
+| consumer_invalid_credentials |
+| merchant_invalid_credentials |
