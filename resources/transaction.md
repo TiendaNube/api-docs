@@ -12,17 +12,18 @@ All `Transaction` types have the same attributes, but may generate different kin
 
 | Field                 | Type   | Description                                                  |
 | :-------------------- | :----- | :----------------------------------------------------------- |
-| `id`                  | String | Unique identifier of the Transaction object.                 |
-| `app_id`              | String | ID of the application to which the Transaction belongs.      | 
+| `id`                  | String | [Read-only] Unique identifier of the Transaction object.                 |
+| `app_id`              | String | [Read-only] ID of the application to which the Transaction belongs.      | 
 | `payment_provider_id` | String | ID of the [Payment Provider](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md) that processed this Transaction. |
 | `payment_method`      | Object | Object containing the payment method used in this Transaction. See [Payment Method](#Payment-Method). |
 | `info`                | Object | [Optional] Object containing specific info related to this Transaction. See [Transaction Info](#Transaction-Info). |
-| `status`              | Object | The state of the FSM in which the Transaction is. See [Transaction Status](#Transaction-Status). |
-| `events`              | Array(Object) | List of fulfillment events related to this Transaction. See [Transaction Events](#Transaction-Events). |
-| `captured_amount`     | Object | Object containing the captured amount of this Transaction. See [Money](#Money). |
-| `refunded_amount`     | Object | Object containing the refunded amount of this Transaction. See [Money](#Money). |
-| `failure_code`        | String | If the transaction failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
+| `status`              | Object | [Read-only] The state of the FSM in which the Transaction is. See [Transaction Status](#Transaction-Status). |
+| `events`              | Array(Object) | [Read-only] List of fulfillment events related to this Transaction. See [Transaction Events](#Transaction-Events). |
+| `captured_amount`     | Object | [Read-only] Object containing the captured amount of this Transaction. See [Money](#Money). |
+| `refunded_amount`     | Object | [Read-only] Object containing the refunded amount of this Transaction. See [Money](#Money). |
+| `failure_code`        | String | [Read-only] If the transaction failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
 
+> ***Note:*** Read-only properties will only appear in our responses, which means that should not be part of the requests.
 
 ### Payment Method
 
@@ -81,17 +82,16 @@ All `Transaction` types have the same attributes, but may generate different kin
 
 | Field            | Type   | Description                                                  |
 | ---------------- | ------ | ------------------------------------------------------------ |
-| `id`             | String | [Read only] Unique identifier of the Transaction Event object. |
-| `transaction_id` | String | [Read only] ID of the [Transaction](#Transaction) related to this Transaction Event. |
+| `id`             | String | [Read-only] Unique identifier of the Transaction Event object. |
+| `transaction_id` | String | [Read-only] ID of the [Transaction](#Transaction) related to this Transaction Event. |
 | `amount`         | Object | Object containing the amount of this Transaction Event. See [Money](#Money). |
 | `type`           | String | One of the available [Transaction Event Types](#Transaction-Event-Types). |
 | `status`         | Object | One of the available [Transaction Event Status](#Transaction-Event-Status). |
 | `happend_at`     | Date   | ISO 8601 date for the date the Transaction Event was processed. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
 | `info`           | Object | [Optional] Object containing specific info related to this Transaction Event. See [Transaction Event Info](#Transaction-Event-Info). |
 | `failure_code`   | String | [Optional] If the Transaction Event failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
-| `created_at`     | Date   | [Read only] ISO 8601 date for the date the Transaction Event was created in our platform. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
+| `created_at`     | Date   | [Read-only] ISO 8601 date for the date the Transaction Event was created in our platform. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
 
-> ***Note:*** Informational properties will only appear in our responses, which means that should not be part of the requests.
 
 #### Money
 
