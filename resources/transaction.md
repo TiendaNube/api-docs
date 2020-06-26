@@ -95,6 +95,8 @@ The following properties are returned by our platform for informational purpose,
 | `transaction_id` | String | [Informational] ID of the [Transaction](#Transaction) related to this Transaction Event. |
 | `created_at`     | Date   | [Informational] ISO 8601 date for the date the Transaction Event was created in our platform. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
 
+> ***Note:*** Informational properties will only appear in our responses, which means that should not be part of the requests.
+
 #### Money
 
 | Field      | Type   | Description                                                 |
