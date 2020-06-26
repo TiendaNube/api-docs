@@ -1,7 +1,7 @@
 Transaction Failure Codes
 ================
 
-The following lists contains all the possible failures of a Transaction associated with a Payment Provider.
+The following lists contains all the possible failures of a [Transaction](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/transaction.md) associated with a [Payment Provider](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md).
 
 ### Consumer
 
