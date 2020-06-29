@@ -238,9 +238,9 @@ Get a specific Transaction of a given order.
 
 *Credit card transaction that was authorized + captured within a single event.*
 
-### POST /orders/{order_id}/transactions
+#### POST /orders/12345/transactions
 
-#### Request
+##### Request
 
 ```json
 {
@@ -279,7 +279,7 @@ Get a specific Transaction of a given order.
 }
 ```
 
-#### Response
+##### Response
 
 `201 Created`
 
@@ -345,9 +345,9 @@ Get a specific Transaction of a given order.
 
 *Boleto transaction that starts pending and then is paid by the buyer.*
 
-### POST /orders/{order_id}/transactions
+#### POST /orders/56789/transactions
 
-#### Request
+##### Request
 
 ```json
 {
@@ -375,7 +375,7 @@ Get a specific Transaction of a given order.
 }
 ```
 
-#### Response
+##### Response
 
 `201 Created`
 
@@ -428,9 +428,9 @@ Get a specific Transaction of a given order.
 }
 ```
 
-### POST /orders/{order_id}/transactions/{transaction_id}/events
+#### POST /orders/56789/transactions/124123-4518-123f-8ed6-5e0e4e6f305d/events
 
-#### Request
+##### Request
 
 ```json
 {
@@ -441,7 +441,7 @@ Get a specific Transaction of a given order.
 }
 ```
 
-#### Response
+##### Response
 
 `201 Created`
 
@@ -466,15 +466,15 @@ Get a specific Transaction of a given order.
 
 *Obtaining a Transaction resource by ID.*
 
-### GET /orders/{order_id}/transactions/{transaction_id}
+#### GET /orders/56789/transactions/124123-4518-123f-8ed6-5e0e4e6f305d
 
-#### Request
+##### Request
 
 ```
 {}
 ```
 
-#### Response
+##### Response
 
 ```json
 {
@@ -548,45 +548,49 @@ The following list contains all the Transaction failures codes currently support
 
 ### Consumer
 
-| Failure Code                     | Description                                   |
-| -------------------------------- | --------------------------------------------- |
-| `consumer_city_invalid`          | The consumer city is invalid.                 |
-| `consumer_country_invalid`       | The consumer country is invalid.              |
-| `consumer_district_invalid`      | The consumer district is invalid.             |
-| `consumer_email_invalid`         | The consumer email is invalid.                |
-| `consumer_firstname_invalid`     | The consumer firstname is invalid.            |
-| `consumer_floor_invalid`         | The consumer address floor is invalid.        |
-| `consumer_id_type_invalid`       | The consumer identification type is invalid.  |
-| `consumer_id_value_invalid`      | The consumer identification value is invalid. |
-| `consumer_lastname_invalid`      | The consumer lastname is invalid.             |
-| `consumer_phone_invalid`         | The consumer phone number is invalid.         |
-| ``consumer_province_invalid`     | The consumer province is invalid.             |
-| `consumer_region_invalid`        | The consumer region is invalid.               |
-| `consumer_state_invalid`         | The consumer state is invalid.                |
-| `consumer_street_invalid`        | The consumer address street is invalid.       |
-| `consumer_street_number_invalid` | The consumer address number is invalid.       |
-| `consumer_zip_invalid`           | The consumer ZIP code is invalid.             |
+| Failure Code                     | Description                                                  |
+| -------------------------------- | ------------------------------------------------------------ |
+| `consumer_blocked`               | The consumer is blocked by the payment provider.             |
+| `consumer_city_invalid`          | The consumer city is invalid.                                |
+| `consumer_country_invalid`       | The consumer country is invalid.                             |
+| `consumer_district_invalid`      | The consumer district is invalid.                            |
+| `consumer_email_invalid`         | The consumer email is invalid.                               |
+| `consumer_firstname_invalid`     | The consumer firstname is invalid.                           |
+| `consumer_floor_invalid`         | The consumer address floor is invalid.                       |
+| `consumer_id_invalid`            | The consumer identification is invalid.                      |
+| `consumer_id_type_invalid`       | The consumer identification type is invalid.                 |
+| `consumer_lastname_invalid`      | The consumer lastname is invalid.                            |
+| `consumer_phone_invalid`         | The consumer phone number is invalid.                        |
+| `consumer_province_invalid`      | The consumer province is invalid.                            |
+| `consumer_region_invalid`        | The consumer region is invalid.                              |
+| `consumer_same_as_merchant`      | The payment provider does not allow payments where the consumer is the same person as the merchant. |
+| `consumer_state_invalid`         | The consumer state is invalid.                               |
+| `consumer_street_invalid`        | The consumer address street is invalid.                      |
+| `consumer_street_number_invalid` | The consumer address number is invalid.                      |
+| `consumer_zip_invalid`           | The consumer ZIP code is invalid.                            |
+
+
 
 ### Payment Method
 
 #### Bank Debit
 
-| Failure Code                        | Description                                           |
-| ----------------------------------- | ----------------------------------------------------- |
-| `bank_debit_bank_invalid`           | The bank debit bank is invalid.                       |
-| `bank_debit_method_unavailable`     | The bank debit payment method is not available.       |
-| `bank_debit_payer_id_type_invalid`  | The bank debit payer identification type is invalid.  |
-| `bank_debit_payer_id_value_invalid` | The bank debit payer identification value is invalid. |
-| `bank_debit_payer_name_invalid`     | The bank debit payer name is invalid.                 |
+| Failure Code                       | Description                                          |
+| ---------------------------------- | ---------------------------------------------------- |
+| `bank_debit_bank_invalid`          | The bank debit bank is invalid.                      |
+| `bank_debit_method_unavailable`    | The bank debit payment method is not available.      |
+| `bank_debit_payer_id_invalid`      | The bank debit payer identification is invalid.      |
+| `bank_debit_payer_id_type_invalid` | The bank debit payer identification type is invalid. |
+| `bank_debit_payer_name_invalid`    | The bank debit payer name is invalid.                |
 
 #### Boleto
 
-| Failure Code                    | Description                                       |
-| ------------------------------- | ------------------------------------------------- |
-| `boleto_method_unavailable`     | The boleto method is not available.               |
-| `boleto_payer_id_type_invalid`  | The boleto payer identification type is invalid.  |
-| `boleto_payer_id_value_invalid` | The boleto payer identification value is invalid. |
-| `boleto_payer_name_invalid`     | The boleto payer name is invalid.                 |
+| Failure Code                   | Description                                      |
+| ------------------------------ | ------------------------------------------------ |
+| `boleto_method_unavailable`    | The boleto method is not available.              |
+| `boleto_payer_id_invalid`      | The boleto payer identification is invalid.      |
+| `boleto_payer_id_type_invalid` | The boleto payer identification type is invalid. |
+| `boleto_payer_name_invalid`    | The boleto payer name is invalid.                |
 
 #### Card
 
@@ -595,8 +599,8 @@ The following list contains all the Transaction failures codes currently support
 | `card_cvv_invalid`                   | The card security code is invalid.                           |
 | `card_expiration_date_invalid`       | The card expiration date is invalid.                         |
 | `card_holder_birthdate_invalid`      | The cardholder date of birth is invalid.                     |
+| `card_holder_id_invalid`             | The cardholder identification is invalid.                    |
 | `card_holder_id_type_invalid`        | The cardholder identification type is invalid.               |
-| `card_holder_id_value_invalid`       | The cardholder identification value is invalid.              |
 | `card_holder_name_invalid`           | The cardholder name is invalid.                              |
 | `card_holder_phone_invalid`          | The cardholder phone number is invalid.                      |
 | `card_info_invalid`                  | The card information is invalid.                             |
@@ -632,23 +636,23 @@ The following list contains all the Transaction failures codes currently support
 | `shipping_method_invalid`        | The shipping method is invalid.                 |
 | `shipping_method_unavailable`    | The shipping method is not available.           |
 | `shipping_phone_invalid`         | The shipping recipient phone number is invalid. |
+| `shipping_price_invalid`         | The shipping price value is invalid.            |
 | `shipping_province_invalid`      | The shipping province is invalid.               |
 | `shipping_region_invalid`        | The shipping region is invalid.                 |
 | `shipping_state_invalid`         | The shipping state is invalid.                  |
 | `shipping_street_invalid`        | The shipping address street is invalid.         |
 | `shipping_street_number_invalid` | The shipping address number is invalid.         |
 | `shipping_total_curreny_invalid` | The shipping amount currency is invalid.        |
-| `shipping_total_value_invalid`   | The shipping amount value is invalid.           |
 | `shipping_zip_invalid`           | The shipping ZIP code is invalid.               |
 
 ### Order
 
-| Failure Code                     | Description                                               |
-| -------------------------------- | --------------------------------------------------------- |
-| `line_items_currency_invalid`    | An order item amount currency is invalid.                 |
-| `line_items_description_invalid` | An order item description is invalid.                     |
-| `line_items_quantity_invalid`    | An order item quantity is invalid.                        |
-| `line_items_value_invalid`       | An order item amount value is invalid.                    |
-| `order_total_currency_invalid`   | The order amount currency is invalid.                     |
-| `order_total_value_invalid`      | The order amount value is invalid.                        |
-| `order_total_value_too_small`    | The order value is less than the minimum supported value. |
+| Failure Code                     | Description                                                  |
+| -------------------------------- | ------------------------------------------------------------ |
+| `line_items_currency_invalid`    | An order item amount currency is invalid.                    |
+| `line_items_description_invalid` | An order item description is invalid.                        |
+| `line_items_price_invalid`       | An order item price value is invalid.                        |
+| `line_items_quantity_invalid`    | An order item quantity is invalid.                           |
+| `order_total_currency_invalid`   | The order amount currency is invalid.                        |
+| `order_total_price_invalid`      | The order price value is invalid.                            |
+| `order_total_price_too_small`    | The order price value is less than the minimum supported value. |
