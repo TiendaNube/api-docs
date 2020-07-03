@@ -54,6 +54,7 @@ All `Transaction` types have the same attributes, but may generate different kin
 | `external_url`          | String | [Optional] HTTPS URL with details of this Transaction for the merchant. |
 | `external_resource_url` | String | [Optional - Only for `boleto` and `ticket`] HTTPS URL of the boleto or ticket to show to the consumer to resume the payment. |
 | `external_code`         | String | [Optional - Only for `boleto` and `ticket`] Barcode for boleto, or code for ticket. |
+| `external_expires_at`   | Date   | [Optional - Only for `boleto` and `ticket`] ISO 8601 date for the expiration date of a boleto or ticket. |
 | `ip`                    | String | [Optional] IP of the device that initiated this Transaction. |
 
 > ***Note:*** All URLs must be secure URLs (https).
@@ -87,9 +88,10 @@ All `Transaction` types have the same attributes, but may generate different kin
 | `amount`         | Object | Object containing the amount of this Transaction Event. See [Money](#Money). |
 | `type`           | String | One of the available [Transaction Event Types](#Transaction-Event-Types). |
 | `status`         | Object | One of the available [Transaction Event Status](#Transaction-Event-Status). |
-| `happend_at`     | Date   | ISO 8601 date for the date the Transaction Event was processed. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
 | `info`           | Object | Object containing specific info related to this Transaction Event. See [Transaction Event Info](#Transaction-Event-Info). |
 | `failure_code`   | String | If the Transaction Event failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
+| `happend_at`     | Date   | ISO 8601 date for the date the Transaction Event was processed. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
+| `expires_at`     | Date   | [Optional] ISO 8601 date for date the Transaction Event expires. It will be used to indicate to the merchant the deadline to accept or cancel a transaction under review. |
 | `created_at`     | Date   | [Read-only] ISO 8601 date for the date the Transaction Event was created in our platform. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
 
 > ***Note:*** The `amount` property is required for `authorization` and `sale` Transaction Event Types, and must always be included in the `first_event` field during the Transaction creation. If no `amount` property is specified for  `void`, `refund` or `capture` Transaction Event Types, the total transaction amount is assumed.
