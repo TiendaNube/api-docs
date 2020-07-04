@@ -22,6 +22,7 @@ All `Transaction` types have the same attributes, but may generate different kin
 | `captured_amount`     | Object        | [Read-only] Object containing the captured amount of this Transaction. See [Money](#Money). |
 | `refunded_amount`     | Object        | [Read-only] Object containing the refunded amount of this Transaction. See [Money](#Money). |
 | `failure_code`        | String        | [Read-only] If the transaction failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
+| `created_at`          | Date          | [Read-only] ISO 8601 date for the date the Transaction was created in our platform. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
 
 > ***Note:*** Read-only properties will only appear in our responses, which means that should not be part of the requests.
 
@@ -46,16 +47,16 @@ All `Transaction` types have the same attributes, but may generate different kin
 
 ### Transaction Info
 
-| Field                   | Type   | Description                                                  |
-| ----------------------- | ------ | ------------------------------------------------------------ |
-| `card`                  | Object | [Optional - Only for `credit_card` and `debit_card`] Object containing data related to the consumer's card. See [Card Info](#Card-Info). |
-| `installments`          | Object | [Optional - Only for `credit_card`] Object containing the installments data related to this Transaction. See [Installments Info](#Installments-Info). |
-| `external_id`           | String | [Optional] ID used by the Payment Provider.                  |
-| `external_url`          | String | [Optional] HTTPS URL with details of this Transaction for the merchant. |
-| `external_resource_url` | String | [Optional - Only for `boleto` and `ticket`] HTTPS URL of the boleto or ticket to show to the consumer to resume the payment. |
-| `external_code`         | String | [Optional - Only for `boleto` and `ticket`] Barcode for boleto, or code for ticket. |
-| `external_expires_at`   | Date   | [Optional - Only for `boleto` and `ticket`] ISO 8601 date for the expiration date of a boleto or ticket. |
-| `ip`                    | String | [Optional] IP of the device that initiated this Transaction. |
+| Field                          | Type   | Description                                                  |
+| ------------------------------ | ------ | ------------------------------------------------------------ |
+| `card`                         | Object | [Optional - Only for `credit_card` and `debit_card`] Object containing data related to the consumer's card. See [Card Info](#Card-Info). |
+| `installments`                 | Object | [Optional - Only for `credit_card`] Object containing the installments data related to this Transaction. See [Installments Info](#Installments-Info). |
+| `external_id`                  | String | [Optional] ID used by the Payment Provider.                  |
+| `external_url`                 | String | [Optional] HTTPS URL with details of this Transaction for the merchant. |
+| `external_resource_url`        | String | [Optional - Only for `boleto` and `ticket`] HTTPS URL of the boleto or ticket to show to the consumer to resume the payment. |
+| `external_resource_code`       | String | [Optional - Only for `boleto` and `ticket`] Barcode for boleto, or code for ticket. |
+| `external_resource_expires_at` | Date   | [Optional - Only for `boleto` and `ticket`] ISO 8601 date for the expiration date of a boleto or ticket. |
+| `ip`                           | String | [Optional] IP of the device that initiated this Transaction. |
 
 > ***Note:*** All URLs must be secure URLs (https).
 
@@ -288,6 +289,7 @@ Get a specific Transaction of a given order.
 ```json
 {
   "id": "124123-4518-123f-8ed6-5e0e4e6f305d",
+  "app_id": "1357",
   "payment_provider_id": "815905d6-3518-479d-8ed6-5e0e4e6f305d",
   "captured_amount": {
     "value": "132.95",
@@ -335,8 +337,8 @@ Get a specific Transaction of a given order.
       "status": "success",
       "info": null,
       "failure_code": null,
-      "created_at": "2020-01-25T12:30:20.000Z",
-      "happened_at": "2020-01-25T12:30:15.000Z"
+      "happened_at": "2020-01-25T12:30:15.000Z",
+      "created_at": "2020-01-25T12:30:20.000Z"
     }
   ]
 }
@@ -363,6 +365,7 @@ Get a specific Transaction of a given order.
     "external_url": "https://mypayments.com/account/transactions/1234",
     "external_resource_url": "https://mypayments.com/boleto/1234",
     "external_resource_code": "00190500954014481606906809350314337370000000100",
+    "external_resource_expires_at": "2020-02-05T12:30:15.000Z",
     "ip": "192.168.0.25"
   },
   "first_event": {
@@ -384,6 +387,7 @@ Get a specific Transaction of a given order.
 ```json
 {
   "id": "124123-4518-123f-8ed6-5e0e4e6f305d",
+  "app_id": "1357",
   "payment_provider_id": "815905d6-3518-479d-8ed6-5e0e4e6f305d",
   "captured_amount": {
     "value": "0.00",
@@ -423,8 +427,8 @@ Get a specific Transaction of a given order.
       "status": "pending",
       "info": null,
       "failure_code": null,
-      "created_at": "2020-01-25T12:30:20.000Z",
-      "happened_at": "2020-01-25T12:30:15.000Z"
+      "happened_at": "2020-01-25T12:30:15.000Z",
+      "created_at": "2020-01-25T12:30:20.000Z"
     }
   ]
 }
@@ -459,8 +463,8 @@ Get a specific Transaction of a given order.
   "status": "success",
   "info": null,
   "failure_code": null,
-  "created_at": "2020-01-25T12:30:20.000Z",
-  "happened_at": "2020-01-25T12:30:15.000Z"
+  "happened_at": "2020-01-25T12:30:15.000Z",
+  "created_at": "2020-01-25T12:30:20.000Z"
 }
 ```
 
@@ -481,6 +485,7 @@ Get a specific Transaction of a given order.
 ```json
 {
   "id": "124123-4518-123f-8ed6-5e0e4e6f305d",
+  "app_id": "1357",
   "payment_provider_id": "815905d6-3518-479d-8ed6-5e0e4e6f305d",
   "captured_amount": {
     "value": "132.95",
@@ -504,6 +509,7 @@ Get a specific Transaction of a given order.
     "external_url": "https://mypayments.com/account/transactions/1234",
     "external_resource_url": "https://mypayments.com/boleto/1234",
     "external_resource_code": "00190500954014481606906809350314337370000000100",
+    "external_resource_expires_at": "2020-02-05T12:30:15.000Z",
     "ip": "192.168.0.25"
   },
   "failure_code": null,
@@ -520,8 +526,8 @@ Get a specific Transaction of a given order.
       "status": "pending",
       "info": null,
       "failure_code": null,
-      "created_at": "2020-01-25T12:30:20.000Z",
-      "happened_at": "2020-01-25T12:30:15.000Z"
+      "happened_at": "2020-01-25T12:30:15.000Z",
+      "created_at": "2020-01-25T12:30:20.000Z"
     },
     {
       "id": "423124-4518-123f-8ed6-5e0e4e6f305d",
@@ -534,8 +540,8 @@ Get a specific Transaction of a given order.
       "status": "success",
       "info": null,
       "failure_code": null,
-      "created_at": "2020-01-25T12:30:20.000Z",
-      "happened_at": "2020-01-25T12:30:15.000Z"
+      "happened_at": "2020-01-25T12:30:15.000Z",
+      "created_at": "2020-01-25T12:30:20.000Z"
     }
   ]
 }
