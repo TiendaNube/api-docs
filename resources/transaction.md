@@ -172,7 +172,7 @@ The created [Transaction Object](#Transaction) is returned.
 
 ### POST /orders/{*order_id*}/transactions/{*transaction_id*}/events
 
-Update the events of a Transaction. 
+Create an Transaction Event for a given Transaction.
 
 #### Request
 
@@ -194,7 +194,7 @@ The created [Transaction Event Object](#Transaction-Events) is returned.
 
 ### GET /orders/{*order_id*}/transactions
 
-List all Transactions of a given order.
+Get all Transactions for a given order.
 
 #### Request
 
@@ -212,7 +212,7 @@ Array of [Transaction Objects](#Transaction)
 
 ### GET /orders/{*order_id*}/transactions/{*transaction_id*}
 
-Get a specific Transaction of a given order.
+Gets a specific Transaction for a given order.
 
 #### Request
 
