@@ -179,7 +179,7 @@ Create an Transaction Event for a given Transaction.
 | -------------- | ------ | ------------------------------------------------------------ |
 | `type`         | String | [Required] One of the available [Transaction Event Types](#Transaction-Event-Types). |
 | `status`       | Object | [Required] One of the available [Transaction Event Status](#Transaction-Event-Status). |
-| `happend_at`   | Date   | [Required] ISO 8601 date for the date the Transaction Event was processed. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
+| `happend_at`   | Date   | [Required] ISO 8601 date for the date the Transaction Event was processed. Defaults to current time. E.g. `"2020-03-11T12:42:15.456Z"`. |
 | `amount`       | Object | [Optional] Object containing the amount of this Transaction Event. See [Money](#Money). |
 | `info`         | Object | [Optional] Object containing specific info related to this Transaction Event. See [Transaction Event Info](#Transaction-Event-Info). |
 | `failure_code` | String | [Optional] If the Transaction Event failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
@@ -256,8 +256,8 @@ Gets a specific Transaction for a given order.
          "brand":"visa",
          "expiration_month":12,
          "expiration_year":2020,
-         "first_digits":4444,
-         "last_digits":1234,
+         "first_digits":"4444",
+         "last_digits":"1234",
          "masked_number":"XXXXXXXXXXXX1234",
          "name":"Ash Ketchum"
       },
@@ -308,8 +308,8 @@ Gets a specific Transaction for a given order.
          "issuer":"santander",
          "expiration_month":12,
          "expiration_year":2020,
-         "first_digits":4444,
-         "last_digits":1234,
+         "first_digits":"4444",
+         "last_digits":"1234",
          "masked_number":"XXXXXXXXXXXX1234",
          "name":"Ash Ketchum"
       },
@@ -322,7 +322,7 @@ Gets a specific Transaction for a given order.
       "ip":"192.168.0.25"
    },
    "failure_code":null,
-   "created_at":"2020-01-25T12:30:20.000Z",
+   "created_at":"2020-01-25T12:30:20.723Z",
    "events":[
       {
          "id":"423123-4518-123f-8ed6-5e0e4e6f305d",
@@ -336,7 +336,7 @@ Gets a specific Transaction for a given order.
          "info":null,
          "failure_code":null,
          "happened_at":"2020-01-25T12:30:15.000Z",
-         "created_at":"2020-01-25T12:30:20.000Z"
+         "created_at":"2020-01-25T12:30:20.723Z"
       }
    ]
 }
@@ -411,7 +411,7 @@ Gets a specific Transaction for a given order.
       "ip":"192.168.0.25"
    },
    "failure_code":null,
-   "created_at":"2020-01-25T12:30:20.000Z",
+   "created_at":"2020-01-25T12:30:20.723Z",
    "events":[
       {
          "id":"423123-4518-123f-8ed6-5e0e4e6f305d",
@@ -425,7 +425,7 @@ Gets a specific Transaction for a given order.
          "info":null,
          "failure_code":null,
          "happened_at":"2020-01-25T12:30:15.000Z",
-         "created_at":"2020-01-25T12:30:20.000Z"
+         "created_at":"2020-01-25T12:30:20.723Z"
       }
    ]
 }
@@ -460,7 +460,7 @@ Gets a specific Transaction for a given order.
    "info":null,
    "failure_code":null,
    "happened_at":"2020-01-25T12:30:15.000Z",
-   "created_at":"2020-01-25T12:30:20.000Z"
+   "created_at":"2020-01-25T12:30:20.723Z"
 }
 ```
 
@@ -508,7 +508,7 @@ Gets a specific Transaction for a given order.
       "ip":"192.168.0.25"
    },
    "failure_code":null,
-   "created_at":"2020-01-25T12:30:20.000Z",
+   "created_at":"2020-01-25T12:30:20.723Z",
    "events":[
       {
          "id":"423123-4518-123f-8ed6-5e0e4e6f305d",
@@ -522,7 +522,7 @@ Gets a specific Transaction for a given order.
          "info":null,
          "failure_code":null,
          "happened_at":"2020-01-25T12:30:15.000Z",
-         "created_at":"2020-01-25T12:30:20.000Z"
+         "created_at":"2020-01-25T12:30:20.723Z"
       },
       {
          "id":"423124-4518-123f-8ed6-5e0e4e6f305d",
@@ -536,7 +536,7 @@ Gets a specific Transaction for a given order.
          "info":null,
          "failure_code":null,
          "happened_at":"2020-01-25T12:30:15.000Z",
-         "created_at":"2020-01-25T12:30:20.000Z"
+         "created_at":"2020-01-25T12:30:20.723Z"
       }
    ]
 }
