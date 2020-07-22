@@ -111,7 +111,7 @@ Each type of Transaction has a Finite State Machine (FSM) that defines its statu
 
 * `authorized`: The transaction is authorized.
 * `failed`: The transaction failed.
-* `in_fraud_analisys`: The transaction is under fraud analysis by the payment provider.
+* `in_fraud_analysis`: The transaction is under fraud analysis by the payment provider.
 * `needs_merchant_review`: The transaction needs merchant action to continue.
 * `paid`: The transaction is confirmed.
 * `partially_refunded`: The transaction is partially refunded.
