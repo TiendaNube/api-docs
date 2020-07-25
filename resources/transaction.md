@@ -146,10 +146,10 @@ Each type of Transaction has a Finite State Machine (FSM) that defines its statu
 | `accept_url`  | String | [Optional] HTTPS URL we will call to accept the Transaction from our platform. It should return a 2xx HTTP code or we will return an error to the merchant. |
 | `cancel_url`  | String | [Optional] HTTPS URL we will call to cancel the Transaction from our platform. It should return a 2xx HTTP code or we will return an error to the merchant. |
 
-## Event Types Workflow
-The following diagram contains the transitions allowed for each Event Type.
+## Transaction Event Workflow
+The following diagram shows the transitions allowed for each Transaction Event Type.
 
-The green boxes indicate the Event Status available for each Event Type.
+The green boxes contains the list of `status` values that each Transaction Event Type supports.
 
 <img style="text-align:center" src="https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/images/event_types.png?raw=true" alt="event_types" width="900" />
 
