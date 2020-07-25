@@ -3,7 +3,7 @@ Transaction
 
 Each movement of money is modeled through a `Transaction` object, which can be of different types (e.g. credit card, debit card, boleto, wire transfer, etc.). Each `Transaction` type has a Finite State Machine (FSM) that defines its current status. The `TransactionEvent` object represents transitions in the `Transaction`'s FSM.
 
-A [Payment Provider](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md) can create the number of Transactions it needs for a given order and update their status as they change over time.
+A [Payment Provider](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md) can create a Transaction and update its status through Transaction Events as it changes over time. Since an order can be related to multiple payment methods, a different Transaction must be created for each of them using the same order ID.
 
 Properties
 ---------
@@ -124,9 +124,8 @@ Each type of Transaction has a Finite State Machine (FSM) that defines its statu
 * `authorization`: Authorization.
 * `capture`: Capture.
 * `in_fraud_analysis`: The transaction is being reviewed by the payment provider (no merchant action is required).
-* `mark_as_paid`: The transaction was approved by the merchant manually.
 * `refund`: Refund.
-* `request_merchant_review`: The transaction has to be approved or rejected by the merchant.
+* `needs_merchant_review`: The transaction has to be approved or rejected by the merchant.
 * `sale`: Represents authorization along with capture.
 * `void`: The authorization was voided.
 
@@ -146,6 +145,13 @@ Each type of Transaction has a Finite State Machine (FSM) that defines its statu
 | `risk_level`  | String | [Optional] Risk level that an Order is fraudulent. One of `low`, `medium`or `high`. |
 | `accept_url`  | String | [Optional] HTTPS URL we will call to accept the Transaction from our platform. It should return a 2xx HTTP code or we will return an error to the merchant. |
 | `cancel_url`  | String | [Optional] HTTPS URL we will call to cancel the Transaction from our platform. It should return a 2xx HTTP code or we will return an error to the merchant. |
+
+## Event Types Workflow
+The following diagram contains the transitions allowed for each Event Type.
+
+The green boxes indicate the Event Status available for each Event Type.
+
+<img style="text-align:center" src="https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/images/event_types.png?raw=true" alt="event_types" width="900" />
 
 Endpoints
 ---------
@@ -233,12 +239,11 @@ Gets a specific Transaction for a given order.
 * **404 Not Found** - resource was not found.
 * **405 Method Not Allowed** - requested method is not supported for resource.
 
-
 ## Common examples
 
 ### Example Nº 1
 
-*Credit card transaction that was authorized + captured within a single event.*
+*Credit card transaction that is authorized and captured within a single event.*
 
 #### POST /orders/12345/transactions
 
@@ -246,38 +251,38 @@ Gets a specific Transaction for a given order.
 
 ```json
 {
-   "payment_provider_id":"815905d6-3518-479d-8ed6-5e0e4e6f305d",
-   "payment_method":{
-      "type":"credit_card",
-      "id":"visa"
-   },
-   "info":{
-      "card":{
-         "brand":"visa",
-         "expiration_month":12,
-         "expiration_year":2020,
-         "first_digits":"4444",
-         "last_digits":"1234",
-         "masked_number":"XXXXXXXXXXXX1234",
-         "name":"Ash Ketchum"
-      },
-      "installments":{
-         "quantity":3,
-         "interest":"0.15"
-      },
-      "external_id":"1234",
-      "external_url":"https://mypayments.com/account/transactions/1234",
-      "ip":"192.168.0.25"
-   },
-   "first_event":{
-      "amount":{
-         "value":"132.95",
-         "currency":"ARS"
-      },
-      "type":"sale",
-      "status":"success",
-      "happened_at":"2020-01-25T12:30:15.000Z"
-   }
+  "payment_provider_id": "eeac118e-5534-40ba-b539-443449bc67a3",
+  "payment_method": {
+    "type": "credit_card",
+    "id": "visa"
+  },
+  "info": {
+    "card": {
+      "brand": "visa",
+      "expiration_month": 12,
+      "expiration_year": 2020,
+      "first_digits": "445566",
+      "last_digits": "1234",
+      "masked_number": "XXXXXXXXXXXX1234",
+      "name": "Ash Ketchum"
+    },
+    "installments": {
+      "quantity": 3,
+      "interest": "0.15"
+    },
+    "external_id": "1234",
+    "external_url": "https://mypayments.com/account/transactions/1234",
+    "ip": "192.168.0.25"
+  },
+  "first_event": {
+    "amount": {
+      "value": "132.95",
+      "currency": "ARS"
+    },
+    "type": "sale",
+    "status": "success",
+    "happened_at": "2020-01-25T12:30:15.000Z"
+  }
 }
 ```
 
@@ -287,58 +292,58 @@ Gets a specific Transaction for a given order.
 
 ```json
 {
-   "id":"124123-4518-123f-8ed6-5e0e4e6f305d",
-   "payment_provider_id":"815905d6-3518-479d-8ed6-5e0e4e6f305d",
-   "captured_amount":{
-      "value":"132.95",
-      "currency":"ARS"
-   },
-   "refunded_amount":{
-      "value":"0.00",
-      "currency":"ARS"
-   },
-   "payment_method":{
-      "type":"credit_card",
-      "id":"visa"
-   },
-   "status":"paid",
-   "info":{
-      "card":{
-         "brand":"visa",
-         "issuer":"santander",
-         "expiration_month":12,
-         "expiration_year":2020,
-         "first_digits":"4444",
-         "last_digits":"1234",
-         "masked_number":"XXXXXXXXXXXX1234",
-         "name":"Ash Ketchum"
+  "id": "aee7e83e-9537-4baf-a4ea-20e6b38521c7",
+  "payment_provider_id": "eeac118e-5534-40ba-b539-443449bc67a3",
+  "captured_amount": {
+    "value": "132.95",
+    "currency": "ARS"
+  },
+  "refunded_amount": {
+    "value": "0.00",
+    "currency": "ARS"
+  },
+  "authorized_amount": null,
+  "voided_amount": null,
+  "payment_method": {
+    "type": "credit_card",
+    "id": "visa"
+  },
+  "status": "paid",
+  "info": {
+    "card": {
+      "brand": "visa",
+      "expiration_month": 12,
+      "expiration_year": 2020,
+      "first_digits": "445566",
+      "last_digits": "1234",
+      "masked_number": "XXXXXXXXXXXX1234",
+      "name": "Ash Ketchum"
+    },
+    "installments": {
+      "quantity": 3,
+      "interest": "0.1500"
+    },
+    "external_id": "1234",
+    "external_url": "https://mypayments.com/account/transactions/1234",
+    "ip": "192.168.0.25"
+  },
+  "failure_code": null,
+  "created_at": "2020-07-25 17:26:23",
+  "events": [
+    {
+      "transaction_id": "aee7e83e-9537-4baf-a4ea-20e6b38521c7",
+      "amount": {
+        "value": "132.95",
+        "currency": "ARS"
       },
-      "installments":{
-         "quantity":3,
-         "interest":"0.15"
-      },
-      "external_id":"1234",
-      "external_url":"https://mypayments.com/account/transactions/1234",
-      "ip":"192.168.0.25"
-   },
-   "failure_code":null,
-   "created_at":"2020-01-25T12:30:20.723Z",
-   "events":[
-      {
-         "id":"423123-4518-123f-8ed6-5e0e4e6f305d",
-         "transaction_id":"124123-4518-123f-8ed6-5e0e4e6f305d",
-         "amount":{
-            "value":"132.95",
-            "currency":"ARS"
-         },
-         "type":"sale",
-         "status":"success",
-         "info":null,
-         "failure_code":null,
-         "happened_at":"2020-01-25T12:30:15.000Z",
-         "created_at":"2020-01-25T12:30:20.723Z"
-      }
-   ]
+      "type": "sale",
+      "status": "success",
+      "failure_code": null,
+      "created_at": "2020-07-25T20:26:23.323Z",
+      "happened_at": "2020-01-25T12:30:15Z",
+      "expires_at": null
+    }
+  ]
 }
 ```
 
@@ -353,28 +358,28 @@ Gets a specific Transaction for a given order.
 
 ```json
 {
-   "payment_provider_id":"815905d6-3518-479d-8ed6-5e0e4e6f305d",
-   "payment_method":{
-      "type":"boleto",
-      "id":"bradesco"
-   },
-   "info":{
-      "external_id":"1234",
-      "external_url":"https://mypayments.com/account/transactions/1234",
-      "external_resource_url":"https://mypayments.com/boleto/1234",
-      "external_resource_code":"00190500954014481606906809350314337370000000100",
-      "external_resource_expires_at":"2020-02-05T12:30:15.000Z",
-      "ip":"192.168.0.25"
-   },
-   "first_event":{
-      "amount":{
-         "value":"132.95",
-         "currency":"ARS"
-      },
-      "type":"sale",
-      "status":"pending",
-      "happened_at":"2020-01-25T12:30:15.000Z"
-   }
+  "payment_provider_id": "eeac118e-5534-40ba-b539-443449bc67a3",
+  "payment_method": {
+    "type": "boleto",
+    "id": "bradesco"
+  },
+  "info": {
+    "external_id": "1234",
+    "external_url": "https://mypayments.com/account/transactions/1234",
+    "external_resource_url": "https://mypayments.com/boleto/1234",
+    "external_resource_code": "00190500954014481606906809350314337370000000100",
+    "external_resource_expires_at": "2020-02-05T12:30:15.000Z",
+    "ip": "192.168.0.25"
+  },
+  "first_event": {
+    "amount": {
+      "value": "132.95",
+      "currency": "ARS"
+    },
+    "type": "sale",
+    "status": "pending",
+    "happened_at": "2020-01-25T12:30:15.000Z"
+  }
 }
 ```
 
@@ -384,62 +389,60 @@ Gets a specific Transaction for a given order.
 
 ```json
 {
-   "id":"124123-4518-123f-8ed6-5e0e4e6f305d",
-   "payment_provider_id":"815905d6-3518-479d-8ed6-5e0e4e6f305d",
-   "captured_amount":{
-      "value":"0.00",
-      "currency":"ARS"
-   },
-   "refunded_amount":{
-      "value":"0.00",
-      "currency":"ARS"
-   },
-   "payment_method":{
-      "type":"boleto",
-      "id":"bradesco"
-   },
-   "status":"pending",
-   "info":{
-      "installments":{
-         "quantity":1,
-         "interest":"0.00"
+  "id": "6b765950-e8e2-49f1-9c6a-0bb7c15a4f41",
+  "payment_provider_id": "eeac118e-5534-40ba-b539-443449bc67a3",
+  "captured_amount": {
+    "value": "0.00",
+    "currency": "ARS"
+  },
+  "refunded_amount": {
+    "value": "0.00",
+    "currency": "ARS"
+  },
+  "authorized_amount": null,
+  "voided_amount": null,
+  "payment_method": {
+    "type": "boleto",
+    "id": "bradesco"
+  },
+  "status": "pending",
+  "info": {
+    "external_resource_url": "https://mypayments.com/boleto/1234",
+    "external_resource_code": "00190500954014481606906809350314337370000000100",
+    "external_resource_expires_at": "2020-02-05T12:30:15Z",
+    "external_id": "1234",
+    "external_url": "https://mypayments.com/account/transactions/1234",
+    "ip": "192.168.0.25"
+  },
+  "failure_code": null,
+  "created_at": "2020-07-25 17:27:42",
+  "events": [
+    {
+      "transaction_id": "6b765950-e8e2-49f1-9c6a-0bb7c15a4f41",
+      "amount": {
+        "value": "132.95",
+        "currency": "ARS"
       },
-      "external_id":"1234",
-      "external_url":"https://mypayments.com/account/transactions/1234",
-      "external_resource_url":"https://mypayments.com/boleto/1234",
-      "external_resource_code":"00190500954014481606906809350314337370000000100",
-      "ip":"192.168.0.25"
-   },
-   "failure_code":null,
-   "created_at":"2020-01-25T12:30:20.723Z",
-   "events":[
-      {
-         "id":"423123-4518-123f-8ed6-5e0e4e6f305d",
-         "transaction_id":"124123-4518-123f-8ed6-5e0e4e6f305d",
-         "amount":{
-            "value":"132.95",
-            "currency":"ARS"
-         },
-         "type":"sale",
-         "status":"pending",
-         "info":null,
-         "failure_code":null,
-         "happened_at":"2020-01-25T12:30:15.000Z",
-         "created_at":"2020-01-25T12:30:20.723Z"
-      }
-   ]
+      "type": "sale",
+      "status": "pending",
+      "failure_code": null,
+      "created_at": "2020-07-25T20:27:42.784Z",
+      "happened_at": "2020-01-25T12:30:15Z",
+      "expires_at": null
+    }
+  ]
 }
 ```
 
-#### POST /orders/56789/transactions/124123-4518-123f-8ed6-5e0e4e6f305d/events
+#### POST /orders/56789/transactions/6b765950-e8e2-49f1-9c6a-0bb7c15a4f41/events
 
 ##### Request
 
 ```json
 {
-   "type":"sale",
-   "status":"success",
-   "happened_at":"2020-01-27T12:30:15.000Z"
+  "type": "sale",
+  "status": "success",
+  "happened_at": "2020-01-27T12:30:15.000Z"
 }
 ```
 
@@ -449,26 +452,25 @@ Gets a specific Transaction for a given order.
 
 ```json
 {
-   "id":"423124-4518-123f-8ed6-5e0e4e6f305d",
-   "transaction_id":"124123-4518-123f-8ed6-5e0e4e6f305d",
-   "amount":{
-      "value":"132.95",
-      "currency":"ARS"
-   },
-   "type":"sale",
-   "status":"success",
-   "info":null,
-   "failure_code":null,
-   "happened_at":"2020-01-25T12:30:15.000Z",
-   "created_at":"2020-01-25T12:30:20.723Z"
+  "transaction_id": "6b765950-e8e2-49f1-9c6a-0bb7c15a4f41",
+  "amount": {
+    "value": "132.95",
+    "currency": "ARS"
+  },
+  "type": "sale",
+  "status": "success",
+  "failure_code": null,
+  "created_at": "2020-07-25T20:28:26.590Z",
+  "happened_at": "2020-01-27T12:30:15Z",
+  "expires_at": null
 }
 ```
 
 ### Example Nº 3
 
-*Obtaining a Transaction resource by ID.*
+*Credit card transaction that has been authorized, captured, and then refunded.*
 
-#### GET /orders/56789/transactions/124123-4518-123f-8ed6-5e0e4e6f305d
+#### GET /orders/56789/transactions/21781944-a977-4b0d-93dc-908ddb87d778
 
 ##### Request
 
@@ -480,65 +482,87 @@ Gets a specific Transaction for a given order.
 
 ```json
 {
-   "id":"124123-4518-123f-8ed6-5e0e4e6f305d",
-   "payment_provider_id":"815905d6-3518-479d-8ed6-5e0e4e6f305d",
-   "captured_amount":{
-      "value":"132.95",
-      "currency":"ARS"
-   },
-   "refunded_amount":{
-      "value":"0.00",
-      "currency":"ARS"
-   },
-   "payment_method":{
-      "type":"boleto",
-      "id":"bradesco"
-   },
-   "status":"pending",
-   "info":{
-      "installments":{
-         "quantity":1,
-         "interest":"0.00"
+  "id": "21781944-a977-4b0d-93dc-908ddb87d778",
+  "payment_provider_id": "eeac118e-5534-40ba-b539-443449bc67a3",
+  "captured_amount": {
+    "value": "132.95",
+    "currency": "ARS"
+  },
+  "refunded_amount": {
+    "value": "132.95",
+    "currency": "ARS"
+  },
+  "authorized_amount": {
+    "value": "132.95",
+    "currency": "ARS"
+  },
+  "voided_amount": null,
+  "payment_method": {
+    "type": "credit_card",
+    "id": "visa"
+  },
+  "status": "refunded",
+  "info": {
+    "card": {
+      "brand": "visa",
+      "expiration_month": 12,
+      "expiration_year": 2020,
+      "first_digits": "445566",
+      "last_digits": "1234",
+      "masked_number": "XXXXXXXXXXXX1234",
+      "name": "Ash Ketchum"
+    },
+    "installments": {
+      "quantity": 3,
+      "interest": "0.1500"
+    },
+    "external_id": "1234",
+    "external_url": "https://mypayments.com/account/transactions/1234",
+    "ip": "192.168.0.25"
+  },
+  "failure_code": null,
+  "created_at": "2020-07-25 17:30:15",
+  "events": [
+    {
+      "transaction_id": "21781944-a977-4b0d-93dc-908ddb87d778",
+      "amount": {
+        "value": "132.95",
+        "currency": "ARS"
       },
-      "external_id":"1234",
-      "external_url":"https://mypayments.com/account/transactions/1234",
-      "external_resource_url":"https://mypayments.com/boleto/1234",
-      "external_resource_code":"00190500954014481606906809350314337370000000100",
-      "external_resource_expires_at":"2020-02-05T12:30:15.000Z",
-      "ip":"192.168.0.25"
-   },
-   "failure_code":null,
-   "created_at":"2020-01-25T12:30:20.723Z",
-   "events":[
-      {
-         "id":"423123-4518-123f-8ed6-5e0e4e6f305d",
-         "transaction_id":"124123-4518-123f-8ed6-5e0e4e6f305d",
-         "amount":{
-            "value":"132.95",
-            "currency":"ARS"
-         },
-         "type":"sale",
-         "status":"pending",
-         "info":null,
-         "failure_code":null,
-         "happened_at":"2020-01-25T12:30:15.000Z",
-         "created_at":"2020-01-25T12:30:20.723Z"
+      "type": "authorization",
+      "status": "success",
+      "failure_code": null,
+      "created_at": "2020-07-25T20:30:15.138Z",
+      "happened_at": "2020-01-25T12:30:15Z",
+      "expires_at": null
+    },
+    {
+      "transaction_id": "21781944-a977-4b0d-93dc-908ddb87d778",
+      "amount": {
+        "value": "132.95",
+        "currency": "ARS"
       },
-      {
-         "id":"423124-4518-123f-8ed6-5e0e4e6f305d",
-         "transaction_id":"124123-4518-123f-8ed6-5e0e4e6f305d",
-         "amount":{
-            "value":"132.95",
-            "currency":"ARS"
-         },
-         "type":"sale",
-         "status":"success",
-         "info":null,
-         "failure_code":null,
-         "happened_at":"2020-01-25T12:30:15.000Z",
-         "created_at":"2020-01-25T12:30:20.723Z"
-      }
-   ]
+      "type": "capture",
+      "status": "success",
+      "failure_code": null,
+      "created_at": "2020-07-25T20:30:25.481Z",
+      "happened_at": "2020-01-27T12:30:15Z",
+      "expires_at": null
+    },
+    {
+      "transaction_id": "21781944-a977-4b0d-93dc-908ddb87d778",
+      "amount": {
+        "value": "132.95",
+        "currency": "ARS"
+      },
+      "type": "refund",
+      "status": "success",
+      "failure_code": null,
+      "created_at": "2020-07-25T20:30:33.517Z",
+      "happened_at": "2020-01-27T12:30:15Z",
+      "expires_at": null
+    }
+  ]
 }
 ```
 
