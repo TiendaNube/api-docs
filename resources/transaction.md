@@ -29,20 +29,8 @@ All `Transaction` types have the same attributes, but may generate different kin
 
 | Field  | Type   | Description                                                  |
 | ------ | ------ | ------------------------------------------------------------ |
-| `type` | String | One of the available [Payment Method Types](#Payment-Method-Types). |
+| `type` | String | One of the available [Payment Method Types](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Payment-Method-Types). |
 | `id`   | String | ID of the payment method used for this Transaction. See [Supported Payment Methods by Payment Method Type](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Supported-Payment-Methods-by-Payment-Method-Type). |
-
-### Payment Method Types
-
-* `bank_debit`: Transaction in which the consumer uses bank debit as payment method.
-* `boleto`: Transaction in which the consumer uses a Boleto Bancário as payment method. Boleto is a Brazilian payment method based on cash.
-* `cash`: Transaction in which the consumer uses cash as payment method.
-* `credit_card`: Transaction in which the consumer uses a credit card as payment method (E.g. VISA, Mastercard, AMEX).
-* `debit_card`: Transaction in which the consumer uses a debit card as payment method (E.g. VISA Debit, Maestro).
-* `refund`: Transaction in which the merchant returns money to the consumer. A refund may involve any payment method.
-* `ticket`: Transaction in which the consumer uses a ticket as payment method. This ticket can be paid through a non-bank collection channel (E.g. Rapipago, Pago Fácil, OXXO).
-* `wallet`: Transaction in which the consumer uses a wallet as payment method. A wallet is an application that allows you to transfer money.
-* `wire_transfer`: Transaction in which the consumer uses a wire transfer as payment method.
 
 ### Transaction Info
 
@@ -74,10 +62,10 @@ All `Transaction` types have the same attributes, but may generate different kin
 
 ### Installments Info
 
-| Field      | Type   | Description                                              |
-| ---------- | ------ | -------------------------------------------------------- |
-| `quantity` | Number | The number of installments. E.g. `3`.                    |
-| `interest` | String | The interest applied to each installment. E.g. `"0.15"`. |
+| Field      | Type   | Description                                               |
+| ---------- | ------ | --------------------------------------------------------- |
+| `quantity` | Number | The number of installments. E.g. `3`.                     |
+| `interest` | String | The interest applied to each installment. E.g. `"0.015"`. |
 
 ### Transaction Events
 
@@ -141,17 +129,38 @@ Each type of Transaction has a Finite State Machine (FSM) that defines its statu
 | Field         | Type   | Description                                                  |
 | ------------- | ------ | ------------------------------------------------------------ |
 | `message`     | String | [Optional] Description to explain a Transaction Event update. |
-| `fraud_score` | String | [Optional] Decimal score between 0 to 1. The closer the score is to 1, the more likely the Transaction is fraudulent. |
-| `risk_level`  | String | [Optional] Risk level that an Order is fraudulent. One of `low`, `medium`or `high`. |
+| `fraud_score` | String | [Optional] Decimal score between 0 to 1 The closer the score is to 1, the more likely the Transaction is fraudulent. E.g `"0.15"`. |
+| `risk_level`  | String | [Optional] Risk level that an Order is fraudulent. One of `low`, `medium` or `high`. |
 | `accept_url`  | String | [Optional] HTTPS URL we will call to accept the Transaction from our platform. It should return a 2xx HTTP code or we will return an error to the merchant. |
 | `cancel_url`  | String | [Optional] HTTPS URL we will call to cancel the Transaction from our platform. It should return a 2xx HTTP code or we will return an error to the merchant. |
 
-## Transaction Event Workflow
-The following diagram shows the transitions allowed for each Transaction Event Type.
+### Transaction Event Workflow
 
-The green boxes contains the list of `status` values that each Transaction Event Type supports.
+Transaction Events are used to alter the status of a Transaction and to provide related information to take action on it.
 
-<img style="text-align:center" src="https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/images/event_types.png?raw=true" alt="event_types" width="900" />
+There are specific *status* values and transitions for each Transaction Event Type, which are shown in the following diagram.
+
+> The green boxes contains the list of *status* values that each Transaction Event Type supports.
+
+<img style="text-align:center" src="images/event_types.png" alt="event_types" width="900" />
+
+#### Available Transaction Event Types by Payment Method Type
+
+The following table shows the Transaction Event Types supported for each *payment method type*.
+
+| Payment Method Type                                          | Transaction Event Type                                       |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `credit_card`, `debit_card`                                  | `sale`, `authorization`, `capture`, `in_fraud_analysis`, `needs_merchant_review`, `void`, `refund` |
+| `bank_debit`, `boleto`, `cash`, `ticket`, `wallet`, `wire_transfer` | `sale`, `refund`                                             |
+
+Transaction Status Workflow
+
+A Transaction may change its *status* upon receiving a Transaction Event. The following diagram shows the possible Transaction Status transitions based on the events the Transactions receives.
+> The arrows represent the occurrence of a Transaction Event with *status* `success` unless another status is mentioned in its description.
+
+<img style="text-align:center" src="images/transaction_status.png" alt="transaction_status" width="950" />
+
+
 
 Endpoints
 ---------

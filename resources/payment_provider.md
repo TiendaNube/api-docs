@@ -1,7 +1,7 @@
 Payment Provider
 ================
 
-A Payment Provider, shorter name for Payments Services Provider, represents any entity which provides all the necessary resources and infrastructure for merchants and consumers to exectute [Transactions](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/transaction.md) between them. This entities could be any of the following:
+A Payment Provider, shorter name for Payments Services Provider, represents any entity which provides all the necessary resources and infrastructure for merchants and consumers to execute [Transactions](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/transaction.md) between them. This entities could be any of the following:
 
 - **Aggregator**
 - **Acquirer**
@@ -17,26 +17,25 @@ Properties
 
 | Field                       | Type          | Description                                                  |
 | :-------------------------- | :------------ | :----------------------------------------------------------- |
+| `id`                        | String        | [Read-only] Unique identifier of the Payment Provider object. |
+| `store_id`                  | Integer       | [Read-only] Id of the store to which the Payment Provider belongs. |
+| `app_id`                    | String        | [Read-only] Id of the app to which the Payment Provider belongs. |
 | `name`                      | String        | Display name which merchants and consumers will see.         |
 | `description`               | String        | Short paragraph which provides merchants with a description of the Payment Provider. |
 | `logo_urls`                 | Object        | Object containing `key:value` pair for each version of the logos for the frontend. Only supports HTTPS URLs. See [Logos](#Logos). |
 | `supported_currencies`      | Array(String) | ISO.4217 currency codes supported by the Payment Provider. See [Currency Codes](#Currency-Codes). |
 | `supported_payment_methods` | Array(Object) | List of available payment methods for each payment method type. See [Payment Methods](#Payment-Methods). |
 | `checkout_js_url`           | String        | HTTPS URL of the JS file to be included in the checkout frontend. See [Checkout JS](./checkout.md). |
-| `checkout_options`          | Array(Object) | Object containing the available payment options for the checkout frontend. See [Checkout Options](#Checkout-Options). |
+| `checkout_payment_options`  | Array(Object) | Object containing the available payment options for the checkout frontend. See [Checkout Options](#Checkout-Options). |
 | `configuration_url`         | String        | [Optional] HTTPS URL of the Payment Provider configuration UI. |
 | `support_url`               | String        | [Optional] Payment Provider support site HTTPS URL.          |
 | `rates`                     | Array(Object) | [Optional] List of rates definitions for merchants by payment method type. See [Rates](#Rates). |
-| `rates_url`                 | String        | [Optional] HTTPS URL of the Payment Provider's rate information site.   |
-| `id`                        | String        | [Informational] Unique identifier of the Payment Provider object. |
-| `store_id`                  | Integer       | [Informational] Id of the store to which the Payment Provider belongs. |
-| `appId`                     | String        | [Informational] Id of the app to which the Payment Provider belongs. |
-| `enabled`                   | Boolean       | [Informational] Indicates whether Payment Provider is enabled in the store. |
+| `rates_url`                 | String        | [Optional] HTTPS URL of the Payment Provider's rate information site. |
+| `enabled`                   | Boolean       | [Read-only] Indicates whether Payment Provider is enabled in the store. |
 
 > ***Note:*** All URLs must be secure URLs (https).
 
-> ***Note:*** Informational properties will only appear in GET responses, which means that should not be included in POST/PUT requests.
-
+> ***Note:*** Read-only properties will only appear in our responses, which means that should not be part of the requests.
 
 ### Logos
 
@@ -46,16 +45,6 @@ At the moment, our platform requires two versions of the Payment Provider logo. 
 | :-------- | :----------------------------------------------------------- |
 | `400x120` | PNG file with Transparent Brackground. Dimensions not greater than 400px (width) x 120px (height). *(As of 01/01/2019)*. |
 | `160x100` | PNG file with White Background. Dimensions must be 160px (width) x 100px (height). *(As of 01/01/2019)*. |
-
-E.g.
-
-```json
-{
-  "400x120": "https://myapp.mypayments.com/logo1.png",
-  "160x100": "https://myapp.mypayments.com/logo2.png"
-}
-```
-
 
 ### Currency Codes
 
@@ -68,127 +57,34 @@ Every amount value needs to be complemented by a currency. Supported currency co
 - `MXN`: Mexican Peso
 - `USD`: American Dollar
 
-
 ### Payment Method Types
 
-There are many companies providing payment methods of different types. Currently, our platform supports the following payment methods types:
+There are many companies providing payment methods of different types. Currently, our platform supports the following payment methods types.
 
-- `bank_debit`
-- `boleto`
-- `cash`
-- `credit_card`
-- `debit_card`
-- `ticket`
-- `wallet`
-- `wire_transfer`
-
-Depending on the kind of Payment Provider (Aggregator, Acquirer, Gateway), they may integrate to our platform one or many payment pethods for each payment method type.
-
+| Payment Method Type | Description                                                  |
+| ------------------- | ------------------------------------------------------------ |
+| `bank_debit`        | Transaction in which the consumer uses bank debit as payment method. |
+| `boleto`            | Transaction in which the consumer uses a Boleto Bancário as payment method. Boleto is a Brazilian payment method based on cash. |
+| `cash`              | Transaction in which the consumer uses cash as payment method. |
+| `credit_card`       | Transaction in which the consumer uses a credit card as payment method (E.g. VISA, Mastercard, AMEX). |
+| `debit_card`        | Transaction in which the consumer uses a debit card as payment method (E.g. VISA Debit, Maestro). |
+| `ticket`            | Transaction in which the consumer uses a ticket as payment method. This ticket can be paid through a non-bank collection channel (E.g. Rapipago, Pago Fácil, OXXO). |
+| `wallet`            | Transaction in which the consumer uses a wallet as payment method. A wallet is an application that allows you to transfer money. |
+| `wire_transfer`     | Transaction in which the consumer uses a wire transfer as payment method. |
 
 ### Payment Methods
 
-Depending on the kind of Payment Provider (Subadquirente, Gateway, Adquirente), they may integrate to our platform one or many payment pethods for each payment method type. If applicable, the installments data supported by the payment method type is detailed here.
+Depending on the kind of Payment Provider (*Aggregator*, *Acquirer*, *Gateway*), they may integrate to our platform one or many payment methods for each payment method type.
+
+If applicable, the installments data supported by the payment method type is detailed here.
 
 | Field                 | Type          | Description                                                  |
 | :-------------------- | :------------ | :----------------------------------------------------------- |
 | `payment_method_type` | String        | One of the available [Payment Method Types](#Payment-Method-Types). |
-| `payment_methods`     | Array(String) | The list of supported payments methods by the given payment method type. See [Supported Payment Methods by Payment Method Type](#Supported-Payment-Methods-by-Payment-Method-Type). |
+| `payment_methods`     | Array(String) | The list of supported payments method IDs by the given payment method type. See [Supported Payment Methods by Payment Method Type](#Supported-Payment-Methods-by-Payment-Method-Type). |
 | `installments`        | Object        | [Optional] Object containing the installments available to consumers. See [Installments](#Installments). |
 
-E.g.
-
-```json
-[
-    {
-      "payment_method_type": "credit_card",
-      "payment_methods": ["visa", "mastercard", "amex"],
-      "installments": {
-        "min_installment_value": [
-          {
-            "currency": "ARS",
-            "value": "100.00"
-          }
-        ],
-        "specification": [
-          {
-            "installments": 1,
-            "interest_rate": "0.00",
-            "applies_to": ["bbva", "itau", "santander", "galicia"]
-          },
-          {
-            "installments": 3,
-            "interest_rate": "0.00",
-            "applies_to": ["bbva", "itau"]
-          },
-          {
-            "installments": 6,
-            "interest_rate": "0.45",
-            "applies_to": ["santander", "galicia"]
-          },
-        ]
-      }
-    },
-    {
-      "payment_method_type": "debit_card",
-      "payment_methods": ["visa_debit", "maestro"]
-    }
-  ]
-```
-
-
-### Rates
-
-Payment Providers may charge merchants with different rates per Transaction depending on the payment method type and the time the merchant chooses to withdraw the money. Hence, for each payment method type there would be a list of rates depending on the withdrawal time specified in days.
-
-| Field                 | Type          | Description                                                  |
-| :-------------------- | :------------ | :----------------------------------------------------------- |
-| `payment_method_type` | String        | Payment method type to which the rates definition refer. See [Payment Method Types](#Payment-Method-Types). |
-| `rates_definition`    | Array(Object) | Object containing the rates details. See [Rates Definition](#Rates-Definition) section bellow. |
-
-#### Rates Definition
-
-| Field                    | Type    | Description                                                  |
-| :----------------------- | :------ | :----------------------------------------------------------- |
-| `percent_fee`            | Number  | Percentage fee charged per payment.                          |
-| `days_to_withdraw_money` | Integer | Days since Transaction creation until de merchant can withdraw the money. |
-| `flat_fee`               | Object  | [Optional] Object containing the flat fee charged per payment. See [Money](#Money). |
-| `plus_tax`               | Boolean | [Optional] Indicates whether VAT will be added to the specified rates. |
-
-E.g.
-
-```json
-[
-    {
-        "payment_method_type": "credit_card",
-        "rates_definition": [
-            {
-                "percent_fee": "30.35",
-                "flat_fee": {
-                    "currency": "ARS",
-                    "value": "1000.00"
-                },
-                "plus_tax": true,
-                "days_to_withdraw_money": 10
-            }
-        ]
-    }
-]
-```
-
-
-### Money
-
-Sums of money will be represented by a value and its respective currency.
-
-| Field      | Type   | Description                                                 |
-| :--------- | :----- | :---------------------------------------------------------- |
-| `value`    | String | Amount of money as a string. E.g `"49.99"`                  |
-| `currency` | String | ISO 4217 code for the currency, such as ARS, BRL, USD, etc. |
-
-> ***Note:*** Decimal numbers will be represented as string format for better decimal precision handling. It must contain two decimal places and use a point as decimal separator.
-
-
-### Installments
+#### Installments
 
 Most Payment Providers provide different installment based payments options.
 
@@ -205,46 +101,33 @@ The specification field allows the use of specific business rules. This specific
 
 | Field           | Type          | Description                                                  |
 | :-------------- | :------------ | :----------------------------------------------------------- |
-| `installments`  | Integer       | Number of installments.                                      |
-| `interest_rate` | String        | Rate to be applied to the total amount for this installments option. |
-| `applies_to`    | Array(String) | List of [banks](#bank) to which this installments option applies. |
-
-E.g.
-
-```json
-{
-  "specification": [
-    {
-      "installments": 3,
-      "interest_rate": "0.00",
-      "applies_to": ["bbva"]
-    },
-    {
-      "installments": 6,
-      "interest_rate": "0.32",
-      "applies_to": ["hsbc"]
-    },
-    {
-      "installments": 12,
-      "interest_rate": "0.64",
-      "applies_to": ["galicia", "icbc", "santander", "banco_provincia"]
-    }
-  ],
-  "min_installment_value": [
-      {
-        "currency": "ARS",
-        "value": "100.00"
-      }
-    ]
-}
-```
+| `installments`  | Integer       | Number of installments. E.g. `3`.                            |
+| `interest_rate` | String        | Rate to be applied to the total amount for this installments option. E.g. `"0.015"`. |
+| `applies_to`    | Array(String) | List of [banks](#Supported-Banks) to which this installments option applies. |
 
 > ***Note:*** Interest rates are percentages expressed in fractions of 1 in `String` format for better decimal precision handling. For instance, an interest rate of `6.5%` would be expressed as `6.5 / 100 = 0.065`, which stringified would be "0.065".
 
+### Rates
+
+Payment Providers may charge merchants with different rates per Transaction depending on the payment method type and the time the merchant chooses to withdraw the money. Hence, for each payment method type there would be a list of rates depending on the withdrawal time specified in days.
+
+| Field                 | Type          | Description                                                  |
+| :-------------------- | :------------ | :----------------------------------------------------------- |
+| `payment_method_type` | String        | Payment method type to which the rates definition refer. See [Payment Method Types](#Payment-Method-Types). |
+| `rates_definition`    | Array(Object) | Object containing the rates details. See [Rates Definition](#Rates-Definition) section bellow. |
+
+#### Rates Definition
+
+| Field                    | Type    | Description                                                  |
+| :----------------------- | :------ | :----------------------------------------------------------- |
+| `percent_fee`            | String  | Percentage fee charged per payment. E.g. `"1.250"`.          |
+| `days_to_withdraw_money` | Integer | Days since Transaction creation until de merchant can withdraw the money. |
+| `flat_fee`               | Object  | [Optional] Object containing the flat fee charged per payment. See [Money](#Money). |
+| `plus_tax`               | Boolean | [Optional] Indicates whether VAT will be added to the specified rates. |
 
 ### Checkout Options
 
-Payment Providers can implement multiple payment options wich will be displayed in the store checkout. Each of these implementations will be found in the JS file indicated in the `checkout_js_url` field. This object contains the data that the checkout frontend needs to render these payment options.
+Payment Providers can implement multiple payment options which will be displayed in the store checkout. Each of these implementations will be found in the JS file indicated in the `checkout_js_url` field. This object contains the data that the checkout frontend needs to render these payment options.
 
 | Field                            | Type          | Description                                                  |
 | :------------------------------- | :------------ | :----------------------------------------------------------- |
@@ -255,29 +138,16 @@ Payment Providers can implement multiple payment options wich will be displayed 
 | `supported_billing_countries`    | Array(String) | List of [ISO_3166-1](https://es.wikipedia.org/wiki/ISO_3166-1) country codes where the payment option will be available. |
 | `supported_payment_method_types` | Array(String) | Payment method types supported by the payment option. See [Payment Method Types](#Payment-Method-Types). |
 
-E.g.
+### Money
 
-```
-[
-    {
-      "id": "mypayments_transparent_card",
-      "name": "My Payments",
-      "description": "Some description for transparent card option",
-      "logo_url": "https://cdn.mypayments.com/apps/tiendanube/logo.png",
-      "supported_billing_countries": ["AR"],
-      "supported_payment_method_types": ["credit_card", "debit_card"]
-    },
-    {
-      "id": "mypayments_redirect",
-      "name": "My Payments",
-      "description": "Some description for redirect option",
-      "logo_url": "https://cdn.mypayments.com/apps/tiendanube/logo.png",
-      "supported_billing_countries": ["AR"],
-      "supported_payment_method_types": ["credit_card", "debit_card", "ticket", "wallet"]
-    }
-  ]
-```
+Sums of money will be represented by a value and its respective currency.
 
+| Field      | Type   | Description                                                 |
+| :--------- | :----- | :---------------------------------------------------------- |
+| `value`    | String | Amount of money as a string. E.g. `"49.99"`                 |
+| `currency` | String | ISO 4217 code for the currency, such as ARS, BRL, USD, etc. |
+
+> ***Note:*** Decimal numbers will be represented as string format for better decimal precision handling. It must contain two decimal places and use a point as decimal separator.
 
 Endpoints
 ---------
@@ -294,122 +164,156 @@ E.g.
 
 ```json
 {
-    "name": "My Payments",
-    "description": "Some short description for merchants.",
-    "logo_urls": {
-        "400x120": "https://mypayments.com/logo1.png",
-        "160x100": "https://mypayments.com/logo2.png"
-    },
-    "configuration_url": "https://mypayments.com/configuration",
-    "support_url": "https://mypayments.com/support",
-    "rates_url": "https://mypayments.com/rates",
-    "checkout_js_url": "https://mypayments.com/checkout.min.js",
-    "supported_currencies": [
-        "ARS", "BRL"
-    ],
-    "supported_payment_methods": [
-        {
-            "payment_method_type": "credit_card",
-            "payment_methods": [
-                "visa",
-                "mastercard",
-              	"amex"
-            ],
-            "installments": {
-                "min_installment_value": [
-                    {
-                        "currency": "ARS",
-                        "value": "100.00"
-                    }
-                ],
-                "specification": [
-                    {
-                        "installments": 1,
-                        "interest_rate": "0.00",
-                        "applies_to": [
-                            "bbva",
-                            "itau",
-                            "santander",
-                            "galicia"
-                        ]
-                    },
-                    {
-                        "installments": 3,
-                        "interest_rate": "0.00",
-                        "applies_to": [
-                            "bbva",
-                            "itau"
-                        ]
-                    },
-                    {
-                        "installments": 6,
-                        "interest_rate": "0.45",
-                        "applies_to": [
-                            "santander",
-                            "galicia"
-                        ]
-                    }
-                ]
-            }
-        },
-        {
-          "payment_method_type": "debit_card",
-          "payment_methods": ["visa_debit", "maestro"]
-        },
-        {
-          "payment_method_type": "boleto",
-          "payment_methods": ["boleto"]
-        }
-    ],
-    "rates": [
-        {
-            "payment_method_type": "credit_card",
-            "rates_definition": [
-                {
-                    "percent_fee": "15.25",
-                    "flat_fee": {
-                        "value": "5.00",
-                        "currency": "ARS"
-                    },
-                    "plus_tax": true,
-                    "days_to_withdraw_money": 10
-                },
-                {
-                    "percent_fee": "30.50",
-                    "flat_fee": {
-                        "value": "10.00",
-                        "currency": "BRL"
-                    },
-                    "plus_tax": false,
-                    "days_to_withdraw_money": 5
-                }
+  "name": "My Payments",
+  "description": "Some short description for merchants.",
+  "logo_urls": {
+    "400x120": "https://mypayments.com/logo1.png",
+    "160x100": "https://mypayments.com/logo2.png"
+  },
+  "configuration_url": "https://mypayments.com/configuration",
+  "support_url": "https://mypayments.com/support",
+  "rates_url": "https://mypayments.com/rates",
+  "checkout_js_url": "https://mypayments.com/checkout.min.js",
+  "supported_currencies": [
+    "ARS",
+    "BRL"
+  ],
+  "supported_payment_methods": [
+    {
+      "payment_method_type": "credit_card",
+      "payment_methods": [
+        "visa",
+        "mastercard",
+        "amex",
+        "diners"
+      ],
+      "installments": {
+        "min_installment_value": [
+          {
+            "currency": "ARS",
+            "value": "100.00"
+          }
+        ],
+        "specification": [
+          {
+            "installments": 1,
+            "interest_rate": "0.00",
+            "applies_to": [
+              "bbva",
+              "itau",
+              "santander",
+              "galicia",
+              "icbc"
             ]
+          },
+          {
+            "installments": 3,
+            "interest_rate": "0.00",
+            "applies_to": [
+              "bbva",
+              "itau"
+            ]
+          },
+          {
+            "installments": 6,
+            "interest_rate": "0.045",
+            "applies_to": [
+              "santander",
+              "galicia"
+            ]
+          },
+          {
+            "installments": 12,
+            "interest_rate": "0.15",
+            "applies_to": [
+              "icbc"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "payment_method_type": "debit_card",
+      "payment_methods": [
+        "visa_debit",
+        "maestro"
+      ]
+    },
+    {
+      "payment_method_type": "boleto",
+      "payment_methods": [
+        "boleto",
+        "banco_do_brasil", 
+        "bradesco", 
+        "caixa"
+      ]
+    }
+  ],
+  "rates": [
+    {
+      "payment_method_type": "credit_card",
+      "rates_definition": [
+        {
+          "percent_fee": "2.25",
+          "flat_fee": {
+            "value": "1.00",
+            "currency": "ARS"
+          },
+          "plus_tax": true,
+          "days_to_withdraw_money": 10
+        },
+        {
+          "percent_fee": "3.99",
+          "flat_fee": {
+            "value": "2.50",
+            "currency": "BRL"
+          },
+          "plus_tax": false,
+          "days_to_withdraw_money": 5
         }
-    ],
-    "checkout_options": [
+      ]
+    }
+  ],
+  "checkout_payment_options": [
     {
       "id": "mypayments_transparent_card",
       "name": "My Payments",
       "description": "Some description for transparent card option",
       "logo_url": "https://cdn.mypayments.com/apps/tiendanube/logo.png",
-      "supported_billing_countries": ["AR"],
-      "supported_payment_method_types": ["credit_card", "debit_card"]
+      "supported_billing_countries": [
+        "AR"
+      ],
+      "supported_payment_method_types": [
+        "credit_card",
+        "debit_card"
+      ]
     },
     {
       "id": "mypayments_transparent_offline",
       "name": "My Payments",
       "description": "Some description for transparent offline option",
       "logo_url": "https://cdn.mypayments.com/apps/tiendanube/logo.png",
-      "supported_billing_countries": ["BR"],
-      "supported_payment_method_types": ["boleto"]
+      "supported_billing_countries": [
+        "BR"
+      ],
+      "supported_payment_method_types": [
+        "boleto"
+      ]
     },
     {
       "id": "mypayments_redirect",
       "name": "My Payments",
       "description": "Some description for redirect option",
       "logo_url": "https://cdn.mypayments.com/apps/tiendanube/logo.png",
-      "supported_billing_countries": ["AR", "BR"],
-      "supported_payment_method_types": ["credit_card", "wire_transfer", "wallet"]
+      "supported_billing_countries": [
+        "AR",
+        "BR"
+      ],
+      "supported_payment_method_types": [
+        "credit_card",
+        "wire_transfer",
+        "wallet"
+      ]
     }
   ]
 }
@@ -423,7 +327,7 @@ E.g.
 
 ```json
 {
-  "id": "815905d6-3518-479d-8ed6-5e0e4e6f305d"
+  "id": "6e760b6e-e4f3-42ba-8a2d-afddf44e6cf1"
 }
 ```
 
@@ -502,98 +406,20 @@ Appendix
 
 ### Supported Payment Methods by Payment Method Type
 
-The following is the list of payment methods currently supported by our platform.
+The following is the list of payment method IDs by payment method type currently supported by our platform.
 
-#### Credit Card
+| Payment Method Type | Payment Method ID                                            |
+| ------------------- | ------------------------------------------------------------ |
+| `bank_debit`        | Accepts values from the [Supported Bank](#Supported-Banks) list. |
+| `boleto`            | Accepts values from the [Supported Bank](#Supported-Banks) list as bank issuers. Use the default value `boleto` if no issuer is specified. |
+| `cash`              | `cash`                                                       |
+| `credit_card`       | `amex`, `argencard`, `aura`, `cabal`, `cordial`, `cordobesa`, `diners`, `discover`, `elo`, `falabella`, `hiper`, `hipercard`, `hsbc_access_now`, `magna`, `mastercard`, `nativa`, `oi_paggo`, `provencred`, `rebanking`, `tarjeta_naranja`, `tarjeta_saenz`, `tarjeta_shopping`, `tarjeta_walmart`, `visa` |
+| `debit_card`        | `cabal_debit`, `maestro`, `visa_debit`                       |
+| `ticket`            | ` efecty`, ` oxxo`, `  pagofacil`, `rapipago`, ` servipag`, `seven_eleven`, `via_baloto` |
+| `wallet`            | `wallet`                                                     |
+| `wire_transfer`     | `banelco`,  `link`,  `provincia_net`,  `pse`                 |
 
-- `visa`
-- `mastercard`
-- `amex`
-- `diners`
-- `aura`
-- `elo`
-- `hiper`
-- `hipercard`
-- `oipaggo`
-- `argencard`
-- `cabal`
-- `cordial`
-- `cordobesa`
-- `falabella`
-- `hsbc_access_now`
-- `tarjeta_naranja`
-- `tarjeta_saenz`
-- `tarjeta_shopping`
-- `tarjeta_walmart`
-- `provencred`
-- `nativa`
-- `rebanking`
-- `magna`
-- `discover`
+#### Supported Banks
 
-#### Debit Card
+`banamex`, `banco_chaco`, `banco_chubut`, `banco_ciudad`, `banco_coinag`, `banco_columbia`, `banco_comafi`, `banco_comercio`, `banco_do_brasil`, `banco_entre_rios`, `banco_hipotecario`, `banco_industrial`, `banco_la_pampa`, `banco_municipal`, `banco_nacion`, `banco_patagonia`, `banco_provincia`, `banco_san_juan`, `banco_santa_cruz`, `banco_santa_fe`, `banco_tierra_del_fuego`, `banco_tucuman`, `banrisul`, `bbva`, `bica`, `bradesco`, `caixa`, `cencosud`, `citi`, `galicia`, `hsbc`, `icbc`, `itau`, `macro`, `santander`, `scotiabank`, `supervielle`
 
-- `visa_debit`
-- `maestro`
-- `cabal_debit`
-
-#### Boleto Bancário
-
-- `boleto`
-
-#### Ticket
-
-- `rapipago`
-- `pagofacil`
-- `servipag`
-- `efecty`
-- `viabaloto`
-- `7eleven`
-- `oxxo`
-
-#### Bank Transfer
-
-- `banelco`
-- `link`
-- `provincianet`
-- `pse`
-
-#### Bank
-
-- `banco_do_brasil`
-- `banrisul`
-- `bradesco`
-- `caixa`
-- `itau`
-- `hsbc`
-- `galicia`
-- `icbc`
-- `bbva`
-- `macro`
-- `santander`
-- `scotiabank`
-- `banco_chaco`
-- `banco_chubut`
-- `banco_ciudad`
-- `banco_coinag`
-- `banco_columbia`
-- `banco_comafi`
-- `banco_comercio`
-- `banco_entre_rios`
-- `banco_hipotecario`
-- `banco_industrial`
-- `banco_la_pampa`
-- `banco_municipal`
-- `banco_nacion`
-- `banco_patagonia`
-- `banco_provincia`
-- `banco_sanjuan`
-- `banco_santa_cruz`
-- `banco_santa_fe`
-- `banco_tierra_de_fuego`
-- `banco_tucuman`
-- `bica`
-- `cencosud`
-- `citi`
-- `supervielle`
-- `banamex`
