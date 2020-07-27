@@ -1,7 +1,7 @@
 Transaction
 ===========
 
-Each movement of money is modeled through a `Transaction` object, which can be of different types (e.g. credit card, debit card, boleto, wire transfer, etc.). Each `Transaction` type has a Finite State Machine (FSM) that defines its current status. The `TransactionEvent` object represents transitions in the `Transaction`'s FSM.
+Each movement of money is modeled through a `Transaction` object, which can be of different types (e.g. credit card, debit card, boleto, wire transfer, etc.). Each `Transaction` type has a Finite State Machine (FSM) that defines its current status. The `Transaction Event` object represents transitions in the `Transaction`'s FSM.
 
 A [Payment Provider](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md) can create a Transaction and update its status through Transaction Events as it changes over time. Since an order can be related to multiple payment methods, a different Transaction must be created for each of them using the same order ID.
 
@@ -153,7 +153,7 @@ The following table shows the Transaction Event Types supported for each *paymen
 | `credit_card`, `debit_card`                                  | `sale`, `authorization`, `capture`, `in_fraud_analysis`, `needs_merchant_review`, `void`, `refund` |
 | `bank_debit`, `boleto`, `cash`, `ticket`, `wallet`, `wire_transfer` | `sale`, `refund`                                             |
 
-Transaction Status Workflow
+### Transaction Status Workflow
 
 A Transaction may change its *status* upon receiving a Transaction Event. The following diagram shows the possible Transaction Status transitions based on the events the Transactions receives.
 > The arrows represent the occurrence of a Transaction Event with *status* `success` unless another status is mentioned in its description.
@@ -605,8 +605,6 @@ The following list contains all the Transaction failures codes currently support
 | `consumer_street_number_invalid` | The consumer address number is invalid.                      |
 | `consumer_zip_invalid`           | The consumer ZIP code is invalid.                            |
 
-
-
 ### Payment Method
 
 #### Bank Debit
@@ -692,3 +690,4 @@ The following list contains all the Transaction failures codes currently support
 | `order_total_currency_invalid`   | The order amount currency is invalid.                        |
 | `order_total_price_invalid`      | The order price value is invalid.                            |
 | `order_total_price_too_small`    | The order price value is less than the minimum supported value. |
+
