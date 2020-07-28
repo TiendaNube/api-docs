@@ -25,7 +25,7 @@ Properties
 | `logo_urls`                 | Object        | Object containing `key:value` pair for each version of the logos for the frontend. Only supports HTTPS URLs. See [Logos](#Logos). |
 | `supported_currencies`      | Array(String) | ISO.4217 currency codes supported by the Payment Provider. See [Currency Codes](#Currency-Codes). |
 | `supported_payment_methods` | Array(Object) | List of available payment methods for each payment method type. See [Payment Methods](#Payment-Methods). |
-| `checkout_js_url`           | String        | HTTPS URL of the JS file to be included in the checkout frontend. See [Checkout JS](./checkout.md). |
+| `checkout_js_url`           | String        | HTTPS URL of the JavaScript file to be included in the checkout frontend. See [Checkout](./checkout.md). |
 | `checkout_payment_options`  | Array(Object) | Object containing the available payment options for the checkout frontend. See [Checkout Options](#Checkout-Options). |
 | `configuration_url`         | String        | [Optional] HTTPS URL of the Payment Provider configuration UI. |
 | `support_url`               | String        | [Optional] Payment Provider support site HTTPS URL.          |
@@ -127,7 +127,7 @@ Payment Providers may charge merchants with different rates per Transaction depe
 
 ### Checkout Options
 
-Payment Providers can implement multiple payment options which will be displayed in the store checkout. Each of these implementations will be found in the JS file indicated in the `checkout_js_url` field. This object contains the data that the checkout frontend needs to render these payment options.
+Payment Providers can implement multiple payment options which will be displayed in the store checkout. Each of these implementations will be found in the JavaScript file indicated in the `checkout_js_url` field. This object contains the data that the checkout frontend needs to render these payment options.
 
 | Field                            | Type          | Description                                                  |
 | :------------------------------- | :------------ | :----------------------------------------------------------- |
@@ -410,8 +410,8 @@ The following is the list of payment method IDs by payment method type currently
 
 | Payment Method Type | Payment Method ID                                            |
 | ------------------- | ------------------------------------------------------------ |
-| `bank_debit`        | Accepts values from the [Supported Bank](#Supported-Banks) list. |
-| `boleto`            | Accepts values from the [Supported Bank](#Supported-Banks) list as bank issuers. Use the default value `boleto` if no issuer is specified. |
+| `bank_debit`        | See the [Supported Bank list](#Supported-Banks).             |
+| `boleto`            | See the [Supported Bank list](#Supported-Banks). Use the default value `boleto` if no issuer is specified. |
 | `cash`              | `cash`                                                       |
 | `credit_card`       | `amex`, `argencard`, `aura`, `cabal`, `cordial`, `cordobesa`, `diners`, `discover`, `elo`, `falabella`, `hiper`, `hipercard`, `hsbc_access_now`, `magna`, `mastercard`, `nativa`, `oi_paggo`, `provencred`, `rebanking`, `tarjeta_naranja`, `tarjeta_saenz`, `tarjeta_shopping`, `tarjeta_walmart`, `visa` |
 | `debit_card`        | `cabal_debit`, `maestro`, `visa_debit`                       |

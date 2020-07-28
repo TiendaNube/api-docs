@@ -642,6 +642,7 @@ The following list contains all the Transaction failures codes currently support
 | `card_method_unavailable`            | The card method is not available.                            |
 | `card_number_invalid`                | The card number is invalid.                                  |
 | `card_rejected`                      | Card rejected.                                               |
+| `card_rejected_call_for_authorize`   | Card rejected because payment must be authorized by the issuer. |
 | `card_rejected_deny_list`            | Card rejected for being on a list of non accepted cards.     |
 | `card_rejected_disabled`             | Card rejected for being disabled.                            |
 | `card_rejected_duplicated_payment`   | Card rejected because payment seems to be duplicated.        |
