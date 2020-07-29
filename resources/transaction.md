@@ -51,7 +51,7 @@ All `Transaction` types have the same attributes, but may generate different kin
 
 | Field              | Type   | Description                                                  |
 | ------------------ | ------ | ------------------------------------------------------------ |
-| `brand`            | String | The brand of the card.                                       |
+| `brand`            | String | The brand of the card. See [Supported Card Brands](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Supported-Payment-Methods-by-Payment-Method-Type).                                        |
 | `issuer`           | String | [Optional] The issuer of the card.                           |
 | `expiration_month` | Number | The expiration month of the card.                            |
 | `expiration_year`  | Number | The expiration year of the card.                             |
@@ -150,8 +150,8 @@ The following table shows the Transaction Event Types supported for each *paymen
 
 | Payment Method Type                                          | Transaction Event Type                                       |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| `credit_card`, `debit_card`                                  | `sale`, `authorization`, `capture`, `in_fraud_analysis`, `needs_merchant_review`, `void`, `refund` |
-| `bank_debit`, `boleto`, `cash`, `ticket`, `wallet`, `wire_transfer` | `sale`, `refund`                                             |
+| `credit_card`                                 | `sale`, `authorization`, `capture`, `in_fraud_analysis`, `needs_merchant_review`, `void`, `refund` |
+| `bank_debit`, `boleto`, `cash`, `debit_card`, `ticket`, `wallet`, `wire_transfer` | `sale`, `refund`                                             |
 
 ### Transaction Status Workflow
 
