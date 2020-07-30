@@ -3,24 +3,24 @@
 ### Glossary
 
 #### Payment Provider
-Actually, short for Payment Service Provider, is any entity the provides the means to allow a buyer to pay the merchant for purchased goods or hired services. These _means_ include all the necessary information to inform the potential buyer about the available methods, installments, promotions, etc, as well as the means to actually make a payment.
+Actually, short for Payment Service Provider, is any entity that provides the means to allow a buyer to pay the merchant for purchased goods or hired services. These _means_ include all the necessary information to inform the potential buyer about the available methods, installments, promotions, etc, as well as the means to actually make a payment.
 
 #### Payment Method Type
-It can be any of, but not limited to:
+Including but not limited to:
 - Credit Card
 - Debit Card
 - Bank Debit
 - Boleto (Brasil only)
-- Ticket (Argentina ony, e.g. _Pago Fácil_, _RapiPago_, etc)
+- Ticket (Argentina only, e.g. _Pago Fácil_, _RapiPago_, etc)
 - Wire Transfer
 - Cash
 - Others
 
 #### Payment Method
-For instance, if the Payment Method Type is Credit Card, then an example of plain Payment Method would be Visa, Mastecard or American Express. For some types, for example like Bank Debit, only have one Payment Method which happens to be Bank Debit. Though it's redundant, it leaves space for future variations.
+For instance, if the Payment Method Type is Credit Card, an example of Payment Method would be Visa, Mastecard or American Express. For some types, for example Bank Debit, only one Payment Method is available (in this case Bank Debit). Though it's redundant, it leaves space for future variations.
 
 #### Payment Option
-Once a Payment Method has been chosen, a Payment Option is needed to complete the payment. For example, if you want to pay for Visa, the buyer can fill up the credit card form in the store's website or go to the Payment Provider's checkout and follow the steps on their page and finally be redirected back to the store's website.
+Once a Payment Method has been chosen, a Payment Option is needed to complete the payment. For example, if you want to pay with Visa, the buyer can fill up the credit card form in the store's website or go to the Payment Provider's checkout and follow the steps on their page and finally be redirected back to the store's website.
 
 #### Payment App
 One very important concept to understand is that a _Nuvemshop_ Payment App, in development terms, more often than not, implies the implementation of both, Nuvemshop's APIs and the payment provider's APIs, into one same web application, both living together. These API's are both, REST (backend) and Javascript (frontend) APIs.
@@ -32,9 +32,9 @@ This document provides an explanation of what a Payment App is and will guide yo
 
 In very few words, the steps to develop and deploy an app are:
 
-1. The developer creates a Partner account at Nuvemshop’s Partner’s Portal.
+1. The developer creates a Partner’s account at Nuvemshop’s Partner’s Portal.
 2. The developer creates a Payments App at Nuvemshop’s Partner’s Portal
-3. The developer sets up a scalable backend on their own infrastructure where the Nuveshop’s REST APIs will be implemented.
+3. The developer sets up a scalable backend on their own infrastructure where the Nuvemshop’s REST APIs will be implemented.
 4. The developer Nuvemshop’s REST APIs, including the Payment Provider and Transaction’s resources.
 5. The developer implements their frontend scripts according to Nuvemshop’s JS interface specifications, hosts the file in a public CDN and provides a link to the file or files through our APIs.
 6. The app is audited by Nuvemshop to test the implementation, scalability, stability, and other important factors.
@@ -43,11 +43,12 @@ In very few words, the steps to develop and deploy an app are:
 ## Step 1: Partner account and App creation
 
 To interact with our APIs, you must create an App. An App represents our partner’s products in our platform. Each App has a set of credentials required to authenticate against our platform and be granted access to our APIs on behalf of the merchant depending on the scopes enabled on the App’s settings.
+The app is the entity that will allow partners to interact with Nuvemshop through the permissions requested to each store.
 
 The steps to create a Payment App are the following:
 
-1.  If your company doesn’t already have a Partner’s Account, it can be created at our [Partner’s Portal](https://partners.nuvemshop.com.br/).
-2.  At the Partner’s Portal, create an app and make sure all the fields are completed with valid and real data.
+1.  If your company doesn’t already have a Partner’s Account, it can be created in our [Partner’s Portal](https://partners.nuvemshop.com.br/).
+2.  Inside the Partner’s Portal, create an app and make sure all the mandatory fields are completed with valid and real data.
 3.  Take special care on the “Redirect URI” which is a key part of the App installation process. You can modify it in the future, if necessary.
 4.  You might want to include a good description of your offered payment services, since our platform may bring new clients to your business.
 5.  Make sure to choose the “Payments” category.
@@ -60,15 +61,15 @@ The steps to create a Payment App are the following:
 
 ## Step 2: App installation and Payment Provider creation flow
 
-A `Store` can have `n` number of `Payment Providers`. `Stores` have their own `Payment Providers` with their own `id`s and these are unrelated to `Payment Providers` created by the same app on other `Stores`. This means that each time a merchant installs your app, your App must follow the `Payment Provider` creation flow for that App.
+A `Store` can have `n` number of `Payment Providers`. `Stores` have their own `Payment Providers` with their own `id`s and these are unrelated to `Payment Providers` created by the same app in others `Stores`. This means that each time a merchant installs your app, your App must follow the `Payment Provider` creation flow for that App.
 
-`Payment Providers` contain all the configuration to display `payment_methods`, calculate prices, discounts, installments, among others, on the storefront and it also contains properties required for the Checkout process.
+`Payment Providers` contains all the configurations needed to display `payment_methods`, calculate prices, discounts, installments (among others) on the storefront and it also contains properties required for the Checkout process.
 
 The App installation flow is a standard OAuth 2 flow. The details on the App installation flow can be found [here](../../resources/authentication.md) and details on creating a Payment Provider can be found [here](../../resources/payment_provider.md#post-store_idpayment_providers).
 
 During this flow, the App is expected to create the Payment Provider on the merchant’s store.
 
-The following sequence helps illustrate the process' concept:
+The following sequence helps illustrate the process’s concept:
 - *Front*: The web browser.
 - *Nuvemshop IdP*: Nuvemshop’s Identity Provider.
 - *Nuvemshop API*: Self described.
@@ -81,8 +82,8 @@ Here's a less abstract example:
 - *Front*: The web browser.
 - *Nuvemshop IdP*: Nuvemshop’s Identity Provider.
 - *Nuvemshop API*: Self described.
-- *App's Backend*: Actually, _"Payment Apps's Backend"_, where both REST APIs implementaitons, Nuvemshop's and the payment provider's ones, live together.
-- *Payment Provider API*: The original payment provider's API.
+- *App's Backend*: Actually, _"Payment Apps's Backend"_, where both REST APIs implementations, Nuvemshop's and the payment provider's ones, live together.
+- *Payment Provider API*: The original payment provider’s API.
 
 ![App Installation and Payment Provider Creation Sequence](./mmd/PaymentProvider-InstallationAndCreation-Implementation.jpg)
 
@@ -98,7 +99,7 @@ Use the following URL to start the app installation flow in a store:
 > - `${store_name}`
 > - `${app_id}`
 
-After the Merchant approves the permissions, the Merchant is redirected to the App's redirect URI, which you can find in your app's configuration, with the `code` attached as a query string.
+After the Merchant approves the permissions’s request, the Merchant is redirected to the App's redirect URI, which you can find in your app's configuration, with the `code` attached as a query string.
 
 ##### (2) Get the `access_token`
 
@@ -113,14 +114,14 @@ curl --location --request POST 'https://www.tiendanube.com/apps/authorize/token'
 
 > **Note 1:** Using placeholders for:
 > - `${code}`: From the query string of the Redirect URL.
-> - `${client_secret}`
-> - `${client_id}`
+> - `${client_secret}`: Unique secret identifier for the app, found on the partner’s admin.
+> - `${client_id}`: Unique identifier for the app, found on the partner’s admin.
 
 > **Note 2:** `${client_id}` and `${app_id}` represent the same value.
 
 ### Payment Provider Configuration
 
-You can find the list  of Payment Provider object of properties and their description in our API’s Documentation, [here](../../resources/payment_provider.md#payment-provider-1). All of the Payment Provider object properties MUST have valid and real values.
+You can find the list of Payment Provider object properties and their description in our API’s Documentation, [here](../../resources/payment_provider.md#payment-provider-1). All of the Payment Provider object properties MUST have valid and real values.
 
 Quick example:
 ```bash
@@ -294,31 +295,31 @@ We strongly suggest taking a close look at each of the Payment Provider’s obje
 
 #### Checkout Configuration
 
-Most of our APIs are based on REST interfaces. However, our Checkout APIs are based on both, REST and Javascript interfaces. For the Checkout API, the configuration is made through our REST API but the frontend interactions are handled by the JS interface. This allows the app developer to implement their own Javascript SDKs on our Checkout's frontend without any intervention from our development teams.
+Most of our APIs are based on REST interfaces. However, our Checkout APIs are based on both, REST and Javascript interfaces. For the Checkout API, the configuration is made through our REST API but the frontend interactions are handled by the JS interface. This allows the app’s developer to implement their own Javascript SDKs on our Checkout's frontend without any intervention from our development teams.
 
 The Payment Provider has two checkout related properties:
 
-- `checkout_payment_options`: List of Payment Options (such a `Transparent`, `External`, `Modal`), and their properties which include some like `name`, `logo_url` and `supported_method_types` (`card`, `boleto`, `bank_debit`, `ticket`), among others.
+- `checkout_payment_options`: List of Payment Options (such a `Transparent`, `External`, `Modal`), and their properties which includes things like `name`, `logo_url` and `supported_method_types` (`card`, `boleto`, `bank_debit`, `ticket`), among others.
 
 - `checkout_js_url`: The handlers for each `checkout_option` (such as `onLoad`, `onSubmit`, etc) are implemented through the JS API. This property contains a Secure (`HTTPS`) URL pointing to the file with this implementations so our Checkout can run them on the frontend. This URL will be requested from the frontend, which means that the JS file must be hosted on a CDN capable of handling high traffic.
 
-***Note:*** The API docs on the Checkout JS API can be found [here](../../resources/checkout_js.md). Find more details how to implement your SDKs on the checkout JS file on the next section.
+***Note:*** The API docs on the Checkout JS API can be found [here](../../resources/checkout_js.md). Find more details about how to implement your SDKs on the checkout JS file on the next section.
 
 #### Storefront Scripts
 
-Note that are frontend has two main components:
+Note that our frontend has two main components:
 - Storefront
 - Checkout
 
-> In case any frontend Javascript scripts unrelated to the checkout process, like, for example, a fraud prevention script such as a digital footprint, needed to be added to the merchant website’s storefront, our API has a resource for that purpose. Details on how to implement it can be found following [this link](../../resources/script.md).
+> In case any frontend Javascript scripts unrelated to the checkout process, like, for example, a fraud prevention script such as a digital footprint, needs to be added to the merchant website’s storefront, our API has a resource for that purpose. Details on how to implement it can be found following [this link](../../resources/script.md).
 > 
-> Any requests to the Scripts Resource API should be sent during the App’s installation process. Your app will need an extra scope to access this resource: `write_scripts`. You must enable it at the App's configuration form on the Partner's Portal.
+> Any requests to the Scripts Resource API should be sent during the App’s installation process. Your app will need an extra scope to access this resource: `write_scripts`. You must enable it at the App’s configuration form in the Partner’s Portal.
 
 #### Supported Currencies
 
 This property contains a list of supported currencies in [ISO 4217 code](https://www.currency-iso.org/en/home/tables/table-a1.html) format.
 
-The content of this field usually depends on settings on the merchant’s App account configuration. It is most important to set valid and real values on this field making sure it reflects the merchants settings to avoid any unexpected behaviour.
+The content of this field usually depends on settings in the merchant’s App account configuration. It is mandatory to set valid and real values on this field making sure it reflects the merchants settings to avoid any unexpected behaviour.
 
 Nuvemshop will use this value as a reference to show (allow) or hide (deny) this Payment Provider to buyers based on several business rules. Incorrect supplied values may result in incorrect and/or unsupported transactions being executed.
 
@@ -343,7 +344,7 @@ Currently, there are three mainstream Checkout Payment Options. Below are quick 
 Pretty much a standard redirect payment flow:
 
 1. The merchant's website sends the order to the Payment Provider.
-2. The Payment Provider proceses the order, creates a *payment preference* and returns a redirect URL.
+2. The Payment Provider processes the order, creates a *payment preference* and returns a redirect URL.
 3. The buyer is redirected to the Payment Provider’s website.
 4. The buyer follows the checkout flow.
     - If the buyer has an account on the Payment Provider and Wallet features are supported, this flow has a very smooth UX.
@@ -351,7 +352,7 @@ Pretty much a standard redirect payment flow:
 
 #### Transparent Payment Option
 
-This more recent approach keeps the buyer at the Merchant’s website during all the checkout process:
+This newer approach keeps the buyer at the Merchant’s website during all the checkout process:
 
 1. The credit or debit card data form is rendered on the merchant’s website.
 2. The credit or debit card sensible information never goes in a readable way to the Merchants backend.
@@ -362,9 +363,9 @@ This option gives the buyer a more store-branded experience which improves the u
 #### Modal Payment Option
 Some Payment Providers offer SDKs which render a lightbox or modal with an embedded iframe containing the Payment Provider’s checkout UI on the Merchant’s website, giving the buyer a more transparent-like experience. In this case, though the buyer never really leaves the merchant's website, the checkout flow is run under the Payment Provider's domain.
 
-This option allows the app to take full control of the front to render all the necessary elements to start the payment process.
+This option allows the app to take full control of the frontend to render all the necessary elements to start the payment process.
 
-> **Note:** Requires a very intense internal certification process.
+> **Note:** Requires a very strict internal certification process.
 
 ### Checkout Payment Options Implementation (Checkout JS API)
 
@@ -374,9 +375,9 @@ As explained before, the developer is in charge of the JS and REST implementatio
 
 #### Adding a Checkout Payment Option
 
-As explained previously, on the "Checkout Configuration", Checkout Payment Options have two interfaces. The REST interface for parameter configuration, and the JS interface for event handling.
+As explained previously, on the "Checkout Configuration" part, Checkout Payment Options have two interfaces. The REST interface for parameter configuration, and the JS interface for event handling.
 
-Our front end provides a context through the `LoadCheckoutPaymentContext(...)` global function. This function takes another function as an argument which in turn takes two arguments, the `Checkout` object and `PaymentOption` class family object
+Our frontend provides a context through the `LoadCheckoutPaymentContext(...)` global function. This function takes another function as an argument that takes two arguments, the `Checkout` object and `PaymentOption` class family object
 
 Therefore, your Javascript file should look like this:
 
@@ -411,10 +412,10 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
 })
 ```
 
-**A full description of the available PaymentOptions can be found [here](../../resources/checkout_js.md#methods).**
+**A full description of the available Payment Options can be found [here](../../resources/checkout_js.md#methods).**
 
 ##### External Payment Implementation Example
-Let’s assume we’ve created an app called “Acme Payment App” and now we want to implement an External Payment Option so the user can use their wallet credit or some other method like a card or boleto, to pay for an order, but from Acme's website.
+Let’s assume we’ve created an app called “Acme Payment App” and now we want to implement an External Payment Option so the user can use their wallet credit or some other method like a card or boleto to pay for an order but from Acme's website.
 
 First, we’ll start by creating an instance of `PaymentOptions.ExternalPayment` and adding it to the Checkout by using the `Checkout.addPaymentOption(...)` method:
 
@@ -424,7 +425,7 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
   // We create a new instance of the redirect option.
   var AcmeExternalPaymentOption = new PaymentOptions.ExternalPayment({
   })
-  // Finally, we add the JS part of our option, i.e. the handlers, to the Checkout object to it can render it according to the configuration set on the Payment provider.
+  // Finally, we add the JS part of our option, i.e. the handlers, to the Checkout object so it can render it according to the configurations set on the Payment provider.
   Checkout.addPaymentOption(AcmeExternalPaymentOption);
 });
 ```
@@ -481,7 +482,7 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
 ```
 
 ##### Transparent Card Implementation Example
-`Transparent` options take an object as an argument which has the same parameters as the `Redirect` option, but, since a big part of the UX logic happens on the front end, it has other handlers that allow handling the input on the fields for validation and security purposes.
+`Transparent` options takes an object as an argument which has the same parameters as the `Redirect` option but, since a big part of the UX logic happens on the frontend, it has other handlers that allow handling the input on the fields for validation and security purposes.
 
 As with any other method, we start by instantiating the one we want to add and then add it using `Checkout.addPaymentOption()`:
 
@@ -614,9 +615,9 @@ The object `Checkout.data.form` provides access to all the form fields. The paym
 
 **_NOTE:_ THIS SECTION IS SUBJECT TO MAJOR BREAKING CHANGES IN THE NEAR FEATURE.**
 
-Payment Platforms usually have a set of instructions that need to be implemented on the backend side and they work together with the frontend implementation. Instead of doing these implementations natively, our APIs allow the developer to make a 3rd party backend implementations on 3rd party infrastructures and access our resources to create transactions in orders and update them as their status changes over time.
+Payment Platforms usually have a set of instructions that need to be implemented on the backend side and they work together with the frontend implementation. Instead of doing these implementations natively, our APIs allow the developer to make 3rd party backend implementations on 3rd party infrastructures and access our resources to create transactions in orders and update them as their status changes over time.
 
-Meet the `Transaction`. An `Order` can have many `Transactions`. Some that were successful, some that failed, some pending, and some in other different states depending on each Transaction’s possible states. The `Transaction Resource` can be accessed [through our API](../../resources/transaction.md#transaction).
+Meet the `Transaction`. An `Order` can have many `Transactions`. Some that were successful, some that failed, some pending, and some in other different statuses depending on each Transaction’s possible statuses. The `Transaction Resource` can be accessed [through our API](../../resources/transaction.md#transaction).
 
 #### Creating a Transaction
 The App’s backend must `POST` a `Transaction` in our platform as soon a one is created on their side, or before. There are several properties that must be included to provide the Merchant with good tracking of the status of the transaction and each of these properties is equally important so they all must have valid and real values.
@@ -654,6 +655,6 @@ Any IPNs or Transaction Webhooks should be handled by the App’s Backend and, w
 It’s worth mentioning that the Credit/Debit Card state machine supports chargebacks. In our model, a `chargeback` may be the state of a `Transaction` of Credit/Debit Card type and it’s expected previous state `in_dispute`. The details on these states can be found [here](../../resources/transaction.md#credit-carddebit-card-transactions).
 
 ## Infrastructure
-It is important to take into account that Nuvemshop is a platform with 30K+ stores. This means the implemented backend will need to be able to handle pretty high-traffic loads. All the necessary scaling, performance monitoring and alert triggering architecture must be implemented.
+It is important to take into account that Nuvemshop is a platform with 50K+ stores. This means the implemented backend will need to be able to handle pretty high-traffic loads. All the necessary scaling, performance monitoring and alert triggering architecture must be implemented.
 
 Special dates like Black Friday or Cyber Monday should be handled with care. Your app should be able to sustain heavy loads with multiple bursts.
