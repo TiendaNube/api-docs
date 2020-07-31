@@ -6,7 +6,7 @@ Our Checkout flow offers different Payment Options that provides buyers with the
 
 Payment Options configuration params are set via our [Payment Provider REST API](./payment_provider.md) by adding [`checkout_options`](./payment_provider.md#Checkout-Options) to the created Payment Provider.
 
-Our Checkout triggers a variety of Javascript Eventos for which we provide a Javacsript API that allow the App Developer to handle these events freely to initiate the payment process. Hence, the app developer can implement their _(most likely)_ already existing and wideley tested Javascript SDKs.
+Our Checkout triggers a variety of Javascript Events for which we provide a Javacsript API that allow the App Developer to handle these events freely to initiate the payment process. Hence, the app developer can implement their _(most likely)_ already existing and wideley tested Javascript SDKs.
 
 The file with the implemented handlers for the different options must be hosted on a CDN that must be capable of handling high traffic loads. The URL to this file must be stated in the [Payment Provider REST API](./payment_provider.md) `checkout_js_url` property.
 
@@ -63,7 +63,7 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
     }
   })
   
-  // Finally, we add the JS part of our option, i.e. the handlers, to the Checkout object to it can render it according to the configuration set on the Payment provider.
+  // Finally, we add the JS part of our option, i.e. the handlers, to the Checkout object so it can render it according to the configuration set on the Payment provider.
   Checkout.addPaymentOption(AcmeExternalPaymentOption);
 });
 ```
@@ -281,7 +281,7 @@ data: {
           fulfillment: 'unpacked',
           payment: 'pending'
         },
-        completedAt: null
+        completed_at: null
       },
       promotionalDiscount: {
         id: null,
@@ -442,14 +442,14 @@ These flows don't provide any inputs. The difference is how they're rendered in 
 
 ### Transparent
 
-There're three options availalbe in `PaymentOptions.Transparent`.
+There're three options available in `PaymentOptions.Transparent`.
 
 | Name             | Description                                                  |
 | ---------------- | ------------------------------------------------------------ |
-| `CardPayment`  | For credit or debit card payments.                           |
+| `CardPayment`    | For credit or debit card payments.                           |
 | `DebitPayment`   | For redirecting the consumer to the bank's system for debit payments. |
-| `BoletoPayment` | For payments with Boleto.                          |
-| `TicketPayment` | For payments with Boleto.                          |
+| `BoletoPayment`  | For payments with Boleto.                          |
+| `TicketPayment`  | For payments with Boleto.                          |
 
 #### CardPayment
 
@@ -498,7 +498,7 @@ These are the fields rendered and available through `Checkout.data.form`.
 
 ### Arguments
 
-All of the instances of `PaymentOptions` take can take the following arguments.
+All of the instances of `PaymentOptions` can take the following arguments.
 
 | Name           | Description                                                  |
 | -------------- | ------------------------------------------------------------ |
@@ -516,7 +516,7 @@ This `callback` function can be invoked with an object containing the following 
 
 | Name       | Description                                                  |
 | ---------- | ------------------------------------------------------------ |
-| `success`  | If true, the checkout process continues and the order is complete. Otherwise, shown a customizable error message to the consumer. |
+| `success`  | If true, the checkout process continues and the order is complete. Otherwise, shows a customizable error message to the consumer. |
 | `message`  | If `success` is false, this message will be displayed to the consumer. |
 | `redirect` | External url for the consumer to be redirected to in order to finish the purchase in an external checkout. |
 
@@ -555,7 +555,7 @@ LoadCheckoutPaymentContext(function (Checkout, PaymentOptions) {
 
 ## Installments
 
-In order to offer installment options you must update the object `data.installments` by calling `setInstallments`. For example:
+In order to offer installments options you must update the object `data.installments` by calling `setInstallments`. For example:
 
 ```js
 Checkout.setInstallments({ installments: [] })
