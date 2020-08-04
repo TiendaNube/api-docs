@@ -301,6 +301,106 @@ Modify an existing Product Variant
 }
 ```
 
+### PUT /products/#{product_id}/variants
+
+Modify many existing Product Variants at the same time.
+
+
+#### Preconditions
+
+Request body is an array of `ProductVariant` resources.
+
+
+Each `ProductVariant` in the request body must:
+
+* include the `ProductVariant` ID, using the field `id`
+* correspond to an existing `ProductVariant` with same ID than the one set in the field `id` 
+* belong to the `Product` which ID is set in the URL
+
+
+If any of the above preconditions is not met, the response contains:
+
+* HTTP status `422` 
+* the ID of the failed `ProductVariant`
+
+
+#### PUT /products/1234/variants
+
+
+```json
+[
+    {
+        "id": 143,
+        "values": [
+            {
+                "en": "Large"
+            }
+        ],
+        "price": "19.00"
+    },
+    {
+        "id": 144,
+        "values": [
+            {
+                "en": "X-Large"
+            }
+        ],
+        "price": "21.00"
+    }
+]
+```
+
+`HTTP/1.1 200 OK`
+
+```json
+[
+
+    {
+      "id": 143,
+      "image_id": null,
+      "promotional_price": null,
+      "created_at": "2013-01-03T09:11:51-03:00",
+      "depth": null,
+      "height": null,
+      "values": [
+          {
+              "en": "Large"
+          }
+      ],
+      "price": "19.00",
+      "product_id": 1234,
+      "stock_management": false,
+      "stock": null,
+      "sku": null,
+      "updated_at": "2013-06-01T09:15:11-03:00",
+      "weight": null,
+      "width": null      
+    },
+    {
+      "id": 144,
+      "image_id": null,
+      "promotional_price": null,
+      "created_at": "2013-01-03T09:11:51-03:00",
+      "depth": null,
+      "height": null,
+      "values": [
+          {
+              "en": "X-Large"
+          }
+      ],
+      "price": "21.00",
+      "product_id": 1234,
+      "stock_management": false,
+      "stock": null,
+      "sku": null,
+      "updated_at": "2013-06-01T09:15:11-03:00",
+      "weight": null,
+      "width": null      
+    }
+]
+```
+
+
 ### DELETE /products/#{product_id}/variants/#{id}
 
 Remove a Product Variant
