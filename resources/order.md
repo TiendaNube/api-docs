@@ -22,6 +22,10 @@ An order is created when a customer completes the checkout process. Orders also 
 > 
 > [Cancel an order](#POST-ordersidcancel)
 > 
+> [Create an invoice](#create-an-invoice)
+> 
+> [Read an invoice](#read-an-invoice)
+> 
 
 Properties
 ----------
@@ -1309,3 +1313,66 @@ Cancel an Order
     }
 }
 ```
+
+### How to read adn write invoices (e.g. NFe in Brazil)
+
+We currently do not offer an `Invoice` API, but there are many apps which need to read and/or write
+invoice information. The way to achieve this is using [`Metafields`](https://github.com/TiendaNube/api-docs/blob/master/resources/metafields.md).
+
+The advantage of using `Metafields` is that a certain app could generate the invoice and another app can read it.
+Let's take a real Brazilian example: an ERP can generate the *nota fiscal* (NFe) and a Shipping Carrier can use that
+NFe tu fulfill a shipment. 
+
+#### Create an invoice
+
+To make sure other apps can read the invoice you create, please use this example as-is.
+
+##### POST /metafields
+
+`value` should have the invoice number and `owner_id` should hold the `Order` id.
+
+```json
+{
+    "namespace": "nfe",
+    "key": "number",
+    "value": "NFE_NUMBER",
+    "description": "Número da NFe",
+    "owner_resource": "Order",
+    "owner_id": 12345678
+}
+```
+
+`HTTP/1.1 201 Created`
+
+```json
+{
+    "id": 1234,
+    "namespace": "nfe",
+    "key": "number",
+    "value": "NFE_NUMBER",
+    "description": "Número da NFe",
+    "owner_resource": "Order",
+    "owner_id": 12345678,
+    "created_at":"2015-01-02 20:27:51",
+    "updated_at":"2015-01-02 20:27:51",
+    "deleted_at":null
+}
+```
+
+#### Read an invoice
+
+To read an invoice we need to search for the previously created metafield holding the invoice.
+
+##### GET /metafields/orders?owner_id=ORDER_ID&namespace=nfe&key=number&fields=owner_id,key,value
+
+`HTTP/1.1 200 OK`
+
+```json
+{
+    "key": "number",
+    "value": "NFE_NUMBER",
+    "owner_id": 12345678
+}
+```
+
+
