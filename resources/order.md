@@ -1321,7 +1321,7 @@ invoice information. The way to achieve this is using [`Metafields`](https://git
 
 The advantage of using `Metafields` is that a certain app could generate the invoice and another app can read it.
 Let's take a real Brazilian example: an ERP can generate the *nota fiscal* (NFe) and a Shipping Carrier can use that
-NFe tu fulfill a shipment. 
+NFe to fulfill a shipment. 
 
 #### Create an invoice
 
