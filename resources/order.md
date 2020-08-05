@@ -1314,7 +1314,7 @@ Cancel an Order
 }
 ```
 
-### How to read adn write invoices (e.g. NFe in Brazil)
+### Invoices (e.g. NFe in Brazil)
 
 We currently do not offer an `Invoice` API, but there are many apps which need to read and/or write
 invoice information. The way to achieve this is using [`Metafields`](https://github.com/TiendaNube/api-docs/blob/master/resources/metafields.md).
