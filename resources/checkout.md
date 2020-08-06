@@ -4,11 +4,11 @@
 
 Our Checkout flow offers different Payment Options that provides consumers with the means to pay for an order with the payment method of their choice. Payments App developers can create their own Payment Options.
 
-Payment Options configuration params are set via our [Payment Provider API](./payment_provider.md) by adding [`checkout_options`](./payment_provider.md#Checkout-Options) to the created Payment Provider.
+Payment Options configuration params are set via our [Payment Provider API](payment_provider.md) by adding [`checkout_options`](payment_provider.md#Checkout-Options) to the created Payment Provider.
 
 Our Checkout triggers a variety of events for which we provide a JavaScript API that allows you to handle these events freely to initiate the payment process. Hence, you can implement their _(most likely)_ already existing and widely tested Javascript SDKs.
 
-The file with the handlers implemented for the different options should be hosted on a CDN that must be capable of handling high traffic loads. The URL to this file must be stated in the [Payment Provider REST API](./payment_provider.md) `checkout_js_url` property.
+The file with the handlers implemented for the different options should be hosted on a CDN that must be capable of handling high traffic loads. The URL to this file must be stated in the [Payment Provider](payment_provider.md) `checkout_js_url` property.
 
 ## Examples
 
