@@ -3,7 +3,7 @@ Transaction
 
 Each movement of money is modeled through a `Transaction` object, which can be of different types (e.g. credit card, debit card, boleto, wire transfer, etc.). Each `Transaction` type has a Finite State Machine (FSM) that defines its current status. The `Transaction Event` object represents transitions in the `Transaction`'s FSM.
 
-A [Payment Provider](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md) can create a Transaction and update its status through Transaction Events as it changes over time. Since an order can be related to multiple payment methods, a different Transaction must be created for each of them using the same order ID.
+A [Payment Provider](payment_provider.md) can create a Transaction and update its status through Transaction Events as it changes over time. Since an order can be related to multiple payment methods, a different Transaction must be created for each of them using the same order ID.
 
 Properties
 ---------
@@ -13,7 +13,7 @@ All `Transaction` types have the same attributes, but may generate different kin
 | Field                 | Type          | Description                                                  |
 | :-------------------- | :------------ | :----------------------------------------------------------- |
 | `id`                  | String        | [Read-only] Unique identifier of the Transaction object.     |
-| `payment_provider_id` | String        | ID of the [Payment Provider](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md) that processed this Transaction. |
+| `payment_provider_id` | String        | ID of the [Payment Provider](payment_provider.md) that processed this Transaction. |
 | `payment_method`      | Object        | Object containing the payment method used in this Transaction. See [Payment Method](#Payment-Method). |
 | `info`                | Object        | Object containing specific info related to this Transaction. See [Transaction Info](#Transaction-Info). |
 | `status`              | Object        | [Read-only] The state of the FSM in which the Transaction is. See [Transaction Status](#Transaction-Status). |
@@ -29,8 +29,8 @@ All `Transaction` types have the same attributes, but may generate different kin
 
 | Field  | Type   | Description                                                  |
 | ------ | ------ | ------------------------------------------------------------ |
-| `type` | String | One of the available [Payment Method Types](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Payment-Method-Types). |
-| `id`   | String | ID of the payment method used for this Transaction. See [Supported Payment Methods by Payment Method Type](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Supported-Payment-Methods-by-Payment-Method-Type). |
+| `type` | String | One of the available [Payment Method Types](payment_provider.md#Payment-Method-Types). |
+| `id`   | String | ID of the payment method used for this Transaction. See [Supported Payment Methods by Payment Method Type](payment_provider.md#Supported-Payment-Methods-by-Payment-Method-Type). |
 
 ### Transaction Info
 
@@ -40,7 +40,7 @@ All `Transaction` types have the same attributes, but may generate different kin
 | `installments`                 | Object | [Optional - Only for `credit_card`] Object containing the installments data related to this Transaction. See [Installments Info](#Installments-Info). |
 | `external_id`                  | String | [Optional] ID used by the Payment Provider.                  |
 | `external_url`                 | String | [Optional] HTTPS URL with details of this Transaction for the merchant. |
-| `external_resource_url`        | String | [Optional - Only for `boleto` and `ticket`] HTTPS URL of the boleto or ticket to show to the consumer to resume the payment. |
+| `external_resource_url`        | String | [Optional - Only for `boleto`, `ticket` and `bank_debit`] HTTPS URL of the boleto or ticket to show to the consumer to resume the payment. In the case of bank debit, link to the bank selected by the consumer to make the transaction. |
 | `external_resource_code`       | String | [Optional - Only for `boleto` and `ticket`] Barcode for boleto, or code for ticket. |
 | `external_resource_expires_at` | Date   | [Optional - Only for `boleto` and `ticket`] ISO 8601 date for the expiration date of a boleto or ticket. |
 | `ip`                           | String | [Optional] IP of the device that initiated this Transaction. |
@@ -51,7 +51,7 @@ All `Transaction` types have the same attributes, but may generate different kin
 
 | Field              | Type   | Description                                                  |
 | ------------------ | ------ | ------------------------------------------------------------ |
-| `brand`            | String | The brand of the card. See [Supported Card Brands](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md#Supported-Payment-Methods-by-Payment-Method-Type).                                        |
+| `brand`            | String | The brand of the card. See [Supported Card Brands](payment_provider.md#Supported-Payment-Methods-by-Payment-Method-Type). |
 | `issuer`           | String | [Optional] The issuer of the card.                           |
 | `expiration_month` | Number | The expiration month of the card.                            |
 | `expiration_year`  | Number | The expiration year of the card.                             |
@@ -150,12 +150,13 @@ The following table shows the Transaction Event Types supported for each *paymen
 
 | Payment Method Type                                          | Transaction Event Type                                       |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| `credit_card`                                 | `sale`, `authorization`, `capture`, `in_fraud_analysis`, `needs_merchant_review`, `void`, `refund` |
+| `credit_card`                                                | `sale`, `authorization`, `capture`, `in_fraud_analysis`, `needs_merchant_review`, `void`, `refund` |
 | `bank_debit`, `boleto`, `cash`, `debit_card`, `ticket`, `wallet`, `wire_transfer` | `sale`, `refund`                                             |
 
 ### Transaction Status Workflow
 
-A Transaction may change its *status* upon receiving a Transaction Event. The following diagram shows the possible Transaction Status transitions based on the events the Transactions receives.
+A Transaction may change its *status* upon receiving a Transaction Event. The following diagram shows the possible Transaction Status transitions based on the events the Transaction receives.
+
 > The arrows represent the occurrence of a Transaction Event with *status* `success` unless another status is mentioned in its description.
 
 <img style="text-align:center" src="images/transaction_status.png" alt="transaction_status" width="950" />
@@ -691,4 +692,3 @@ The following list contains all the Transaction failures codes currently support
 | `order_total_currency_invalid`   | The order amount currency is invalid.                        |
 | `order_total_price_invalid`      | The order price value is invalid.                            |
 | `order_total_price_too_small`    | The order price value is less than the minimum supported value. |
-
