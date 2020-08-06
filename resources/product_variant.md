@@ -303,7 +303,7 @@ Modify an existing Product Variant
 
 ### PATCH /products/#{product_id}/variants
 
-Modify many existing `ProductVariants` that belong to the given `Product`.
+Modify many existing `ProductVariant`s that belong to the given `Product`. This endpoint _will not_ add new `ProductVariant`s or remove existing `ProductVariant`s; it will just update their values. 
 
 
 #### Preconditions
