@@ -303,7 +303,9 @@ Modify an existing Product Variant
 
 ### PATCH /products/#{product_id}/variants
 
-Modify many existing `ProductVariant`s that belong to the given `Product`. This endpoint _will not_ add new `ProductVariant`s or remove existing `ProductVariant`s; it will just update their values. 
+Partially update a `ProductVariant` collection. This endpoint allows to modify many existing `ProductVariant`s that belong to the given `Product`.
+
+This endpoint _will not_ add new `ProductVariant`s or remove existing `ProductVariant`s; it will just update their values. 
 
 
 #### Preconditions
@@ -336,6 +338,13 @@ If any of the above preconditions is not met, the response:
     ]
 }
 ```
+
+
+#### HTTP status code
+
+`200`: All `ProductVariant`s in the request have been updated. Complete updated `ProductVariant` array is returned.
+`404`: `Product` with ID `#{product_id}` was not found.
+`422`: Changes are not processable because some of the above preconditions has not been met.
 
 
 #### PATCH /products/1234/variants
