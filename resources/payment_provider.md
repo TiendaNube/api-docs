@@ -1,7 +1,7 @@
 Payment Provider
 ================
 
-A Payment Provider, shorter name for Payments Services Provider, represents any entity which provides all the necessary resources and infrastructure for merchants and consumers to execute [Transactions](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/transaction.md) between them. This entities could be any of the following:
+A Payment Provider, shorter name for Payments Services Provider, represents any entity which provides all the necessary resources and infrastructure for merchants and consumers to execute [Transactions](transaction.md) between them. This entities could be any of the following:
 
 - **Aggregator**
 - **Acquirer**
@@ -25,7 +25,7 @@ Properties
 | `logo_urls`                 | Object        | Object containing `key:value` pair for each version of the logos for the frontend. Only supports HTTPS URLs. See [Logos](#Logos). |
 | `supported_currencies`      | Array(String) | ISO.4217 currency codes supported by the Payment Provider. See [Currency Codes](#Currency-Codes). |
 | `supported_payment_methods` | Array(Object) | List of available payment methods for each payment method type. See [Payment Methods](#Payment-Methods). |
-| `checkout_js_url`           | String        | HTTPS URL of the JavaScript file to be included in the checkout frontend. See [Checkout](./checkout.md). |
+| `checkout_js_url`           | String        | HTTPS URL of the JavaScript file to be included in the checkout frontend. See [Checkout](checkout.md). |
 | `checkout_payment_options`  | Array(Object) | Object containing the available payment options for the checkout frontend. See [Checkout Options](#Checkout-Options). |
 | `configuration_url`         | String        | [Optional] HTTPS URL of the Payment Provider configuration UI. |
 | `support_url`               | String        | [Optional] Payment Provider support site HTTPS URL.          |
@@ -421,5 +421,4 @@ The following is the list of payment method IDs by payment method type currently
 
 #### Supported Banks
 
-`banamex`, `banco_chaco`, `banco_chubut`, `banco_ciudad`, `banco_coinag`, `banco_columbia`, `banco_comafi`, `banco_comercio`, `banco_do_brasil`, `banco_entre_rios`, `banco_hipotecario`, `banco_industrial`, `banco_la_pampa`, `banco_municipal`, `banco_nacion`, `banco_patagonia`, `banco_provincia`, `banco_san_juan`, `banco_santa_cruz`, `banco_santa_fe`, `banco_tierra_del_fuego`, `banco_tucuman`, `banrisul`, `bbva`, `bica`, `bradesco`, `caixa`, `cencosud`, `citi`, `galicia`, `hsbc`, `icbc`, `itau`, `macro`, `santander`, `scotiabank`, `supervielle`
-
+`banamex`, `banco_chaco`, `banco_chubut`, `banco_ciudad`, `banco_coinag`, `banco_columbia`, `banco_comafi`, `banco_comercio`, `banco_do_brasil`, `banco_do_nordeste`, `banco_entre_rios`, `banco_hipotecario`, `banco_industrial`, `banco_la_pampa`, `banco_municipal`, `banco_nacion`, `banco_patagonia`, `banco_provincia`, `banco_san_juan`, `banco_santa_cruz`, `banco_santa_fe`, `banco_tierra_del_fuego`, `banco_tucuman`, `banrisul`, `bbva`, `bica`, `bradesco`, `caixa`, `cencosud`, `citi`, `galicia`, `hsbc`, `icbc`, `itau`, `macro`, `santander`, `scotiabank`, `sicoob`, `sicredi`, `supervielle`
