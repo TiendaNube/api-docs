@@ -301,9 +301,9 @@ Modify an existing Product Variant
 }
 ```
 
-### PUT /products/#{product_id}/variants
+### PATCH /products/#{product_id}/variants
 
-Modify many existing Product Variants at the same time.
+Modify many existing `ProductVariants` that belong to the given `Product`.
 
 
 #### Preconditions
@@ -313,18 +313,32 @@ Request body is an array of `ProductVariant` resources.
 
 Each `ProductVariant` in the request body must:
 
-* include the `ProductVariant` ID, using the field `id`
+* include the `ProductVariant` ID, set in the field `id`
 * correspond to an existing `ProductVariant` with same ID than the one set in the field `id` 
-* belong to the `Product` which ID is set in the URL
+* belong to the `Product` which ID is set in `#{product_id}` in the URL
+* have a unique combination of `values` among all `ProductVariant`s of the `Product` (either `ProductVariant`s included in the request or previously persisted). 
 
 
-If any of the above preconditions is not met, the response contains:
+If any of the above preconditions is not met, the response:
 
-* HTTP status `422` 
-* the ID of the failed `ProductVariant`
+* has HTTP status code `422`
+* contains a JSON with error information including the IDs of the failed `ProductVariant`s:
+
+```json
+{
+    "code": 422,
+    "message": "Unprocessable Entity",
+    "description": "Variants cannot be repeated",
+    "duplicate_variant_ids": [
+        33745216,
+        33745217,
+        33745218
+    ]
+}
+```
 
 
-#### PUT /products/1234/variants
+#### PATCH /products/1234/variants
 
 
 ```json
