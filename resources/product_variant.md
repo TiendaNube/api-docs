@@ -342,7 +342,7 @@ If any of the above preconditions is not met, the response:
 
 #### HTTP status code
 
-`200`: All `ProductVariant`s in the request have been updated. Complete updated `ProductVariant` array is returned.
+`200`: All `ProductVariant`s in the request have been updated. Complete updated `ProductVariant` collection is returned.
 `404`: `Product` with ID `#{product_id}` was not found.
 `422`: Changes are not processable because some of the above preconditions has not been met.
 
