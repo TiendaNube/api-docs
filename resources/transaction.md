@@ -78,7 +78,7 @@ All `Transaction` types have the same attributes, but may generate different kin
 | `status`         | Object | One of the available [Transaction Event Status](#Transaction-Event-Status). |
 | `info`           | Object | Object containing specific info related to this Transaction Event. See [Transaction Event Info](#Transaction-Event-Info). |
 | `failure_code`   | String | If the Transaction Event failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
-| `happend_at`     | Date   | ISO 8601 date for the date the Transaction Event was processed. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
+| `happened_at`     | Date   | ISO 8601 date for the date the Transaction Event was processed. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
 | `expires_at`     | Date   | [Optional] ISO 8601 date for date the Transaction Event expires. It will be used to indicate to the merchant the deadline to accept or cancel a transaction under review. |
 | `created_at`     | Date   | [Read-only] ISO 8601 date for the date the Transaction Event was created in our platform. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
 
@@ -129,7 +129,7 @@ Each type of Transaction has a Finite State Machine (FSM) that defines its statu
 | Field         | Type   | Description                                                  |
 | ------------- | ------ | ------------------------------------------------------------ |
 | `message`     | String | [Optional] Description to explain a Transaction Event update. |
-| `fraud_score` | String | [Optional] Decimal score between 0 to 1 The closer the score is to 1, the more likely the Transaction is fraudulent. E.g `"0.15"`. |
+| `fraud_score` | String | [Optional] Decimal score between 0 to 1. The closer the score is to 1, the more likely the Transaction is fraudulent. E.g `"0.15"`. |
 | `risk_level`  | String | [Optional] Risk level that an Order is fraudulent. One of `low`, `medium` or `high`. |
 | `accept_url`  | String | [Optional] HTTPS URL we will call to accept the Transaction from our platform. It should return a 2xx HTTP code or we will return an error to the merchant. |
 | `cancel_url`  | String | [Optional] HTTPS URL we will call to cancel the Transaction from our platform. It should return a 2xx HTTP code or we will return an error to the merchant. |
@@ -187,7 +187,7 @@ The created [Transaction Object](#Transaction) is returned.
 
 ### POST /orders/{*order_id*}/transactions/{*transaction_id*}/events
 
-Create an Transaction Event for a given Transaction.
+Create a Transaction Event for a given Transaction.
 
 #### Request
 
@@ -195,7 +195,7 @@ Create an Transaction Event for a given Transaction.
 | -------------- | ------ | ------------------------------------------------------------ |
 | `type`         | String | [Required] One of the available [Transaction Event Types](#Transaction-Event-Types). |
 | `status`       | Object | [Required] One of the available [Transaction Event Status](#Transaction-Event-Status). |
-| `happend_at`   | Date   | [Required] ISO 8601 date for the date the Transaction Event was processed. Defaults to current time. E.g. `"2020-03-11T12:42:15.456Z"`. |
+| `happened_at`   | Date   | [Required] ISO 8601 date for the date the Transaction Event was processed. Defaults to current time. E.g. `"2020-03-11T12:42:15.456Z"`. |
 | `amount`       | Object | [Optional] Object containing the amount of this Transaction Event. See [Money](#Money). |
 | `info`         | Object | [Optional] Object containing specific info related to this Transaction Event. See [Transaction Event Info](#Transaction-Event-Info). |
 | `failure_code` | String | [Optional] If the Transaction Event failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |

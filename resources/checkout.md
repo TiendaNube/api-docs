@@ -288,7 +288,7 @@ data: {
                 fulfillment: 'unpacked',
                 payment: 'pending'
             },
-            completedAt: null
+            completed_at: null
         },
         promotionalDiscount: {
             id: null,
@@ -446,7 +446,7 @@ These flows don't provide any inputs. They differ in how they're rendered in the
 
 ### Transparent
 
-There're three options availalbe in `PaymentOptions.Transparent`.
+There're three options available in `PaymentOptions.Transparent`.
 
 | Name            | Description                                                  |
 | --------------- | ------------------------------------------------------------ |
@@ -558,7 +558,7 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
 
 ## Installments
 
-In order to offer installment options you must update the object `data.installments` by calling `setInstallments`. For example:
+In order to offer installment's options you must update the object `data.installments` by calling `setInstallments`. For example:
 
 ```js
 Checkout.setInstallments({
