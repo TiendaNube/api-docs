@@ -38,7 +38,7 @@ The development of a _Nuvemshop_ Payment App, technologically speaking, more oft
 
 Also, a Payment Apps includes a Javascript implementation of Nuvemshop's checkout event handlers. This event handlers usually make requests to the app's backend which, in turn makes requests to the payment provider's backend-to-backend APIs.
 
-![App Installation and Payment Provider Creation Sequence](./mmd/PaymentProvider-PaymentAppConcept.png)
+![App Installation and Payment Provider Creation Sequence](./images/PaymentProvider-PaymentAppConcept.png)
 
 ## Introduction
 
