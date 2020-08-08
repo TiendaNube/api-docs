@@ -1,30 +1,44 @@
+
 # Payment Provider App Development Guide
 
 ### Glossary
 
 #### Payment Provider
-Actually, short for Payment Service Provider, is any entity the provides the means to allow a buyer to pay the merchant for purchased goods or hired services. These _means_ include all the necessary information to inform the potential buyer about the available methods, installments, promotions, etc, as well as the means to actually make a payment.
+Actually, short for Payment Service Provider, is any entity the provides all the necessary resources to allow a buyer to pay the merchant for purchased goods or hired services. These _resources_ include information for the potential buyer about the available payment methods, installments, promotions, discounts, etc, as well as the technological resources to actually execute a payment.
 
 #### Payment Method Type
 It can be any of, but not limited to:
 - Credit Card
 - Debit Card
 - Bank Debit
-- Boleto (Brasil only)
-- Ticket (Argentina ony, e.g. _Pago Fácil_, _RapiPago_, etc)
+- Boleto _(Brasil only)_
+- Ticket _(Argentina only, e.g. _Pago Fácil_, _RapiPago_, etc)_
 - Wire Transfer
+- Wallet _(i.e. customer's account credit)_
 - Cash
 - Others
 
-#### Payment Method
-For instance, if the Payment Method Type is Credit Card, then an example of plain Payment Method would be Visa, Mastecard or American Express. For some types, for example like Bank Debit, only have one Payment Method which happens to be Bank Debit. Though it's redundant, it leaves space for future variations.
+#### Payment Method Id _(formerly known as plain Payment Method)_
+For instance, if the Payment Method Type is Credit Card, then an example Payment Method Id would be Visa, Mastecard or American Express. Some Payment Method Types, for example Bank Debit, only have one Payment Method Id which happens to be Bank Debit. Though it's redundant, it leaves space for future variations.
+
+#### Integration Type
+In terms of user experience, there might be different type to integrate a Payment Provider's payments services into a store. Some of them are:
+ - _**Transparent:**_ All the process takes place in the store's website and all the relevant payment information, such as credit card data, are filled in a form rendered by the store, creating a seamless experience for the buyer.
+- _**External:**_ At some point, the buyer is redirected to a website or app under the Payment Providers's domain where the buyer will finish the payment process.
+- _**Modal:**_ When the user submits our checkout, a modal rendered by the Payment Provider is displayed and the user finishes the payment process in the modal.
 
 #### Payment Option
-Once a Payment Method has been chosen, a Payment Option is needed to complete the payment. For example, if you want to pay for Visa, the buyer can fill up the credit card form in the store's website or go to the Payment Provider's checkout and follow the steps on their page and finally be redirected back to the store's website.
+One choosing how to pay, a buyer will be offered different options, hence, Payment Options. A Payment Option has three main properties that define how the payment process will take be executed:
+- Payment Provider
+- One or more supported Payment Method Types
+- An Integration Type.
 
 #### Payment App
-One very important concept to understand is that a _Nuvemshop_ Payment App, in development terms, more often than not, implies the implementation of both, Nuvemshop's APIs and the payment provider's APIs, into one same web application, both living together. These API's are both, REST (backend) and Javascript (frontend) APIs.
+The development of a _Nuvemshop_ Payment App, technologically speaking, more often than not, includes implementing Nuvemshop's auth flow,  REST APIs and webhooks, as well as the payment provider's authentication flow, backend-to-backend APIs and webhook/notifications.
 
+Also, a Payment Apps includes a Javascript implementation of Nuvemshop's checkout event handlers. This event handlers usually make requests to the app's backend which, in turn makes requests to the payment provider's backend-to-backend APIs.
+
+![App Installation and Payment Provider Creation Sequence](./mmd/PaymentProvider-PaymentAppConcept.png)
 
 ## Introduction
 
