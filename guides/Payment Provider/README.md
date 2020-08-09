@@ -46,13 +46,14 @@ This document provides an explanation of what a Payment App is and will guide yo
 
 In very few words, the steps to develop and deploy an app are:
 
-1. The developer creates a Partner account at Nuvemshop’s Partner’s Portal.
-2. The developer creates a Payments App at Nuvemshop’s Partner’s Portal
-3. The developer sets up a scalable backend on their own infrastructure where the Nuveshop’s REST APIs will be implemented.
-4. The developer Nuvemshop’s REST APIs, including the Payment Provider and Transaction’s resources.
-5. The developer implements their frontend scripts according to Nuvemshop’s JS interface specifications, hosts the file in a public CDN and provides a link to the file or files through our APIs.
-6. The app is audited by Nuvemshop to test the implementation, scalability, stability, and other important factors.
-7.  The app is released by Nuvemshop.
+1. The developer creates a partner account at Nuvemshop’s Partner’s Portal.
+2. The developer creates a payments app at Nuvemshop’s Partner’s Portal
+3. The developer sets up a scalable backend on their own infrastructure where the app will run.
+4. The developer implements Nuvemshop’s authorization flow.
+5. The developer implements Nuvemshop’s REST APIs, including the Payment Provider and Transaction resources.
+6. The developer implements their frontend scripts according to Nuvemshop’s JS interface specifications, hosts the file in a public CDN and provides a link to the file or files through our APIs.
+7. The app is audited by Nuvemshop to test the implementation, scalability, stability, and other important factors.
+8.  The app is released by Nuvemshop.
 
 ## Step 1: Partner account and App creation
 
@@ -453,7 +454,7 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
   var AcmeExternalPaymentOption = new PaymentOptions.ExternalPayment({
     
     // The option's unique id as set on it's configuration on the Payment Provider so Checkout can match them and merge them.
-    id: 'acme_redirect',
+    id: 'acme_aggregator_external',
 
     // This function handles the order submission event.
     onSubmit: function(callback) {
@@ -464,7 +465,8 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
         orderId: Checkout.order.cart.id,
         paymentProviderId: Checkout.payment_provider_id,
         currency: Checkout.order.cart.currency,
-        total: Checkout.order.cart.prices.total
+        total: Checkout.order.cart.prices.total,
+        callbackUrls: Checkout.data.callbackUrls
       }
 
       // We use the Checkout http lib to post a request to our server
@@ -564,7 +566,7 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
   var AcmeCardPaymentOption = new PaymentOptions.Transparent.CardPayment({
     
     // The option's unique id as set on it's configuration on the Payment Provider so Checkout can match them and merge them.
-    id: "acme_transparent_card",
+    id: "acme_subadquirente_transparent_card",
   
   // Event handler for form field input
     onDataChange: Checkout.utils.throttle(function() {
@@ -624,16 +626,18 @@ Some SDKs have mechanisms to render forms using field names as required. To prot
 
 The object `Checkout.data.form` provides access to all the form fields. The payment method implementation must map each of the provided fields to the Payment Provider specific ones. In cases where a form with specific attributes needs to be submitted, we recommend using workarounds such as dynamically creating a hidden HTML form and submitting it using JS.
 
-### Transaction Implementation (WORK IN PROGRESS)
+### Transaction Implementation
 
-**_NOTE:_ THIS SECTION IS SUBJECT TO MAJOR BREAKING CHANGES IN THE NEAR FEATURE.**
+So far, we've been working with orders. However, we don't provide any endpoints to directly change an order's payment status.
 
-Payment Platforms usually have a set of instructions that need to be implemented on the backend side and they work together with the frontend implementation. Instead of doing these implementations natively, our APIs allow the developer to make a 3rd party backend implementations on 3rd party infrastructures and access our resources to create transactions in orders and update them as their status changes over time.
+Meet the `Transaction`. An `Order` can have many `Transactions`. `Transactions` represent a single intention of moving money.. If, for any reason (e.g. "insufficient funds") a `Transaction` failed, the next buyer's attempt to pay fo the product would be a new transaction. Same, an `Order` paid with two credit cards would have one transaction per credit card since two movements of money were executed. The `Transaction` Resource can be accessed [through our API](../../resources/transaction.md#transaction).
 
-Meet the `Transaction`. An `Order` can have many `Transactions`. Some that were successful, some that failed, some pending, and some in other different states depending on each Transaction’s possible states. The `Transaction Resource` can be accessed [through our API](../../resources/transaction.md#transaction).
+An `Order` will automatically calculate its payment status by checking all of its related `Transactions` and applying business rules to calculate the current payment status.
 
 #### Creating a Transaction
-The App’s backend must `POST` a `Transaction` in our platform as soon a one is created on their side, or before. There are several properties that must be included to provide the Merchant with good tracking of the status of the transaction and each of these properties is equally important so they all must have valid and real values.
+The App’s backend must `POST` a `Transaction` to our platform as soon a one is created on the payment provider's side. Our `Transactions` resource is should reflect `Transactions` which exist and `TransactionEvents` which already happened.
+
+A `Transaction` not only helps calculate an `Order` payment status but also provides detailed information about the payment process so that the merchant can have full autonomy when dealing with payment issues. Also, this information is always important to help the merchant with feature business decisions.
 
 As a reference, here are two examples of the implementation of the `POST Transaction` request.
 
@@ -647,27 +651,22 @@ With external payment option:
 
 #### Transaction Properties
 
-We believe it’s extremely important to provide the merchant with as much visibility as possible of the different types of transactions (*payment*; *chargeback*; *refund*) an `Order` may have and their statuses. Each of the data fields described on the [object description](../../resources/transaction.md#Payment-Context) is equally important and must be specified when a `Transaction` is created.
+It’s very important to provide the merchant with as much information as possible for every `Transaction`. This is because buyers may contact merchants for different reasons, including any doubts about the status of their purchase or even for specific doubts about the payment they did.
 
-#### Transaction Id: Updating a Transaction
+The [`TransactionInfo`](../../resources/transaction.md#transaction-info) object should be completed with all the information required for each payment method.
 
-The response for a `Transaction` creation includes the created `Transaction`. Each `Transaction` has an `id` which must be persisted and mapped accordingly in order to use it to update the `Transaction`'s `status`.
+#### Updating a Transaction
 
-There are two very important values which are required to be able to update a `Transaction`’s `status`: `Order.id` and `Transaction.id`. They are both part of the path of a `Transaction`’s URL.
+As explained before, Nuvemshop's Transaction API is designed to reflect transactions that already exist and events related to those transactions that have already happened. Our Transactions API will automatically calculate the `Transaction`'s `status` on every [`TransactionEvent`](../../resources/transaction.md#transaction-events) reported by the payment provider using the [`TransactionEvent` endpoint](../../resources/transaction.md#transaction-eventspost-ordersorder_idtransactionstransaction_idevents).
 
-The `PUT` request to a `Transaction` allows only one property: `status`. The possible values of this field depend mainly on the `Type` of `Transaction` that is being updated.
+#### Transaction event workflows
+The possible `TransactionEvents` a `Transaction` can receive depend on the possible workflows for each payment method.
 
-#### Transaction’s Statuses according to their Type
+The payment methods `boleto`, `ticket`, `bank_debit`, `debit card`, `wallet`, `wire_transfer` and `cash`, all share the same events workflow.
 
-The full description can be found [here](../../resources/transaction.md#transaction-status). Each `Type` has a “State Machine” with a flow that must be respected or, else, an error may occur. We’ve designed our State Machine to be as abstract as possible. Some Payment Providers may not support all the possible statuses but only some of them.
-
-Any IPNs or Transaction Webhooks should be handled by the App’s Backend and, when an updated state is detected, the App’s backend must update the corresponding `Transaction` through our API, making a `PUT` request as explained above.
-
-#### Credit/Debit Card Chargebacks
-
-It’s worth mentioning that the Credit/Debit Card state machine supports chargebacks. In our model, a `chargeback` may be the state of a `Transaction` of Credit/Debit Card type and it’s expected previous state `in_dispute`. The details on these states can be found [here](../../resources/transaction.md#credit-carddebit-card-transactions).
+The payment method credit_card has it's own workflow to support all the `credit_card` specific transaction events.
 
 ## Infrastructure
-It is important to take into account that Nuvemshop is a platform with 30K+ stores. This means the implemented backend will need to be able to handle pretty high-traffic loads. All the necessary scaling, performance monitoring and alert triggering architecture must be implemented.
+It is important to take into account that Nuvemshop is a platform with 50K+ stores. This means the implemented backend will need to be able to handle high-traffic loads. All the necessary scaling, performance monitoring and alert triggering architecture must be implemented.
 
-Special dates like Black Friday or Cyber Monday should be handled with care. Your app should be able to sustain heavy loads with multiple bursts.
+Special dates like Black Friday, Cyber Monday and Hotsale should be handled with care. Your app should be able to sustain heavy loads with multiple very high traffic peaks.
