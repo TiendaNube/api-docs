@@ -225,7 +225,7 @@ Receive a list of all Products.
 ]
 ```
 
-### GET /products/#{id}
+### GET /products/{id}
 
 Receive a single Product
 
@@ -509,7 +509,7 @@ Create a new Product
 }
 ```
 
-### PUT /products/#{id}
+### PUT /products/{id}
 
 Modify an existing Product
 
@@ -664,7 +664,7 @@ Modify an existing Product
 }
 ```
 
-### DELETE /products/#{id}
+### DELETE /products/{id}
 
 Remove a Product
 
