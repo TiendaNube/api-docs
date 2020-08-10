@@ -17,9 +17,9 @@ AB -->>- B: 200: App Checkout flow
 B ->>+ AB: {Payment confirmation request}
 AB ->> AB: createTransaction(order)
 AB ->>+ NA: POST /{store_id}/orders/{order_id}/transactions
-NA ->>- AB: 201: Created (transaction)
+NA ->>- AB: 200: Initiated Transaction
 AB -->>- B: 301: {callback_url} 
 Note over AB: When Payment<br/>status is updated. 
-AB ->>+ NA: PUT /{store_id}/orders/{order_id}/transactions/{id}(status)
-NA ->>- AB: 200: Updated (transaction)
+AB ->>+ NA: POST /{store_id}/orders/{order_id}/transactions/{id}/events
+NA ->>- AB: 200: Created Transaction Event
 ```

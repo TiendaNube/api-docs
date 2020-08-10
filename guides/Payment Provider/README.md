@@ -643,11 +643,11 @@ As a reference, here are two examples of the implementation of the `POST Transac
 
 With transparent payment option:
 
-![Transparent Payment Option Sequence](./mmd/PaymentProvider-TransparentPaymentOption.mmd.jpg)
+![Transparent Payment Option Sequence](./mmd/PaymentProvider-TransparentPaymentOption.mmd.png)
 
 With external payment option:
 
-![Redirect Payment Option Sequence](./mmd/PaymentProvider-RedirectPaymentOption.mmd.jpg)
+![Redirect Payment Option Sequence](./mmd/PaymentProvider-RedirectPaymentOption.mmd.png)
 
 #### Transaction Properties
 
@@ -664,7 +664,7 @@ The possible `TransactionEvents` a `Transaction` can receive depend on the possi
 
 The payment methods `boleto`, `ticket`, `bank_debit`, `debit card`, `wallet`, `wire_transfer` and `cash`, all share the same events workflow.
 
-The payment method credit_card has it's own workflow to support all the `credit_card` specific transaction events.
+The payment method credit_card has its own workflow to support all the `credit_card` specific transaction events.
 
 ## Infrastructure
 It is important to take into account that Nuvemshop is a platform with 50K+ stores. This means the implemented backend will need to be able to handle high-traffic loads. All the necessary scaling, performance monitoring and alert triggering architecture must be implemented.

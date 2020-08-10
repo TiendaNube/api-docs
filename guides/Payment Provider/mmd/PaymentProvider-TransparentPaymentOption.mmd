@@ -11,11 +11,11 @@ AF ->> AF: process(Checkout)
 AF ->>+ AB: {App Specific Requests}(order)
 AB ->> AB: createTransaction(order)
 AB ->>+ NA: POST /{store_id}/orders/{order_id}/transactions
-NA ->>- AB: 201: Created (transaction)
+NA ->>- AB: 200: Initiated Transaction
 AB -->>- AF: {App Specific Response}
 AF -->>- NF: Callback()
 NF -->>- B: Result
 Note over AB: When Payment<br/>status is updated. 
-AB ->>+ NA: PUT /{store_id}/orders/{order_id}/transactions/{id}(status)
-NA ->>- AB: 200: Updated (transaction)
+AB ->>+ NA: POST /{store_id}/orders/{order_id}/transactions/events
+NA ->>- AB: 200: Created Transaction Event
 ```
