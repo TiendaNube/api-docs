@@ -48,11 +48,13 @@ We provide to different kind of shipments. Shipments that will be shipped to a b
 
 The response object rates must be a JSON array of objects with the following fields. We need all required fields for the integration to work properly.
 
+Important: you have to post all your available rates, our API will filter by carrier options active, and apply the settings made by users over the rates (additional days and additional cost).
+
 
 | Property           | Explanation                                                                                                                                |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | name               | __(required)__ The name of the rate which buyers will see at checkout.                                                                     |
-| code               | __(required)__ A unique code associated with the rate.                                                                                     |
+| code               | __(required)__ A unique code associated with the carrier option code. It´s used to apply the settings over the rate.                       |
 | price              | __(required)__ The rate's price that will be payed by the buyer.                                                                           |
 | currency           | __(required)__ The rate's currency.                                                                                                        |
 | type               | __(required)__ The rate's type: _ship_ if it will be deliverd to a buyer's address or _pickup_ if it will be picked up by the buyer.       |
