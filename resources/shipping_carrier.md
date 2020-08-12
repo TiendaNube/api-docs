@@ -48,8 +48,7 @@ We provide to different kind of shipments. Shipments that will be shipped to a b
 
 The response object rates must be a JSON array of objects with the following fields. We need all required fields for the integration to work properly.
 
-##### Important: 
-you have to post all your available rates, our API will filter by carrier options active, and apply the settings made by users over the rates (additional days and additional cost).
+##### Important: you have to post all your available rates, our API will filter by carrier options active, and apply the settings made by users over the rates (additional days and additional cost).
 
 
 | Property           | Explanation                                                                                                                                |
