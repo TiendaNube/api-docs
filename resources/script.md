@@ -80,10 +80,12 @@ var LS = {
                 id: /* Product Variant's id */,
                 name: /* Product Variant's name */,
                 unit_price: /* Product Variant's price in cents */,
-                quantity: /* Quantity to be purchased */
-
+                quantity: /* Quantity to be purchased */,
+                requires_shipping: /* True if product requires physical shipping */
             }
-        ]
+        ],
+        has_shippable_products : /* True if at least one product requires physical shipping */,
+        has_non_shippable_products : /* True if at least one product doesn`t require physical shipping */
     },
     lang : /* Current language's code (e.g. pt_BR) */,
     currency : {
@@ -111,7 +113,8 @@ If we are on a Product page we add:
 LS.product = {
     id : /* Product's id */,
     name : /* Product's name */,
-    tags : /* Array of product's tags */
+    tags : /* Array of product's tags */,
+    requires_shipping : /* True if product requires physical shipping */
 };
 LS.variants = /* JSON encoded representation of the product variants */;
 ```
@@ -145,7 +148,8 @@ var LS = {
                 id: /* Product Variant's id */,
                 name: /* Product Variant's name */,
                 unit_price: /* Product Variant's price in cents */,
-                quantity: /* Quantity to be purchased */
+                quantity: /* Quantity to be purchased */,
+                          
 
             }
         ]
