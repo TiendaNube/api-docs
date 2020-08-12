@@ -73,7 +73,7 @@ Properties
 | weight                     | Order's total weight, in kilograms                                                                                                                                          |
 | status                     | Order's status. Possible values are "open", "closed" or "cancelled"                                                                                                         |
 | payment_status             | Order's payment status. Possible values are "authorized", "pending", "paid", "abandoned", "refunded" or "voided"                                                            |
-| shipping_status            | Order's shipping status. Possible values are "unpacked", "fulfilled" (means "shipped") or "unshipped"                                                                                                       |
+| shipping_status            | Order's shipping status. Possible values are "unpacked", "fulfilled" (means "shipped") or "unfulfilled" (means "unshipped")                                                                                                       |
 | next_action                | Next available operation in the orders flow                                                                                                                                 |
 | shipped_at                 | Date when the Order was shipped in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601)                                                                                 |
 | cancel_reason              | Reason why the store owner cancelled an Order. Possible values are "customer", "fraud", "inventory" or "other"                                                              |
