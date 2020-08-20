@@ -71,6 +71,8 @@ The steps to create a Payment App are the following:
     - `write_payments`
     - `read_orders`
     - `write_orders`
+
+> **IMPORTANT NOTE:** Our Payments API is not enabled by default to all consumers. Please, contact our Platform Development team to enable our Payments API on your partner account and its demo store.
     
 
 ## Step 2: App installation and Payment Provider creation flow
@@ -317,7 +319,7 @@ The Payment Provider has two checkout related properties:
 
 - `checkout_js_url`: The handlers for each `checkout_option` (such as `onLoad`, `onSubmit`, etc) are implemented through the JS API. This property contains a Secure (`HTTPS`) URL pointing to the file with this implementations so our Checkout can run them on the frontend. This URL will be requested from the frontend, which means that the JS file must be hosted on a CDN capable of handling high traffic.
 
-***Note:*** The API docs on the Checkout JS API can be found [here](../../resources/checkout_js.md). Find more details how to implement your SDKs on the checkout JS file on the next section.
+***Note:*** The API docs on the Checkout JS API can be found [here](../../resources/checkout.md). Find more details how to implement your SDKs on the checkout JS file on the next section.
 
 #### Storefront Scripts
 
@@ -426,7 +428,7 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
 })
 ```
 
-**A full description of the available PaymentOptions can be found [here](../../resources/checkout_js.md#methods).**
+**A full description of the available PaymentOptions can be found [here](../../resources/checkout.md#paymentoptions).**
 
 ##### External Payment Implementation Example
 Let’s assume we’ve created an app called “Acme Payment App” and now we want to implement an External Payment Option so the user can use their wallet credit or some other method like a card or boleto, to pay for an order, but from Acme's website.
@@ -513,9 +515,9 @@ LoadCheckoutPaymentContext(function(Checkout, Methods) {
 });
 ```
 
-`PaymentOptions.Transparent.CardPayment` already takes care of rendering the card form and information about installments (“parcelamentos”) which may be relevant to the user. The argument object property fields lets you select which optional input fields are rendered on the form. More information [here](https://github.com/TiendaNube/checkout-payment-lib#creditpayment-1). A list of the fields found on `Checkout.data.form` for the `CardMethod` can be found [here](../../resources/checkout_js.md#creditpayment).
+`PaymentOptions.Transparent.CardPayment` already takes care of rendering the card form and information about installments (“parcelamentos”) which may be relevant to the user. The argument object property fields lets you select which optional input fields are rendered on the form. More information and a list of the fields found on `Checkout.data.form` for the `CardPaymentOptions` can be found [here](../../resources/checkout.md#cardpayment).
 
-The handler `onDataChange` takes a function which will be called every time the object `Checkout.data` is modified. This function should implement business rules to validate the syntax of the card’s information and to update the installments information that is displayed to the buyer if necessary.
+The handler `onDataChange` takes a handler function as an arugment which will be invoked every time the object `Checkout.data` is modified. This function should implement business rules to validate the syntax of the card’s information and to update the installments information that is displayed to the buyer if necessary.
 
 ```javascript
 // AcmePaymentsCardMethod.js
