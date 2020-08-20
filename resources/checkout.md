@@ -23,51 +23,51 @@ Let's take a look at a simple script for a hypothetical integration with a Payme
 // to get access to the Checkout context and the Payment Options object.
 LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
 
-    // Create a new instance of external Payment Option and set its properties.
-    var AcmeExternalPaymentOption = PaymentOptions.ExternalPayment({
+  // Create a new instance of external Payment Option and set its properties.
+  var AcmeExternalPaymentOption = PaymentOptions.ExternalPayment({
 
-        // Set the option's unique id as it is configured on the Payment Provider so Checkout can relate them.
-        id: 'acme_redirect',
+    // Set the option's unique id as it is configured on the Payment Provider so Checkout can relate them.
+    id: 'acme_redirect',
 
-        // This function handles the order submission event.
-        onSubmit: function(callback) {
+    // This function handles the order submission event.
+    onSubmit: function(callback) {
 
-            // Gather the minimum required information.
-            let acmeRelevantData = {
-                // You should include all the relevant data here.
-                orderId: Checkout.data.order.cart.id,
-                paymentProviderId: Checkout.data.payment_provider_id,
-                currency: Checkout.data.order.cart.currency,
-                total: Checkout.data.order.cart.prices.total
-            }
+      // Gather the minimum required information.
+      let acmeRelevantData = {
+          // You should include all the relevant data here.
+          orderId: Checkout.data.order.cart.id,
+          paymentProviderId: Checkout.data.payment_provider_id,
+          currency: Checkout.data.order.cart.currency,
+          total: Checkout.data.order.cart.prices.total
+      }
 
-            // Use the Checkout HTTP library to post a request to our server and fetch the redirect URL.
-            Checkout.http
-                .post('https://app.acme.com/generate-checkout-url', {
-                    data: acmeRelevantData
-                })
-                .then(response => response.json())
-                .then(function(responseBody) {
+      // Use the Checkout HTTP library to post a request to our server and fetch the redirect URL.
+      Checkout.http
+        .post('https://app.acme.com/generate-checkout-url', {
+            data: acmeRelevantData
+        })
+        .then(response => response.json())
+        .then(function(responseBody) {
+          // Once you get the redirect URL, invoke the callback by passing it as argument.
+          callback({
+              success: true,
+              redirect: responseBody.redirect_url
+          });
+        })
+        .catch(function(error) {
+          // Handle a potential error in the HTTP request.
+          callback({
+              success: false,
+            	message: 'Some error description to show to the consumer'
+          });
+        });
+    }
 
-                    // Once you get the redirect URL, invoke the callback by passing it as argument.
-                    callback({
-                        success: true,
-                        redirect: responseBody.redirect_url
-                    });
-                })
-                .catch(function(error) {
-                    // Handle a potential error in the HTTP request.
-                    callback({
-                        success: false,
-                      	message: 'Some error description to show to the consumer'
-                    });
-                });
-        }
-    })
+  })
 
-    // Finally, add the Payment Option to the Checkout object so it can be
-    // render according to the configuration set on the Payment Provider.
-    Checkout.addPaymentOption(AcmeExternalPaymentOption);
+  // Finally, add the Payment Option to the Checkout object so it can be
+  // render according to the configuration set on the Payment Provider.
+  Checkout.addPaymentOption(AcmeExternalPaymentOption);
 });
 ```
 
@@ -83,112 +83,117 @@ In this example, whenever the consumer inputs or changes the credit card number 
 // AcmePaymentsCardMethod.js
 LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
 
-    var currentTotalPrice = Checkout.data.order.cart.prices.total;
-    var currencCardBin = null;
+  var currentTotalPrice = Checkout.data.order.cart.prices.total;
+  var currencCardBin = null;
 
-    // SOME HELPER FUNCTIONS
+  // SOME HELPER FUNCTIONS
 
-    // Get credit card number from transparent form.
-    var getCardNumber = function() {
-        var cardNumber = '';
-        if (Checkout.data.form.cardNumber) {
-            cardNumber = Checkout.data.form.cardNumber.split(' ').join('');
+  // Get credit card number from transparent form.
+  var getCardNumber = function() {
+    var cardNumber = '';
+    if (Checkout.data.form.cardNumber) {
+        cardNumber = Checkout.data.form.cardNumber.split(' ').join('');
+    }
+    return cardNumber;
+  };
+
+  // Get the first 6 digits from the credit card number.
+  var getCardNumberBin = function() {
+    return getCardNumber().substring(0, 6);
+  };
+
+  // Check whether the BIN (first 6 digits of the credit card number) has changed.
+  // If so, we intend to update the available installments.
+  var mustRefreshInstallments = function() {
+    var cardBin = getCardNumberBin();
+    var hasCardBin = cardBin && cardBin.length >= 6;
+    var hasPrice = Boolean(Checkout.data.totalPrice);
+    var changedCardBin = cardBin !== currencCardBin;
+    var changedPrice = Checkout.data.totalPrice !== currentTotalPrice;
+    return (hasCardBin && hasPrice) && (changedCardBin || changedPrice);
+  };
+
+  // Update the list of installments available to the consumer.
+  var refreshInstallments = function() {
+
+    // Let's imagine the app provides this endpoint to obtain installments.
+    Checkout.http.post('https://app.acmepayments.com/card/installments', {
+        amount: Checkout.data.totalPrice,
+        bin: getCardNumberBin()
+    }).then(function(response) {
+        Checkout.setCheckoutData(response.installments);
+    });
+  };
+
+  // Create a new instance of card Payment Option and set its properties.
+  var AcmeCardPaymentOption = PaymentOptions.Transparent.CardPayment({
+
+    // Set the option's unique id as it is configured on the Payment Provider so Checkout can relate them.
+    id: "acme_transparent_card",
+
+    // Event handler for form field input.
+    onDataChange: Checkout.utils.throttle(function() {
+      if (mustRefreshInstallments()) {
+          refreshInstallments()
+      } else if (!getCardNumberBin()) {
+          // Clear installments if customer remove credit card number.
+          Checkout.setCheckoutData(null);
+      }
+    }),
+
+    onSubmit: function(callback) {
+      // Gather the minimum required information.
+      var acmeCardRelevantData = {
+        orderId: Checkout.data.order.cart.id,
+        currency: Checkout.data.order.cart.currency,
+        total: Checkout.data.order.cart.prices.total,
+        card: {
+            number: Checkout.data.form.cardNumber,
+            name: Checkout.data.form.cardHolderName,
+            expiration: Checkout.data.form.cardExpiration,
+            cvv: Checkout.data.form.cardCvv,
+            installments: Checkout.data.form.cardInstallments
         }
-        return cardNumber;
-    };
+      }
+      // Let's imagine the app provides this endpoint to process credit card payments.
+      Checkout.http.post('https://app.acmepayments.com/charge', acmeCardRelevantData)
+        .then(function(response) {
+          
+          if (response.success) {
+            // If the charge was successful, invoke the callback to indicate you want to close order.
+            callback({
+                success: true
+            });
+          } else {
+            callback({
+                success: false,
+                message: 'Some error description to show to the consumer'
+            });
+          }
 
-    // Get the first 6 digits from the credit card number.
-    var getCardNumberBin = function() {
-        return getCardNumber().substring(0, 6);
-    };
+        })
+        .catch(function(error) {
+          
+          // Handle a potential error in the HTTP request.
+          callback({
+              success: false,
+            	message: 'Some error description to show to the consumer'
+          });
 
-    // Check whether the BIN (first 6 digits of the credit card number) has changed.
-    // If so, we intend to update the available installments.
-    var mustRefreshInstallments = function() {
-        var cardBin = getCardNumberBin();
-        var hasCardBin = cardBin && cardBin.length >= 6;
-        var hasPrice = Boolean(Checkout.data.totalPrice);
-        var changedCardBin = cardBin !== currencCardBin;
-        var changedPrice = Checkout.data.totalPrice !== currentTotalPrice;
-        return (hasCardBin && hasPrice) && (changedCardBin || changedPrice);
-    };
-
-    // Update the list of installments available to the consumer.
-    var refreshInstallments = function() {
-
-        // Let's imagine the app provides this endpoint to obtain installments.
-        Checkout.http.post('https://app.acmepayments.com/card/installments', {
-            amount: Checkout.data.totalPrice,
-            bin: getCardNumberBin()
-        }).then(function(response) {
-            Checkout.setCheckoutData(response.installments);
         });
-    };
+    }
 
-    // Create a new instance of card Payment Option and set its properties.
-    var AcmeCardPaymentOption = PaymentOptions.Transparent.CardPayment({
+  })
 
-        // Set the option's unique id as it is configured on the Payment Provider so Checkout can relate them.
-        id: "acme_transparent_card",
-
-        // Event handler for form field input.
-        onDataChange: Checkout.utils.throttle(function() {
-            if (mustRefreshInstallments()) {
-                refreshInstallments()
-            } else if (!getCardNumberBin()) {
-                // Clear installments if customer remove credit card number.
-                Checkout.setCheckoutData(null);
-            }
-        }),
-
-        onSubmit: function(callback) {
-            // Gather the minimum required information.
-            var acmeCardRelevantData = {
-                orderId: Checkout.data.order.cart.id,
-                currency: Checkout.data.order.cart.currency,
-                total: Checkout.data.order.cart.prices.total,
-                card: {
-                    number: Checkout.data.form.cardNumber,
-                    name: Checkout.data.form.cardHolderName,
-                    expiration: Checkout.data.form.cardExpiration,
-                    cvv: Checkout.data.form.cardCvv,
-                    installments: Checkout.data.form.cardInstallments
-                }
-            }
-            // Let's imagine the app provides this endpoint to process credit card payments.
-            Checkout.http.post('https://app.acmepayments.com/charge', acmeCardRelevantData)
-                .then(function(response) {
-                    if (response.success) {
-                        // If the charge was successful, invoke the callback to indicate you want to close order.
-                        callback({
-                            success: true
-                        });
-                    } else {
-                        callback({
-                            success: false,
-                            message: 'Some error description to show to the consumer'
-                        });
-                    }
-                })
-                .catch(function(error) {
-                    // Handle a potential error in the HTTP request.
-                    callback({
-                        success: false,
-                      	message: 'Some error description to show to the consumer'
-                    });
-                });
-        }
-    })
-
-    // Finally, add the Payment Option to the Checkout object so it can be
-    // render according to the configuration set on the Payment Provider.
-    Checkout.addPaymentOption(AcmeCardMethod);
+  // Finally, add the Payment Option to the Checkout object so it can be
+  // render according to the configuration set on the Payment Provider.
+  Checkout.addPaymentOption(AcmeCardMethod);
 });
 ```
 
 ## Checkout Context
 
-The `LoadPaymentMethod` function takes a callback with two arguments, `Checkout` and `Methods`. Here is what's available in each of them.
+The `LoadCheckoutPaymentContext` function takes function as a argument, which will be invoked with two arguments, `Checkout` and `PaymentOptions`, to provide access to our Checkout's context.
 
 | Name               | Description                                                  |
 | ------------------ | ------------------------------------------------------------ |
@@ -198,264 +203,283 @@ The `LoadPaymentMethod` function takes a callback with two arguments, `Checkout`
 | `http`             | Function to perform AJAX requests. See [HTTP](#HTTP).        |
 | `utils`            | Collection of helper functions. See [Utils](#Utils).         |
 
-### HTTP
+### Checkout
 
-This function allows you to easily make an HTTP request to your app. The response is a Promise.
+#### HTTP
 
+This object is an [Axios instance](https://github.com/axios/axios#request-config) Though the `fetch` is now available on all major object, using this method ensures cross-browser compatibility and it will also allow us to detect unexpected behaviours for which we'll be able to trigger alerts.
+
+> Note: This instance of Axios already has a few params set by the Checkout.
+
+##### Standard POST example
 ```js
 Checkout.http.post('https://acmepayments.com/charge', {
+  cartId: cartId,
+}).then(function(response) {
+  // Do something with the response.
+});
+```
+
+##### Custom config request example
+```js
+Checkout.http({
+  url: 'https://acmepayments.com/charge',
+  method: 'post',
+  data: {
     cartId: cartId,
+  }
 }).then(function(response) {
     // Do something with the response.
 });
 ```
 
-### Utils
+#### Utils
 
-- **Throttle**  
-- **LoadScript**  
-- **FlattenObject**
+- `Checkout.utils.Throttle`
+- `Checkout.utils.LoadScript`
+- `Checkout.utils.FlattenObject`
 
-### Data
+#### Data
 
 Here's an example of the data available in this object.
 
 ```js
 data: {
-    form: {},
-    order: {
-        cart: {
-            id: 139439691,
-            hash: '1134e8f7a55f926991b5086f52815977eb11f789',
-            number: null,
-            prices: {
-                shipping: 0,
-                discount_gateway: 0,
-                discount_coupon: 0,
-                discount_promotion: 0,
-                discount_coupon_and_promotions: 0,
-                subtotal_with_promotions_and_coupon_applied: 20,
-                subtotal: 20,
-                total: 20,
-                total_usd: 0
-            },
-            lineItems: [{
-                id: 159519581,
-                name: 'Camisa preta',
-                price: '20.00',
-                quantity: 1,
-                free_shipping: false,
-                product_id: 27177360,
-                variant_id: 63612746,
-                thumbnail: '//d26lpennugtm8s.cloudfront.net/stores/781/091/products/camisa-preta1-27bb549540fd46599815284694977523-100-0.jpg',
-                variant_values: '',
-                sku: '56868',
-                properties: [],
-                url: 'https://valmirarproduction.mitiendanube.com/productos/camisa-preta/?variant=63612746'
-            }],
-            currency: 'ARS',
-            currencyFormat: {
-                'short': '$%s',
-                'long': '$%s ARS'
-            },
-            lang: 'es',
-            langCode: 'es_AR',
-            coupon: {
-                id: 451625,
-                code: 'FREESHIPPING',
-                type: 'shipping',
-                value: '10.00',
-                valid: true,
-                used: 3,
-                max_uses: null,
-                start_date: null,
-                end_date: null,
-                min_price: null,
-                categories: null
-            },
-            shipping: {
-                type: 'ship',
-                method: 'correo-argentino',
-                option: '1',
-                branch: null,
-                disabled: null,
-                raw_name: 'Correo Argentino - Encomienda Clásica',
-                suboption: null
-            },
-            status: {
-                order: 'open',
-                order_cancellation_reason: null,
-                fulfillment: 'unpacked',
-                payment: 'pending'
-            },
-            completed_at: null
-        },
-        promotionalDiscount: {
-            id: null,
-            store_id: 781091,
-            order_id: 139439691,
-            created_at: '2019-12-13T13:31:05+0000',
-            total_discount_amount: '0.00',
-            contents: [],
-            promotions_applied: []
-        },
-        defaultAddressId: 17670513,
-        addresses: [],
-        contact: {
-            email: 'comprador01@mailinator.com',
-            name: 'João Cesar',
-            phone: '31912345678'
-        },
-        shippingAddress: {
-            zipcode: '4652',
-            first_name: 'João',
-            last_name: 'Cesar',
-            address: 'Miguel Perrela',
-            number: '23',
-            floor: '',
-            locality: '',
-            city: 'Buenos Aires',
-            state: 'Salta',
-            country: 'AR',
-            phone: '31912345678',
-            between_streets: '',
-            reference: '',
-            id_number: '213'
-        },
-        billingAddress: {
-            zipcode: '4652',
-            first_name: 'João',
-            last_name: 'Cesar',
-            address: 'Miguel Perrela',
-            number: '23',
-            floor: '',
-            locality: '',
-            city: 'Buenos Aires',
-            state: 'Salta',
-            country: 'AR',
-            phone: '31912345678',
-            between_streets: '',
-            reference: '',
-            id_number: '213'
-        },
-        customer: {
-            id: 29056585,
-            first_name: 'João',
-            last_name: 'Cesar',
-            email: 'comprador01@mailinator.com',
-            id_number: '10073734667',
-            phone: '31912345678',
-            default_address_id: 17670513,
-            addresses: [{
-                id: 17670513,
-                first_name: 'João',
-                last_name: 'Cesar',
-                address: 'Miguel perrela',
-                city: 'Buenos Aires',
-                country: 'AR',
-                created_at: '2019-12-11T13:39:04+0000',
-                'default': true,
-                floor: '',
-                locality: '',
-                number: '23',
-                phone: '31912345678',
-                state: 'Salta',
-                updated_at: '2019-12-11T13:39:04+0000',
-                zipcode: '4652'
-            }],
-            has_password: true
-        },
-        payment: {
-            option: null,
-            category: null,
-            boleto_url: null,
-            went_to_gateway: false,
-            brand: null,
-            logo: null,
-            external_id: null
-        },
-        orderStatus: {
-            shipping_eta: '2019-12-23',
-            shipping_tracking_code: null,
-            pickup_location: {
-                name: null,
-                address: null,
-                city: null,
-                province: null
-            },
-            pickup_hours: [],
-            payment_state: 'pending',
-            payment_state_reason: null,
-            shipping_extra: {
-                show_time: true,
-                id_required: false,
-                shippable: true,
-                phone_required: false
-            },
-            history: [{
-                    type: 'finished_checkout',
-                    timestamp: null
-                },
-                {
-                    type: 'payment_confirmed',
-                    timestamp: null
-                },
-                {
-                    type: 'packed',
-                    timestamp: null
-                },
-                {
-                    type: 'shipped',
-                    timestamp: null
-                }
-            ]
-        },
-        storeId: 781091,
-        conversionCode: null,
-        conversionCodeGatewayRedirect: null,
-        purchaseNotifications: {
-            analytics: false,
-            fb_pixel: false
-        },
-        checkout: 'micro-service',
-        theme: 'amazonas',
-        abTests: {
-            zipcode_validation: 'a',
-            new_payment_screen: 'b'
-        },
-        loaded: true
+  form: {},
+  order: {
+    cart: {
+      id: 139439691,
+      hash: '1134e8f7a55f926991b5086f52815977eb11f789',
+      number: null,
+      prices: {
+        shipping: 0,
+        discount_gateway: 0,
+        discount_coupon: 0,
+        discount_promotion: 0,
+        discount_coupon_and_promotions: 0,
+        subtotal_with_promotions_and_coupon_applied: 20,
+        subtotal: 20,
+        total: 20,
+        total_usd: 0
+      },
+      lineItems: [{
+        id: 159519581,
+        name: 'Camisa preta',
+        price: '20.00',
+        quantity: 1,
+        free_shipping: false,
+        product_id: 27177360,
+        variant_id: 63612746,
+        thumbnail: '//d26lpennugtm8s.cloudfront.net/stores/781/091/products/camisa-preta1-27bb549540fd46599815284694977523-100-0.jpg',
+        variant_values: '',
+        sku: '56868',
+        properties: [],
+        url: 'https://valmirarproduction.mitiendanube.com/productos/camisa-preta/?variant=63612746'
+      }],
+      currency: 'ARS',
+      currencyFormat: {
+          'short': '$%s',
+          'long': '$%s ARS'
+      },
+      lang: 'es',
+      langCode: 'es_AR',
+      coupon: {
+        id: 451625,
+        code: 'FREESHIPPING',
+        type: 'shipping',
+        value: '10.00',
+        valid: true,
+        used: 3,
+        max_uses: null,
+        start_date: null,
+        end_date: null,
+        min_price: null,
+        categories: null
+      },
+      shipping: {
+        type: 'ship',
+        method: 'correo-argentino',
+        option: '1',
+        branch: null,
+        disabled: null,
+        raw_name: 'Correo Argentino - Encomienda Clásica',
+        suboption: null
+      },
+      status: {
+        order: 'open',
+        order_cancellation_reason: null,
+        fulfillment: 'unpacked',
+        payment: 'pending'
+      },
+      completed_at: null
     },
-    country: 'AR',
-    totalPrice: 20
+    promotionalDiscount: {
+      id: null,
+      store_id: 781091,
+      order_id: 139439691,
+      created_at: '2019-12-13T13:31:05+0000',
+      total_discount_amount: '0.00',
+      contents: [],
+      promotions_applied: []
+    },
+    defaultAddressId: 17670513,
+    addresses: [],
+    contact: {
+      email: 'comprador01@mailinator.com',
+      name: 'João Cesar',
+      phone: '31912345678'
+    },
+    shippingAddress: {
+      zipcode: '4652',
+      first_name: 'João',
+      last_name: 'Cesar',
+      address: 'Miguel Perrela',
+      number: '23',
+      floor: '',
+      locality: '',
+      city: 'Buenos Aires',
+      state: 'Salta',
+      country: 'AR',
+      phone: '31912345678',
+      between_streets: '',
+      reference: '',
+      id_number: '213'
+    },
+    billingAddress: {
+      zipcode: '4652',
+      first_name: 'João',
+      last_name: 'Cesar',
+      address: 'Miguel Perrela',
+      number: '23',
+      floor: '',
+      locality: '',
+      city: 'Buenos Aires',
+      state: 'Salta',
+      country: 'AR',
+      phone: '31912345678',
+      between_streets: '',
+      reference: '',
+      id_number: '213'
+    },
+    customer: {
+      id: 29056585,
+      first_name: 'João',
+      last_name: 'Cesar',
+      email: 'comprador01@mailinator.com',
+      id_number: '10073734667',
+      phone: '31912345678',
+      default_address_id: 17670513,
+      addresses: [{
+        id: 17670513,
+        first_name: 'João',
+        last_name: 'Cesar',
+        address: 'Miguel perrela',
+        city: 'Buenos Aires',
+        country: 'AR',
+        created_at: '2019-12-11T13:39:04+0000',
+        'default': true,
+        floor: '',
+        locality: '',
+        number: '23',
+        phone: '31912345678',
+        state: 'Salta',
+        updated_at: '2019-12-11T13:39:04+0000',
+        zipcode: '4652'
+      }],
+      has_password: true
+    },
+    payment: {
+      option: null,
+      category: null,
+      boleto_url: null,
+      went_to_gateway: false,
+      brand: null,
+      logo: null,
+      external_id: null
+    },
+    orderStatus: {
+      shipping_eta: '2019-12-23',
+      shipping_tracking_code: null,
+      pickup_location: {
+        name: null,
+        address: null,
+        city: null,
+        province: null
+      },
+      pickup_hours: [],
+      payment_state: 'pending',
+      payment_state_reason: null,
+      shipping_extra: {
+        show_time: true,
+        id_required: false,
+        shippable: true,
+        phone_required: false
+      },
+      history: [
+        {
+          type: 'finished_checkout',
+           timestamp: null
+        },
+        {
+          type: 'payment_confirmed',
+          timestamp: null
+        },
+        {
+          type: 'packed',
+          timestamp: null
+        },
+        {
+          type: 'shipped',
+          timestamp: null
+        }
+      ]
+    },
+    storeId: 781091,
+    conversionCode: null,
+    conversionCodeGatewayRedirect: null,
+    purchaseNotifications: {
+      analytics: false,
+      fb_pixel: false
+    },
+    checkout: 'micro-service',
+    theme: 'amazonas',
+    abTests: {
+      zipcode_validation: 'a',
+      new_payment_screen: 'b'
+    },
+    loaded: true
+  },
+  country: 'AR',
+  totalPrice: 20
 }
 ```
 
-## Methods
+### `PaymentOptions`
 
-This is the second argument of the callback in `LoadCheckoutPaymentContext`. It contains the different possible integration flows. The difference among each of them being the UI that is rendered and the data that's available to you as `Checkout.data.form`.
+The second argument of the function passed as an argument to `LoadCheckoutPaymentContext` is `PaymentOptions`. It contains functions for each of the different possible integration types. Each of the functions take a configuration object as an argument and, in turn, will return a javascript instance of the `PaymentOption`.
 
-| Name              | Description                                                  |
-| ----------------- | ------------------------------------------------------------ |
-| `ExternalPayment` | For integration flows that redirect the consumer to a different website. |
-| `ModalPayment`    | For integration flows that open a modal with an iframe.      |
-| `Transparent`     | For integration flows that render a form and integrate mostly through JavaScript to maintain the UX of the checkout. |
+| Name                | Description                                                                                                                  |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `ExternalPayment()` | Returns an instance of the PaymentOption for integration types that require redirecting the consumer to a different website. |
+| `ModalPayment()`    | Returns an instance of the PaymentOption for integration types that require opening a Modal in the store's frontend.         |
+| `CustomPayment()`   | Used intenally for the merchant's custom payment methods.                                                                    |
+| `Transparent`       | Object that contains functions to obtain instances for transparent integration types.                                        |
 
-### RedirectPayment, ModalPayment and CustomPayment
+Note: ExternalPayment and ModalPayment won't render any input fields on the frontend. The main difference between them is on their `onSubmit` `callback` parameters.
 
-These flows don't provide any inputs. They differ in how they're rendered in the checkout.
+#### `Transparent` integration type
 
-### Transparent
+The `PaymentOptions.Transparent` has one function per each of the payment methods for which we support transparent integration type. Each of these funcitons return an instance of the `PaymentOption` for their specific payment methods and, if added to the Checkout using `Checkout.addPaymentOption(paymentOptionInstance)` a form will be rendered with all the required input fields for that payment method.
 
-There're three options available in `PaymentOptions.Transparent`.
 
-| Name            | Description                                                  |
-| --------------- | ------------------------------------------------------------ |
-| `CardPayment`   | For credit or debit card payments.                           |
-| `DebitPayment`  | For redirecting the consumer to the bank's system for bank debit payments. |
-| `BoletoPayment` | For payments with Boleto.                                    |
-| `TicketPayment` | For payments with Ticket.                                    |
+| Name              | Description                                                                        |
+| ----------------- | ---------------------------------------------------------------------------------- |
+| `CardPayment()`   | For credit card, debit card, gift card, and probably more, card payment methods. |
+| `DebitPayment()`  | For online debit (aka "bank debit" payment method.                               |
+| `BoletoPayment()` | For payments with `boleto` payment method.                                       |
+| `TicketPayment()` | For payments with `ticket` payment method.                                       |
 
-#### CardPayment
+##### CardPayment
 
 These are the fields rendered and available through `Checkout.data.form`.
 
@@ -472,9 +496,9 @@ These are the fields rendered and available through `Checkout.data.form`.
 | `cardHolderPhone`     | Card holder's phone number.                            |
 | `bankId`              | Card's issuing bank.                                   |
 
-#### DebitPayment
+##### DebitPayment
 
-These are the fields rendered and available through `Checkout.data.form`.
+These are the input fields rendered and available in the object `Checkout.data.form`.
 
 | Name             | Description                                                |
 | ---------------- | ---------------------------------------------------------- |
@@ -482,85 +506,122 @@ These are the fields rendered and available through `Checkout.data.form`.
 | `holderName`     | Account holder's name.                                     |
 | `holderIdNumber` | Account holder's identification (CPF, DNI, or equivalent). |
 
-#### BoletoPayment
+##### BoletoPayment
 
-These are the fields rendered and available through `Checkout.data.form`.
+These are the input fields rendered and available in the object `Checkout.data.form`.
 
 | Name             | Description                                          |
 | ---------------- | ---------------------------------------------------- |
 | `holderName`     | Consumer's name.                                     |
 | `holderIdNumber` | Consumer's identification (CPF, CNPJ or equivalent). |
 
-#### TicketPayment
+##### TicketPayment
 
-These are the fields rendered and available through `Checkout.data.form`.
+These are the input fields rendered and available in the object `Checkout.data.form`.
 
 | Name             | Description                                          |
 | ---------------- | ---------------------------------------------------- |
-| `holderName`     | Consumer's name.                                     |
-| `holderIdNumber` | Consumer's identification (DNI, CUIT or equivalent). |
+| `holderName`     | Consumer name.                                       |
+| `holderIdNumber` | Consumer identification (DNI, CUIT or equivalent).   |
 
-### Arguments
+#### `PaymentOption` Configuration Object and it's properties
 
-All of the instances of `PaymentOptions` can take the following arguments.
+All `PaymentOptions` functions take a configuration object. The generic properties of the configuration object for all `PaymentOptions` are:
 
-| Name           | Description                                                  |
-| -------------- | ------------------------------------------------------------ |
-| `name`         | Method name.                                                 |
-| `scripts`      | List of external JavaScript files to be loaded before registering this method. |
-| `onLoad`       | Function to be invoked after registering this method.        |
-| `onDataChange` | Function to be invoked whenever there's a change in `Checkout.data`. |
+| Name           | Description                                                                      |
+| -------------- | -------------------------------------------------------------------------------- |
+| `id`           | **Must match the id set in the `payment_provider.checkout_payment_options[i]`.** |
+| `name`         | Payment option display name.                                                     |
+| `fields`       | Object containing a propertires of extra input fields for transparent payment options and a boolean value to wither render it or not. |
+| `scripts`      | List of external JavaScript files to be loaded before registering this method.   |
+| `onLoad`       | Function to be invoked after registering this method.                            |
+| `onDataChange` | Function to be invoked whenever there's a change in `Checkout.data`.             |
 | `onSubmit`     | Function to be invoked whenever the consumer clicks on "Finish checkout" and all mandatory fields are filled correctly. |
 
-#### onSubmit
+##### `fields` property
+For each of the transparent payment options, the following extra input fields can be rendered if specified in this property.
 
-The function passed to `onSubmit` received a parameter called `callback`, which must be invoked to return control to the checkout flow with information regarding the success of the payment attempt.
+###### CreditPayment:
+| Name                   | Description                               |
+| ---------------------- | ----------------------------------------- |
+| bankList               | Banks list.                               |
+| issuerList             | Banks list. _(AR only)_                   |
+| card_holder_id_types   | Card holder identification type selector. |
+| card_holder_id_number  | Card holder identification number.        |
+| card_holder_birth_date | Card holder birth date.                   |
+| card_holder_phone      | Card holder number.                       |
 
-This `callback` function can be invoked with an object containing the following attributes.
 
-| Name       | Description                                                  |
-| ---------- | ------------------------------------------------------------ |
-| `success`  | If true, the checkout process continues and the order is completed. Otherwise, a customizable error message is shown to the consumer. |
-| `message`  | If `success` is false, this message will be displayed to the consumer. |
-| `redirect` | External URL for the consumer to be redirected to in order to finish the purchase in an external checkout. |
+###### DebitPayment:
+| Name                   | Description       |
+| ---------------------- | ----------------- |
+| bank_list              | Banks list.       |
 
-#### Sample Arguments
+###### OfflinePayment:
+|        Nome        |     Descrição     |
+| ------------------ | ----------------- |
+| boleto_holder_name | Payer name.       |
+| boleto_id_number   | Payer id number.  |
+
+> No including an input field on this object is enough to prevent it from rendering. It's not necessary to set it as `false`.
+
+
+
+##### onSubmit
+
+The handler function for the `onSubmit` event property receives a callback function argument which must be invoked immediately after finishing the necessary requests to initiate the payment process.
+
+The `callback` function must be invoked with an object containing the following properties.
+
+| Name          | Description                                                  |
+| ------------- | ------------------------------------------------------------ |
+| `success`     | If true, the checkout process continues and the order is completed. Otherwise, a customizable error message is shown to the consumer. |
+| `error_code`  | If `success` is false, the specified error code will be used to provide the user with all the necessary information to allow them to, either correct the problem, or at least understand what went wrong to know what the correct action course is. |
+| `message`     | _(Legacy)_ If `success` is false, this message will be displayed to the consumer. |
+| `redirect`    | _(Optional)_ External URL to which the consumer will be redirected to continue the payment process. _(Only for `ExternalPayment()`.)_ |
+
+##### Sample Arguments
 
 Here's an example summarizing all the definitions above.
 
 ```javascript
 LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
 
-    var Custom = new PaymentOptions.CustomPayment({
-        id: 'acme_custom',
+  var Custom = new PaymentOptions.CardPayment({
+    id: 'acme_transparent_card',
 
-        onLoad: function() {
-            // Do something after the script loads.
-            // Example: generate a token.
-        },
-        onDataChange: Checkout.utils.throttle(function() {
-            // Do something when data change.
-            // Data changed is already available on `Checkout.data`.
-            // Example: update credit card installments when the order value changes.
-        }, 700),
-        onSubmit: function(callback) {
-            // Do something when user submits the payment.
-            callback({
-                success: true, // Or false.
-                ...
-            })
-        }
-    });
+    fields: {
+      card_holder_birth_date: true
+    },
+
+    onLoad: function() {
+      // Do something after the script loads.
+      // Example: generate a token.
+    },
+
+    onDataChange: Checkout.utils.throttle(function() {
+      // Do something when the input form data changes.
+      // Data changed is already available on `Checkout.data`.
+      // Example: update credit card installments when the order value changes.
+    }, 700),
+    onSubmit: function(callback) {
+      // Do something when user submits the payment.
+      callback({
+          success: true, // Or false.
+          ...
+      })
+    }
+  });
 
     Checkout.addPaymentOption(Custom);
 });
 ```
 
-## Installments
+#### Installments
 
-In order to offer installment's options you must update the object `data.installments` by calling `setInstallments`. For example:
+In order to offer installment's options you must update the object `data.installments` by calling `setInstallments`. This will update the select input for the installments options on the card information form. For example:
 
-```js
+```javascript
 Checkout.setInstallments({
     installments: []
 })
@@ -574,20 +635,26 @@ Each element of the list must be an object with the following fields.
 | `installmentAmount` | Value of a single installment.   |
 | `totalAmount`       | Total value of all installments. |
 
-### Example
+##### Example
 
 ```js
-[{
-    quantity: 1,
-    installmentAmount: 25,
-    totalAmount: 25
-}, {
-    quantity: 2,
-    installmentAmount: 13,
-    totalAmount: 26
-}, {
-    quantity: 3,
-    installmentAmount: 10,
-    totalAmount: 30
-}]
+Checkout.setInstallments({
+  installments: [
+    {
+      quantity: 1,
+      installmentAmount: 25,
+      totalAmount: 25
+    },
+    {
+      quantity: 2,
+      installmentAmount: 13,
+      totalAmount: 26
+    },
+    {
+      quantity: 3,
+      installmentAmount: 10,
+      totalAmount: 30
+    }
+  ]
+})
 ```
