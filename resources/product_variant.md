@@ -301,6 +301,129 @@ Modify an existing Product Variant
 }
 ```
 
+### PATCH /products/#{product_id}/variants
+
+Partially update a `ProductVariant` collection. This endpoint allows to modify many existing `ProductVariant`s that belong to the given `Product`.
+
+This endpoint _will not_ add new `ProductVariant`s or remove existing `ProductVariant`s; it will just update their values. 
+
+
+#### Preconditions
+
+Request body is an array of `ProductVariant` resources.
+
+
+Each `ProductVariant` in the request body must:
+
+* include the `ProductVariant` ID, set in the field `id`
+* correspond to an existing `ProductVariant` with same ID than the one set in the field `id` 
+* belong to the `Product` which ID is set in `#{product_id}` in the URL
+* have a unique combination of `values` among all `ProductVariant`s of the `Product` (either `ProductVariant`s included in the request or previously persisted). 
+
+
+If any of the above preconditions is not met, the response:
+
+* has HTTP status code `422`
+* contains a JSON with error information including the IDs of the failed `ProductVariant`s:
+
+```json
+{
+    "code": 422,
+    "message": "Unprocessable Entity",
+    "description": "Variants cannot be repeated",
+    "duplicate_variant_ids": [
+        33745216,
+        33745217,
+        33745218
+    ]
+}
+```
+
+
+#### HTTP status code
+
+`200`: All `ProductVariant`s in the request have been updated. Complete updated `ProductVariant` collection is returned.
+`404`: `Product` with ID `#{product_id}` was not found.
+`422`: Changes are not processable because some of the above preconditions has not been met.
+
+
+#### PATCH /products/1234/variants
+
+
+```json
+[
+    {
+        "id": 143,
+        "values": [
+            {
+                "en": "Large"
+            }
+        ],
+        "price": "19.00"
+    },
+    {
+        "id": 144,
+        "values": [
+            {
+                "en": "X-Large"
+            }
+        ],
+        "price": "21.00"
+    }
+]
+```
+
+`HTTP/1.1 200 OK`
+
+```json
+[
+
+    {
+      "id": 143,
+      "image_id": null,
+      "promotional_price": null,
+      "created_at": "2013-01-03T09:11:51-03:00",
+      "depth": null,
+      "height": null,
+      "values": [
+          {
+              "en": "Large"
+          }
+      ],
+      "price": "19.00",
+      "product_id": 1234,
+      "stock_management": false,
+      "stock": null,
+      "sku": null,
+      "updated_at": "2013-06-01T09:15:11-03:00",
+      "weight": null,
+      "width": null      
+    },
+    {
+      "id": 144,
+      "image_id": null,
+      "promotional_price": null,
+      "created_at": "2013-01-03T09:11:51-03:00",
+      "depth": null,
+      "height": null,
+      "values": [
+          {
+              "en": "X-Large"
+          }
+      ],
+      "price": "21.00",
+      "product_id": 1234,
+      "stock_management": false,
+      "stock": null,
+      "sku": null,
+      "updated_at": "2013-06-01T09:15:11-03:00",
+      "weight": null,
+      "width": null      
+    }
+]
+```
+
+
 ### DELETE /products/#{product_id}/variants/#{id}
 
 Remove a Product Variant
