@@ -102,7 +102,7 @@ Also, every webhook will send custom parameters, as follows:
 
 ### Retry policies
 
-A webhook notification expects a 200 status code in response. If this does not happen (it gets another response code or no response at all) we will retry to deliver the notification 14 times along the next three days in incremental lapses of time. After this, the notification is lost.
+A webhook notification expects a 200 status code in response (40 seconds timeout). If this does not happen (it gets another response code or no response at all) we will retry to deliver the notification 14 times along the next three days in incremental lapses of time. After this, the notification is lost.
 
 Endpoints
 ---------
