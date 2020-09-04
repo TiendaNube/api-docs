@@ -20,6 +20,8 @@ All `Transaction` types have the same attributes, but may generate different kin
 | `events`              | Array(Object) | [Read-only] List of fulfillment events related to this Transaction. See [Transaction Events](#Transaction-Events). |
 | `captured_amount`     | Object        | [Read-only] Object containing the captured amount of this Transaction. See [Money](#Money). |
 | `refunded_amount`     | Object        | [Read-only] Object containing the refunded amount of this Transaction. See [Money](#Money). |
+| `authorized_amount`   | Object        | [Read-only] Object containing the authorized amount of this Transaction. See [Money](#Money). |
+| `voided_amount`       | Object        | [Read-only] Object containing the voided amount of this Transaction. See [Money](#Money). |
 | `failure_code`        | String        | [Read-only] If the transaction failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
 | `created_at`          | Date          | [Read-only] ISO 8601 date for the date the Transaction was created in our platform. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
 
@@ -30,18 +32,20 @@ All `Transaction` types have the same attributes, but may generate different kin
 | Field  | Type   | Description                                                  |
 | ------ | ------ | ------------------------------------------------------------ |
 | `type` | String | One of the available [Payment Method Types](payment_provider.md#Payment-Method-Types). |
-| `id`   | String | ID of the payment method used for this Transaction. See [Supported Payment Methods by Payment Method Type](payment_provider.md#Supported-Payment-Methods-by-Payment-Method-Type). |
+| `id`   | String | [Optional for `wallet` and `cash`] ID of the payment method used for this Transaction. See [Supported Payment Methods by Payment Method Type](payment_provider.md#Supported-Payment-Methods-by-Payment-Method-Type). |
 
 ### Transaction Info
 
+This object is used to indicate specific information of a Transaction. It can be omitted in the Transaction body if all its fields are unfilled.
+
 | Field                          | Type   | Description                                                  |
 | ------------------------------ | ------ | ------------------------------------------------------------ |
-| `card`                         | Object | [Optional - Only for `credit_card` and `debit_card`] Object containing data related to the consumer's card. See [Card Info](#Card-Info). |
+| `card`                         | Object | [Optional] Object containing data related to the consumer's credit or debit card. See [Card Info](#Card-Info). |
 | `installments`                 | Object | [Optional - Only for `credit_card`] Object containing the installments data related to this Transaction. See [Installments Info](#Installments-Info). |
 | `external_id`                  | String | [Optional] ID used by the Payment Provider.                  |
 | `external_url`                 | String | [Optional] HTTPS URL with details of this Transaction for the merchant. |
-| `external_resource_url`        | String | [Optional - Only for `boleto`, `ticket` and `bank_debit`] HTTPS URL of the boleto or ticket to show to the consumer to resume the payment. In the case of bank debit, link to the bank selected by the consumer to make the transaction. |
-| `external_resource_code`       | String | [Optional - Only for `boleto` and `ticket`] Barcode for boleto, or code for ticket. |
+| `external_resource_url`        | String | [Optional - Only for `boleto`, `ticket`, `wire_transfer` and `bank_debit`] HTTPS URL of the boleto or ticket to show to the consumer to resume the payment. In the case of bank debit and wire transfer, link to the bank selected by the consumer to make the transaction. |
+| `external_resource_code`       | String | [Optional - Only for `boleto`, `ticket`, `wire_transfer` and `bank_debit`] Barcode for boleto, or code for ticket. For all other cases, used as a reference code for the consumer. |
 | `external_resource_expires_at` | Date   | [Optional - Only for `boleto` and `ticket`] ISO 8601 date for the expiration date of a boleto or ticket. |
 | `ip`                           | String | [Optional] IP of the device that initiated this Transaction. |
 
@@ -170,7 +174,11 @@ Endpoints
 
 Create a Transaction for a given order.
 
-#### Request
+<details>
+  <summary><b>Request</b></summary>
+
+
+
 
 | Field                 | Type   | Description                                                  |
 | :-------------------- | :----- | :----------------------------------------------------------- |
@@ -179,17 +187,27 @@ Create a Transaction for a given order.
 | `first_event`         | Object | [Required] First transaction event that generated this Transaction. See [Transaction Events](#Transaction-Events). |
 | `info`                | Object | [Optional] Object containing specific info related to this Transaction. See [Transaction Info](#Transaction-Info). |
 
-#### Response
+</details>
+
+<details>
+  <summary><b>Response</b></summary>
+
+
 
 `HTTP/1.1 201 Created`
 
 The created [Transaction Object](#Transaction) is returned.
 
+</details>
+
 ### POST /orders/{*order_id*}/transactions/{*transaction_id*}/events
 
 Create a Transaction Event for a given Transaction.
 
-#### Request
+<details>
+  <summary><b>Request</b></summary>
+
+
 
 | Field          | Type   | Description                                                  |
 | -------------- | ------ | ------------------------------------------------------------ |
@@ -200,46 +218,70 @@ Create a Transaction Event for a given Transaction.
 | `info`         | Object | [Optional] Object containing specific info related to this Transaction Event. See [Transaction Event Info](#Transaction-Event-Info). |
 | `failure_code` | String | [Optional] If the Transaction Event failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
 
-#### Response
+</details>
+
+<details>
+  <summary><b>Response</b></summary>
+
+
 
 `HTTP/1.1 201 Created`
 
 The created [Transaction Event Object](#Transaction-Events) is returned.
 
+</details>
 
 ### GET /orders/{*order_id*}/transactions
 
 Get all Transactions for a given order.
 
-#### Request
+<details>
+  <summary><b>Request</b></summary>
+
+
 
 ```
 {}
 ```
 
-#### Response
+</details>
+
+<details>
+  <summary><b>Response</b></summary>
+
+
 
 `HTTP/1.1 200 OK`
 
 Array of [Transaction Objects](#Transaction)
 
-
+</details>
 
 ### GET /orders/{*order_id*}/transactions/{*transaction_id*}
 
 Gets a specific Transaction for a given order.
 
-#### Request
+<details>
+  <summary><b>Request</b></summary>
+
+
 
 ```
 {}
 ```
 
-#### Response
+</details>
+
+<details>
+  <summary><b>Response</b></summary>
+
+
 
 `HTTP/1.1 200 OK`
 
 [Transaction Object](#Transaction)
+
+</details>
 
 ## HTTP Errors List
 
@@ -249,11 +291,14 @@ Gets a specific Transaction for a given order.
 * **404 Not Found** - resource was not found.
 * **405 Method Not Allowed** - requested method is not supported for resource.
 
-## Common examples
+## Common Examples
 
-### Example Nº 1
+<details>
+  <summary><b>Example Nº 1</b></summary>
 
-*Credit card transaction that is authorized and captured within a single event.*
+
+
+*Create a credit card transaction that is authorized and captured within a single event.*
 
 #### POST /orders/12345/transactions
 
@@ -357,10 +402,14 @@ Gets a specific Transaction for a given order.
 }
 ```
 
+</details>
 
-### Example Nº 2
+<details>
+  <summary><b>Example Nº 2</b></summary>
 
-*Boleto transaction that starts pending and then is paid by the buyer.*
+
+
+*Create a boleto transaction that starts pending and then is paid by the buyer.*
 
 #### POST /orders/56789/transactions
 
@@ -476,9 +525,14 @@ Gets a specific Transaction for a given order.
 }
 ```
 
-### Example Nº 3
+</details>
 
-*Credit card transaction that has been authorized, captured, and then refunded.*
+<details>
+  <summary><b>Example Nº 3</b></summary>
+
+
+
+*Get a credit card transaction that has been authorized, captured, and then refunded.*
 
 #### GET /orders/56789/transactions/21781944-a977-4b0d-93dc-908ddb87d778
 
@@ -489,6 +543,8 @@ Gets a specific Transaction for a given order.
 ```
 
 ##### Response
+
+`201 OK`
 
 ```json
 {
@@ -576,6 +632,89 @@ Gets a specific Transaction for a given order.
 }
 ```
 
+</details>
+
+<details>
+  <summary><b>Example Nº 4</b></summary>
+
+
+
+*Create a wallet transaction.*
+
+#### POST /orders/24680/transactions
+
+##### Request
+
+```json
+{
+  "payment_provider_id": "eeac118e-5534-40ba-b539-443449bc67a3",
+  "payment_method": {
+    "type": "wallet"
+  },
+  "info": {
+    "external_id": "1234",
+    "external_url": "https://mypayments.com/account/transactions/1234"
+  },
+  "first_event": {
+    "amount": {
+      "value": "100.00",
+      "currency": "BRL"
+    },
+    "type": "sale",
+    "status": "success",
+    "happened_at": "2020-01-25T12:30:15.000Z"
+  }
+}
+```
+
+##### Response
+
+`201 Created`
+
+```json
+{
+    "id": "364df14b-2433-4c7d-a4f6-60a512451592",
+    "payment_provider_id": "eeac118e-5534-40ba-b539-443449bc67a3",
+    "captured_amount": {
+        "value": "100.00",
+        "currency": "BRL"
+    },
+    "refunded_amount": {
+        "value": "0.00",
+        "currency": "BRL"
+    },
+    "authorized_amount": null,
+    "voided_amount": null,
+    "payment_method": {
+        "type": "wallet",
+        "id": "wallet"
+    },
+    "status": "paid",
+    "info": {
+        "external_id": "1234",
+        "external_url": "https://mypayments.com/account/transactions/1234"
+    },
+    "failure_code": null,
+    "created_at": "2020-09-04 14:27:30",
+    "events": [
+        {
+            "transaction_id": "364df14b-2433-4c7d-a4f6-60a512451592",
+            "amount": {
+                "value": "100.00",
+                "currency": "BRL"
+            },
+            "type": "sale",
+            "status": "success",
+            "failure_code": null,
+            "created_at": "2020-09-04T17:27:30.584Z",
+            "happened_at": "2020-01-25T12:30:15Z",
+            "expires_at": null
+        }
+    ]
+}
+```
+
+</details>
 
 ## Appendix
 
@@ -692,3 +831,10 @@ The following list contains all the Transaction failures codes currently support
 | `order_total_currency_invalid`   | The order amount currency is invalid.                        |
 | `order_total_price_invalid`      | The order price value is invalid.                            |
 | `order_total_price_too_small`    | The order price value is less than the minimum supported value. |
+
+### Error
+
+| Failure Code    | Description                                                  |
+| --------------- | ------------------------------------------------------------ |
+| `unknown_error` | Either a server error or an unknown error occurred while trying to process the payment. |
+

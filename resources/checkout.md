@@ -58,7 +58,7 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
           // Handle a potential error in the HTTP request.
           callback({
               success: false,
-            	message: 'Some error description to show to the consumer'
+            	reason_code: 'unknown_error'
           });
         });
     }
@@ -167,7 +167,7 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
           } else {
             callback({
                 success: false,
-                message: 'Some error description to show to the consumer'
+                reason_code: 'card_cvv_invalid'
             });
           }
 
@@ -177,7 +177,7 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
           // Handle a potential error in the HTTP request.
           callback({
               success: false,
-            	message: 'Some error description to show to the consumer'
+            	reason_code: 'unknown_error'
           });
 
         });
@@ -207,7 +207,7 @@ The `LoadCheckoutPaymentContext` function takes function as a argument, which wi
 
 #### HTTP
 
-This object is an [Axios instance](https://github.com/axios/axios#request-config) Though the `fetch` is now available on all major object, using this method ensures cross-browser compatibility and it will also allow us to detect unexpected behaviours for which we'll be able to trigger alerts.
+This object is an [Axios instance](https://github.com/axios/axios#request-config). Though the `fetch` is now available on all major object, using this method ensures cross-browser compatibility and it will also allow us to detect unexpected behaviours for which we'll be able to trigger alerts.
 
 > Note: This instance of Axios already has a few params set by the Checkout.
 
@@ -576,9 +576,9 @@ The `callback` function must be invoked with an object containing the following 
 | Name          | Description                                                  |
 | ------------- | ------------------------------------------------------------ |
 | `success`     | If true, the checkout process continues and the order is completed. Otherwise, a customizable error message is shown to the consumer. |
-| `error_code`  | If `success` is false, the specified error code will be used to provide the user with all the necessary information to allow them to, either correct the problem, or at least understand what went wrong to know what the correct action course is. |
+| `reason_code` | *(Optional)* If `success` is false, the specified error code will be used to provide the user with all the necessary information to allow them to, either correct the problem, or at least understand what went wrong to know what the correct action course is. See [Transaction Failure Codes](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/transaction.md#Transaction-Failure-Codes). |
 | `message`     | _(Legacy)_ If `success` is false, this message will be displayed to the consumer. |
-| `redirect`    | _(Optional)_ External URL to which the consumer will be redirected to continue the payment process. _(Only for `ExternalPayment()`.)_ |
+| `redirect`    | _(Optional)_ External URL to which the consumer will be redirected to continue the payment process. _(Only for `ExternalPayment()`)._ |
 
 ##### Sample Arguments
 
@@ -658,3 +658,4 @@ Checkout.setInstallments({
   ]
 })
 ```
+

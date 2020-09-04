@@ -414,7 +414,7 @@ The following is the list of payment method IDs by payment method type currently
 | `boleto`            | See the [Supported Bank list](#Supported-Banks). Use the default value `boleto` if no issuer is specified. |
 | `cash`              | `cash`                                                       |
 | `credit_card`       | `amex`, `argencard`, `aura`, `cabal`, `cordial`, `cordobesa`, `diners`, `discover`, `elo`, `falabella`, `hiper`, `hipercard`, `hsbc_access_now`, `magna`, `mastercard`, `nativa`, `oi_paggo`, `provencred`, `rebanking`, `tarjeta_naranja`, `tarjeta_saenz`, `tarjeta_shopping`, `tarjeta_walmart`, `visa` |
-| `debit_card`        | `cabal_debit`, `maestro`, `visa_debit`                       |
+| `debit_card`        | `cabal_debit`, `maestro`, `visa_debit`, `vr-beneficios`, `sodexo`, `alelo` |
 | `ticket`            | ` efecty`, ` oxxo`, `  pagofacil`, `rapipago`, ` servipag`, `seven_eleven`, `via_baloto` |
 | `wallet`            | `wallet`                                                     |
 | `wire_transfer`     | `banelco`,  `link`,  `provincia_net`,  `pse`                 |
