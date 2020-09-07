@@ -542,3 +542,15 @@ Modify an existing Customer
   ]
 }
 ```
+### DELETE v1/#{STORE_ID}/customers/#{ID_CUSTOMER}
+
+ID_CUSTOMER = mwp_customers.id
+
+Delete an existing Customer
+
+`HTTP/1.1 200 Customer Deleted`
+
+`HTTP/1.1 404 Customer with such id does not exist`
+
+`HTTP/1.1 422 Cannot delete a customer with orders`
+
