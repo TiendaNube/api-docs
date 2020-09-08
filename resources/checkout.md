@@ -576,7 +576,7 @@ The `callback` function must be invoked with an object containing the following 
 | Name          | Description                                                  |
 | ------------- | ------------------------------------------------------------ |
 | `success`     | If true, the checkout process continues and the order is completed. Otherwise, a customizable error message is shown to the consumer. |
-| `reason_code` | *(Optional)* If `success` is false, the specified error code will be used to provide the user with all the necessary information to allow them to, either correct the problem, or at least understand what went wrong to know what the correct action course is. See [Transaction Failure Codes](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/transaction.md#Transaction-Failure-Codes). |
+| `reason_code` | *(Optional)* If `success` is false, the specified error code will be used to provide the user with all the necessary information to allow them to, either correct the problem, or at least understand what went wrong to know what the correct action course is. See [Transaction Failure Codes](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/transaction.md#Transaction-Failure-Codes) and [Checkout Runtime Error Codes](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/checkout.md#Checkout-Runtime-Error-Codes). |
 | `message`     | _(Legacy)_ If `success` is false, this message will be displayed to the consumer. |
 | `redirect`    | _(Optional)_ External URL to which the consumer will be redirected to continue the payment process. _(Only for `ExternalPayment()`)._ |
 
@@ -659,3 +659,20 @@ Checkout.setInstallments({
 })
 ```
 
+## Appendix
+
+### Checkout Runtime Error Codes
+
+The following list contains all the runtime error codes currently supported by our platform, which are intented to pass as `reason_code` on the callback of the onSubmit event in case the generation of the redirect URL fails for external checkout integration types, or in case the payment could be even be executed for a transparent integration type.
+consumer_same_as_merchant
+consumer_invalid_credentials
+payment_test_user
+server_error
+server_error_timeout
+### Consumer
+
+| Failure Code                     | Description                                                  |
+| -------------------------------- | ------------------------------------------------------------ |
+| `consumer_same_as_merchant`      | The redirection failed because the consumers account is the same as the merchant account and the merchant cannot make themself a payment. |
+| `server_error`                   | There is a problem accessing the server which prevents either the execution of the payment or the generation of the redirect url. |
+| `server_error_timeout`           | Same as `server_error` but the reason was due to a timeout condition. |
