@@ -212,6 +212,7 @@ This object is an [Axios instance](https://github.com/axios/axios#request-config
 > Note: This instance of Axios already has a few params set by the Checkout.
 
 ##### Standard POST example
+
 ```js
 Checkout.http.post('https://acmepayments.com/charge', {
   cartId: cartId,
@@ -221,6 +222,7 @@ Checkout.http.post('https://acmepayments.com/charge', {
 ```
 
 ##### Custom config request example
+
 ```js
 Checkout.http({
   url: 'https://acmepayments.com/charge',
@@ -348,12 +350,12 @@ data: {
 
 The second argument of the function passed as an argument to `LoadCheckoutPaymentContext` is `PaymentOptions`. It contains functions for each of the different possible integration types. Each of the functions take a configuration object as an argument and, in turn, will return a javascript instance of the `PaymentOption`.
 
-| Name                | Description                                                                                                                  |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Name                | Description                                                  |
+| ------------------- | ------------------------------------------------------------ |
 | `ExternalPayment()` | Returns an instance of the PaymentOption for integration types that require redirecting the consumer to a different website. |
-| `ModalPayment()`    | Returns an instance of the PaymentOption for integration types that require opening a Modal in the store's frontend.         |
-| `CustomPayment()`   | Used intenally for the merchant's custom payment methods.                                                                    |
-| `Transparent`       | Object that contains functions to obtain instances for transparent integration types.                                        |
+| `ModalPayment()`    | Returns an instance of the PaymentOption for integration types that require opening a Modal in the store's frontend. |
+| `CustomPayment()`   | Used intenally for the merchant's custom payment methods.    |
+| `Transparent`       | Object that contains functions to obtain instances for transparent integration types. |
 
 Note: ExternalPayment and ModalPayment won't render any input fields on the frontend. The main difference between them is on their `onSubmit` `callback` parameters.
 
@@ -362,12 +364,12 @@ Note: ExternalPayment and ModalPayment won't render any input fields on the fron
 The `PaymentOptions.Transparent` has one function per each of the payment methods for which we support transparent integration type. Each of these funcitons return an instance of the `PaymentOption` for their specific payment methods and, if added to the Checkout using `Checkout.addPaymentOption(paymentOptionInstance)` a form will be rendered with all the required input fields for that payment method.
 
 
-| Name              | Description                                                                        |
-| ----------------- | ---------------------------------------------------------------------------------- |
+| Name              | Description                                                  |
+| ----------------- | ------------------------------------------------------------ |
 | `CardPayment()`   | For credit card, debit card, gift card, and probably more, card payment methods. |
-| `DebitPayment()`  | For online debit (aka "bank debit" payment method.                               |
-| `BoletoPayment()` | For payments with `boleto` payment method.                                       |
-| `TicketPayment()` | For payments with `ticket` payment method.                                       |
+| `DebitPayment()`  | For online debit (aka "bank debit" payment method.           |
+| `BoletoPayment()` | For payments with `boleto` payment method.                   |
+| `TicketPayment()` | For payments with `ticket` payment method.                   |
 
 ##### CardPayment
 
@@ -409,49 +411,53 @@ These are the input fields rendered and available in the object `Checkout.data.f
 
 These are the input fields rendered and available in the object `Checkout.data.form`.
 
-| Name             | Description                                          |
-| ---------------- | ---------------------------------------------------- |
-| `holderName`     | Consumer name.                                       |
-| `holderIdNumber` | Consumer identification (DNI, CUIT or equivalent).   |
+| Name             | Description                                        |
+| ---------------- | -------------------------------------------------- |
+| `holderName`     | Consumer name.                                     |
+| `holderIdNumber` | Consumer identification (DNI, CUIT or equivalent). |
 
 #### `PaymentOption` Configuration Object and it's properties
 
 All `PaymentOptions` functions take a configuration object. The generic properties of the configuration object for all `PaymentOptions` are:
 
-| Name           | Description                                                                      |
-| -------------- | -------------------------------------------------------------------------------- |
+| Name           | Description                                                  |
+| -------------- | ------------------------------------------------------------ |
 | `id`           | **Must match the id set in the `payment_provider.checkout_payment_options[i]`.** |
-| `name`         | Payment option display name.                                                     |
+| `name`         | Payment option display name.                                 |
 | `fields`       | Object containing a propertires of extra input fields for transparent payment options and a boolean value to wither render it or not. |
-| `scripts`      | List of external JavaScript files to be loaded before registering this method.   |
-| `onLoad`       | Function to be invoked after registering this method.                            |
-| `onDataChange` | Function to be invoked whenever there's a change in `Checkout.data`.             |
+| `scripts`      | List of external JavaScript files to be loaded before registering this method. |
+| `onLoad`       | Function to be invoked after registering this method.        |
+| `onDataChange` | Function to be invoked whenever there's a change in `Checkout.data`. |
 | `onSubmit`     | Function to be invoked whenever the consumer clicks on "Finish checkout" and all mandatory fields are filled correctly. |
 
 ##### `fields` property
+
 For each of the transparent payment options, the following extra input fields can be rendered if specified in this property.
 
 ###### CreditPayment:
-| Name                   | Description                               |
-| ---------------------- | ----------------------------------------- |
-| bankList               | Banks list.                               |
-| issuerList             | Banks list. _(AR only)_                   |
-| card_holder_id_types   | Card holder identification type selector. |
-| card_holder_id_number  | Card holder identification number.        |
-| card_holder_birth_date | Card holder birth date.                   |
-| card_holder_phone      | Card holder number.                       |
+
+| Name                     | Description                               |
+| ------------------------ | ----------------------------------------- |
+| `bankList`               | Banks list.                               |
+| `issuerList`             | Banks list. _(AR only)_                   |
+| `card_holder_id_types`   | Card holder identification type selector. |
+| `card_holder_id_number`  | Card holder identification number.        |
+| `card_holder_birth_date` | Card holder birth date.                   |
+| `card_holder_phone`      | Card holder number.                       |
 
 
 ###### DebitPayment:
-| Name                   | Description       |
-| ---------------------- | ----------------- |
-| bank_list              | Banks list.       |
+
+| Name        | Description |
+| ----------- | ----------- |
+| `bank_list` | Banks list. |
 
 ###### OfflinePayment:
-|        Nome        |     Descrição     |
-| ------------------ | ----------------- |
-| boleto_holder_name | Payer name.       |
-| boleto_id_number   | Payer id number.  |
+
+| Name                 | Description      |
+| -------------------- | ---------------- |
+| `boleto_holder_name` | Payer name.      |
+| `boleto_id_number`   | Payer id number. |
 
 > No including an input field on this object is enough to prevent it from rendering. It's not necessary to set it as `false`.
 
