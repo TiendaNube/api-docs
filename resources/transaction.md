@@ -294,11 +294,10 @@ Get a specific Transaction for a given order.
 ## Common Examples
 
 <details>
-  <summary><b>Example Nº 1</b></summary>
+  <summary><b>Example Nº 1: Create a credit card transaction that is authorized and captured within a single event</b></summary>
 
 
 
-*Create a credit card transaction that is authorized and captured within a single event.*
 
 #### POST /orders/12345/transactions
 
@@ -405,11 +404,10 @@ Get a specific Transaction for a given order.
 </details>
 
 <details>
-  <summary><b>Example Nº 2</b></summary>
+  <summary><b>Example Nº 2: Create a boleto transaction that starts pending and then is paid by the buyer</b></summary>
 
 
 
-*Create a boleto transaction that starts pending and then is paid by the buyer.*
 
 #### POST /orders/56789/transactions
 
@@ -528,11 +526,10 @@ Get a specific Transaction for a given order.
 </details>
 
 <details>
-  <summary><b>Example Nº 3</b></summary>
+  <summary><b>Example Nº 3: Get a credit card transaction that has been authorized, captured and then refunded</b></summary>
 
 
 
-*Get a credit card transaction that has been authorized, captured, and then refunded.*
 
 #### GET /orders/56789/transactions/21781944-a977-4b0d-93dc-908ddb87d778
 
@@ -635,11 +632,10 @@ Get a specific Transaction for a given order.
 </details>
 
 <details>
-  <summary><b>Example Nº 4</b></summary>
+  <summary><b>Example Nº 4: Create a confirmed wallet transaction</b></summary>
 
 
 
-*Create a wallet transaction.*
 
 #### POST /orders/24680/transactions
 
