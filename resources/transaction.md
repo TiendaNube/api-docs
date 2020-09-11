@@ -259,7 +259,7 @@ Array of [Transaction Objects](#Transaction)
 
 ### GET /orders/{*order_id*}/transactions/{*transaction_id*}
 
-Gets a specific Transaction for a given order.
+Get a specific Transaction for a given order.
 
 <details>
   <summary><b>Request</b></summary>
@@ -722,7 +722,10 @@ Gets a specific Transaction for a given order.
 
 The following list contains all the Transaction failures codes currently supported by our platform, organized by data groups.
 
-### Consumer
+<details>
+  <summary><b>Consumer</b></summary>
+
+
 
 | Failure Code                     | Description                                                  |
 | -------------------------------- | ------------------------------------------------------------ |
@@ -745,7 +748,12 @@ The following list contains all the Transaction failures codes currently support
 | `consumer_street_number_invalid` | The consumer address number is invalid.                      |
 | `consumer_zip_invalid`           | The consumer ZIP code is invalid.                            |
 
-### Payment Method
+</details>
+
+<details>
+  <summary><b>Payment Methods</b></summary>
+
+
 
 #### Bank Debit
 
@@ -798,7 +806,12 @@ The following list contains all the Transaction failures codes currently support
 | `ticket_method_unavailable` | The ticket method is not available. |
 | `ticket_operator_invalid`   | The ticket operator is invalid.     |
 
-### Shipping
+</details>
+
+<details>
+  <summary><b>Shipping</b></summary>
+
+
 
 | Failure Code                     | Description                                     |
 | -------------------------------- | ----------------------------------------------- |
@@ -820,7 +833,12 @@ The following list contains all the Transaction failures codes currently support
 | `shipping_total_curreny_invalid` | The shipping amount currency is invalid.        |
 | `shipping_zip_invalid`           | The shipping ZIP code is invalid.               |
 
-### Order
+</details>
+
+<details>
+  <summary><b>Order</b></summary>
+
+
 
 | Failure Code                     | Description                                                  |
 | -------------------------------- | ------------------------------------------------------------ |
@@ -832,9 +850,5 @@ The following list contains all the Transaction failures codes currently support
 | `order_total_price_invalid`      | The order price value is invalid.                            |
 | `order_total_price_too_small`    | The order price value is less than the minimum supported value. |
 
-### Error
-
-| Failure Code    | Description                                                  |
-| --------------- | ------------------------------------------------------------ |
-| `unknown_error` | Either a server error or an unknown error occurred while trying to process the payment. |
+</details>
 

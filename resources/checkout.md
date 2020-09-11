@@ -245,212 +245,102 @@ Here's an example of the data available in this object.
 
 ```js
 data: {
-  form: {},
-  order: {
-    cart: {
-      id: 139439691,
-      hash: '1134e8f7a55f926991b5086f52815977eb11f789',
-      number: null,
-      prices: {
-        shipping: 0,
-        discount_gateway: 0,
-        discount_coupon: 0,
-        discount_promotion: 0,
-        discount_coupon_and_promotions: 0,
-        subtotal_with_promotions_and_coupon_applied: 20,
-        subtotal: 20,
-        total: 20,
-        total_usd: 0
-      },
-      lineItems: [{
-        id: 159519581,
-        name: 'Camisa preta',
-        price: '20.00',
-        quantity: 1,
-        free_shipping: false,
-        product_id: 27177360,
-        variant_id: 63612746,
-        thumbnail: '//d26lpennugtm8s.cloudfront.net/stores/781/091/products/camisa-preta1-27bb549540fd46599815284694977523-100-0.jpg',
-        variant_values: '',
-        sku: '56868',
-        properties: [],
-        url: 'https://valmirarproduction.mitiendanube.com/productos/camisa-preta/?variant=63612746'
-      }],
-      currency: 'ARS',
-      currencyFormat: {
-          'short': '$%s',
-          'long': '$%s ARS'
-      },
-      lang: 'es',
-      langCode: 'es_AR',
-      coupon: {
-        id: 451625,
-        code: 'FREESHIPPING',
-        type: 'shipping',
-        value: '10.00',
-        valid: true,
-        used: 3,
-        max_uses: null,
-        start_date: null,
-        end_date: null,
-        min_price: null,
-        categories: null
-      },
-      shipping: {
-        type: 'ship',
-        method: 'correo-argentino',
-        option: '1',
-        branch: null,
-        disabled: null,
-        raw_name: 'Correo Argentino - Encomienda Clásica',
-        suboption: null
-      },
-      status: {
-        order: 'open',
-        order_cancellation_reason: null,
-        fulfillment: 'unpacked',
-        payment: 'pending'
-      },
-      completed_at: null
-    },
-    promotionalDiscount: {
-      id: null,
-      store_id: 781091,
-      order_id: 139439691,
-      created_at: '2019-12-13T13:31:05+0000',
-      total_discount_amount: '0.00',
-      contents: [],
-      promotions_applied: []
-    },
-    defaultAddressId: 17670513,
-    addresses: [],
-    contact: {
-      email: 'comprador01@mailinator.com',
-      name: 'João Cesar',
-      phone: '31912345678'
-    },
-    shippingAddress: {
-      zipcode: '4652',
-      first_name: 'João',
-      last_name: 'Cesar',
-      address: 'Miguel Perrela',
-      number: '23',
-      floor: '',
-      locality: '',
-      city: 'Buenos Aires',
-      state: 'Salta',
-      country: 'AR',
-      phone: '31912345678',
-      between_streets: '',
-      reference: '',
-      id_number: '213'
-    },
-    billingAddress: {
-      zipcode: '4652',
-      first_name: 'João',
-      last_name: 'Cesar',
-      address: 'Miguel Perrela',
-      number: '23',
-      floor: '',
-      locality: '',
-      city: 'Buenos Aires',
-      state: 'Salta',
-      country: 'AR',
-      phone: '31912345678',
-      between_streets: '',
-      reference: '',
-      id_number: '213'
-    },
-    customer: {
-      id: 29056585,
-      first_name: 'João',
-      last_name: 'Cesar',
-      email: 'comprador01@mailinator.com',
-      id_number: '10073734667',
-      phone: '31912345678',
-      default_address_id: 17670513,
-      addresses: [{
-        id: 17670513,
-        first_name: 'João',
-        last_name: 'Cesar',
-        address: 'Miguel perrela',
-        city: 'Buenos Aires',
-        country: 'AR',
-        created_at: '2019-12-11T13:39:04+0000',
-        'default': true,
-        floor: '',
-        locality: '',
-        number: '23',
-        phone: '31912345678',
-        state: 'Salta',
-        updated_at: '2019-12-11T13:39:04+0000',
-        zipcode: '4652'
-      }],
-      has_password: true
-    },
-    payment: {
-      option: null,
-      category: null,
-      boleto_url: null,
-      went_to_gateway: false,
-      brand: null,
-      logo: null,
-      external_id: null
-    },
-    orderStatus: {
-      shipping_eta: '2019-12-23',
-      shipping_tracking_code: null,
-      pickup_location: {
-        name: null,
-        address: null,
-        city: null,
-        province: null
-      },
-      pickup_hours: [],
-      payment_state: 'pending',
-      payment_state_reason: null,
-      shipping_extra: {
-        show_time: true,
-        id_required: false,
-        shippable: true,
-        phone_required: false
-      },
-      history: [
-        {
-          type: 'finished_checkout',
-           timestamp: null
+    order: {
+        cart: {
+            id: 139439691,
+            hash: '1134e8f7a55f926991b5086f52815977eb11f789',
+            number: null,
+            prices: {
+                shipping: 0,
+                discount_gateway: 0,
+                discount_coupon: 0,
+                discount_promotion: 0,
+                discount_coupon_and_promotions: 0,
+                subtotal_with_promotions_and_coupon_applied: 100.95,
+                subtotal: 100.95,
+                total: 100.95,
+                total_usd: 0
+            },
+            lineItems: [
+              {
+                id: 159519581,
+                name: 'Camisa Negra',
+                price: '100.95',
+                quantity: 1,
+                free_shipping: false,
+                product_id: 27177360,
+                variant_id: 63612746,
+                thumbnail: '//d26lpennugtm8s.cloudfront.net/stores/781/091/products/camisa-negra.png',
+                variant_values: '',
+                sku: '56868',
+                properties: [],
+                url: 'https://example.mitiendanube.com/productos/camisa-negra/?variant=63612746'
+              }
+            ],
+            currency: 'ARS',
+            currencyFormat: {
+                'short': '$%s',
+                'long': '$%s ARS'
+            },
+            lang: 'es',
+            langCode: 'es_AR',
+            shipping: {
+                type: 'ship',
+                method: 'correo-argentino',
+                option: '1',
+                branch: null,
+                disabled: null,
+                raw_name: 'Correo Argentino - Encomienda Clásica',
+                suboption: null
+            },
+            status: {
+                order: 'open',
+                order_cancellation_reason: null,
+                fulfillment: 'unpacked',
+                payment: 'pending'
+            },
+            completed_at: null
         },
-        {
-          type: 'payment_confirmed',
-          timestamp: null
+        contact: {
+            email: 'johndoe@example.com',
+            name: 'John Doe',
+            phone: '1123456789'
         },
-        {
-          type: 'packed',
-          timestamp: null
+        shippingAddress: {
+            zipcode: '1870',
+            first_name: 'John',
+            last_name: 'Doe',
+            address: '9 de Julio',
+            number: '1234',
+            floor: '',
+            locality: 'Piñeyro',
+            city: 'Avellaneda',
+            state: 'Buenos Aires',
+            country: 'AR',
+            phone: '1123456789',
+            between_streets: '',
+            reference: '',
+            id_number: '213'
         },
-        {
-          type: 'shipped',
-          timestamp: null
-        }
-      ]
+        billingAddress: {
+            zipcode: '1870',
+            first_name: 'John',
+            last_name: 'Doe',
+            address: '9 de Julio',
+            number: '1234',
+            floor: '',
+            locality: 'Piñeyro',
+            city: 'Avellaneda',
+            state: 'Buenos Aires',
+            country: 'AR',
+            phone: '1123456789',
+            between_streets: '',
+            reference: '',
+            id_number: '213'
+        },
+        storeId: 781091
     },
-    storeId: 781091,
-    conversionCode: null,
-    conversionCodeGatewayRedirect: null,
-    purchaseNotifications: {
-      analytics: false,
-      fb_pixel: false
-    },
-    checkout: 'micro-service',
-    theme: 'amazonas',
-    abTests: {
-      zipcode_validation: 'a',
-      new_payment_screen: 'b'
-    },
-    loaded: true
-  },
-  country: 'AR',
-  totalPrice: 20
+    country: 'AR'
 }
 ```
 
@@ -576,7 +466,7 @@ The `callback` function must be invoked with an object containing the following 
 | Name          | Description                                                  |
 | ------------- | ------------------------------------------------------------ |
 | `success`     | If true, the checkout process continues and the order is completed. Otherwise, a customizable error message is shown to the consumer. |
-| `reason_code` | *(Optional)* If `success` is false, the specified error code will be used to provide the user with all the necessary information to allow them to, either correct the problem, or at least understand what went wrong to know what the correct action course is. See [Transaction Failure Codes](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/transaction.md#Transaction-Failure-Codes) and [Checkout Runtime Error Codes](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/checkout.md#Checkout-Runtime-Error-Codes). |
+| `reason_code` | *(Optional)* If `success` is false, the specified error code will be used to provide the user with all the necessary information to allow them to, either correct the problem, or at least understand what went wrong to know what the correct action course is. See [Transaction Failure Codes](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/transaction.md#Transaction-Failure-Codes) and [Checkout Runtime Error Codes](#Checkout-Runtime-Error-Codes). |
 | `message`     | _(Legacy)_ If `success` is false, this message will be displayed to the consumer. |
 | `redirect`    | _(Optional)_ External URL to which the consumer will be redirected to continue the payment process. _(Only for `ExternalPayment()`)._ |
 
@@ -663,16 +553,12 @@ Checkout.setInstallments({
 
 ### Checkout Runtime Error Codes
 
-The following list contains all the runtime error codes currently supported by our platform, which are intented to pass as `reason_code` on the callback of the onSubmit event in case the generation of the redirect URL fails for external checkout integration types, or in case the payment could be even be executed for a transparent integration type.
-consumer_same_as_merchant
-consumer_invalid_credentials
-payment_test_user
-server_error
-server_error_timeout
-### Consumer
+The following list contains all the runtime error codes currently supported by our platform, which are intended to be passed as `reason_code` on the callback of the *onSubmit* event in case the generation of the redirect URL fails for external checkouts, or in case of error in the execution of a transparent payment.
 
-| Failure Code                     | Description                                                  |
-| -------------------------------- | ------------------------------------------------------------ |
-| `consumer_same_as_merchant`      | The redirection failed because the consumers account is the same as the merchant account and the merchant cannot make themself a payment. |
-| `server_error`                   | There is a problem accessing the server which prevents either the execution of the payment or the generation of the redirect url. |
-| `server_error_timeout`           | Same as `server_error` but the reason was due to a timeout condition. |
+| Failure Code                | Description                                                  |
+| --------------------------- | ------------------------------------------------------------ |
+| `consumer_same_as_merchant` | The redirection fails because the consumer account is the same as the merchant account and merchants cannot pay themselves. |
+| `server_error`              | There is a problem accessing the server which prevents either the execution of the payment or the generation of the redirect url. |
+| `server_error_timeout`      | Same as `server_error` but the problem is due to a timeout condition. |
+| `unknown_error`             | An unknown error occurred while trying to process the payment. |
+

@@ -156,7 +156,10 @@ Endpoints
 
 Create a Payment Provider for a given store.
 
-#### Request
+<details>
+  <summary><b>Request</b></summary>
+
+
 
 [Payment Provider Object](#Properties)
 
@@ -319,7 +322,12 @@ E.g.
 }
 ```
 
-#### Response
+</details>
+
+<details>
+  <summary><b>Response</b></summary>
+
+
 
 `HTTP/1.1 201 Created`
 
@@ -333,64 +341,105 @@ E.g.
 
 Unique identifier of the created Payment Provider. 
 
+</details>
+
 ### PUT /payment_providers/{*payment_provider_id*}
 
 Update a Payment Provider for a given store. This is especially useful to update the installments specs.
 
-#### Request
+<details>
+  <summary><b>Request</b></summary>
+
+
 
 [Payment Provider Object](#Properties)
 
-#### Response
+</details>
+
+<details>
+  <summary><b>Response</b></summary>
+
+
 
 `HTTP/1.1 204 No Content` - the request was successful but there is no representation to return (i.e. the response is empty).
+
+</details>
 
 ### GET /payment_providers
 
 Get all Payment Providers for a given store.
 
-#### Request
+<details>
+  <summary><b>Request</b></summary>
+
+
 
 ```json
 {}
 ```
 
-#### Response
+</details>
+
+<details>
+  <summary><b>Response</b></summary>
+
+
 
 `HTTP/1.1 200 OK`
 
 Array of [Payment Provider Objects](#Properties)
 
+</details>
+
 ### GET /payment_providers/{*payment_provider_id*}
 
 Get a specific Payment Provider for a given store.
 
-#### Request
+<details>
+  <summary><b>Request</b></summary>
+
+
 
 ```json
 {}
 ```
 
-#### Response
+</details>
+
+<details>
+  <summary><b>Response</b></summary>
+
+
 
 `HTTP/1.1 200 OK`
 
 [Payment Provider Object](#Properties)
 
+</details>
+
 ### DELETE /payment_providers/{*payment_provider_id*}
 
 Delete a Payment Provider for a given store.
 
-#### Request
+<details>
+  <summary><b>Request</b></summary>
+
+
 
 ```json
 {}
 ```
 
-#### Response
+</details>
+
+<details>
+  <summary><b>Response</b></summary>
+
+
 
 `HTTP/1.1 204 No Content` - the request was successful but there is no representation to return (i.e. the response is empty).
 
+</details>
 
 ## HTTP Errors List
 
