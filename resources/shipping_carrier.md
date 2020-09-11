@@ -546,7 +546,7 @@ Remove a Shipping Carrier Option
 Fulfillment Events 
 ------------------
 
-A Fulfillment Event represents a tracking event belonging to the order's fulfillment. Fulfillment events are displayed on the order tracking page toi give buyers visibility on their shipment status.
+A Fulfillment Event represents a tracking event belonging to the order's fulfillment. Fulfillment events are displayed on the order tracking page to give buyers visibility on their shipment status.
 
 ### GET /orders/#{order_id}/fulfillments
 
