@@ -477,17 +477,27 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
         .then(response => response.json())
         .then(function(responseBody){
           
-          // Once you get the redirect_url, invoke the callback passing it in the     
-          callback({ // object argument with result params.
-            success: true,
-            redirect: responseBody.redirect_url
-          });
+          // Once you get the redirect_url, invoke the callback passing it in the
+          // object argument with result params.
+          if( responseBody.success ){
+            callback({ 
+              success: true,
+              extraAuthorized: true, // Legacy parameter, but currently required with "true" value. Will be deprecrated soon.
+              redirect: responseBody.redirect_url
+            });
+          } else {
+            callback({ 
+              success: false,
+              reason_code: responseBody.failure_code // Check the documentation for a full list of failure and error codes.
+            });
+          }
         })
         .catch(function(error) {
 
           // Handle a potential error in the HTTP request.
           callback({
-            success: false
+            success: false,
+            reason_code: "server_error" // Check the documentation for a full list of failure and error codes.
           });
         });
     }
@@ -596,8 +606,9 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
       }
       // Let's imagine the app provides this endpoint to process credit card payments.
       Checkout.http.post('https://app.acmepayments.com/charge',acmeCardRelevantData)
-        .then(function(response) {
-          if (response.success) {
+        .then(response => response.json())
+        .then(function(responseBody){
+          if (responseBody.success) {
             // If the charge was successful, invoke the callback indicating we want to close order.
             callback({
               success: true
@@ -605,13 +616,15 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
           } else {
             callback({
               success: false
+              reason_code: responseBody.failure_code // Check the documentation for a full list of failure and error codes.
             });
           }
        })
        .catch(function(error) {
          // Handle a potential error in the HTTP request.
          callback({
-           success: false
+           success: false,
+           reason_code: "server_error" // Check the documentation for a full list of failure and error codes.
          });
        });
      }
