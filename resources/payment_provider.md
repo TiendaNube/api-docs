@@ -20,7 +20,8 @@ Properties
 | `id`                        | String        | [Read-only] Unique identifier of the Payment Provider object. |
 | `store_id`                  | Integer       | [Read-only] Id of the store to which the Payment Provider belongs. |
 | `app_id`                    | String        | [Read-only] Id of the app to which the Payment Provider belongs. |
-| `name`                      | String        | Display name which merchants and consumers will see.         |
+| `name`                      | String        | Name to be displayed to merchants at the store admin tool.   |
+| `public_name`               | String        | Name to be displayed to consumers at the storefront.         |
 | `description`               | String        | Short paragraph which provides merchants with a description of the Payment Provider. |
 | `logo_urls`                 | Object        | Object containing `key:value` pair for each version of the logos for the frontend. Only supports HTTPS URLs. See [Logos](#Logos). |
 | `supported_currencies`      | Array(String) | ISO.4217 currency codes supported by the Payment Provider. See [Currency Codes](#Currency-Codes). |
@@ -161,6 +162,7 @@ Create a Payment Provider for a given store.
 
 
 
+
 [Payment Provider Object](#Properties)
 
 E.g.
@@ -168,6 +170,7 @@ E.g.
 ```json
 {
   "name": "My Payments",
+  "public_name": "Pay with My Payments",
   "description": "Some short description for merchants.",
   "logo_urls": {
     "400x120": "https://mypayments.com/logo1.png",
@@ -280,7 +283,7 @@ E.g.
   "checkout_payment_options": [
     {
       "id": "mypayments_transparent_card",
-      "name": "My Payments",
+      "name": "My Payments Card",
       "description": "Some description for transparent card option",
       "logo_url": "https://cdn.mypayments.com/apps/tiendanube/logo.png",
       "supported_billing_countries": [
@@ -293,7 +296,7 @@ E.g.
     },
     {
       "id": "mypayments_transparent_offline",
-      "name": "My Payments",
+      "name": "My Payments Boleto",
       "description": "Some description for transparent offline option",
       "logo_url": "https://cdn.mypayments.com/apps/tiendanube/logo.png",
       "supported_billing_countries": [
@@ -305,8 +308,8 @@ E.g.
     },
     {
       "id": "mypayments_redirect",
-      "name": "My Payments",
-      "description": "Some description for redirect option",
+      "name": "My Payments External",
+      "description": "Some description for external option",
       "logo_url": "https://cdn.mypayments.com/apps/tiendanube/logo.png",
       "supported_billing_countries": [
         "AR",
@@ -326,6 +329,7 @@ E.g.
 
 <details>
   <summary><b>Response</b></summary>
+
 
 
 
@@ -352,12 +356,14 @@ Update a Payment Provider for a given store. This is especially useful to update
 
 
 
+
 [Payment Provider Object](#Properties)
 
 </details>
 
 <details>
   <summary><b>Response</b></summary>
+
 
 
 
@@ -374,6 +380,7 @@ Get all Payment Providers for a given store.
 
 
 
+
 ```json
 {}
 ```
@@ -382,6 +389,7 @@ Get all Payment Providers for a given store.
 
 <details>
   <summary><b>Response</b></summary>
+
 
 
 
@@ -400,6 +408,7 @@ Get a specific Payment Provider for a given store.
 
 
 
+
 ```json
 {}
 ```
@@ -408,6 +417,7 @@ Get a specific Payment Provider for a given store.
 
 <details>
   <summary><b>Response</b></summary>
+
 
 
 
@@ -426,6 +436,7 @@ Delete a Payment Provider for a given store.
 
 
 
+
 ```json
 {}
 ```
@@ -434,6 +445,7 @@ Delete a Payment Provider for a given store.
 
 <details>
   <summary><b>Response</b></summary>
+
 
 
 
