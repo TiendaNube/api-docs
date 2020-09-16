@@ -21,7 +21,7 @@ Properties
 | `store_id`                  | Integer       | [Read-only] Id of the store to which the Payment Provider belongs. |
 | `app_id`                    | String        | [Read-only] Id of the app to which the Payment Provider belongs. |
 | `name`                      | String        | Name to be displayed to merchants at the store admin tool.   |
-| `public_name`               | String        | Name to be displayed to consumers at the storefront.         |
+| `public_name`               | String        | [Optional] Name to be displayed to consumers at the storefront. If not specified, the same value as `name` is used.         |
 | `description`               | String        | Short paragraph which provides merchants with a description of the Payment Provider. |
 | `logo_urls`                 | Object        | Object containing `key:value` pair for each version of the logos for the frontend. Only supports HTTPS URLs. See [Logos](#Logos). |
 | `supported_currencies`      | Array(String) | ISO.4217 currency codes supported by the Payment Provider. See [Currency Codes](#Currency-Codes). |
