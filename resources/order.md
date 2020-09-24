@@ -1327,16 +1327,21 @@ NFe to fulfill a shipment.
 
 To make sure other apps can read the invoice you create, please use this example as-is.
 
+When you are creating an invoice, you have to make sure that you are creating the following `Metafields` to save the NFe data:
+- *NFe Key:* Key generated when created the NFe.
+- *NFe Link:* Link to the NFe XML
+
 ##### POST /metafields
 
-`value` should have the invoice number and `owner_id` should hold the `Order` id.
+`value` should have the field data and `owner_id` should hold the `Order` id.
 
+**NFe Key**
 ```json
 {
     "namespace": "nfe",
-    "key": "number",
-    "value": "NFE_NUMBER",
-    "description": "Número da NFe",
+    "key": "key",
+    "value": "44444444444444444444444444444",
+    "description": "Chave da NFe",
     "owner_resource": "Order",
     "owner_id": 12345678
 }
@@ -1348,9 +1353,38 @@ To make sure other apps can read the invoice you create, please use this example
 {
     "id": 1234,
     "namespace": "nfe",
-    "key": "number",
-    "value": "NFE_NUMBER",
-    "description": "Número da NFe",
+    "key": "key",
+    "value": "44444444444444444444444444444",
+    "description": "Chave da NFe",
+    "owner_resource": "Order",
+    "owner_id": 12345678,
+    "created_at":"2015-01-02 20:27:51",
+    "updated_at":"2015-01-02 20:27:51",
+    "deleted_at":null
+}
+```
+
+**NFe Link**
+```json
+{
+    "namespace": "nfe",
+    "key": "link",
+    "value": "http://nfe.com.br/nsaasa",
+    "description": "Link da NFe",
+    "owner_resource": "Order",
+    "owner_id": 12345678
+}
+```
+
+`HTTP/1.1 201 Created`
+
+```json
+{
+    "id": 1234,
+    "namespace": "nfe",
+    "key": "link",
+    "value": "http://nfe.com.br/nsaasa",
+    "description": "Link da NFe",
     "owner_resource": "Order",
     "owner_id": 12345678,
     "created_at":"2015-01-02 20:27:51",
@@ -1363,16 +1397,31 @@ To make sure other apps can read the invoice you create, please use this example
 
 To read an invoice we need to search for the previously created metafield holding the invoice.
 
-##### GET /metafields/orders?owner_id=ORDER_ID&namespace=nfe&key=number&fields=owner_id,key,value
+**NFe Key**
+
+##### GET /metafields/orders?owner_id=ORDER_ID&namespace=nfe&key=key&fields=owner_id,key,value
 
 `HTTP/1.1 200 OK`
 
 ```json
 {
-    "key": "number",
-    "value": "NFE_NUMBER",
+    "key": "key",
+    "value": "44444444444444444444444444444",
     "owner_id": 12345678
 }
 ```
 
+**NFe Link**
+
+##### GET /metafields/orders?owner_id=ORDER_ID&namespace=nfe&key=link&fields=owner_id,key,value
+
+`HTTP/1.1 200 OK`
+
+```json
+{
+    "key": "link",
+    "value": "http://nfe.com.br/nsaasa",
+    "owner_id": 12345678
+}
+```
 
