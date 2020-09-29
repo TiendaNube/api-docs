@@ -15,7 +15,7 @@ Properties
 | variants       | List of [Product Variant](https://github.com/tiendanube/api-docs/blob/master/resources/product_variant.md) objects representing the different version of the Product |
 | images         | List of [Product Image](https://github.com/tiendanube/api-docs/blob/master/resources/product_image.md) objects representing the Product's images                 |
 | categories     | List of [Category](https://github.com/tiendanube/api-docs/blob/master/resources/category.md) objects representing the Product's categories             |
-| brand .        | The Product's brand                                                                               |
+| brand          | The Product's brand                                                                               |
 | published      | *true* if the Product is published in the store. *false* otherwise                                |
 | free_shipping  | *true* if the Product is elegible for free shipping. *false* otherwise                            |
 | seo_title      | The SEO friendly title for the Product. Up to 70 characters                                       |
@@ -378,7 +378,7 @@ Receive a single Product
 ```
 ### GET /products/sku/{sku}
 
-Returns the first Product found where one of it's variants have the given sku
+Returns the first Product found where one of its variants has the given SKU.
 
 #### GET /products/sku/1234abcd
 
