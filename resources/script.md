@@ -269,7 +269,7 @@ Receive a list of all Scripts.
 ]
 ```
 
-### GET /scripts/#{id}
+### GET /scripts/{id}
 
 Receive a single Script
 
@@ -346,7 +346,7 @@ __A Script will only appear in checkout if the src starts with 'https://' in ord
 }
 ```
 
-### PUT /scripts/#{id}
+### PUT /scripts/{id}
 
 Modify an existing Script
 
@@ -376,7 +376,7 @@ Modify an existing Script
 }
 ```
 
-### DELETE /scripts/#{id}
+### DELETE /scripts/{id}
 
 Remove a Script
 

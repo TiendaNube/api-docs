@@ -274,7 +274,7 @@ Receive a list of all Orders.
 ]
 ```
 
-### GET /orders/#{id}
+### GET /orders/{id}
 
 Receive a single Order
 
@@ -586,7 +586,7 @@ Create an Order.
 }
 ```
 
-### PUT /orders/#{id}
+### PUT /orders/{id}
 
 Change an Order's attributes (just `owner_note` for now) and/or update an Order's status
 
@@ -711,7 +711,7 @@ Change an Order's attributes (just `owner_note` for now) and/or update an Order'
 ```
 
 
-### POST /orders/#{id}/close
+### POST /orders/{id}/close
 
 Close an Order
 
@@ -828,7 +828,7 @@ Close an Order
 }
 ```
 
-### POST /orders/#{id}/open
+### POST /orders/{id}/open
 
 Re-open a closed Order
 
@@ -942,7 +942,7 @@ Re-open a closed Order
 }
 ```
 
-### POST /orders/#{id}/pack
+### POST /orders/{id}/pack
 
 Pack an Order
 
@@ -1059,7 +1059,7 @@ Pack an Order
 }
 ```
 
-### POST /orders/#{id}/fulfill
+### POST /orders/{id}/fulfill
 
 Fulfill an Order
 
@@ -1191,7 +1191,7 @@ Fulfill an Order
 ```
 
 
-### POST /orders/#{id}/cancel
+### POST /orders/{id}/cancel
 
 Cancel an Order
 

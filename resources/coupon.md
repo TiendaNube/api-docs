@@ -292,7 +292,7 @@ Receive a list of all Coupon.
 ]
 ```
 
-### GET /coupons/#{id}
+### GET /coupons/{id}
 
 Receive a single Coupon
 
@@ -378,7 +378,7 @@ Create a new Coupon
 }
 ```
 
-### PUT /coupons/#{id}
+### PUT /coupons/{id}
 
 Modify an existing coupon
 
@@ -410,7 +410,7 @@ Modify an existing coupon
 }
 ```
 
-### DELETE /coupons/#{id}
+### DELETE /coupons/{id}
 
 Delete an existing coupon
 

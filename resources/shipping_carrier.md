@@ -347,7 +347,7 @@ Receive a list of all Shipping Carriers.
 ]
 ```
 
-### GET /shipping_carriers/#{id}
+### GET /shipping_carriers/{id}
 
 Receive a single Shipping Carrier
 
@@ -366,7 +366,7 @@ Receive a single Shipping Carrier
 }
 ```
 
-### PUT /shipping_carriers/#{id}
+### PUT /shipping_carriers/{id}
 
 Modify an existing Shipping Carrier
 
@@ -395,7 +395,7 @@ Modify an existing Shipping Carrier
 }
 ```
 
-### DELETE /shipping_carriers/#{id}
+### DELETE /shipping_carriers/{id}
 
 Remove a Shipping Carrier
 
@@ -407,7 +407,7 @@ Remove a Shipping Carrier
 {}
 ```
 
-### POST /shipping_carriers/#{carrier_id}/options
+### POST /shipping_carriers/{carrier_id}/options
 
 Create a new Shipping Carrier Option
 
@@ -445,7 +445,7 @@ Create a new Shipping Carrier Option
 }
 ```
 
-### GET /shipping_carriers/#{carrier_id}/options
+### GET /shipping_carriers/{carrier_id}/options
 
 Receive a list of all Shipping Carriers Options.
 
@@ -479,7 +479,7 @@ Receive a list of all Shipping Carriers Options.
 ]
 ```
 
-### GET /shipping_carriers/#{carrier_id}/options/#{option_id}
+### GET /shipping_carriers/{carrier_id}/options/{option_id}
 
 Receive a single Shipping Carrier Option.
 
@@ -501,7 +501,7 @@ Receive a single Shipping Carrier Option.
 }
 ```
 
-### PUT /shipping_carriers/#{carrier_id}/options/#{option_id}
+### PUT /shipping_carriers/{carrier_id}/options/{option_id}
 
 Modify an existing Shipping Carrier Option.
 
@@ -531,7 +531,7 @@ Modify an existing Shipping Carrier Option.
 }
 ```
 
-### DELETE /shipping_carriers/#{carrier_id}/options/#{option_id}
+### DELETE /shipping_carriers/{carrier_id}/options/{option_id}
 
 Remove a Shipping Carrier Option
 
@@ -548,7 +548,7 @@ Fulfillment Events
 
 A Fulfillment Event represents a tracking event belonging to the order's fulfillment. Fulfillment events are displayed on the order tracking page to give buyers visibility on their shipment status.
 
-### GET /orders/#{order_id}/fulfillments
+### GET /orders/{order_id}/fulfillments
 
 Receive a list of all Fulfillment Events for an order.
 
@@ -585,7 +585,7 @@ Receive a list of all Fulfillment Events for an order.
 ]
 ```
 
-### GET /orders/#{order_id}/fulfillments/#{id}
+### GET /orders/{order_id}/fulfillments/{id}
 
 Receive a single Fulfillment Event
 
@@ -609,7 +609,7 @@ Receive a single Fulfillment Event
 }
 ```
 
-### POST /orders/#{order_id}/fulfillments
+### POST /orders/{order_id}/fulfillments
 
 Create a new Fulfillment Event
 
@@ -674,7 +674,7 @@ Valid status are:
 }
 ```
 
-### DELETE /orders/${order_id}/fulfillments/#{id}
+### DELETE /orders/${order_id}/fulfillments/{id}
 
 Remove a Fulfillment Event
 

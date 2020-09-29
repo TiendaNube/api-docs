@@ -23,7 +23,7 @@ Properties
 Endpoints
 ---------
 
-### GET /products/#{product_id}/images
+### GET /products/{product_id}/images
 
 Receive a list of all Product Images for a given product.
 
@@ -96,7 +96,7 @@ Receive a list of all Product Images for a given product.
 ]
 ```
 
-### GET /products/#{product_id}/images
+### GET /products/{product_id}/images
 
 Receive a single Product Image
 
@@ -119,7 +119,7 @@ Receive a single Product Image
 }
 ```
 
-### POST /products/#{product_id}/images
+### POST /products/{product_id}/images
 
 Create a new Product Image
 
@@ -203,7 +203,7 @@ CQA7"
 }
 ```
 
-### PUT /products/#{product_id}/images/#{id}
+### PUT /products/{product_id}/images/{id}
 
 Modify an existing Product Image
 
@@ -231,7 +231,7 @@ Modify an existing Product Image
 }
 ```
 
-### DELETE /products/#{product_id}/images/#{id}
+### DELETE /products/{product_id}/images/{id}
 
 Remove a Product Image
 

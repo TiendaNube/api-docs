@@ -35,9 +35,9 @@ Properties
 Endpoints
 ---------
 
-### GET /metafields/#{owner_resource}
+### GET /metafields/{owner_resource}
 
-* #{owner_resource} examples are: products, product_variants, categories and pages
+* {owner_resource} examples are: products, product_variants, categories and pages
 
 Receive a list of all metafield.
 
@@ -113,7 +113,7 @@ Receive a list of all metafield.
 ]
 ```
 
-### GET /metafields/#{id}
+### GET /metafields/{id}
 
 Receive a single metafield
 
@@ -179,7 +179,7 @@ Create a new metafield
 }
 ```
 
-### PUT /metafields/#{id}
+### PUT /metafields/{id}
 
 Modify an existing metafield. You can update the metafield value or/and the description associated.
 
@@ -209,7 +209,7 @@ Modify an existing metafield. You can update the metafield value or/and the desc
 }
 ```
 
-### DELETE /metafields/#{id}
+### DELETE /metafields/{id}
 
 Delete an existing metafield
 

@@ -165,7 +165,7 @@ Receive a list of all Webhooks for your application.
 ]
 ```
 
-### GET /webhooks/#{id}
+### GET /webhooks/{id}
 
 Receive a single Webhook
 
@@ -234,7 +234,7 @@ Create a new Webhook
 }
 ```
 
-### PUT /webhooks/#{id}
+### PUT /webhooks/{id}
 
 Modify an existing Webhook
 
@@ -262,7 +262,7 @@ Modify an existing Webhook
 }
 ```
 
-### DELETE /webhooks/#{id}
+### DELETE /webhooks/{id}
 
 Remove a Webhook
 

@@ -89,7 +89,7 @@ Receive a list of all Categories.
 ]
 ```
 
-### GET /categories/#{id}
+### GET /categories/{id}
 
 Receive a single Category
 
@@ -188,7 +188,7 @@ Create a new Category
 }
 ```
 
-### PUT /categories/#{id}
+### PUT /categories/{id}
 
 Modify an existing Category
 
@@ -228,7 +228,7 @@ Modify an existing Category
 }
 ```
 
-### DELETE /categories/#{id}
+### DELETE /categories/{id}
 
 Remove a Category
 

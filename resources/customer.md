@@ -246,7 +246,7 @@ Receive a list of all Customers.
 ]
 ```
 
-### GET /customers/#{id}
+### GET /customers/{id}
 
 Receive a single Customer
 
@@ -413,7 +413,7 @@ Create a new Customer
 }
 ```
 
-### PUT /customers/#{id}
+### PUT /customers/{id}
 
 Modify an existing Customer
 

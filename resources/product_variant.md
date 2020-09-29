@@ -28,7 +28,7 @@ Properties
 Endpoints
 ---------
 
-### GET /products/#{product_id}/variants
+### GET /products/{product_id}/variants
 
 Receive a list of all Product Variants for a given product.
 
@@ -166,7 +166,7 @@ Receive a list of all Product Variants for a given product.
 ]
 ```
 
-### GET /products/#{product_id}/variants/#{id}
+### GET /products/{product_id}/variants/{id}
 
 Receive a single Product Variant
 
@@ -202,7 +202,7 @@ Receive a single Product Variant
 }
 ```
 
-### POST /products/#{product_id}/variants
+### POST /products/{product_id}/variants
 
 Create a new Product Variant
 
@@ -245,7 +245,7 @@ Create a new Product Variant
 }
 ```
 
-### PUT /products/#{product_id}/variants/#{id}
+### PUT /products/{product_id}/variants/{id}
 
 Modify an existing Product Variant
 
@@ -301,7 +301,7 @@ Modify an existing Product Variant
 }
 ```
 
-### PATCH /products/#{product_id}/variants
+### PATCH /products/{product_id}/variants
 
 Partially update a `ProductVariant` collection. This endpoint allows to modify many existing `ProductVariant`s that belong to the given `Product`.
 
@@ -317,7 +317,7 @@ Each `ProductVariant` in the request body must:
 
 * include the `ProductVariant` ID, set in the field `id`
 * correspond to an existing `ProductVariant` with same ID than the one set in the field `id` 
-* belong to the `Product` which ID is set in `#{product_id}` in the URL
+* belong to the `Product` which ID is set in `{product_id}` in the URL
 * have a unique combination of `values` among all `ProductVariant`s of the `Product` (either `ProductVariant`s included in the request or previously persisted). 
 
 
@@ -343,7 +343,7 @@ If any of the above preconditions is not met, the response:
 #### HTTP status code
 
 `200`: All `ProductVariant`s in the request have been updated. Complete updated `ProductVariant` collection is returned.
-`404`: `Product` with ID `#{product_id}` was not found.
+`404`: `Product` with ID `{product_id}` was not found.
 `422`: Changes are not processable because some of the above preconditions has not been met.
 
 
@@ -424,7 +424,7 @@ If any of the above preconditions is not met, the response:
 ```
 
 
-### DELETE /products/#{product_id}/variants/#{id}
+### DELETE /products/{product_id}/variants/{id}
 
 Remove a Product Variant
 
