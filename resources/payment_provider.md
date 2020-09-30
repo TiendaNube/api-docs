@@ -21,7 +21,7 @@ Properties
 | `store_id`                  | Integer       | [Read-only] Id of the store to which the Payment Provider belongs. |
 | `app_id`                    | String        | [Read-only] Id of the app to which the Payment Provider belongs. |
 | `name`                      | String        | Name to be displayed to merchants at the store admin tool.   |
-| `public_name`               | String        | [Optional] Name to be displayed to consumers at the storefront. If not specified, the same value as `name` is used.         |
+| `public_name`               | String        | [Optional] Name to be displayed to consumers at the storefront. If not specified, the same value as `name` is used. |
 | `description`               | String        | Short paragraph which provides merchants with a description of the Payment Provider. |
 | `logo_urls`                 | Object        | Object containing `key:value` pair for each version of the logos for the frontend. Only supports HTTPS URLs. See [Logos](#Logos). |
 | `supported_currencies`      | Array(String) | ISO.4217 currency codes supported by the Payment Provider. See [Currency Codes](#Currency-Codes). |
@@ -32,7 +32,7 @@ Properties
 | `support_url`               | String        | [Optional] Payment Provider support site HTTPS URL.          |
 | `rates`                     | Array(Object) | [Optional] List of rates definitions for merchants by payment method type. See [Rates](#Rates). |
 | `rates_url`                 | String        | [Optional] HTTPS URL of the Payment Provider's rate information site. |
-| `enabled`                   | Boolean       | [Read-only] Indicates whether Payment Provider is enabled in the store. |
+| `enabled`                   | Boolean       | [Optional] Indicates whether the Payment Provider is activated or deactivated in the store. Defaults to `true`. |
 
 > ***Note:*** All URLs must be secure URLs (https).
 
@@ -159,6 +159,7 @@ Create a Payment Provider for a given store.
 
 <details>
   <summary><b>Request</b></summary>
+
 
 
 
@@ -321,7 +322,8 @@ E.g.
         "wallet"
       ]
     }
-  ]
+  ],
+  "enabled": true
 }
 ```
 
@@ -329,6 +331,7 @@ E.g.
 
 <details>
   <summary><b>Response</b></summary>
+
 
 
 
@@ -357,12 +360,14 @@ Update a Payment Provider for a given store. This is especially useful to update
 
 
 
+
 [Payment Provider Object](#Properties)
 
 </details>
 
 <details>
   <summary><b>Response</b></summary>
+
 
 
 
@@ -381,6 +386,7 @@ Get all Payment Providers for a given store.
 
 
 
+
 ```json
 {}
 ```
@@ -389,6 +395,7 @@ Get all Payment Providers for a given store.
 
 <details>
   <summary><b>Response</b></summary>
+
 
 
 
@@ -409,6 +416,7 @@ Get a specific Payment Provider for a given store.
 
 
 
+
 ```json
 {}
 ```
@@ -417,6 +425,7 @@ Get a specific Payment Provider for a given store.
 
 <details>
   <summary><b>Response</b></summary>
+
 
 
 
@@ -437,6 +446,7 @@ Delete a Payment Provider for a given store.
 
 
 
+
 ```json
 {}
 ```
@@ -445,6 +455,7 @@ Delete a Payment Provider for a given store.
 
 <details>
   <summary><b>Response</b></summary>
+
 
 
 
