@@ -1,7 +1,7 @@
 Webhook
 =======
 
-A Webhook is a tool that allows you to receive a notification for a certain event. It allows you to register an *http* or *https* URL which will receive the event data, stored in JSON. Webhooks can be registered for the following events:
+A Webhook is a tool that allows you to receive a notification for a certain event. It allows you to register an *https* URL which will receive the event data, stored in JSON. Webhooks can be registered for the following events:
 
 | Category       | Events                                                                                           |
 | -------------- | ------------------------------------------------------------------------------------------------ |
@@ -26,7 +26,7 @@ Properties
 | Property       | Explanation                                                                                      |
 | -------------- | ------------------------------------------------------------------------------------------------ |
 | id             | The unique numeric identifier for the Webhook                                                    |
-| url            | The URL where the webhook should send the POST request when the event occurs. *Must be HTTPS*.   |
+| url            | The URL where the webhook should send the POST request when the event occurs. **Must be HTTPS**. |
 | event          | The event that will trigger the webhook                                                          |
 | created_at     | Date when the Webhook was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)    | 
 | updated_at     | Date when the Webhook was last updated in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)|
