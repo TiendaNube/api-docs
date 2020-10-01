@@ -26,7 +26,7 @@ Properties
 | Property       | Explanation                                                                                      |
 | -------------- | ------------------------------------------------------------------------------------------------ |
 | id             | The unique numeric identifier for the Webhook                                                    |
-| url            | The URL where the webhook should send the POST request when the event occurs.                    |
+| url            | The URL where the webhook should send the POST request when the event occurs. *Must be HTTPS*.   |
 | event          | The event that will trigger the webhook                                                          |
 | created_at     | Date when the Webhook was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)    | 
 | updated_at     | Date when the Webhook was last updated in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)|
@@ -65,30 +65,30 @@ When doing the POST request, all webhooks will send the following parameters in 
 
 Also, every webhook will send custom parameters, as follows:
 
-#### app/uninstalled
+#### app/uninstalled
 
-* __id__: App's id
+* __id__: App's id.
 
-#### category/created - category/updated - category/deleted
+#### category/created - category/updated - category/deleted
 
-* __id__: Category's id
+* __id__: Category's id.
 
-#### order/created - order/updated - order/paid - order/packed - order/fulfilled - order/cancelled
+#### order/created - order/updated - order/paid - order/packed - order/fulfilled - order/cancelled
 
-* __id__: Order's id
+* __id__: Order's id.
 
-#### product/created - product/updated - product/deleted
+#### product/created - product/updated - product/deleted
 
-* __id__: Product's id
+* __id__: Product's id.
 
-#### domain/updated
+#### domain/updated
 
-* no additional parameter is sent along with this event. To get the list of domains one may refer to [Store](https://github.com/tiendanube/api-docs/blob/master/resources/store.md) resources.
+No additional parameter is sent along with this event. To get the list of domains one may refer to [Store](https://github.com/tiendanube/api-docs/blob/master/resources/store.md) resources.
 
-#### theme/updated
+#### theme/updated
 
-* __old_theme__: Old Theme's code
-* __new_theme__: New Theme's code
+* __old_theme__: Old Theme's code.
+* __new_theme__: New Theme's code.
 
 #### Example webhook content
 
@@ -137,14 +137,14 @@ Receive a list of all Webhooks for your application.
       "event": "app/uninstalled",
       "id": 101,
       "updated_at": "2013-03-11T09:14:11-03:00",
-      "url": "http://myapp.com/uninstall"
+      "url": "https://myapp.com/uninstall"
     },
     {
       "created_at": "2013-04-07T09:11:51-03:00",
       "event": "order/created",
       "id": 5670,
       "updated_at": "2013-04-08T11:11:51-03:00",
-      "url": "http://myapp.com/order_created_hook"
+      "url": "https://myapp.com/order_created_hook"
     }
 ]
 ```
@@ -160,7 +160,7 @@ Receive a list of all Webhooks for your application.
       "event": "order/created",
       "id": 5670,
       "updated_at": "2013-04-08T11:11:51-03:00",
-      "url": "http://myapp.com/order_created_hook"
+      "url": "https://myapp.com/order_created_hook"
     }
 ]
 ```
@@ -183,7 +183,7 @@ Receive a single Webhook
   "event": "order/created",
   "id": 5670,
   "updated_at": "2013-04-08T11:11:51-03:00",
-  "url": "http://myapp.com/order_created_hook"
+  "url": "https://myapp.com/order_created_hook"
 }
 ```
 
@@ -218,7 +218,7 @@ Create a new Webhook
 ```json
 {
   "event": "product/created",
-  "url": "http://myapp.com/product_created_hook"
+  "url": "https://myapp.com/product_created_hook"
 }
 ```
 
@@ -230,7 +230,7 @@ Create a new Webhook
     "event": "product/created",
     "id": 8901,
     "updated_at": "2013-06-01T15:12:15-03:00",
-    "url": "http://myapp.com/product_created_hook"
+    "url": "https://myapp.com/product_created_hook"
 }
 ```
 
@@ -246,7 +246,7 @@ Modify an existing Webhook
   "event": "category/created",
   "id": 5670,
   "updated_at": "2013-04-08T11:11:51-03:00",
-  "url": "http://myapp.com/category_created_hook"
+  "url": "https://myapp.com/category_created_hook"
 }
 ```
 
@@ -258,7 +258,7 @@ Modify an existing Webhook
   "event": "category/created",
   "id": 5670,
   "updated_at": "2013-06-01T12:11:14-03:00",
-  "url": "http://myapp.com/category_created_hook"
+  "url": "https://myapp.com/category_created_hook"
 }
 ```
 
