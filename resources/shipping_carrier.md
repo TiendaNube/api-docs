@@ -12,8 +12,8 @@ Shipping Carrier Properties
 | ------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
 | id                 | The unique numeric identifier for the Shipping Carrier.                                                                       |
 | name               | The name of the Shipping Carrier as seen by both merchants and buyers.                                                        |
-| callback_url       | The URL endpoint that we need to retrieve shipping rates. Must be HTTPS.                                                      |
-| types | The supported shipping types, can be one or both _ship_ or _pickup_. |
+| callback_url       | The URL endpoint that we need to retrieve shipping rates. **Must be HTTPS.**                                                  |
+| types              | The supported shipping types, can be one or both _ship_ or _pickup_.                                                          |
 | active             | Whether this Shipping Carrier is active.                                                                                      |
 | created_at         | Date when the Shipping Carrier was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601).                       | 
 | updated_at         | Date when the Shipping Carrier was last updated in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601).                  |
