@@ -5,11 +5,13 @@ The Script resource allows the app to register custom Javascript to be run in th
 
 You should have the following things into consideration:
 
+* Scripts **must be served over HTTPS**.
+
 * You cannot depend of any JavaScript available in the store's theme. Not even jQuery.
 
 * Another applications may be installed and can include other JavaScript in addition to yours.
 
-* When we include your script in the store, we will send a `store` parameter with the store id (e.g. `<script type="text/javascript" src="http://myapp.com/new.js?store=1234"></script>`). 
+* When we include your script in the store, we will send a `store` parameter with the store id (e.g. `<script type="text/javascript" src="https://myapp.com/new.js?store=1234"></script>`). 
 
 
 Ideally, your javascript should be inside a closure to avoid any conflict:
@@ -28,7 +30,7 @@ If you are going to use jQuery, you should load it in your JS using `jQuery.noCo
 var loadScript = function(url, callback){
 
   /* JavaScript that will load the jQuery library on Google's CDN.
-     We recommend this code: http://snipplr.com/view/18756/loadscript/.
+     We recommend this code: https://snipplr.com/view/18756/loadscript/.
      Once the jQuery library is loaded, the callback function will be executed. */
 
 };
@@ -187,8 +189,8 @@ Properties
 | src            | Specifies the location of the Script                                                             |
 | event          | DOM event which triggers the loading of the script. Valid values are **onload** (default)        |
 | where          | A comma-separated list of places where the javascript will run. Valid values are **store** (default) or **checkout** |
-| created_at     | Date when the Script was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)     | 
-| updated_at     | Date when the Script was last updated in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)|
+| created_at     | Date when the Script was created in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601)     | 
+| updated_at     | Date when the Script was last updated in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601)|
 
 Endpoints
 ---------
@@ -201,11 +203,11 @@ Receive a list of all Scripts.
 | Parameter      | Explanation                                                                                      |
 | -------------- | ------------------------------------------------------------------------------------------------ |
 | since_id       | Restrict results to after the specified ID                                                       |
-| src            | Show Scripts with a given URL                                                                |
-| created_at_min | Show Scripts created after date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))       |
-| created_at_max | Show Scripts created before date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))      |
-| updated_at_min | Show Scripts last updated after date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))  |
-| updated_at_max | Show Scripts last updated before date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)) |
+| src            | Show Scripts with a given URL. **Must be HTTPS**.                                                |
+| created_at_min | Show Scripts created after date ([ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601))      |
+| created_at_max | Show Scripts created before date ([ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601))     |
+| updated_at_min | Show Scripts last updated after date ([ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601)) |
+| updated_at_max | Show Scripts last updated before date ([ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601))|
 | page           | Page to show                                                                                     |
 | per_page       | Amount of results                                                                                |
 | fields         | Comma-separated list of fields to include in the response                                        |
@@ -296,8 +298,6 @@ Receive a single Script
 
 Create a new Script.
 
-__A Script will only appear in checkout if the src starts with 'https://' in order not to break the SSL lock.__
-
 #### POST /scripts
 
 ```json
@@ -340,7 +340,7 @@ __A Script will only appear in checkout if the src starts with 'https://' in ord
     "created_at": "2013-06-01T15:12:15-03:00",
     "event": "onload",
     "id": 8901,
-    "src": "http://myapp.com/new.js",
+    "src": "https://myapp.com/new.js",
     "updated_at": "2013-06-01T15:12:15-03:00",
     "where": "store"
 }
