@@ -183,11 +183,11 @@ LS.order = {
 Properties
 ----------
 
-| Property       | Explanation                                                                                      |
-| -------------- | ------------------------------------------------------------------------------------------------ |
-| id             | The unique numeric identifier for the Script                                                     |
-| src            | Specifies the location of the Script                                                             |
-| event          | DOM event which triggers the loading of the script. Valid values are **onload** (default)        |
+| Property       | Explanation                                                                                       |
+| -------------- | ------------------------------------------------------------------------------------------------- |
+| id             | The unique numeric identifier for the Script                                                      |
+| src            | Specifies the location of the Script. **Must be HTTPS**.                                          |
+| event          | DOM event which triggers the loading of the script. Valid values are **onload** (default)         |
 | where          | A comma-separated list of places where the javascript will run. Valid values are **store** (default) or **checkout** |
 | created_at     | Date when the Script was created in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601)     | 
 | updated_at     | Date when the Script was last updated in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601)|
@@ -203,7 +203,7 @@ Receive a list of all Scripts.
 | Parameter      | Explanation                                                                                      |
 | -------------- | ------------------------------------------------------------------------------------------------ |
 | since_id       | Restrict results to after the specified ID                                                       |
-| src            | Show Scripts with a given URL. **Must be HTTPS**.                                                |
+| src            | Show Scripts with a given URL                                                                    |
 | created_at_min | Show Scripts created after date ([ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601))      |
 | created_at_max | Show Scripts created before date ([ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601))     |
 | updated_at_min | Show Scripts last updated after date ([ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601)) |
