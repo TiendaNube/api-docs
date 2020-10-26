@@ -462,6 +462,12 @@ For each of the transparent payment options, the following extra input fields ca
 
 > No including an input field on this object is enough to prevent it from rendering. It's not necessary to set it as `false`.
 
+###### For all payment options:
+
+| Name              | Description          |
+| ----------------- | -------------------- |
+| `billing_address` | Billing information. |
+
 
 
 ##### onSubmit
