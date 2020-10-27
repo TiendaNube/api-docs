@@ -345,7 +345,7 @@ E.g.
     "special_rates",
     "transparent_checkout",
     "gateway"
-  ]
+  ],
   "enabled": true
 }
 ```
