@@ -129,13 +129,13 @@ Payment Providers may charge merchants with different rates per Transaction depe
 
 ### Features
 
-Payment Providers can specify the list of functionalities of the service that they offer to the merchant. This  will be displayed in the list of available payment applications together with the description of the Payment Provider in order to provide more detail about the application's characteristics.
+Payment Providers can specify the list of functionalities of the service that they offer to the merchant. This will be displayed in the list of available payment applications together with the description of the Payment Provider in order to provide more detail about the application's characteristics.
 
 | Field      | Type          | Description                                                  |
 | :--------- | :------------ | :----------------------------------------------------------- |
-| `features` | Array(String) | List of payment provider's features. See [Feature Values](#Feature-Values) section below. |
+| `features` | Array(String) | List of payment provider's features. See [Supported Feature Values](#Supported-Feature-Values) below. |
 
-#### Feature Values
+#### Supported Feature Values
 
 | Feature                           | Description                               |
 | --------------------------------- | ----------------------------------------- |
