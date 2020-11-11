@@ -32,6 +32,7 @@ Properties
 | `support_url`               | String        | [Optional] Payment Provider support site HTTPS URL.          |
 | `rates`                     | Array(Object) | [Optional] List of rates definitions for merchants by payment method type. See [Rates](#Rates). |
 | `rates_url`                 | String        | [Optional] HTTPS URL of the Payment Provider's rate information site. |
+| `features`                  | Array(String) | [Optional] List of payment provider's features. See [Features](#Features). |
 | `enabled`                   | Boolean       | [Optional] Indicates whether the Payment Provider is activated or deactivated in the store. Defaults to `true`. |
 
 > ***Note:*** All URLs must be secure URLs (https).
@@ -125,6 +126,23 @@ Payment Providers may charge merchants with different rates per Transaction depe
 | `days_to_withdraw_money` | Integer | Days since Transaction creation until de merchant can withdraw the money. |
 | `flat_fee`               | Object  | [Optional] Object containing the flat fee charged per payment. See [Money](#Money). |
 | `plus_tax`               | Boolean | [Optional] Indicates whether VAT will be added to the specified rates. |
+
+### Features
+
+Payment Providers can specify the list of functionalities of the service that they offer to the merchant. This will be displayed in the list of available payment applications together with the description of the Payment Provider in order to provide more detail about the application's characteristics.
+
+| Field      | Type          | Description                                                  |
+| :--------- | :------------ | :----------------------------------------------------------- |
+| `features` | Array(String) | List of payment provider's features. See [Supported Feature Values](#Supported-Feature-Values) below. |
+
+#### Supported Feature Values
+
+| Feature                           | Description                               |
+| --------------------------------- | ----------------------------------------- |
+| `special_rates`                   | Exclusive rates for Tiendanube customers. |
+| `transparent_checkout`            | Transparent checkout.                     |
+| `supports_international_payments` | International sales.                      |
+| `gateway`                         | Gateway.                                  |
 
 ### Checkout Options
 
@@ -322,6 +340,11 @@ E.g.
         "wallet"
       ]
     }
+  ],
+  "features": [
+    "special_rates",
+    "transparent_checkout",
+    "gateway"
   ],
   "enabled": true
 }
