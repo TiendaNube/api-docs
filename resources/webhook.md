@@ -102,7 +102,7 @@ No additional parameter is sent along with this event. To get the list of domain
 
 ### Retry policies
 
-A webhook notification expects a 200 status code in response (40 seconds timeout). If this does not happen (it gets another response code or no response at all) we will retry to deliver the notification 14 times along the next three days in incremental lapses of time. After this, the notification is lost.
+A webhook notification expects a 200 status code in response (40 seconds timeout). If this does not happen (it gets another response code or no response at all) we will try to deliver the notification up to 17 times (a success response code will stop next notifications) along the next two days in incremental lapses of time. After this, the notification is lost.
 
 Endpoints
 ---------
