@@ -69,8 +69,8 @@ Properties
 | billing_city               | Billing city for the order                                                                                                                                                  |
 | billing_province           | Billing province for the order                                                                                                                                              |
 | billing_country            | Billing country code for the order                                                                                                                                          |
-| extra                      | A JSON object containing custom information. Can be set via the API or through custom form fields of name "extra[key]" on the cart's checkout form in the storefront.       |
-| storefront                 | Origin of the order. Possible values are "store" (order created in the storefront), "meli" (order imported from Mercado Libre) or "api" (order created via API).        |                                        
+| extra                      | A JSON object containing custom information. Can be set via the API or through custom form fields of name "extra[key]" on the cart's checkout form in the storefront       |
+| storefront                 | Origin of the order. Possible values are "store" (order created in the storefront), "meli" (order imported from Mercado Libre) or "api" (order created via API)        |                                        
 | weight                     | Order's total weight, in kilograms                                                                                                                                          |
 | status                     | Order's status. Possible values are "open", "closed" or "cancelled"                                                                                                         |
 | payment_status             | Order's payment status. Possible values are "authorized", "pending", "paid", "abandoned", "refunded" or "voided"                                                            |
