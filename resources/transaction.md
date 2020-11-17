@@ -32,7 +32,7 @@ All `Transaction` types have the same attributes, but may generate different kin
 | Field  | Type   | Description                                                  |
 | ------ | ------ | ------------------------------------------------------------ |
 | `type` | String | One of the available [Payment Method Types](payment_provider.md#Payment-Method-Types). |
-| `id`   | String | [Optional for `wallet` and `cash`] ID of the payment method used for this Transaction. See [Supported Payment Methods by Payment Method Type](payment_provider.md#Supported-Payment-Methods-by-Payment-Method-Type). |
+| `id`   | String | [Optional for `cash`, `pix` and `wallet`] ID of the payment method used for this Transaction. See [Supported Payment Methods by Payment Method Type](payment_provider.md#Supported-Payment-Methods-by-Payment-Method-Type). |
 
 ### Transaction Info
 
@@ -162,7 +162,7 @@ The following table shows the Transaction Event Types supported for each *paymen
 | Payment Method Type                                          | Transaction Event Type                                       |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | `credit_card`                                                | `sale`, `authorization`, `capture`, `in_fraud_analysis`, `needs_merchant_review`, `void`, `refund` |
-| `bank_debit`, `boleto`, `cash`, `debit_card`, `ticket`, `wallet`, `wire_transfer` | `sale`, `refund`                                             |
+| `bank_debit`, `boleto`, `cash`, `debit_card`, `pix`, `ticket`, `wallet`, `wire_transfer` | `sale`, `refund`                                             |
 
 ### Transaction Status Workflow
 
