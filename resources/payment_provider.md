@@ -70,6 +70,7 @@ There are many companies providing payment methods of different types. Currently
 | `cash`              | Transaction in which the consumer uses cash as payment method. |
 | `credit_card`       | Transaction in which the consumer uses a credit card as payment method (E.g. VISA, Mastercard, AMEX). |
 | `debit_card`        | Transaction in which the consumer uses a debit card as payment method (E.g. VISA Debit, Maestro). |
+| `pix`               | Transaction in which the consumer uses PIX as payment method. PIX is a Brazilian payment method based on transfers between financial institutions. |
 | `ticket`            | Transaction in which the consumer uses a ticket as payment method. This ticket can be paid through a non-bank collection channel (E.g. Rapipago, Pago Fácil, OXXO). |
 | `wallet`            | Transaction in which the consumer uses a wallet as payment method. A wallet is an application that allows you to transfer money. |
 | `wire_transfer`     | Transaction in which the consumer uses a wire transfer as payment method. |
@@ -510,6 +511,7 @@ The following is the list of payment method IDs by payment method type currently
 | `cash`              | `cash`                                                       |
 | `credit_card`       | `amex`, `argencard`, `aura`, `cabal`, `cordial`, `cordobesa`, `diners`, `discover`, `elo`, `falabella`, `hiper`, `hipercard`, `hsbc_access_now`, `magna`, `mastercard`, `nativa`, `oi_paggo`, `provencred`, `rebanking`, `tarjeta_naranja`, `tarjeta_saenz`, `tarjeta_shopping`, `tarjeta_walmart`, `visa` |
 | `debit_card`        | `cabal_debit`, `maestro`, `visa_debit`, `vr-beneficios`, `sodexo`, `alelo` |
+| `pix`               | `pix`                                                        |
 | `ticket`            | ` efecty`, ` oxxo`, `  pagofacil`, `rapipago`, ` servipag`, `seven_eleven`, `via_baloto` |
 | `wallet`            | `wallet`                                                     |
 | `wire_transfer`     | `banelco`,  `link`,  `provincia_net`,  `pse`                 |

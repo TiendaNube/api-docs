@@ -32,7 +32,7 @@ All `Transaction` types have the same attributes, but may generate different kin
 | Field  | Type   | Description                                                  |
 | ------ | ------ | ------------------------------------------------------------ |
 | `type` | String | One of the available [Payment Method Types](payment_provider.md#Payment-Method-Types). |
-| `id`   | String | [Optional for `wallet` and `cash`] ID of the payment method used for this Transaction. See [Supported Payment Methods by Payment Method Type](payment_provider.md#Supported-Payment-Methods-by-Payment-Method-Type). |
+| `id`   | String | [Optional for `cash`, `pix` and `wallet`] ID of the payment method used for this Transaction. See [Supported Payment Methods by Payment Method Type](payment_provider.md#Supported-Payment-Methods-by-Payment-Method-Type). |
 
 ### Transaction Info
 
@@ -41,13 +41,13 @@ This object is used to indicate specific information of a Transaction. It can be
 | Field                          | Type   | Description                                                  |
 | ------------------------------ | ------ | ------------------------------------------------------------ |
 | `card`                         | Object | [Optional] Object containing data related to the consumer's credit or debit card. See [Card Info](#Card-Info). |
-| `installments`                 | Object | [Optional - Only for `credit_card`] Object containing the installments data related to this Transaction. See [Installments Info](#Installments-Info). |
+| `installments`                 | Object | [Required for `credit_card`] Object containing the installments data related to this Transaction. See [Installments Info](#Installments-Info). |
 | `integration_type`             | String | One of the available [Transaction Integration Types](#Transaction-Integration-Types). |
 | `external_id`                  | String | [Optional] ID used by the Payment Provider.                  |
 | `external_url`                 | String | [Optional] HTTPS URL with details of this Transaction for the merchant. |
-| `external_resource_url`        | String | [Optional - Only for `boleto`, `ticket`, `wire_transfer` and `bank_debit`] HTTPS URL of the boleto or ticket to show to the consumer to resume the payment. In the case of bank debit and wire transfer, link to the bank selected by the consumer to make the transaction. |
-| `external_resource_code`       | String | [Optional - Only for `boleto`, `ticket`, `wire_transfer` and `bank_debit`] Barcode for boleto, or code for ticket. For all other cases, used as a reference code for the consumer. |
-| `external_resource_expires_at` | Date   | [Optional - Only for `boleto` and `ticket`] ISO 8601 date for the expiration date of a boleto or ticket. |
+| `external_resource_url`        | String | [Required for `boleto`, `ticket`, `wire_transfer` and `bank_debit`] HTTPS URL of the boleto or ticket to show to the consumer to resume the payment. In the case of bank debit and wire transfer, link to the bank selected by the consumer to make the transaction. |
+| `external_resource_code`       | String | [Required for `boleto`, `ticket`, `wire_transfer` and `bank_debit`] Barcode for boleto, or code for ticket. For all other cases, used as a reference code for the consumer. |
+| `external_resource_expires_at` | Date   | [Required for `boleto` and `ticket`] ISO 8601 date for the expiration date of a boleto or ticket. |
 | `ip`                           | String | [Optional] IP of the device that initiated this Transaction. |
 
 > ***Note:*** All URLs must be secure URLs (https).
@@ -162,7 +162,7 @@ The following table shows the Transaction Event Types supported for each *paymen
 | Payment Method Type                                          | Transaction Event Type                                       |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | `credit_card`                                                | `sale`, `authorization`, `capture`, `in_fraud_analysis`, `needs_merchant_review`, `void`, `refund` |
-| `bank_debit`, `boleto`, `cash`, `debit_card`, `ticket`, `wallet`, `wire_transfer` | `sale`, `refund`                                             |
+| `bank_debit`, `boleto`, `cash`, `debit_card`, `pix`, `ticket`, `wallet`, `wire_transfer` | `sale`, `refund`                                             |
 
 ### Transaction Status Workflow
 
