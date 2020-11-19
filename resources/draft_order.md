@@ -820,3 +820,15 @@ Confirm a draft order and converts it to an order.
     "checkout_url": "https://mystore.mitiendanube.com/checkout/v3/start/325520041/dcf448d80994fb50712785ac433fc06ebe78092b?from_store=1"
 }
 ```
+
+### DELETE /draft-orders/{id}/confirm
+
+Delete a draft order.
+
+#### DELETE /draft-orders/1
+
+`HTTP/1.1 200 OK`
+
+```json
+{}
+```
