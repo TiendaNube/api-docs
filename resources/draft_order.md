@@ -62,16 +62,11 @@ Properties
 Endpoints
 ---------
 
+### GET /draft-orders
+
+Get a draft order collection.
+
 #### GET /draft-orders
-
-Get a Draft Order collection.
-
-| Parameter      | Description                          |  Type    |
-|----------------| -------------------------------------|----------|
-| body           | Draft order's collection.            |  array   |
-| page           | Page to show.                        |  object  |
-| total_elements | Amount of results.                   | integer  |
-| paginator      | Contains the paginator information.  |  object  |
 
 `HTTP/1.1 200 OK`
 
@@ -81,7 +76,7 @@ Get a Draft Order collection.
       {
          "id":1,
          "token":"234ae927c2248a18e9ae3b5a6e9a19e38ae26e96",
-         "store_id":"1330104",
+         "store_id":"1",
          "shipping_min_days":null,
          "shipping_max_days":null,
          "billing_name":null,
@@ -96,23 +91,17 @@ Get a Draft Order collection.
          "billing_country":null,
          "shipping_cost_owner":"0.00",
          "shipping_cost_customer":"0.00",
-         "coupon":[
-            
-         ],
+         "coupon":[],
          "promotional_discount":{
             "id":null,
             "store_id":1,
             "order_id":"1",
             "created_at":"2020-11-19T22:42:38+0000",
             "total_discount_amount":"0.00",
-            "contents":[
-               
-            ],
-            "promotions_applied":[
-               
-            ]
+            "contents":[],
+            "promotions_applied":[]
          },
-         "subtotal":"1209.00",
+         "subtotal":"1000.00",
          "discount":"0.00",
          "discount_coupon":"0.00",
          "discount_gateway":"0.00",
@@ -133,12 +122,8 @@ Get a Draft Order collection.
          "shipping_tracking_url":null,
          "shipping_store_branch_name":null,
          "shipping_pickup_type":"ship",
-         "shipping_suboption":[
-            
-         ],
-         "extra":{
-            
-         },
+         "shipping_suboption":[],
+         "extra":{},
          "storefront":"form",
          "note":null,
          "created_at":"-0001-11-30T00:00:00+0000",
@@ -154,9 +139,7 @@ Get a Draft Order collection.
             "credit_card_company":null,
             "installments":"1"
          },
-         "attributes":[
-            
-         ],
+         "attributes":[],
          "customer":null,
          "products":[
             {
@@ -171,9 +154,7 @@ Get a Draft Order collection.
                   "product_id":1,
                   "src":"https://d26lpennugtm8s.cloudfront.net/stores/001/330/104/products/my-first-product.jpg",
                   "position":1,
-                  "alt":[
-                     
-                  ],
+                  "alt":[],
                   "created_at":"2020-08-31T17:41:45+0000",
                   "updated_at":"2020-08-31T17:42:13+0000"
                },
@@ -185,9 +166,7 @@ Get a Draft Order collection.
                "variant_values":[
                   "Variant"
                ],
-               "properties":[
-                  
-               ],
+               "properties":[   ],
                "sku":null,
                "barcode":null
             }
@@ -230,7 +209,7 @@ Get a Draft Order collection.
          {
             "id":1,
             "token":"234ae927c2248a18e9ae3b5a6e9a19e38ae26e96",
-            "store_id":"1330104",
+            "store_id":"1",
             "shipping_min_days":null,
             "shipping_max_days":null,
             "billing_name":null,
@@ -245,23 +224,17 @@ Get a Draft Order collection.
             "billing_country":null,
             "shipping_cost_owner":"0.00",
             "shipping_cost_customer":"0.00",
-            "coupon":[
-               
-            ],
+            "coupon":[],
             "promotional_discount":{
                "id":null,
                "store_id":1,
                "order_id":"1",
                "created_at":"2020-11-19T22:42:38+0000",
                "total_discount_amount":"0.00",
-               "contents":[
-                  
-               ],
-               "promotions_applied":[
-                  
-               ]
+               "contents":[],
+               "promotions_applied":[]
             },
-            "subtotal":"1209.00",
+            "subtotal":"1000.00",
             "discount":"0.00",
             "discount_coupon":"0.00",
             "discount_gateway":"0.00",
@@ -282,12 +255,8 @@ Get a Draft Order collection.
             "shipping_tracking_url":null,
             "shipping_store_branch_name":null,
             "shipping_pickup_type":"ship",
-            "shipping_suboption":[
-               
-            ],
-            "extra":{
-               
-            },
+            "shipping_suboption":[],
+            "extra":{},
             "storefront":"form",
             "note":null,
             "created_at":"-0001-11-30T00:00:00+0000",
@@ -303,9 +272,7 @@ Get a Draft Order collection.
                "credit_card_company":null,
                "installments":"1"
             },
-            "attributes":[
-               
-            ],
+            "attributes":[],
             "customer":null,
             "products":[
                {
@@ -320,9 +287,7 @@ Get a Draft Order collection.
                      "product_id":1,
                      "src":"https://d26lpennugtm8s.cloudfront.net/stores/001/330/104/products/my-first-product.jpg",
                      "position":1,
-                     "alt":[
-                        
-                     ],
+                     "alt":[],
                      "created_at":"2020-08-31T17:41:45+0000",
                      "updated_at":"2020-08-31T17:42:13+0000"
                   },
@@ -334,9 +299,7 @@ Get a Draft Order collection.
                   "variant_values":[
                      "Variant"
                   ],
-                  "properties":[
-                     
-                  ],
+                  "properties":[],
                   "sku":null,
                   "barcode":null
                }
@@ -375,9 +338,147 @@ Get a Draft Order collection.
 }
 ```
 
+### GET /draft-orders/{id}
+
+Get a draft order.
+
+#### GET /draft-orders/1
+
+`HTTP/1.1 200 OK`
+
+```json
+{
+   "id":1,
+   "token":"234ae927c2248a18e9ae3b5a6e9a19e38ae26e96",
+   "store_id":"1",
+   "shipping_min_days":null,
+   "shipping_max_days":null,
+   "billing_name":null,
+   "billing_phone":null,
+   "billing_address":null,
+   "billing_number":null,
+   "billing_floor":null,
+   "billing_locality":null,
+   "billing_zipcode":null,
+   "billing_city":null,
+   "billing_province":null,
+   "billing_country":null,
+   "shipping_cost_owner":"0.00",
+   "shipping_cost_customer":"0.00",
+   "coupon":[],
+   "promotional_discount":{
+      "id":null,
+      "store_id":1,
+      "order_id":"1",
+      "created_at":"2020-11-19T22:42:38+0000",
+      "total_discount_amount":"0.00",
+      "contents":[],
+      "promotions_applied":[]
+   },
+   "subtotal":"100.00",
+   "discount":"0.00",
+   "discount_coupon":"0.00",
+   "discount_gateway":"0.00",
+   "total":"1000.00",
+   "total_usd":"0.00",
+   "checkout_enabled":true,
+   "weight":"0.200",
+   "currency":"ARS",
+   "language":"es",
+   "gateway":"not-provided",
+   "gateway_id":null,
+   "shipping":"draft",
+   "shipping_option":"¡Te vamos a contactar para coordinar la entrega!",
+   "shipping_option_code":"draft_99999",
+   "shipping_option_reference":null,
+   "shipping_pickup_details":null,
+   "shipping_tracking_number":null,
+   "shipping_tracking_url":null,
+   "shipping_store_branch_name":null,
+   "shipping_pickup_type":"ship",
+   "shipping_suboption":[
+      
+   ],
+   "extra":{},
+   "storefront":"form",
+   "note":null,
+   "created_at":"-0001-11-30T00:00:00+0000",
+   "updated_at":"2020-11-19T22:42:19+0000",
+   "completed_at":{
+      "date":"-0001-11-30 00:00:00.000000",
+      "timezone_type":3,
+      "timezone":"UTC"
+   },
+   "next_action":"noop",
+   "payment_details":{
+      "method":null,
+      "credit_card_company":null,
+      "installments":"1"
+   },
+   "attributes":[],
+   "customer":null,
+   "products":[
+      {
+         "id":1,
+         "depth":"0.00",
+         "height":"0.00",
+         "name":"My first product",
+         "price":"1000.00",
+         "product_id":1,
+         "image":{
+            "id":1,
+            "product_id":1,
+            "src":"https://d26lpennugtm8s.cloudfront.net/stores/001/330/104/products/my-first-product.jpg",
+            "position":1,
+            "alt":[
+               
+            ],
+            "created_at":"2020-08-31T17:41:45+0000",
+            "updated_at":"2020-08-31T17:42:13+0000"
+         },
+         "quantity":1,
+         "free_shipping":false,
+         "weight":"0.00",
+         "width":"0.00",
+         "variant_id":1,
+         "variant_values":[
+            "Variant"
+         ],
+         "properties":[],
+         "sku":null,
+         "barcode":null
+      }
+   ],
+   "clearsale":{
+      "CodigoIntegracao":false,
+      "IP":null,
+      "Estado":"C"
+   },
+   "number":0,
+   "cancel_reason":null,
+   "owner_note":"",
+   "cancelled_at":null,
+   "closed_at":null,
+   "read_at":null,
+   "status":"open",
+   "payment_status":"pending",
+   "shipping_address":null,
+   "shipping_status":"unpacked",
+   "shipped_at":null,
+   "paid_at":null,
+   "landing_url":null,
+   "client_details":{
+      "browser_ip":null,
+      "user_agent":null
+   },
+   "app_id":null,
+   "checkout_url":"https://mystore.mitiendanube.com/checkout/v3/start/325505360/234ae927c2248a18e9ae3b5a6e9a19e38ae26e96?from_store=1"
+}
+```
+
 ### POST /draft-orders
 
-Create a Draft Order.
+Create a draft order.
 
 | Parameter          | Description                                                                                     |  Type    | Required |
 |--------------------| ------------------------------------------------------------------------------------------------|----------|----------|
@@ -394,17 +495,16 @@ Create a Draft Order.
 | shipping           | Shipping information ([Shipping](#Shipping)).                                                   |  array   | No       |
                                               
                                               
-### Objects
+#### Objects
 
-
-#### Product
+##### Product
 | Value              | Description                                                       | Type    | Required |
 |--------------------|-------------------------------------------------------------------|---------|----------|
 | variant_id         | The product variant ID.                                           | Integer | Yes      |
 | quantity           | The product quantity.                                             | Integer | Yes      |
 
 
-#### Shipping
+##### Shipping
 
 | Value              | Description                                                      | Type   | Required |
 |--------------------|------------------------------------------------------------------|--------|----------|                                     
@@ -412,7 +512,7 @@ Create a Draft Order.
 | shipping_address   | Shipping address information ([Shipping Address](#Address)).     | array  | No       |
 
 
-#### Address
+##### Address
 
 | Value              | Description                                                      | Type   | Required |
 |--------------------|------------------------------------------------------------------|--------|----------|                                                   
@@ -425,7 +525,7 @@ Create a Draft Order.
 | zipcode            | The address's postal code.                                       | String | No       |
 
 
-#### Payment Status
+##### Payment Status
 
 | Value                 | Description                                         |
 |-----------------------|-----------------------------------------------------|
@@ -484,4 +584,239 @@ Create a Draft Order.
    "created_at": "2020-10-01 19:52:05"
 }
 
+```
+
+### POST /draft-orders/{id}/confirm
+
+Confirm a draft order and converts it to an order.
+
+#### POST /draft-orders/1/confirm
+
+`HTTP/1.1 200 OK`
+
+```json
+{
+    "id": 1,
+    "token": "dcf448d80994fb50712785ac433fc06ebe78092b",
+    "store_id": 1,
+    "abandoned_checkout_url": "https://mystore.mitiendanube.com/checkout/v3/order/proxy/325520041/dcf448d80994fb50712785ac433fc06ebe78092b",
+    "contact_email": "carman.j@outlook.com",
+    "contact_name": "Jorge Carman",
+    "contact_phone": "",
+    "contact_identification": "",
+    "shipping_name": "Jorge",
+    "shipping_phone": "",
+    "shipping_address": "",
+    "shipping_number": "",
+    "shipping_floor": "",
+    "shipping_locality": "",
+    "shipping_zipcode": "",
+    "shipping_city": "",
+    "shipping_province": "",
+    "shipping_country": "AR",
+    "shipping_min_days": null,
+    "shipping_max_days": null,
+    "billing_name": null,
+    "billing_phone": null,
+    "billing_address": null,
+    "billing_number": null,
+    "billing_floor": null,
+    "billing_locality": null,
+    "billing_zipcode": null,
+    "billing_city": null,
+    "billing_province": null,
+    "billing_country": null,
+    "shipping_cost_owner": "0.00",
+    "shipping_cost_customer": "0.00",
+    "coupon": [],
+    "promotional_discount": {
+        "id": null,
+        "store_id": 1,
+        "order_id": 1,
+        "created_at": "2020-11-19T23:46:44+0000",
+        "total_discount_amount": "0.00",
+        "contents": [],
+        "promotions_applied": []
+    },
+    "subtotal": "1000.00",
+    "discount": "0.00",
+    "discount_coupon": "0.00",
+    "discount_gateway": "0.00",
+    "total": "1000.00",
+    "total_usd": "8.88",
+    "checkout_enabled": true,
+    "weight": "0.030",
+    "currency": "ARS",
+    "language": "es",
+    "gateway": "not-provided",
+    "gateway_id": null,
+    "shipping": "draft",
+    "shipping_option": "¡Te vamos a contactar para coordinar la entrega!",
+    "shipping_option_code": "draft_99999",
+    "shipping_option_reference": null,
+    "shipping_pickup_details": null,
+    "shipping_tracking_number": null,
+    "shipping_tracking_url": null,
+    "shipping_store_branch_name": null,
+    "shipping_pickup_type": "ship",
+    "shipping_suboption": [],
+    "extra": {},
+    "storefront": "form",
+    "note": null,
+    "created_at": "2020-11-19T23:14:56+0000",
+    "updated_at": "2020-11-19T23:46:44+0000",
+    "completed_at": {
+        "date": "2020-11-19 23:46:44.000000",
+        "timezone_type": 3,
+        "timezone": "UTC"
+    },
+    "next_action": "waiting_packing",
+    "payment_details": {
+        "method": null,
+        "credit_card_company": null,
+        "installments": 1
+    },
+    "attributes": [],
+    "customer": {
+        "id": 1,
+        "name": "Jorge Carman",
+        "email": "carman.j@outlook.com",
+        "identification": "",
+        "phone": "",
+        "note": null,
+        "default_address": {
+            "address": "",
+            "city": "",
+            "country": "AR",
+            "created_at": "2020-09-07T11:22:11+0000",
+            "default": true,
+            "floor": "",
+            "id": 1,
+            "locality": "",
+            "name": "Jorge Carman",
+            "number": "",
+            "phone": "",
+            "province": "",
+            "updated_at": "2020-09-07T11:22:11+0000",
+            "zipcode": ""
+        },
+        "addresses": [
+            {
+                "address": "Honduras",
+                "city": "Capital Federal",
+                "country": "AR",
+                "created_at": "2020-11-17T10:55:21+0000",
+                "default": false,
+                "floor": "",
+                "id": 1,
+                "locality": "",
+                "name": "Jorge Carman",
+                "number": "1010",
+                "phone": "",
+                "province": "Capital Federal",
+                "updated_at": "2020-11-17T10:55:21+0000",
+                "zipcode": "1414"
+            },
+            {
+                "address": "Prueba",
+                "city": "Capital Federal",
+                "country": "AR",
+                "created_at": "2020-10-15T10:51:05+0000",
+                "default": false,
+                "floor": "",
+                "id": 1,
+                "locality": "",
+                "name": "Jorge Carman",
+                "number": "245",
+                "phone": "",
+                "province": "Capital Federal",
+                "updated_at": "2020-10-15T10:51:05+0000",
+                "zipcode": "1414"
+            },
+            {
+                "address": "",
+                "city": "",
+                "country": "AR",
+                "created_at": "2020-09-07T11:22:11+0000",
+                "default": true,
+                "floor": "",
+                "id": 1,
+                "locality": "",
+                "name": "Jorge Carman",
+                "number": "",
+                "phone": "",
+                "province": "",
+                "updated_at": "2020-09-07T11:22:11+0000",
+                "zipcode": ""
+            },
+            {
+                "address": "",
+                "city": "",
+                "country": "AR",
+                "created_at": "2020-09-07T11:17:52+0000",
+                "default": false,
+                "floor": "",
+                "id": 1,
+                "locality": "",
+                "name": "Pedro Alfonso",
+                "number": "",
+                "phone": "",
+                "province": "",
+                "updated_at": "2020-09-07T11:17:52+0000",
+                "zipcode": ""
+            }
+        ],
+        "billing_name": null,
+        "billing_phone": null,
+        "billing_address": null,
+        "billing_number": null,
+        "billing_floor": null,
+        "billing_locality": null,
+        "billing_zipcode": null,
+        "billing_city": null,
+        "billing_province": null,
+        "billing_country": null,
+        "extra": {},
+        "total_spent": "7966.00",
+        "total_spent_currency": "ARS",
+        "last_order_id": 1,
+        "active": false,
+        "created_at": "2020-09-07T11:17:52+0000",
+        "updated_at": "2020-11-19T23:46:44+0000"
+    },
+    "products": [
+        {
+            "id": 1,
+            "depth": "0.00",
+            "height": "0.00",
+            "name": "Oleo Esencial Barba 30Ml",
+            "price": "712.00",
+            "product_id": 1,
+            "image": {
+                "id": 1,
+                "product_id": 1,
+                "src": "https://d26lpennugtm8s.cloudfront.net/stores/001/330/104/products/my-first-product.jpg",
+                "position": 1,
+                "alt": [],
+                "created_at": "2020-08-31T17:56:26+0000",
+                "updated_at": "2020-08-31T17:57:30+0000"
+            },
+            "quantity": 1,
+            "free_shipping": false,
+            "weight": "0.03",
+            "width": "0.00",
+            "variant_id": 1,
+            "variant_values": [],
+            "properties": [],
+            "sku": null,
+            "barcode": null
+        }
+    ],
+    "clearsale": {
+        "CodigoIntegracao": false,
+        "IP": null,
+        "Estado": ""
+    },
+    "checkout_url": "https://mystore.mitiendanube.com/checkout/v3/start/325520041/dcf448d80994fb50712785ac433fc06ebe78092b?from_store=1"
+}
 ```
