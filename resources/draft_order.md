@@ -4,7 +4,16 @@ Draft Order
 A draft order is created when the merchant manages a pre-sale made outside the platform. Draft orders also can be created through the API.
 
 #### Table of Contents
-[Create a draft order](#POST-draft-orders)
+>[Get a draft order collection](#GET-draft-orders-collection)
+>
+>[Get a draft order](#GET-draft-orders)
+> 
+>[Create a draft order](#POST-draft-orders)
+>
+>[Confirm a draft order](#POST-draft-orders-confirm)
+>
+>[Delete a draft order](#DELETE-draft-orders)
+>
 
 Properties
 ----------
@@ -52,6 +61,319 @@ Properties
 
 Endpoints
 ---------
+
+#### GET /draft-orders
+
+Get a Draft Order collection.
+
+| Parameter      | Description                          |  Type    |
+|----------------| -------------------------------------|----------|
+| body           | Draft order's collection.            |  array   |
+| page           | Page to show.                        |  object  |
+| total_elements | Amount of results.                   | integer  |
+| paginator      | Contains the paginator information.  |  object  |
+
+`HTTP/1.1 200 OK`
+
+```json
+{
+   "body":[
+      {
+         "id":1,
+         "token":"234ae927c2248a18e9ae3b5a6e9a19e38ae26e96",
+         "store_id":"1330104",
+         "shipping_min_days":null,
+         "shipping_max_days":null,
+         "billing_name":null,
+         "billing_phone":null,
+         "billing_address":null,
+         "billing_number":null,
+         "billing_floor":null,
+         "billing_locality":null,
+         "billing_zipcode":null,
+         "billing_city":null,
+         "billing_province":null,
+         "billing_country":null,
+         "shipping_cost_owner":"0.00",
+         "shipping_cost_customer":"0.00",
+         "coupon":[
+            
+         ],
+         "promotional_discount":{
+            "id":null,
+            "store_id":1,
+            "order_id":"1",
+            "created_at":"2020-11-19T22:42:38+0000",
+            "total_discount_amount":"0.00",
+            "contents":[
+               
+            ],
+            "promotions_applied":[
+               
+            ]
+         },
+         "subtotal":"1209.00",
+         "discount":"0.00",
+         "discount_coupon":"0.00",
+         "discount_gateway":"0.00",
+         "total":"1000.00",
+         "total_usd":"0.00",
+         "checkout_enabled":true,
+         "weight":"0.200",
+         "currency":"ARS",
+         "language":"es",
+         "gateway":"not-provided",
+         "gateway_id":null,
+         "shipping":"draft",
+         "shipping_option":"¡Te vamos a contactar para coordinar la entrega!",
+         "shipping_option_code":"draft_99999",
+         "shipping_option_reference":null,
+         "shipping_pickup_details":null,
+         "shipping_tracking_number":null,
+         "shipping_tracking_url":null,
+         "shipping_store_branch_name":null,
+         "shipping_pickup_type":"ship",
+         "shipping_suboption":[
+            
+         ],
+         "extra":{
+            
+         },
+         "storefront":"form",
+         "note":null,
+         "created_at":"-0001-11-30T00:00:00+0000",
+         "updated_at":"2020-11-19T22:42:19+0000",
+         "completed_at":{
+            "date":"-0001-11-30 00:00:00.000000",
+            "timezone_type":3,
+            "timezone":"UTC"
+         },
+         "next_action":"noop",
+         "payment_details":{
+            "method":null,
+            "credit_card_company":null,
+            "installments":"1"
+         },
+         "attributes":[
+            
+         ],
+         "customer":null,
+         "products":[
+            {
+               "id":1,
+               "depth":"0.00",
+               "height":"0.00",
+               "name":"My first product",
+               "price":"1000.00",
+               "product_id":1,
+               "image":{
+                  "id":1,
+                  "product_id":1,
+                  "src":"https://d26lpennugtm8s.cloudfront.net/stores/001/330/104/products/my-first-product.jpg",
+                  "position":1,
+                  "alt":[
+                     
+                  ],
+                  "created_at":"2020-08-31T17:41:45+0000",
+                  "updated_at":"2020-08-31T17:42:13+0000"
+               },
+               "quantity":1,
+               "free_shipping":false,
+               "weight":"0.00",
+               "width":"0.00",
+               "variant_id":1,
+               "variant_values":[
+                  "Variant"
+               ],
+               "properties":[
+                  
+               ],
+               "sku":null,
+               "barcode":null
+            }
+         ],
+         "clearsale":{
+            "CodigoIntegracao":false,
+            "IP":null,
+            "Estado":"C"
+         },
+         "number":0,
+         "cancel_reason":null,
+         "owner_note":"",
+         "cancelled_at":null,
+         "closed_at":null,
+         "read_at":null,
+         "status":"open",
+         "payment_status":"pending",
+         "shipping_address":null,
+         "shipping_status":"unpacked",
+         "shipped_at":null,
+         "paid_at":null,
+         "landing_url":null,
+         "client_details":{
+            "browser_ip":null,
+            "user_agent":null
+         },
+         "app_id":null,
+         "checkout_url":"https://mystore.mitiendanube.com/checkout/v3/start/325505360/234ae927c2248a18e9ae3b5a6e9a19e38ae26e96?from_store=1"
+      }
+   ],
+   "page":{
+      "total_elements":1,
+      "size":50,
+      "total_pages":1,
+      "number":0
+   },
+   "total_elements":1,
+   "paginator":{
+      "results":[
+         {
+            "id":1,
+            "token":"234ae927c2248a18e9ae3b5a6e9a19e38ae26e96",
+            "store_id":"1330104",
+            "shipping_min_days":null,
+            "shipping_max_days":null,
+            "billing_name":null,
+            "billing_phone":null,
+            "billing_address":null,
+            "billing_number":null,
+            "billing_floor":null,
+            "billing_locality":null,
+            "billing_zipcode":null,
+            "billing_city":null,
+            "billing_province":null,
+            "billing_country":null,
+            "shipping_cost_owner":"0.00",
+            "shipping_cost_customer":"0.00",
+            "coupon":[
+               
+            ],
+            "promotional_discount":{
+               "id":null,
+               "store_id":1,
+               "order_id":"1",
+               "created_at":"2020-11-19T22:42:38+0000",
+               "total_discount_amount":"0.00",
+               "contents":[
+                  
+               ],
+               "promotions_applied":[
+                  
+               ]
+            },
+            "subtotal":"1209.00",
+            "discount":"0.00",
+            "discount_coupon":"0.00",
+            "discount_gateway":"0.00",
+            "total":"1000.00",
+            "total_usd":"0.00",
+            "checkout_enabled":true,
+            "weight":"0.200",
+            "currency":"ARS",
+            "language":"es",
+            "gateway":"not-provided",
+            "gateway_id":null,
+            "shipping":"draft",
+            "shipping_option":"¡Te vamos a contactar para coordinar la entrega!",
+            "shipping_option_code":"draft_99999",
+            "shipping_option_reference":null,
+            "shipping_pickup_details":null,
+            "shipping_tracking_number":null,
+            "shipping_tracking_url":null,
+            "shipping_store_branch_name":null,
+            "shipping_pickup_type":"ship",
+            "shipping_suboption":[
+               
+            ],
+            "extra":{
+               
+            },
+            "storefront":"form",
+            "note":null,
+            "created_at":"-0001-11-30T00:00:00+0000",
+            "updated_at":"2020-11-19T22:42:19+0000",
+            "completed_at":{
+               "date":"-0001-11-30 00:00:00.000000",
+               "timezone_type":3,
+               "timezone":"UTC"
+            },
+            "next_action":"noop",
+            "payment_details":{
+               "method":null,
+               "credit_card_company":null,
+               "installments":"1"
+            },
+            "attributes":[
+               
+            ],
+            "customer":null,
+            "products":[
+               {
+                  "id":1,
+                  "depth":"0.00",
+                  "height":"0.00",
+                  "name":"My first product",
+                  "price":"1000.00",
+                  "product_id":1,
+                  "image":{
+                     "id":1,
+                     "product_id":1,
+                     "src":"https://d26lpennugtm8s.cloudfront.net/stores/001/330/104/products/my-first-product.jpg",
+                     "position":1,
+                     "alt":[
+                        
+                     ],
+                     "created_at":"2020-08-31T17:41:45+0000",
+                     "updated_at":"2020-08-31T17:42:13+0000"
+                  },
+                  "quantity":1,
+                  "free_shipping":false,
+                  "weight":"0.00",
+                  "width":"0.00",
+                  "variant_id":1,
+                  "variant_values":[
+                     "Variant"
+                  ],
+                  "properties":[
+                     
+                  ],
+                  "sku":null,
+                  "barcode":null
+               }
+            ],
+            "clearsale":{
+               "CodigoIntegracao":false,
+               "IP":null,
+               "Estado":"C"
+            },
+            "number":0,
+            "cancel_reason":null,
+            "owner_note":"",
+            "cancelled_at":null,
+            "closed_at":null,
+            "read_at":null,
+            "status":"open",
+            "payment_status":"pending",
+            "shipping_address":null,
+            "shipping_status":"unpacked",
+            "shipped_at":null,
+            "paid_at":null,
+            "landing_url":null,
+            "client_details":{
+               "browser_ip":null,
+               "user_agent":null
+            },
+            "app_id":null,
+            "checkout_url":"https://mystore.mitiendanube.com/checkout/v3/start/325505360/234ae927c2248a18e9ae3b5a6e9a19e38ae26e96?from_store=1"
+         }
+      ],
+      "page":1,
+      "last":1,
+      "total":1,
+      "per_page":50
+   }
+}
+```
 
 ### POST /draft-orders
 
