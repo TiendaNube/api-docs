@@ -4,15 +4,15 @@ Draft Order
 A draft order is created when the merchant manages a pre-sale made outside the platform. Draft orders also can be created through the API.
 
 #### Table of Contents
->[Get a draft order collection](#GET-draft-orders-collection)
+>[Get a draft order collection](#GET-draft-orders)
 >
->[Get a draft order](#GET-draft-orders)
+>[Get a draft order](#GET-draft-ordersid)
 > 
 >[Create a draft order](#POST-draft-orders)
 >
->[Confirm a draft order](#POST-draft-orders-confirm)
+>[Confirm a draft order](#POST-draft-ordersidconfirm)
 >
->[Delete a draft order](#DELETE-draft-orders)
+>[Delete a draft order](#DELETE-draft-ordersid)
 >
 
 Properties
@@ -821,7 +821,7 @@ Confirm a draft order and converts it to an order.
 }
 ```
 
-### DELETE /draft-orders/{id}/confirm
+### DELETE /draft-orders/{id}
 
 Delete a draft order.
 
