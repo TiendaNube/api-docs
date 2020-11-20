@@ -121,7 +121,7 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
         amount: Checkout.data.totalPrice,
         bin: getCardNumberBin()
     }).then(function(response) {
-        Checkout.setCheckoutData(response.installments);
+        Checkout.setInstallments(response.data.installments);
     });
   };
 
@@ -137,7 +137,7 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
           refreshInstallments()
       } else if (!getCardNumberBin()) {
           // Clear installments if customer remove credit card number.
-          Checkout.setCheckoutData(null);
+          Checkout.setInstallments(null);
       }
     }),
 
@@ -197,6 +197,7 @@ The `LoadCheckoutPaymentContext` function takes function as a argument, which wi
 
 | Name               | Description                                                  |
 | ------------------ | ------------------------------------------------------------ |
+| `updateFields`     | Let's you add or remove optional input fields from the payment option selection form. |
 | `addPaymentOption` | Register the option so the checkout can inject the configuration params and render it. |
 | `setInstallments`  | Update the attributes of the `data.installments` object. See [Installments](#Installments). |
 | `data`             | Object containing the data of the shopping cart, the consumer and more. See [Data](#Data). |
@@ -469,6 +470,16 @@ For each of the transparent payment options, the following extra input fields ca
 | `billing_address` | Billing information. |
 
 
+###### Updating the fields dinamically
+
+```javascript
+Checkout.updateFields({
+  method: 'acme_transparent_card',
+  value: {
+    bankId: true
+  }
+});
+```
 
 ##### onSubmit
 
@@ -566,7 +577,9 @@ Checkout.setInstallments({
 
 ### Checkout Runtime Error Codes
 
-The following list contains all the runtime error codes currently supported by our platform, which are intended to be passed as `reason_code` on the callback of the *onSubmit* event in case the generation of the redirect URL fails for external checkouts, or in case of error in the execution of a transparent payment.
+If for some reason the `onSubmit` event handler fails to execute the action expected by the payment option chosen by the user, together with a `success: false` callback parameter, a `reason_code` must be specified in order to allow us to give the consumer clear information on what went wrong so the consumer understands what they need to do in order be able to fix the problem.
+
+All [Transaction Failure Codes](https://github.com/TiendaNube/api-docs/blob/master/resources/transaction.md#transaction-failure-codes) are valid `reason_codes`, plus the extra ones specified on the following list.
 
 | Failure Code                | Description                                                  |
 | --------------------------- | ------------------------------------------------------------ |

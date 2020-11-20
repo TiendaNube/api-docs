@@ -569,7 +569,7 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
       amount: Checkout.data.totalPrice,
       bin: getCardNumberBin()
     }).then(function(response) {
-        Checkout.setCheckoutData(response.installments);
+        Checkout.setInstallments(response.data.installments);
     });
   };
 
@@ -585,7 +585,7 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
         refreshInstallments()
       } else if (!getCardNumberBin()) {
         // Clear installments if customer remove credit card number
-        Checkout.setCheckoutData(null);
+        Checkout.setInstallments(null);
       }
     }),
     
@@ -630,7 +630,7 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
   })
 
   // And, we add the method to the available options.
-  Checkout.addPaymentOption(AcmeCardMethod);
+  Checkout.addPaymentOption(AcmeCardPaymentOption);
 });
 ```
 
