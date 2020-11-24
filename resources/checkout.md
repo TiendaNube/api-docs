@@ -46,19 +46,26 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
         .post('https://app.acme.com/generate-checkout-url', {
             data: acmeRelevantData
         })
-        .then(response => response.json())
         .then(function(responseBody) {
           // Once you get the redirect URL, invoke the callback by passing it as argument.
-          callback({
-              success: true,
-              redirect: responseBody.redirect_url
-          });
+          if( responseBody.success ){
+            callback({
+                success: true,
+                redirect: responseBody.redirect_url,
+                extraAuthorize: true // Legacy paameter, but currently required with "true" value. Will be deprecrated soon.
+            });
+          } else {
+            callback({
+              success: false,
+              error_code: responseBody.error_code
+            });
+          }
         })
         .catch(function(error) {
           // Handle a potential error in the HTTP request.
           callback({
               success: false,
-            	reason_code: 'unknown_error'
+            	error_code: 'unknown_error'
           });
         });
     }
@@ -157,18 +164,21 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
       }
       // Let's imagine the app provides this endpoint to process credit card payments.
       Checkout.http.post('https://app.acmepayments.com/charge', acmeCardRelevantData)
-        .then(function(response) {
+        .then(function(responseBody) {
           
-          if (response.success) {
+          if (responseBody.success) {
             // If the charge was successful, invoke the callback to indicate you want to close order.
             callback({
                 success: true
             });
+
           } else {
+
             callback({
                 success: false,
-                reason_code: 'card_cvv_invalid'
+                error_code: responseBody.error_code
             });
+
           }
 
         })
@@ -177,7 +187,7 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
           // Handle a potential error in the HTTP request.
           callback({
               success: false,
-            	reason_code: 'unknown_error'
+            	error_code: 'unknown_error'
           });
 
         });
@@ -490,7 +500,7 @@ The `callback` function must be invoked with an object containing the following 
 | Name          | Description                                                  |
 | ------------- | ------------------------------------------------------------ |
 | `success`     | If true, the checkout process continues and the order is completed. Otherwise, a customizable error message is shown to the consumer. |
-| `reason_code` | *(Optional)* If `success` is false, the specified error code will be used to provide the user with all the necessary information to allow them to, either correct the problem, or at least understand what went wrong to know what the correct action course is. See [Transaction Failure Codes](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/transaction.md#Transaction-Failure-Codes) and [Checkout Runtime Error Codes](#Checkout-Runtime-Error-Codes). |
+| `error_code` | *(Optional)* If `success` is false, the specified error code will be used to provide the user with all the necessary information to allow them to, either correct the problem, or at least understand what went wrong to know what the correct action course is. See [Transaction Failure Codes](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/transaction.md#Transaction-Failure-Codes) and [Checkout Runtime Error Codes](#Checkout-Runtime-Error-Codes). |
 | `message`     | _(Legacy)_ If `success` is false, this message will be displayed to the consumer. |
 | `redirect`    | _(Optional)_ External URL to which the consumer will be redirected to continue the payment process. _(Only for `ExternalPayment()`)._ |
 
@@ -577,9 +587,9 @@ Checkout.setInstallments({
 
 ### Checkout Runtime Error Codes
 
-If for some reason the `onSubmit` event handler fails to execute the action expected by the payment option chosen by the user, together with a `success: false` callback parameter, a `reason_code` must be specified in order to allow us to give the consumer clear information on what went wrong so the consumer understands what they need to do in order be able to fix the problem.
+If for some reason the `onSubmit` event handler fails to execute the action expected by the payment option chosen by the user, together with a `success: false` callback parameter, a `error_code` must be specified in order to allow us to give the consumer clear information on what went wrong so the consumer understands what they need to do in order be able to fix the problem.
 
-All [Transaction Failure Codes](https://github.com/TiendaNube/api-docs/blob/master/resources/transaction.md#transaction-failure-codes) are valid `reason_codes`, plus the extra ones specified on the following list.
+All [Transaction Failure Codes](https://github.com/TiendaNube/api-docs/blob/master/resources/transaction.md#transaction-failure-codes) are valid `error_codes`, plus the extra ones specified on the following list.
 
 | Failure Code                | Description                                                  |
 | --------------------------- | ------------------------------------------------------------ |

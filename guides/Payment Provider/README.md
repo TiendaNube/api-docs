@@ -473,22 +473,25 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
       // We use the Checkout http lib to post a request to our server
       // and fetch the redirect_url
       fetch('https://app.acme.com/generate-checkout-url', {method: 'POST', data: acmeRelevantData})
-        .then(response => response.json())
         .then(function(responseBody){
           
           // Once you get the redirect_url, invoke the callback passing it in the
           // object argument with result params.
           if( responseBody.success ){
+
             callback({ 
               success: true,
-              extraAuthorized: true, // Legacy parameter, but currently required with "true" value. Will be deprecrated soon.
-              redirect: responseBody.redirect_url
+              redirect: responseBody.redirect_url,
+              extraAuthorized: true // Legacy paameter, but currently required with "true" value. Will be deprecrated soon.
             });
+
           } else {
+
             callback({ 
               success: false,
-              reason_code: responseBody.failure_code // Check the documentation for a full list of failure and error codes.
+              error_code: responseBody.error_code // Check the documentation for a full list of failure and error codes.
             });
+
           }
         })
         .catch(function(error) {
@@ -496,8 +499,9 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
           // Handle a potential error in the HTTP request.
           callback({
             success: false,
-            reason_code: "server_error" // Check the documentation for a full list of failure and error codes.
+            error_code: "server_error" // Check the documentation for a full list of failure and error codes.
           });
+
         });
     }
   })
@@ -604,27 +608,32 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
         }
       }
       // Let's imagine the app provides this endpoint to process credit card payments.
-      Checkout.http.post('https://app.acmepayments.com/charge',acmeCardRelevantData)
-        .then(response => response.json())
+      Checkout.http.post('https://app.acmepayments.com/charge', acmeCardRelevantData)
         .then(function(responseBody){
           if (responseBody.success) {
+
             // If the charge was successful, invoke the callback indicating we want to close order.
             callback({
               success: true
             });
+
           } else {
+
             callback({
               success: false
-              reason_code: responseBody.failure_code // Check the documentation for a full list of failure and error codes.
+              error_code: responseBody.error_code // Check the documentation for a full list of failure and error codes.
             });
+
           }
        })
        .catch(function(error) {
+        
          // Handle a potential error in the HTTP request.
          callback({
            success: false,
-           reason_code: "server_error" // Check the documentation for a full list of failure and error codes.
+           error_code: "server_error" // Check the documentation for a full list of failure and error codes.
          });
+
        });
      }
   })
