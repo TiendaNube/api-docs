@@ -56,7 +56,7 @@ The response object rates must be a JSON array of objects with the following fie
 | name               | __(required)__ The name of the rate which buyers will see at checkout.                                                                     |
 | code               | __(required)__ A unique code associated with the carrier option code. It´s used to apply the settings over the rate.                       |
 | price              | __(required)__ The rate's price that will be payed by the buyer.                                                                           |
-| currency           | __(required)__ The rate's currency. Supported currency codes must be specified according to [ISO 4217](https://www.currency-iso.org/en/home/tables/table-a1.html)                                                                                                     |
+| currency           | __(required)__ The rate's currency. Currency codes must be specified according to [ISO 4217](https://www.currency-iso.org/en/home/tables/table-a1.html)                                                                                                     |
 | type               | __(required)__ The rate's type: _ship_ if it will be deliverd to a buyer's address or _pickup_ if it will be picked up by the buyer.       |
 | address            | __(required)__ _(pickup only)_ Where the pickup point is located.                                                                          |
 | hours              | __(required)__ _(pickup only)_ The location open hours providing: `day` (0: sunday, 6: saturday), `start` and `end` on `HHMM` format.      |
