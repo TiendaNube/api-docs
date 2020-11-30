@@ -84,9 +84,9 @@ Also, every webhook will send custom parameters, as follows:
 
 #### store/redact
 
-* __id__: Store's id.
-
 48 hours after a store owner uninstalls your app, Tiendanube/Nuvemshop, sends you a `store/redact` webhook so that you can erase the merchant information for that store from your database.
+
+* __id__: Store's id.
 
 #### domain/updated
 
