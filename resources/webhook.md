@@ -11,7 +11,6 @@ A Webhook is a tool that allows you to receive a notification for a certain even
 | Product        | created/updated/deleted                                                                          |
 | Domain         | updated                                                                                          |
 | Theme          | updated                                                                                          |
-| Store          | redact                                                                                          |
 
 To register for the product created event, for example, you should send `product/created` in the event field.
 
@@ -81,12 +80,6 @@ Also, every webhook will send custom parameters, as follows:
 #### product/created - product/updated - product/deleted
 
 * __id__: Product's id.
-
-#### store/redact
-
-48 hours after a store owner uninstalls your app, Tiendanube/Nuvemshop, sends you a `store/redact` webhook so that you can erase the merchant information for that store from your database.
-
-* __id__: Store's id.
 
 #### domain/updated
 
