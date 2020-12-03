@@ -654,7 +654,7 @@ Any number of payment options can be added to the checkout, combining external a
 
 For example, if ACME Payments wanted to add three different payment options, one for their own _external checkout_, one for _transparent card_ and another one for _transparent boleto_, the payment provider would the following `checkout_payment_options` specified:
 
-```json
+```javascript
 {
   "name": "ACME Payments",
   "description": "...",
