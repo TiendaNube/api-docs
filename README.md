@@ -260,6 +260,7 @@ API resources
 * [Metafields](https://github.com/tiendanube/api-docs/blob/master/resources/metafields.md)
 * [Payment Provider](https://github.com/tiendanube/api-docs/blob/master/resources/payment_provider.md)
 * [Transaction](https://github.com/tiendanube/api-docs/blob/master/resources/transaction.md)
+* [Draft Order](https://github.com/tiendanube/api-docs/blob/master/resources/draft_order.md)
 
 
 Help us make it better
