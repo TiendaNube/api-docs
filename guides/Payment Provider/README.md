@@ -649,6 +649,107 @@ Some SDKs have mechanisms to render forms using field names as required. To prot
 
 The object `Checkout.data.form` provides access to all the form fields. The payment method implementation must map each of the provided fields to the Payment Provider specific ones. In cases where a form with specific attributes needs to be submitted, we recommend using workarounds such as dynamically creating a hidden HTML form and submitting it using JS.
 
+#### Adding multiple payment options
+Any number of payment options can be added to the checkout, combining external and transparent options as prefered. Nuvemshop's Checkout may filter some of them and not show them due to UX business rules being applied in order to improve the conversation rate.
+
+For example, if ACME Payments wanted to add three different payment options, one for their own _external checkout_, one for _transparent card_ and another one for _transparent boleto_, the payment provider would the following `checkout_payment_options` specified:
+
+```json
+{
+  "name": "ACME Payments",
+  "description": "...",
+  "checkout_js_url": "https://...",
+  // ...
+  // To improve readablity, the many properties from the payment provider are no included here.
+
+  "checkout_payment_options": [
+    {
+      "id": "acme_payments_external", // Same id as on the JS instance.
+      "name": "...",
+      "description": "...",
+      "logo_url": "https://...",
+      "supported_billing_countries": [
+        "BR"
+      ],
+      "supported_payment_method_types": [
+        "credit_card",
+        "debit_card",
+        "boleto",
+        "pix",
+        "bank_debit",
+        "wire_transfer",
+        "wallet"
+      ]
+    },
+    {
+      "id": "acme_payments_transparent_card", // Same id as on the JS instance.
+      "name": "...",
+      "description": "...",
+      "supported_billing_countries": [
+        "BR"
+      ],
+      "supported_payment_method_types": [
+        "credit_card",
+        "debit_card"
+      ]
+    },
+    {
+      "id": "acme_payments_transparent_boleto", // Same id as on the JS instance.
+      "name": "...",
+      "description": "...",
+      "supported_billing_countries": [
+        "BR"
+      ],
+      "supported_payment_method_types": [
+        "boleto"
+      ]
+    }
+  ]
+}
+```
+
+And the JS would have an instance for each of them:
+
+```javascript
+LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
+  
+  // ...
+
+  let AcmePaymentsExternalPayment = PaymentOptions.ExternalPayment({
+    id: 'acme_payments_external', // Same id as on the payment provider.
+    fields: {...},
+    scripts: 'https://...',
+    onLoad: function(){...},
+    onSubmit: function(callback){...}
+  });
+
+
+  let AcmePaymentsCardPayment = PaymentOptions.Transparent.CardPayment({
+    id: 'acme_payments_transparent_card', // Same id as on the payment provider.
+    fields: {...},
+    scripts: 'https://...',
+    onLoad: function(){...},
+    onDataChange: function(){...},
+    onSubmit: function(callback){...}
+  });
+
+  let AcmePaymentsBoletoPayment = PaymentOptions.Transparent.BoletoPayment({
+    id: 'acme_payments_transparent_boleto', // Same id as on the payment provider.
+    fields: {...},
+    scripts: 'https://...',
+    onLoad: function(){...},
+    onSubmit: function(callback){...}
+  });
+
+  Checkout.add(AcmePaymentsExternalPayment);
+  Checkout.add(AcmePaymentsCardPayment);
+  Checkout.add(AcmePaymentsBoletoPayment);
+
+});
+```
+
+The JS can have any number of checkout payment option instances, however, only those specified on the payment provider will be loaded. This allows the developer to have one static JS file with logic for all configurations and then manage the available payment options for each store by adding them or not to the payment provider.
+
 ## Step 4: Transaction Implementation
 
 So far, we've been working with orders. However, we don't provide any endpoints to directly change an order's payment status.
