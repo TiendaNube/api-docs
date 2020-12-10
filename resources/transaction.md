@@ -83,7 +83,7 @@ This object is used to indicate specific information of a Transaction. It can be
 | `status`         | Object | One of the available [Transaction Event Status](#Transaction-Event-Status). |
 | `info`           | Object | Object containing specific info related to this Transaction Event. See [Transaction Event Info](#Transaction-Event-Info). |
 | `failure_code`   | String | If the Transaction Event failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
-| `happened_at`     | Date   | ISO 8601 date for the date the Transaction Event was processed. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
+| `happened_at`    | Date   | ISO 8601 date for the date the Transaction Event was processed. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
 | `expires_at`     | Date   | [Optional] ISO 8601 date for date the Transaction Event expires. It will be used to indicate to the merchant the deadline to accept or cancel a transaction under review. |
 | `created_at`     | Date   | [Read-only] ISO 8601 date for the date the Transaction Event was created in our platform. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
 
@@ -103,6 +103,7 @@ This object is used to indicate specific information of a Transaction. It can be
 Each type of Transaction has a Finite State Machine (FSM) that defines its status:
 
 * `authorized`: The transaction is authorized.
+* `expired`: The transaction is expired.
 * `failed`: The transaction failed.
 * `in_fraud_analysis`: The transaction is under fraud analysis by the payment provider.
 * `needs_merchant_review`: The transaction needs merchant action to continue.
@@ -120,18 +121,19 @@ Each type of Transaction has a Finite State Machine (FSM) that defines its statu
 
 ### Transaction Event Types
 
-* `authorization`: Authorization.
-* `capture`: Capture.
-* `in_fraud_analysis`: The transaction is being reviewed by the payment provider (no merchant action is required).
-* `refund`: Refund.
+* `authorization`: The credit card transaction has been authorized.
+* `capture`: The credit card transaction has been captured.
+* `expiration`: The boleto or ticket transaction has expired.
+* `in_fraud_analysis`: The credit card transaction is being reviewed by the payment provider (no merchant action is required).
+* `refund`: The sale has been fully refunded.
 * `needs_merchant_review`: The transaction has to be approved or rejected by the merchant.
-* `sale`: Represents authorization along with capture.
-* `void`: The authorization was voided.
+* `sale`: Represents an authorization along with capture for credit card transactions, or a sale event for all other payment method types.
+* `void`: The credit card transaction has been voided.
 
 ### Transaction Event Status
 
 * `error`: There was an error processing the transaction event.
-* `failure`: The transaction event failed.
+* `failure`: The transaction event failed. See [this list](#Transaction-Failure-Codes) for possible failure causes.
 * `pending`: The transaction event is pending.
 * `success`: The transaction event succeded.
 
@@ -187,6 +189,7 @@ Create a Transaction for a given order.
 
 
 
+
 | Field                 | Type   | Description                                                  |
 | :-------------------- | :----- | :----------------------------------------------------------- |
 | `payment_provider_id` | String | [Required] ID of the [Payment Provider](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md) that processed this Transaction. |
@@ -198,6 +201,7 @@ Create a Transaction for a given order.
 
 <details>
   <summary><b>Response</b></summary>
+
 
 
 
@@ -216,11 +220,12 @@ Create a Transaction Event for a given Transaction.
 
 
 
+
 | Field          | Type   | Description                                                  |
 | -------------- | ------ | ------------------------------------------------------------ |
 | `type`         | String | [Required] One of the available [Transaction Event Types](#Transaction-Event-Types). |
 | `status`       | Object | [Required] One of the available [Transaction Event Status](#Transaction-Event-Status). |
-| `happened_at`   | Date   | [Required] ISO 8601 date for the date the Transaction Event was processed. Defaults to current time. E.g. `"2020-03-11T12:42:15.456Z"`. |
+| `happened_at`  | Date   | [Required] ISO 8601 date for the date the Transaction Event was processed. Defaults to current time. E.g. `"2020-03-11T12:42:15.456Z"`. |
 | `amount`       | Object | [Optional] Object containing the amount of this Transaction Event. See [Money](#Money). |
 | `info`         | Object | [Optional] Object containing specific info related to this Transaction Event. See [Transaction Event Info](#Transaction-Event-Info). |
 | `failure_code` | String | [Optional] If the Transaction Event failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
@@ -229,6 +234,7 @@ Create a Transaction Event for a given Transaction.
 
 <details>
   <summary><b>Response</b></summary>
+
 
 
 
@@ -247,6 +253,7 @@ Get all Transactions for a given order.
 
 
 
+
 ```
 {}
 ```
@@ -255,6 +262,7 @@ Get all Transactions for a given order.
 
 <details>
   <summary><b>Response</b></summary>
+
 
 
 
@@ -273,6 +281,7 @@ Get a specific Transaction for a given order.
 
 
 
+
 ```
 {}
 ```
@@ -281,6 +290,7 @@ Get a specific Transaction for a given order.
 
 <details>
   <summary><b>Response</b></summary>
+
 
 
 
@@ -302,6 +312,7 @@ Get a specific Transaction for a given order.
 
 <details>
   <summary><b>Example Nº 1: Create a credit card transaction that is authorized and captured within a single event</b></summary>
+
 
 
 
@@ -412,6 +423,7 @@ Get a specific Transaction for a given order.
 
 <details>
   <summary><b>Example Nº 2: Create a boleto transaction that starts pending and then is paid by the buyer</b></summary>
+
 
 
 
@@ -538,6 +550,7 @@ Get a specific Transaction for a given order.
 
 
 
+
 #### GET /orders/56789/transactions/21781944-a977-4b0d-93dc-908ddb87d778
 
 ##### Request
@@ -644,6 +657,7 @@ Get a specific Transaction for a given order.
 
 
 
+
 #### POST /orders/24680/transactions
 
 ##### Request
@@ -730,6 +744,7 @@ The following list contains all the Transaction failures codes currently support
 
 
 
+
 | Failure Code                     | Description                                                  |
 | -------------------------------- | ------------------------------------------------------------ |
 | `consumer_blocked`               | The consumer is blocked by the payment provider.             |
@@ -755,6 +770,7 @@ The following list contains all the Transaction failures codes currently support
 
 <details>
   <summary><b>Payment Methods</b></summary>
+
 
 
 
@@ -816,6 +832,7 @@ The following list contains all the Transaction failures codes currently support
 
 
 
+
 | Failure Code                     | Description                                     |
 | -------------------------------- | ----------------------------------------------- |
 | `shipping_city_invalid`          | The shipping city is invalid.                   |
@@ -843,6 +860,7 @@ The following list contains all the Transaction failures codes currently support
 
 
 
+
 | Failure Code                     | Description                                                  |
 | -------------------------------- | ------------------------------------------------------------ |
 | `line_items_currency_invalid`    | An order item amount currency is invalid.                    |
@@ -854,4 +872,3 @@ The following list contains all the Transaction failures codes currently support
 | `order_total_price_too_small`    | The order price value is less than the minimum supported value. |
 
 </details>
-
