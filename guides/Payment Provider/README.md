@@ -60,7 +60,7 @@ To interact with our APIs, you must create an App. An App represents our partner
 
 The steps to create a Payment App are the following:
 
-1.  If your company doesn’t already have a Partner’s Account, it can be created at our [Partner’s Portal](https://partners.nuvemshop.com.br/).
+1.  If your company doesn’t already have a Partner’s Account, it can be created at our [Partner’s Portal for Spanish LATAM](https://partners.tiendanube.com/) or at our [Partner’s Portal for Brasil](https://partners.nuvemshop.com.br/).
 2.  At the Partner’s Portal, create an app and make sure all the fields are completed with valid and real data.
 3.  Take special care on the “Redirect URI” which is a key part of the App installation process. You can modify it in the future, if necessary.
 4.  You might want to include a good description of your offered payment services, since our platform may bring new clients to your business.
