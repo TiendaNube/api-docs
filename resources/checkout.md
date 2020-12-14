@@ -29,6 +29,10 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
     // Set the option's unique id as it is configured on the Payment Provider so Checkout can relate them.
     id: 'acme_redirect',
 
+    fields: {
+      billing_address: true // This parameter renders the billing information form and requires de information to the consumer
+    },
+
     // This function handles the order submission event.
     onSubmit: function(callback) {
 
@@ -511,7 +515,7 @@ Here's an example summarizing all the definitions above.
 ```javascript
 LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
 
-  var Custom = new PaymentOptions.CardPayment({
+  var Custom = PaymentOptions.Transparent.CardPayment({
     id: 'acme_transparent_card',
 
     fields: {
