@@ -30,7 +30,7 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
     id: 'acme_redirect',
 
     fields: {
-      billing_address: true // This parameter renders the billing information form and requires de information to the consumer
+      billing_address: true // This parameter renders the billing information form and requires the information to the consumer
     },
 
     // This function handles the order submission event.
