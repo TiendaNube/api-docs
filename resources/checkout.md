@@ -464,7 +464,7 @@ For each of the transparent payment options, the following extra input fields ca
 | ----------- | ----------- |
 | `bank_list` | Banks list. |
 
-###### OfflinePayment:
+###### BoletoPayment:
 
 | Name                 | Description      |
 | -------------------- | ---------------- |
