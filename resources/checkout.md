@@ -38,11 +38,11 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
 
       // Gather the minimum required information.
       let acmeRelevantData = {
-          // You should include all the relevant data here.
-          orderId: Checkout.data.order.cart.id,
-          paymentProviderId: Checkout.data.payment_provider_id,
-          currency: Checkout.data.order.cart.currency,
-          total: Checkout.data.order.cart.prices.total
+        // You should include all the relevant data here.
+        orderId: Checkout.data.order.cart.id,
+        paymentProviderId: Checkout.data.payment_provider_id,
+        currency: Checkout.data.order.cart.currency,
+        total: Checkout.data.order.cart.prices.total
       }
 
       // Use the Checkout HTTP library to post a request to our server and fetch the redirect URL.
@@ -54,9 +54,9 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
           // Once you get the redirect URL, invoke the callback by passing it as argument.
           if( responseBody.success ){
             callback({
-                success: true,
-                redirect: responseBody.redirect_url,
-                extraAuthorize: true // Legacy paameter, but currently required with "true" value. Will be deprecrated soon.
+              success: true,
+              redirect: responseBody.redirect_url,
+              extraAuthorize: true // Legacy paameter, but currently required with "true" value. Will be deprecrated soon.
             });
           } else {
             callback({
@@ -68,8 +68,8 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
         .catch(function(error) {
           // Handle a potential error in the HTTP request.
           callback({
-              success: false,
-            	error_code: 'unknown_error'
+            success: false,
+          	error_code: 'unknown_error'
           });
         });
     }

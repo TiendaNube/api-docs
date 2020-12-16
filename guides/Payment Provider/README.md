@@ -472,7 +472,10 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
 
       // We use the Checkout http lib to post a request to our server
       // and fetch the redirect_url
-      fetch('https://app.acme.com/generate-checkout-url', {method: 'POST', data: acmeRelevantData})
+      Checkout.http
+        .post('https://app.acme.com/generate-checkout-url', {
+          data: acmeRelevantData
+        })
         .then(function(responseBody){
           
           // Once you get the redirect_url, invoke the callback passing it in the
