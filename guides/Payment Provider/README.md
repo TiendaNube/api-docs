@@ -6,13 +6,14 @@
 Actually, short for Payment Service Provider, is any entity the provides all the necessary resources to allow a buyer to pay the merchant for purchased goods or hired services. These _resources_ include information for the potential buyer about the available payment methods, installments, promotions, discounts, etc, as well as the technological resources to actually execute a payment.
 
 #### Payment Method Type
-It can be any of, but not limited to:
+The resource that allows a transfer of a money from the consumer to the merchant. It can be any of, but not limited to:
 - Credit Card
 - Debit Card
 - Bank Debit
 - Boleto _(Brasil only)_
-- Ticket _(Argentina only, e.g. Pago Fácil, RapiPago, etc)_
-- Wire Transfer
+- PIX _(Brasil only)
+- Ticket _(e.g. Pago Fácil, RapiPago, etc)_
+- Wire Transfer _(Between two bank accounts via "traditional" transfer)_
 - Wallet _(i.e. customer's account credit)_
 - Cash
 - Others
@@ -20,17 +21,21 @@ It can be any of, but not limited to:
 #### Payment Method Id _(formerly known as plain Payment Method)_
 For instance, if the Payment Method Type is Credit Card, then an example Payment Method Id would be Visa, Mastecard or American Express. Some Payment Method Types, for example Bank Debit, only have one Payment Method Id which happens to be Bank Debit. Though it's redundant, it leaves space for future variations.
 
+#### Payment Option
+The Payment Method is the resource that will allow the transfer of money from the consumer to the merchant, while the Payment Option would be how the Payment Method will be used to execute the transaction. In the physical world, if the selected Payment Method is credit card, then the payment could be executed using an app that reads a QR code an has the credit card's information stored, or using a card reader, etc.
+
+Hence, a Payment Option has two main properties:
+- The Payment Provider that will execute the trasnsaction.
+- One or more supported Payment Method Types.
+- An Integration Type.
+
 #### Integration Type
-In terms of user experience, there might be different type to integrate a Payment Provider's payments services into a store. Some of them are:
+In terms of user experience, there might be different ways to integrate a Payment Method into a store. Some of them are:
  - _**Transparent:**_ All the process takes place in the store's website and all the relevant payment information, such as credit card data, are filled in a form rendered by the store, creating a seamless experience for the buyer.
 - _**External:**_ At some point, the buyer is redirected to a website or app under the Payment Providers's domain where the buyer will finish the payment process.
 - _**Modal:**_ When the user submits our checkout, a modal rendered by the Payment Provider is displayed and the user finishes the payment process in the modal.
 
-#### Payment Option
-One choosing how to pay, a buyer will be offered different options, hence, Payment Options. A Payment Option has three main properties that define how the payment process will take be executed:
-- Payment Provider
-- One or more supported Payment Method Types
-- An Integration Type.
+In the physical world, the integration types for, for example, credit card, could be a card reader, an app that reads a QR code and has the card's information stored, etc.
 
 #### Payment App
 The development of a _Nuvemshop_ Payment App, technologically speaking, more often than not, includes implementing Nuvemshop's auth flow,  REST APIs and webhooks, as well as the payment provider's authentication flow, backend-to-backend APIs and webhook/notifications.

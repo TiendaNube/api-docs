@@ -147,7 +147,7 @@ Payment Providers can specify the list of functionalities of the service that th
 
 ### Checkout Options
 
-Payment Providers can implement multiple payment options which will be displayed in the store checkout. Each of these implementations will be found in the JavaScript file indicated in the `checkout_js_url` field. This object contains the data that the checkout frontend needs to render these payment options.
+Payment Providers can implement multiple payment options which will be displayed in the store's checkout. The partners has to specify the Payment Options configuration properties via our REST API on the Payment Provider. The event handlers for each Payment Options will be defined in the JavaScript file indicated in the `checkout_js_url` field (check [Checkout Resource](./checkout.md#payment-options-javascript-interface). This object contains the data that the checkout frontend needs to render these payment options.
 
 | Field                            | Type          | Description                                                  |
 | :------------------------------- | :------------ | :----------------------------------------------------------- |
