@@ -103,7 +103,9 @@ The response object rates must be a JSON array of objects with the following fie
         "phone": null
     },
     "items": [
-        {
+        {   
+            "id": 1,
+            "product_id": 1,
             "name": "My product",
             "sku": null,
             "quantity": 1,
@@ -685,5 +687,4 @@ Remove a Fulfillment Event
 ```json
 {}
 ```
-
 
