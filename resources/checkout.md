@@ -380,57 +380,58 @@ Note: ExternalPayment and ModalPayment won't render any input fields on the fron
 The `PaymentOptions.Transparent` has one function per each of the payment methods for which we support transparent integration type. Each of these funcitons return an instance of the `PaymentOption` for their specific payment methods and, if added to the Checkout using `Checkout.addPaymentOption(paymentOptionInstance)` a form will be rendered with all the required input fields for that payment method.
 
 
-| Name              | Description                                                  |
-| ----------------- | ------------------------------------------------------------ |
+| Name              | Description                                                                      |
+| ----------------- | -------------------------------------------------------------------------------- |
 | `CardPayment()`   | For credit card, debit card, gift card, and probably more, card payment methods. |
-| `DebitPayment()`  | For online debit (aka "bank debit" payment method.           |
-| `BoletoPayment()` | For payments with `boleto` payment method.                   |
-| `TicketPayment()` | For payments with `ticket` payment method.                   |
+| `DebitPayment()`  | For online debit (aka "bank debit" payment method.                               |
+| `BoletoPayment()` | For payments with `boleto` payment method.                                       |
+| `TicketPayment()` | For payments with `ticket` payment method.                                       |
 
 ##### CardPayment
 
 These are the fields rendered and available through `Checkout.data.form`.
 
-| Name                  | Description                                            |
-| --------------------- | ------------------------------------------------------ |
-| `brand`               | Card brand. E.g. `visa`, `master`, etc.                |
-| `cardNumber`          | Card number.                                           |
-| `cardHolderName`      | Card holder's name.                                    |
-| `cardExpiration`      | Card's expiration date in `mm/yy` format.              |
-| `cardCvv`             | Card's verification code.                              |
-| `cardInstallments`    | Number of installments selected by the consumer.       |
-| `cardHolderIdNumber`  | Card holder's identification (CPF, DNI or equivalent). |
-| `cardHolderBirthDate` | Card holder's birthday in `dd/mm/yy` format.           |
-| `cardHolderPhone`     | Card holder's phone number.                            |
-| `bankId`              | Card's issuing bank.                                   |
+| Name                  | Description                                            | Required     | `fields` value           |
+| --------------------- | ------------------------------------------------------ | ------------ | ------------------------ |
+| `brand`               | Card brand. E.g. `visa`, `master`, etc.                | Always       |                          |
+| `cardNumber`          | Card number.                                           | Always       |                          |
+| `cardHolderName`      | Card holder's name.                                    | Always       |                          |
+| `cardExpiration`      | Card's expiration date in `mm/yy` format.              | Always       |                          |
+| `cardCvv`             | Card's verification code.                              | Always       |                          |
+| `cardInstallments`    | Number of installments selected by the consumer.       | Always       |                          |
+| `cardHolderIdNumber`  | Card holder's identification (CPF, DNI or equivalent). | Optional     | `card_holder_id_number`  |
+| `cardHolderIdType`    | Card holder's identification (CPF, DNI or equivalent). | Optional     | `card_holder_id_number`  |
+| `cardHolderBirthDate` | Card holder's birthday in `dd/mm/yy` format.           | Optional     | `card_holder_birth_date` |
+| `cardHolderPhone`     | Card holder's phone number.                            | Optional     | `card_holder_phone`      |
+| `bankId`              | Card's issuing bank.                                   | Optional     | `bankList`               |
 
 ##### DebitPayment
 
 These are the input fields rendered and available in the object `Checkout.data.form`.
 
-| Name             | Description                                                |
-| ---------------- | ---------------------------------------------------------- |
-| `bank`           | Bank to debit from.                                        |
-| `holderName`     | Account holder's name.                                     |
-| `holderIdNumber` | Account holder's identification (CPF, DNI, or equivalent). |
+| Name             | Description                                                | Required     | `fields` value           |
+| ---------------- | ---------------------------------------------------------- | ------------ | ------------------------ |
+| `bank`           | Bank to debit from.                                        | Optional     | `bank_list`              |
+| `holderName`     | Account holder's name.                                     | Optional     | `debit_card_holder_name` |
+| `holderIdNumber` | Account holder's identification (CPF, DNI, or equivalent). | Optional     | `debit_card_id_number`   |
 
 ##### BoletoPayment
 
 These are the input fields rendered and available in the object `Checkout.data.form`.
 
-| Name             | Description                                          |
-| ---------------- | ---------------------------------------------------- |
-| `holderName`     | Consumer's name.                                     |
-| `holderIdNumber` | Consumer's identification (CPF, CNPJ or equivalent). |
+| Name             | Description                                          | Required     | `fields` value       |
+| ---------------- | ---------------------------------------------------- | ------------ | -------------------- |
+| `holderName`     | Consumer's name.                                     | Optional     | `boleto_holder_name` |
+| `holderIdNumber` | Consumer's identification (CPF, CNPJ or equivalent). | Optional     | `boleto_id_number`   |
 
 ##### TicketPayment
 
 These are the input fields rendered and available in the object `Checkout.data.form`.
 
-| Name             | Description                                        |
-| ---------------- | -------------------------------------------------- |
-| `holderName`     | Consumer name.                                     |
-| `holderIdNumber` | Consumer identification (DNI, CUIT or equivalent). |
+| Name             | Description                                        | Required     | `fields` value       |
+| ---------------- | -------------------------------------------------- | ------------ | -------------------- |
+| `holderName`     | Consumer name.                                     | Optional     | `boleto_holder_name` |
+| `holderIdNumber` | Consumer identification (DNI, CUIT or equivalent). | Optional     | `efectivo_list`      |
 
 #### `PaymentOption` Configuration Object and it's properties
 
