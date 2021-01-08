@@ -258,6 +258,16 @@ Checkout.http({
 
 #### Data
 
+The Checkout object provides the app with access to all the data related with ongoing sale. We've got the following data groups:
+- Cart information: `Checkout.data.order.cart`
+- Customer Contact Information: `Checkout.data.order.contact`
+- Billing Information: `Checkout.data.order.billingAddress`
+- Shipping Information: `Checkout.data.order.shippingAddress`
+- Shipping Method Information: `Checkout.data.order.cart.shipping`
+- Payment Method Information: `Checkout.data.form`
+
+No all Payment Method Information fields are rendered. They can be rendered as explained [here](./checkout.md#fields-property).
+
 Here's an example of the data available in this object.
 
 ```js
@@ -389,7 +399,7 @@ The `PaymentOptions.Transparent` has one function per each of the payment method
 
 ##### CardPayment
 
-These are the fields rendered and available through `Checkout.data.form`.
+These are the fields rendered and available on the `Checkout.data.form` object.
 
 | Name                  | Description                                            | Required     | `fields` value           |
 | --------------------- | ------------------------------------------------------ | ------------ | ------------------------ |

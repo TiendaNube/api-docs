@@ -651,11 +651,31 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
 });
 ```
 
+#### Available Information about the ongoing sale
+The Checkout object provides the app with access to all the data related with ongoing sale. We've got the following data groups:
+
+- Cart information: `Checkout.data.order.cart`
+- Customer Contact Information: `Checkout.data.order.contact`
+- Billing Information: `Checkout.data.order.billingAddress`
+- Shipping Information: `Checkout.data.order.shippingAddress`
+- Shipping Method Information: `Checkout.data.order.cart.shipping`
+- Payment Method Information: `Checkout.data.form`
+
 #### Form Data
 
 Some SDKs have mechanisms to render forms using field names as required. To protect the UI and provide the user with a clean and smooth user experience, all forms are rendered by our own code following our standards with our own field names, as explained above.
 
 The object `Checkout.data.form` provides access to all the form fields. The payment method implementation must map each of the provided fields to the Payment Provider specific ones. In cases where a form with specific attributes needs to be submitted, we recommend using workarounds such as dynamically creating a hidden HTML form and submitting it using JS.
+
+Take into account that it is possible to request the consumer with more payment method informatino by rendering the optional fields on the form, depending on the selected payment method.
+
+Available fields:
+- [Card Payment](../../resources/checkout.md#cardpayment)
+- [Debit Payment](../../resources/checkout.md#debitpayment)
+- [Boleto Payment](../../resources/checkout.md#boletopayment)
+- [Ticket Payment](../../resources/checkout.md#ticketpayment)
+
+Details on how to render the optional ones can be found [here](../../resources/checkout.md#fields-property).
 
 #### Adding multiple payment options
 Any number of payment options can be added to the checkout, combining external and transparent options as prefered. Nuvemshop's Checkout may filter some of them and not show them due to UX business rules being applied in order to improve the conversation rate.
