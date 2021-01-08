@@ -400,7 +400,7 @@ These are the fields rendered and available through `Checkout.data.form`.
 | `cardCvv`             | Card's verification code.                              | Always       |                          |
 | `cardInstallments`    | Number of installments selected by the consumer.       | Always       |                          |
 | `cardHolderIdNumber`  | Card holder's identification (CPF, DNI or equivalent). | Optional     | `card_holder_id_number`  |
-| `cardHolderIdType`    | Card holder's identification (CPF, DNI or equivalent). | Optional     | `card_holder_id_number`  |
+| `cardHolderIdType`    | Card holder's identification (CPF, DNI or equivalent). | Optional     | `card_holder_id_types`   |
 | `cardHolderBirthDate` | Card holder's birthday in `dd/mm/yy` format.           | Optional     | `card_holder_birth_date` |
 | `cardHolderPhone`     | Card holder's phone number.                            | Optional     | `card_holder_phone`      |
 | `bankId`              | Card's issuing bank.                                   | Optional     | `bankList`               |
