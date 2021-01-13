@@ -829,3 +829,66 @@ Chargebacks, at the moment, are not modeled but we're looking forward to support
 It is important to take into account that Nuvemshop is a platform with 50K+ stores. This means the implemented backend will need to be able to handle high-traffic loads. All the necessary scaling, performance monitoring and alert triggering architecture must be implemented.
 
 Special dates like Black Friday, Cyber Monday and Hotsale should be handled with care. Your app should be able to sustain heavy loads with multiple very high traffic peaks.
+
+## App Metadata
+The payments configuration dashboard displays the apps to the merchants so that the merchant can directly install them from there, instead of having to go to the app store. Our partners' dashboard currently doesn't support the configuration of category specific parameters to an app, such as information about transaction costs (`rates`), supported payment methods, etc. However, our support team will gladly insert that information for you into your app.
+
+The information is country specific, so, if your app is to be published in several countries, you'll need to provider a JSON for each country.
+
+Here's an example of what a JSON metadata would look like.
+
+```json
+{
+    "type":"gateway",
+    "logo_urls":{
+       "400x120":"https://tiendanube.payments.acme.com/logos/400x120.png"
+    },
+    "installation_description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam malesuada nunc quis mi fermentum venenatis.",
+    "rates_url":"https://tiendanube.payments.acme.com/rates",
+    "register_url":"https://payments.acme.com/register",
+    "phone":"+5511923456789",
+    "supported_payment_method_types":[
+       "credit_card",
+       "debit_card",
+       "boleto",
+       "bank_debit",
+       "pix",
+       "wallet",
+    ],
+    "features":[
+       "gateway",
+       "special_rates",
+       "transparent_checkout"
+    ],
+    "rates":[
+       {
+          "payment_method_type":"credit_card",
+          "rates_definition":[
+             {
+                "percent_fee":"2.15",
+                "flat_fee":{
+                   "currency":"ARS",
+                   "value":"1.00"
+                },
+                "plus_tax":true,
+                "days_to_withdraw_money":14
+             }
+          ]
+       },
+       {
+          "payment_method_type":"wallet",
+          "rates_definition":[
+             {
+                "percent_fee":"2.5",
+                "flat_fee":{
+                   "currency":"ARS",
+                   "value":"1.00"
+                },
+                "plus_tax":true,
+                "days_to_withdraw_money":7
+             }
+          ]
+       }
+    ]
+ }
+```
