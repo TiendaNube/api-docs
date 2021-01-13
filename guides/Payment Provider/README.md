@@ -667,7 +667,7 @@ Some SDKs have mechanisms to render forms using field names as required. To prot
 
 The object `Checkout.data.form` provides access to all the form fields. The payment method implementation must map each of the provided fields to the Payment Provider specific ones. In cases where a form with specific attributes needs to be submitted, we recommend using workarounds such as dynamically creating a hidden HTML form and submitting it using JS.
 
-Take into account that it is possible to request the consumer with more payment method informatino by rendering the optional fields on the form, depending on the selected payment method.
+Take into account that it is possible to request the consumer with more payment method information by rendering the optional fields on the form, depending on the selected payment method.
 
 Available fields:
 - [Card Payment](../../resources/checkout.md#cardpayment)
