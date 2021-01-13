@@ -678,7 +678,7 @@ Available fields:
 Details on how to render the optional ones can be found [here](../../resources/checkout.md#fields-property).
 
 #### Adding multiple payment options
-Any number of payment options can be added to the checkout, combining external and transparent options as prefered. Nuvemshop's Checkout may filter some of them and not show them due to UX business rules being applied in order to improve the conversation rate.
+Any number of payment options can be added to the checkout, combining external and transparent options as prefered. Nuvemshop's Checkout may filter some of them and not show them due to UX business rules being applied in order to improve the conversion rate.
 
 For example, if ACME Payments wanted to add three different payment options, one for their own _external checkout_, one for _transparent card_ and another one for _transparent boleto_, the payment provider would the following `checkout_payment_options` specified:
 
