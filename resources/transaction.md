@@ -45,9 +45,9 @@ This object is used to indicate specific information of a Transaction. It can be
 | `integration_type`             | String | One of the available [Transaction Integration Types](#Transaction-Integration-Types). |
 | `external_id`                  | String | [Optional] ID used by the Payment Provider.                  |
 | `external_url`                 | String | [Optional] HTTPS URL with details of this Transaction for the merchant. |
-| `external_resource_url`        | String | [Required for `boleto`, `ticket`, `wire_transfer`, `bank_debit` and `pix`] HTTPS URL of the boleto or ticket to show to the consumer to resume the payment. In the case of bank debit and wire transfer, link to the bank selected by the consumer to make the transaction. |
-| `external_resource_code`       | String | [Required for `boleto`, `ticket`, `wire_transfer`, `bank_debit` and `pix`] Barcode for boleto, or code for ticket. For all other cases, used as a reference code for the consumer. |
-| `external_resource_expires_at` | Date   | [Required for `boleto`, `ticket` and `pix`] ISO 8601 date for the expiration date of a boleto or ticket. |
+| `external_resource_url`        | String | [Required for transparent transactions with `boleto`, `ticket`, `wire_transfer`, `bank_debit` and `pix`] HTTPS URL of the boleto or ticket to show to the consumer to resume the payment. In the case of bank debit and wire transfer, link to the bank selected by the consumer to make the transaction. |
+| `external_resource_code`       | String | [Required for transparent transactions with `boleto`, `ticket`, `wire_transfer`, `bank_debit` and `pix`] Barcode for boleto, or code for ticket. For all other cases, used as a reference code for the consumer. |
+| `external_resource_expires_at` | Date   | [Required for transparent transactions with `boleto`, `ticket` and `pix`] ISO 8601 date for the expiration date of a boleto or ticket. |
 | `ip`                           | String | [Optional] IP of the device that initiated this Transaction. |
 
 > ***Note:*** All URLs must be secure URLs (https).
