@@ -129,7 +129,7 @@ curl --location --request POST 'https://www.tiendanube.com/apps/authorize/token'
 --data-urlencode 'client_id=${client_id}' \
 --data-urlencode 'client_secret=${client_secret}' \
 --data-urlencode 'grant_type=authorization_code' \
---data-urlencode 'code=${client_secret}'
+--data-urlencode 'code=${code}'
 ```
 
 > **Note 1:** Using placeholders for:
