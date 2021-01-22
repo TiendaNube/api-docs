@@ -840,6 +840,7 @@ Here's an example of what a JSON metadata would look like.
 ```json
 {
     "type":"gateway",
+    "name": "ACME Payments",
     "logo_urls":{
        "400x120":"https://tiendanube.payments.acme.com/logos/400x120.png"
     },
