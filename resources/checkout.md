@@ -380,7 +380,7 @@ The second argument of the function passed as an argument to `LoadCheckoutPaymen
 | ------------------- | ------------------------------------------------------------ |
 | `ExternalPayment()` | Returns an instance of the PaymentOption for integration types that require redirecting the consumer to a different website. |
 | `ModalPayment()`    | Returns an instance of the PaymentOption for integration types that require opening a Modal in the store's frontend. |
-| `CustomPayment()`   | Used intenally for the merchant's custom payment methods.    |
+| `CustomPayment()`   | Used internally for the merchant's custom payment methods.    |
 | `Transparent`       | Object that contains functions to obtain instances for transparent integration types. |
 
 Note: ExternalPayment and ModalPayment won't render any input fields on the frontend. The main difference between them is on their `onSubmit` `callback` parameters.
