@@ -127,11 +127,11 @@ The `products` field has the following contents:
 Endpoints
 ---------
 
-### GET /draft-orders
+### GET /draft_orders
 
 List all draft orders.
 
-#### GET /draft-orders
+#### GET /draft_orders
 
 `HTTP/1.1 200 OK`
 
@@ -392,11 +392,11 @@ List all draft orders.
 }
 ```
 
-### GET /draft-orders/{id}
+### GET /draft_orders/{id}
 
 Get a draft order.
 
-#### GET /draft-orders/39138263
+#### GET /draft_orders/39138263
 
 `HTTP/1.1 200 OK`
 
@@ -544,7 +544,7 @@ Get a draft order.
 }
 ```
 
-### POST /draft-orders
+### POST /draft_orders
 
 Create a draft order.
 
@@ -598,7 +598,7 @@ Create a draft order.
 | pending_confirmation  | The payment confirmation is pending                 |
 | paid                  | The payment was successfully confirmed and captured |
 
-#### POST /draft-orders
+#### POST /draft_orders
 
 `HTTP/1.1 201 Created`
 
@@ -729,11 +729,11 @@ Create a draft order.
 }
 ```
 
-### POST /draft-orders/{id}/confirm
+### POST /draft_orders/{id}/confirm
 
 Confirm a draft order and converts it to an order. Return an [Order](https://github.com/tiendanube/api-docs/blob/master/resources/order.md).
 
-#### POST /draft-orders/39138283/confirm
+#### POST /draft_orders/39138283/confirm
 
 `HTTP/1.1 200 OK`
 
@@ -952,11 +952,11 @@ Confirm a draft order and converts it to an order. Return an [Order](https://git
 }
 ```
 
-### DELETE /draft-orders/{id}
+### DELETE /draft_orders/{id}
 
 Delete a draft order.
 
-#### DELETE /draft-orders/39138263
+#### DELETE /draft_orders/39138263
 
 `HTTP/1.1 200 OK`
 
