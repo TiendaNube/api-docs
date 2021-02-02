@@ -397,7 +397,6 @@ The `PaymentOptions.Transparent` has one function per each of the payment method
 | `BoletoPayment()` | For payments with `boleto` payment method.                                       |
 | `TicketPayment()` | For payments with `ticket` payment method.                                       |
 | `PixPayment()`    | For payments with `pix` payment method.                                          |
-| `QrCodePayment()` | For payments with `QR Code` payment method.                                      |
 
 ##### CardPayment
 
