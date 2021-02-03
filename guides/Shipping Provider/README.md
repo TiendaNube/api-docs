@@ -14,7 +14,7 @@
 - Limits
 - The CODE & Reference ID parameters 
 - Free Shipping calculation 
-4. [ Shipping Management ](#management)
+4. [**Shipping Management** ](#management)
 - New shipments notifications
 - Admin links
 - Process the order
@@ -159,8 +159,12 @@ POST /shipping_carriers/123/options **
     } 
 See more about [carrier options properties](https://github.com/TiendaNube/api-docs/blob/master/resources/shipping_carrier.md#shipping-carrier-options "carrier options properties") and [endpoints](https://github.com/TiendaNube/api-docs/blob/master/resources/shipping_carrier.md#post-shipping_carrierscarrier_idoptions "endpoints") 
 
+<br><br>
+
 ![](https://github.com/TiendaNube/api-docs/blob/master/guides/Shipping%20Provider/images/Setup.png)
 > Sequence diagram for creating an APP
+
+<br><br>
 
 <a name="rates"></a>
 ## Shipping Rates
@@ -219,8 +223,6 @@ The destination address data may vary depending on where the shipping calculatio
 In Tiendanube shipping calculations are made from different places on the platform, for example: the product page, the shopping cart, and the checkout. Depending on where the rates request is made, the destination address may have more or less information.
  
 Product page and Cart: on these pages only the postal code will be sent as destination data to perform the calculation.
-
-
 
     "destination": { 
     "name": null, 
@@ -374,6 +376,8 @@ Once the shipment management has been done, the tracking number and the URL wher
 Notification and visibility of a shipment's status change is very important to buyers. Lower the levels of uncertainty and adjust the expectations of receiving the shipment. This translates to fewer interactions between consumers and store owners. For this reason, it is very important to be able to inform us about status changes on our tracking page.
 
 You can see all the states that we support in the documentation. In order to update them, you have to do a POST to POST /orders/#{order_id}/fulfillments sending as much information as possible. This will mean that the buyer can accompany the order at all times on the order confirmation page.
+
+<br><br>
 
 ![](https://github.com/TiendaNube/api-docs/blob/master/guides/Shipping%20Provider/images/Gesta%CC%83o%20de%20envi%CC%81os-Gesta%CC%83o%20de%20envios.png)
 > Notification, order processing, and shipment status update
