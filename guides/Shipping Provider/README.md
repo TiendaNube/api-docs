@@ -14,14 +14,14 @@ The construction process is divided into 5 steps:
 ○ APP installation
 ○ Carrier creation
 ○ Creation of carrier options
-2. **Shipping Rates ** —> Definition of business rules to perform shipment calculations. 
+2. **Shipping Rates** —> Definition of business rules to perform shipment calculations. 
 3. **Shipment management** —> Mechanisms to exchange information when a purchase occurs on Tiendanube.
 ○ Notification of new shipments
 ○ Get order data
 ○ Report the shipping code
 ○ Update shipment statuses
 4. **Integration levels** —> Classification of the APP according to the functionalities developed by the partner.
-5. **Testing Checklist **—> List to guide the functional test of the APP.
+5. **Testing Checklist** —> List to guide the functional test of the APP.
 
 
 # Setting-upSetting-up
@@ -290,7 +290,7 @@ Some products have free shipping (free_shipping = true) and some products do not
 - price: Total shipping cost with discount applied
 
 How to calculate the discount? Each shipping company can apply its own recipe to perform this calculation. Below we suggest a possibility to perform this calculation
-``price = price_merchant - the cost of shipping the products with free_shipping=false 
+    price = price_merchant - the cost of shipping the products with free_shipping=false 
 
 ###### Sequence diagram for shipping rates
 
