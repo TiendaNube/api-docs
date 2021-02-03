@@ -321,8 +321,12 @@ Some products have free shipping (free_shipping = true) and some products do not
 How to calculate the discount? Each shipping company can apply its own recipe to perform this calculation. Below we suggest a possibility to perform this calculation
     price = price_merchant - the cost of shipping the products with free_shipping=false 
 
+<br><br>
+
 ![](https://github.com/TiendaNube/api-docs/blob/master/guides/Shipping%20Provider/images/cotización-de-envíos.png)
 > Sequence diagram for shipping rates
+
+<br><br>
 
 <a name="management"></a>
 ## Shipment management
