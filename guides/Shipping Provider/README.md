@@ -24,7 +24,7 @@ The construction process is divided into 5 steps:
 5. **Testing Checklist** —> List to guide the functional test of the APP.
 
 
-# Setting-upSetting-up
+# Setting-up
 ### Partner account and creation of the APP 
 To interact with our APIs you have to create an APP. The APPs represent the products of our partners on our platform. Each APP has its own credentials, which are required to authenticate on our platform, as well as certain permissions to access the different scopes of our API. The steps to create a Shipping APP are as follows: 
 1. If your company does not yet have an account on our partner portal, you must create one by entering the following link 
@@ -293,4 +293,58 @@ How to calculate the discount? Each shipping company can apply its own recipe to
     price = price_merchant - the cost of shipping the products with free_shipping=false 
 
 ###### Sequence diagram for shipping rates
+
+## Shipment management
+In this section on shipping management, the necessary interactions will be detailed so that the store can report new sales to the APP, and that the APP can obtain the order data to process the shipment.
+
+
+### Notification of shipments
+The shipping notification can be done individually, within the order detail, or in bulk in the order list.
+
+These notifications are made through links within the Tiendanube admin that notify the APP about the existence of new shipments to manage. For this, the partner must create the corresponding admin links in the partner portal.
+
+The admins allow you to send the ID of the store and the ID (or IDs) of the orders to notify the app and it can obtain the order data to start shipping management.
+
+The admin links are made up of a partner URL whose parameters can:
+- Store = Store iD
+- Locale = User language
+- ID = Identification of the object of the page where the link is being displayed. Ex: When an Administrator link is displayed on the page of an order, we add its ID as parameters of the URL.
+The URL that is formed may look like the following:
+https://url.app?locale=pt&store=937395&id[]=128158567&id[]=127034946 
+
+### How to create an admin link?
+1. Access the application creation page in the Partner Panel 
+2. Go to the bottom of the page until you get to the section "Administrator Links"
+3.  Complete the fields with the link data that will be displayed:
+a. Section: Select where the Link will appear: Area of the Tiedanube panel where you want the link to be displayed.
+i. **Order List **—> For massive actions.
+ii. **Details of an order** —> To trade on a particular order. 
+b. **Link Title**: Text you want to be displayed to the user. 
+i. **Follow the following format**: [APP Name] - [Acción]. example: 
+Shipping Nube - Label printing, Shipping Nube - Notify shipments, etc. 
+c. **Icon**: choose the icon that most closely relates to the action to be executed. 
+d. **URL**: Address to which the user will be directed when clicking on the link. This is the URL to which we will add the parameters. 
+	Ex: https://url.do.link?locale=es&store=937395&id[]=128158567&id[]=127034946 
+4.  Click on "Add a link" to save the action.
+
+### What else can I use the Admin Links for?
+The admin links are the bridge between Tiendanube and the APP delivery system. Any action that can be done in the APP can be published in the Tiendanube admin. This significantly improves the experience of our customers, optimizing operating times and therefore generating positive emotions that reinforce integration with the APP. Some ideas to improve the integration experience:
+
+- Notify shipments
+- Request package pickup
+- Go to label printing
+
+### Process the order 
+To process the order, the data must be obtained, for this make a request to the order endpoint using the store id and order id values, received in the admin link, to obtain the order data and process the shipment. View more about get order 
+### Report shipping code
+Once the shipment management has been done, the tracking number and the URL where to check the shipment status must be notified. For this, perform a POST to /orders/{id}/fulfill indicating:
+- shipping_tracking_url 
+- shipping_tracking_number 
+
+### Shipping status update
+Notification and visibility of a shipment's status change is very important to buyers. Lower the levels of uncertainty and adjust the expectations of receiving the shipment. This translates to fewer interactions between consumers and store owners. For this reason, it is very important to be able to inform us about status changes on our tracking page.
+
+You can see all the states that we support in the documentation. In order to update them, you have to do a POST to POST /orders/#{order_id}/fulfillments sending as much information as possible. This will mean that the buyer can accompany the order at all times on the order confirmation page.
+
+Notification, order processing and shipment status update
 
