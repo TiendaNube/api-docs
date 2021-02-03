@@ -374,6 +374,6 @@ Notification and visibility of a shipment's status change is very important to b
 
 You can see all the states that we support in the documentation. In order to update them, you have to do a POST to POST /orders/#{order_id}/fulfillments sending as much information as possible. This will mean that the buyer can accompany the order at all times on the order confirmation page.
 
-![](guides/Shipping Provider/images/Gestão de envíos-Gestão de envios.png)
+![](https://github.com/TiendaNube/api-docs/blob/master/guides/Shipping%20Provider/images/Gesta%CC%83o%20de%20envi%CC%81os-Gesta%CC%83o%20de%20envios.png)
 ###### Notification, order processing and shipment status update
 
