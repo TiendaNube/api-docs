@@ -14,8 +14,7 @@
 - Limits
 - The CODE & Reference ID parameters 
 - Free Shipping calculation 
-
-1. [ Shipping Management ](#management)
+4. [ Shipping Management ](#management)
 - New shipments notifications
 - Admin links
 - Process the order
@@ -160,7 +159,7 @@ POST /shipping_carriers/123/options **
     } 
 See more about [carrier options properties](https://github.com/TiendaNube/api-docs/blob/master/resources/shipping_carrier.md#shipping-carrier-options "carrier options properties") and [endpoints](https://github.com/TiendaNube/api-docs/blob/master/resources/shipping_carrier.md#post-shipping_carrierscarrier_idoptions "endpoints") 
 
-![](guides/Shipping Provider/images/Setup.png)
+![](https://github.com/TiendaNube/api-docs/blob/master/guides/Shipping%20Provider/images/Setup.png)
 > Sequence diagram for creating an APP
 
 <a name="rates"></a>
@@ -320,7 +319,7 @@ Some products have free shipping (free_shipping = true) and some products do not
 How to calculate the discount? Each shipping company can apply its own recipe to perform this calculation. Below we suggest a possibility to perform this calculation
     price = price_merchant - the cost of shipping the products with free_shipping=false 
 
-![](guides/Shipping Provider/images/cotización-de-envíos.png)
+![](https://github.com/TiendaNube/api-docs/blob/master/guides/Shipping%20Provider/images/cotización-de-envíos.png)
 > Sequence diagram for shipping rates
 
 <a name="management"></a>
