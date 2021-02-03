@@ -135,4 +135,162 @@ POST /shipping_carriers/123/options **
     "updated_at": "2013-04-12T10:15:10-03:00" 
     } 
 See more about [carrier options properties](https://github.com/TiendaNube/api-docs/blob/master/resources/shipping_carrier.md#shipping-carrier-options "carrier options properties") and [endpoints](https://github.com/TiendaNube/api-docs/blob/master/resources/shipping_carrier.md#post-shipping_carrierscarrier_idoptions "endpoints") 
+
 Sequence diagram for creating an APP
+
+## Shipping Rates
+Shipping rates are the results of shipping calculations for a cart. Every time a store requests a shipping calculation, our platform will make a request to the callback_url, informed in the creation of the carrier, with the information from the shopping cart. See more information. 
+Below are the business rules to take into account when making shipping calculations.
+### Volumetry
+When receiving a request for a shipping calculation, the weight and dimensions of the products contained in the cart must be taken into account to offer the shipping options that are consistent with the products. It may happen that some products do not have weight and dimensions, in this case only offer options when the app has the necessary data to make the shipping calculation.
+### Treatment of rates
+Once the shipping options to return have been calculated, they should not be filtered or modified. Our platform will be responsible for displaying only those options based on the services that the store has activated, as well as adding the cost values and additional days.
+### Limits
+The results to be displayed in the calculator are limited by your amount of shipping rates:
+- Rates to Ship: 1 rate for carrier option (code).
+- Rates to Pickup: Up to 10 rates per carrier option (code). 
+
+### The Code parameter
+The code parameter value represents each carrier option of the APP.
+The shipping rates returned in the shipping calculation must have a CODE that corresponds to a carrier option. In this way we can apply the configurations made by the user on the carrier options in the administrator of his store. 
+
+###### Important: 
+Rates whose CODES do not correspond to a carrier option will not be displayed. Respect uppercase, lowercase and accents.
+
+###### Example: 
+We have a carrier option that offers a fast delivery service with CODE "express":
+
+
+    { 
+    "id": 123, 
+    "code": "express", 
+    "name": "Servicio express 24hs", 
+    "additional_days": 0, 
+    "additional_cost": 0.0, 
+    "allow_free_shipping": false, 
+    "active": true, 
+    "created_at": "2013-04-12T10:15:10-03:00", 
+    "updated_at": "2013-04-12T10:15:10-03:00" 
+    } 
+The shipping rate must contain the same CODE "express": 
+
+
+
+    { 
+    "name": "Envio a domicilio express 24hs", 
+    "code": "express", 
+    "price": 14.15, 
+    "price_merchant": 14.15, 
+    "currency": "ARS", 
+    "type": "ship", 
+    "min_delivery_date": "2020-07-20T14:48:45-0300", 
+    "max_delivery_date": "2020-07-20T14:48:45-0300", 
+    "phone_required": true, 
+    "reference": "ref123" 
+    }, 
+### About destination address
+The destination address data may vary depending on where the shipping calculation is made and the data currently available.
+In Tiendanube shipping calculations are made from different places on the platform, for example: the product page, the shopping cart, and the checkout. Depending on where the rates request is made, the destination address may have more or less information.
+ 
+Product page and Cart: on these pages only the postal code will be sent as destination data to perform the calculation.
+
+
+
+    "destination": { 
+    "name": null, 
+    "address": null, 
+    "number": null, 
+    "floor": null, 
+    "locality": null, 
+    "city": null, 
+    "province": null, 
+    "country": "AR", 
+    "postal_code": "1602", 
+    "phone": null 
+    }, 
+At Checkout, all the data of the destination address will be sent, as long as it is a home delivery. Ex: 
+
+
+    "destination": { 
+    "name": null, 
+    "address": "Juan B. Justo", 
+    "number": "3000", 
+    "floor": null, 
+    "locality": "Nuñez", 
+    "city": "Capital Federal", 
+    "province": "Capital Federal", 
+    "country": "AR", 
+    "postal_code": "1602", 
+    "phone": null 
+    }, 
+With these clarifications, Tiendanube wants to ensure that the buyer completes the checkout with a valid shipping option for their full address.
+
+### Reference id
+In the rate structure there is a field called reference. This is a field of free use that allows the APP to send an auxiliary value in the shipping calculation that you can later retrieve in the order at the time of processing the shipment. To consult this value, consult the endpoint orders, field shipping_option_reference.
+
+Example:
+**POST /your_callback_url **
+
+
+    { 
+    "store_id": 123456, 
+    "currency": "ARS", 
+    "language": "es", 
+    "origin": { 
+    "name": null, 
+    "address": "Avenida Cabildo", 
+    "number":"4781", 
+    "floor":null, 
+    "locality":"Nuñez", 
+    "city":"CapitalFederal", 
+    "province":"CapitalFederal", 
+    "country":"AR", 
+    "postal_code":"1602", 
+    "phone":null 
+    }, 
+    "destination":{ 
+    "name":null, 
+    "address":"JuanB.Justo", 
+    "number":"3000", 
+    "floor":null, 
+    "locality":"Nuñez", 
+    "city":"CapitalFederal", 
+    "province":"CapitalFederal", 
+    "country":"AR", 
+    "postal_code":"1602", 
+    "phone":null 
+    }, 
+    "items":[ 
+    { 
+    "name":"Myproduct", 
+    "sku":null, 
+    "quantity":1, 
+    "free_shipping":true, 
+    "grams":1000, 
+    "price":20.00, 
+    "dimensions":{ 
+    "width":12.0, 
+    "height":10.0, 
+    "depth":10.0 
+    } 
+    } 
+    ] 
+    } 
+    
+
+### Free Shipping in mixed carts
+Mixed carts mean that one product has free shipping and another one has paid shipping, so we have to solve the shipping calculation for this specific scenario.
+In the shipping rates query we will send to the callback_url all the information to perform the shipping calculation, among this information we will indicate which products have free shipping, and which do not, through the free_shipping = True / False attribute.
+The following scenarios can occur:
+#### 100% free shipping:
+All products in the cart have the property free_shipping = true. In this scenario, the APP should not take any additional action. Tendenube is responsible for applying the corresponding discounts. The APP must send the total shipping cost in the price and price_merchant fields.
+#### Mixed cart:
+Some products have free shipping (free_shipping = true) and some products do not have free shipping (free_shipping = false). In this case, the APP must perform an additional calculation to obtain the cost with the discount applied for those products that have free shipping. Thus, the APP response will contain 2 (two) different costs:
+- price_merchant: Total shipping cost
+- price: Total shipping cost with discount applied
+
+How to calculate the discount? Each shipping company can apply its own recipe to perform this calculation. Below we suggest a possibility to perform this calculation
+``price = price_merchant - the cost of shipping the products with free_shipping=false 
+
+###### Sequence diagram for shipping rates
+
