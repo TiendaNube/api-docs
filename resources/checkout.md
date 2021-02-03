@@ -396,6 +396,7 @@ The `PaymentOptions.Transparent` has one function per each of the payment method
 | `DebitPayment()`  | For online debit (aka "bank debit" payment method.                               |
 | `BoletoPayment()` | For payments with `boleto` payment method.                                       |
 | `TicketPayment()` | For payments with `ticket` payment method.                                       |
+| `PixPayment()`    | For payments with `pix` payment method.                                          |
 
 ##### CardPayment
 
@@ -494,6 +495,8 @@ For each of the transparent payment options, the following extra input fields ca
 | ----------------- | -------------------- |
 | `billing_address` | Billing information. |
 
+
+> `PixPayment` doesn't render any input. The payment instructions are displayed after closing the order.
 
 ###### Updating the fields dinamically
 
