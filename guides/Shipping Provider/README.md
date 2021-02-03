@@ -2,6 +2,10 @@
 
 **Table of Contents**
 
+[TOCM]
+
+[TOC]
+
 ## GlossaryGlossary
 - Carrier: It is the entity that represents the shipping company in Tiendanube. 
 - Carrier option: Shipping service offered by a carrier. 
