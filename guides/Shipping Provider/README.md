@@ -2,9 +2,25 @@
 
 **Table of Contents**
 
-[TOCM]
+1. [ **Introduction** ](#intro)
+2. [ **Setting-up**: The first steps to create a shipping application  ](#setting-up)
+- Partner registration and APP creation
+- APP installation
+- Carrier creation
+- Creation of carrier options
+3. [ **Shipping Rates** ](#rates)
+- Volumetry
+- Treatment of rates
+- Limits
+- The CODE & Reference ID parameters 
+- Free Shipping calculation 
 
-[TOC]
+1. [ Shipping Management ](#management)
+- New shipments notifications
+- Admin links
+- Process the order
+- Report a tracking code
+- Shipping status updates
 
 ## GlossaryGlossary
 - Carrier: It is the entity that represents the shipping company in Tiendanube. 
@@ -13,6 +29,7 @@
 - Merchant: Shop's owner. 
 - Consumer: Person who buys in a store. 
 
+<a name="intro"></a>
 ## Introduction
 This documentation provides an explanation of what a Shipping APP is and serves as a guide for the development process.
 The construction process is divided into 5 steps:
@@ -30,7 +47,7 @@ The construction process is divided into 5 steps:
 4. **Integration levels** —> Classification of the APP according to the functionalities developed by the partner.
 5. **Testing Checklist** —> List to guide the functional test of the APP.
 
-
+<a name="setting-up"></a>
 # Setting-up
 ### Partner account and creation of the APP 
 To interact with our APIs you have to create an APP. The APPs represent the products of our partners on our platform. Each APP has its own credentials, which are required to authenticate on our platform, as well as certain permissions to access the different scopes of our API. The steps to create a Shipping APP are as follows: 
@@ -145,6 +162,7 @@ See more about [carrier options properties](https://github.com/TiendaNube/api-do
 
 Sequence diagram for creating an APP
 
+<a name="rates"></a>
 ## Shipping Rates
 Shipping rates are the results of shipping calculations for a cart. Every time a store requests a shipping calculation, our platform will make a request to the callback_url, informed in the creation of the carrier, with the information from the shopping cart. See more information. 
 Below are the business rules to take into account when making shipping calculations.
@@ -195,6 +213,7 @@ The shipping rate must contain the same CODE "express":
     "phone_required": true, 
     "reference": "ref123" 
     }, 
+
 ### About destination address
 The destination address data may vary depending on where the shipping calculation is made and the data currently available.
 In Tiendanube shipping calculations are made from different places on the platform, for example: the product page, the shopping cart, and the checkout. Depending on where the rates request is made, the destination address may have more or less information.
@@ -230,6 +249,7 @@ At Checkout, all the data of the destination address will be sent, as long as it
     "postal_code": "1602", 
     "phone": null 
     }, 
+
 With these clarifications, Tiendanube wants to ensure that the buyer completes the checkout with a valid shipping option for their full address.
 
 ### Reference id
@@ -301,6 +321,7 @@ How to calculate the discount? Each shipping company can apply its own recipe to
 
 ###### Sequence diagram for shipping rates
 
+<a name="management"></a>
 ## Shipment management
 In this section on shipping management, the necessary interactions will be detailed so that the store can report new sales to the APP, and that the APP can obtain the order data to process the shipment.
 
