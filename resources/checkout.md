@@ -496,7 +496,7 @@ For each of the transparent payment options, the following extra input fields ca
 | `billing_address` | Billing information. |
 
 
-> `PixPayment` and `QrCodePayment` do not render any input, payment instructions are displayed when closing the order.
+> `PixPayment` doesn't render any input. The payment instructions are displayed after closing the order.
 
 ###### Updating the fields dinamically
 
