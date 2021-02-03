@@ -1,11 +1,10 @@
-
-
+#asd
 ## GlossaryGlossary
-**Carrier**: It is the entity that represents the shipping company in Tiendanube. 
-**Carrier option: **Shipping service offered by a carrier. 
-**Shipping rates: **Set of shipping calculations that the carrier offers for each carrier option created in the store. 
-**Merchant:** Shop's owner. 
-**Consumer:** Person who buys in a store. 
+- Carrier: It is the entity that represents the shipping company in Tiendanube. 
+- Carrier option: Shipping service offered by a carrier. 
+- Shipping rates: Set of shipping calculations that the carrier offers for each carrier option created in the store. 
+- Merchant: Shop's owner. 
+- Consumer: Person who buys in a store. 
 
 ## Introduction
 This documentation provides an explanation of what a Shipping APP is and serves as a guide for the development process.
@@ -45,12 +44,14 @@ After the merchant approves the permissions, redirect the merchant to the URL re
 
 
 ### Get the access_token 
-curl --location --request POST 
-'https://www.tiendanube.com/apps/authorize/token' \ 
---header 'Content-Type: application/x-www-form-urlencoded' \ --data-urlencode 'client_id=${client_id}' \ 
---data-urlencode 'client_secret=${client_secret}' \ 
---data-urlencode 'grant_type=authorization_code' \ 
---data-urlencode 'code=${authorization_code}' 
+
+
+    curl --location --request POST 
+    'https://www.tiendanube.com/apps/authorize/token' \ 
+    --header 'Content-Type: application/x-www-form-urlencoded' \ --data-urlencode 'client_id=${client_id}' \ 
+    --data-urlencode 'client_secret=${client_secret}' \ 
+    --data-urlencode 'grant_type=authorization_code' \ 
+    --data-urlencode 'code=${authorization_code}' 
 
 ###### Note 1: 
 We use placeholders to: 
@@ -72,21 +73,24 @@ To create the carrier, the following information must be provided.
 
 ###### Example: 
 POST /shipping_carriers 
-{ 
-"name": "My Shipping Company", 
-"callback_url": "https://example.com/rates", 
-"types": "ship,pickup" 
-} 
-HTTP/1.1 201 Created 
-{ 
-"id": 123, 
-"name": "My Shipping Company", 
-"active": true, 
-"callback_url": "https://example.com/rates", 
-"types": "ship,pickup", 
-"created_at": "2013-06-11T11:12:10-03:00", 
-"updated_at": "2013-06-11T11:12:10-03:00" 
-} 
+
+    { 
+    "name": "My Shipping Company", 
+    "callback_url": "https://example.com/rates", 
+    "types": "ship,pickup" 
+    } 
+	
+    HTTP/1.1 201 Created 
+    
+	{ 
+    "id": 123, 
+    "name": "My Shipping Company", 
+    "active": true, 
+    "callback_url": "https://example.com/rates", 
+    "types": "ship,pickup", 
+    "created_at": "2013-06-11T11:12:10-03:00", 
+    "updated_at": "2013-06-11T11:12:10-03:00" 
+    } 
 
 [More on creating a carriers ](https://github.com/TiendaNube/api-docs/blob/master/resources/shipping_carrier.md#post-shipping_carriers "More on creating a carriers ")
 
@@ -110,12 +114,15 @@ The allow_free_shipping attribute must be created with the value False. The stor
 **POST /shipping_carriers/#{carrier_id}/options 
 POST /shipping_carriers/123/options **
 
+
+
     { 
     "code": "standard", 
     "name": "Servicio de envío Estándar" 
     } 
+	
     HTTP/1.1 201 Created 
-    6
+    
     { 
     "id": 1, 
     "code": "standard", 
