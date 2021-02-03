@@ -160,7 +160,8 @@ POST /shipping_carriers/123/options **
     } 
 See more about [carrier options properties](https://github.com/TiendaNube/api-docs/blob/master/resources/shipping_carrier.md#shipping-carrier-options "carrier options properties") and [endpoints](https://github.com/TiendaNube/api-docs/blob/master/resources/shipping_carrier.md#post-shipping_carrierscarrier_idoptions "endpoints") 
 
-Sequence diagram for creating an APP
+![](guides/Shipping Provider/images/Setup.png)
+> Sequence diagram for creating an APP
 
 <a name="rates"></a>
 ## Shipping Rates
@@ -319,7 +320,8 @@ Some products have free shipping (free_shipping = true) and some products do not
 How to calculate the discount? Each shipping company can apply its own recipe to perform this calculation. Below we suggest a possibility to perform this calculation
     price = price_merchant - the cost of shipping the products with free_shipping=false 
 
-###### Sequence diagram for shipping rates
+![](guides/Shipping Provider/images/cotización-de-envíos.png)
+> Sequence diagram for shipping rates
 
 <a name="management"></a>
 ## Shipment management
@@ -375,5 +377,5 @@ Notification and visibility of a shipment's status change is very important to b
 You can see all the states that we support in the documentation. In order to update them, you have to do a POST to POST /orders/#{order_id}/fulfillments sending as much information as possible. This will mean that the buyer can accompany the order at all times on the order confirmation page.
 
 ![](https://github.com/TiendaNube/api-docs/blob/master/guides/Shipping%20Provider/images/Gesta%CC%83o%20de%20envi%CC%81os-Gesta%CC%83o%20de%20envios.png)
-###### Notification, order processing and shipment status update
+> Notification, order processing, and shipment status update
 
