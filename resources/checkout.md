@@ -576,6 +576,7 @@ Each element of the list must be an object with the following fields.
 | `quantity`          | Number of installments.          |
 | `installmentAmount` | Value of a single installment.   |
 | `totalAmount`       | Total value of all installments. |
+| `cft`               | (optional) Total financial cost. |
 
 ##### Example
 
