@@ -123,10 +123,10 @@ Each type of Transaction has a Finite State Machine (FSM) that defines its statu
 
 * `authorization`: The credit card transaction has been authorized.
 * `capture`: The credit card transaction has been captured.
-* `expiration`: The boleto or ticket transaction has expired.
+* `expiration`: The transaction has expired.
 * `in_fraud_analysis`: The credit card transaction is being reviewed by the payment provider (no merchant action is required).
 * `refund`: The sale has been fully refunded.
-* `needs_merchant_review`: The transaction has to be approved or rejected by the merchant.
+* `needs_merchant_review`: The credit card transaction has to be approved or rejected by the merchant.
 * `sale`: Represents an authorization along with capture for credit card transactions, or a sale event for all other payment method types.
 * `void`: The credit card transaction has been voided.
 
@@ -164,7 +164,8 @@ The following table shows the Transaction Event Types supported for each *paymen
 | Payment Method Type                                          | Transaction Event Type                                       |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | `credit_card`                                                | `sale`, `authorization`, `capture`, `in_fraud_analysis`, `needs_merchant_review`, `void`, `refund` |
-| `bank_debit`, `boleto`, `cash`, `debit_card`, `pix`, `ticket`, `wallet`, `wire_transfer` | `sale`, `refund`                                             |
+| `boleto`, `pix`, `ticket`                                    | `sale`, `expiration`, `refund`                               |
+| `bank_debit`, `cash`, `debit_card`, `wallet`, `wire_transfer` | `sale`, `refund`                                             |
 
 ### Transaction Status Workflow
 
