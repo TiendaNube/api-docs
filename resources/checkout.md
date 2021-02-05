@@ -586,17 +586,20 @@ Checkout.setInstallments({
     {
       quantity: 1,
       installmentAmount: 25,
-      totalAmount: 25
+      totalAmount: 25,
+      cft: '0,00%'
     },
     {
       quantity: 2,
       installmentAmount: 13,
-      totalAmount: 26
+      totalAmount: 26,
+      cft: '199,26%'
     },
     {
       quantity: 3,
       installmentAmount: 10,
-      totalAmount: 30
+      totalAmount: 30,
+      cft: '196,59%'
     }
   ]
 })
