@@ -522,6 +522,7 @@ The `callback` function must be invoked with an object containing the following 
 | `message`     | _(Legacy)_ If `success` is false, this message will be displayed to the consumer. |
 | `redirect`    | _(Optional)_ External URL to which the consumer will be redirected to continue the payment process. _(Only for `ExternalPayment()`)._ |
 
+
 ##### Sample Arguments
 
 Here's an example summarizing all the definitions above.
