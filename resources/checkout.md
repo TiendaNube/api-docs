@@ -522,6 +522,7 @@ The `callback` function must be invoked with an object containing the following 
 | `message`     | _(Legacy)_ If `success` is false, this message will be displayed to the consumer. |
 | `redirect`    | _(Optional)_ External URL to which the consumer will be redirected to continue the payment process. _(Only for `ExternalPayment()`)._ |
 
+
 ##### Sample Arguments
 
 Here's an example summarizing all the definitions above.
@@ -586,17 +587,20 @@ Checkout.setInstallments({
     {
       quantity: 1,
       installmentAmount: 25,
-      totalAmount: 25
+      totalAmount: 25,
+      cft: '0,00%'
     },
     {
       quantity: 2,
       installmentAmount: 13,
-      totalAmount: 26
+      totalAmount: 26,
+      cft: '199,26%'
     },
     {
       quantity: 3,
       installmentAmount: 10,
-      totalAmount: 30
+      totalAmount: 30,
+      cft: '196,59%'
     }
   ]
 })
