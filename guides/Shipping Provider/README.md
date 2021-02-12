@@ -378,7 +378,6 @@ To process the order, the data must be obtained. For this, make a request to the
 Once the shipment management has been done, the tracking number and the URL where to check the shipment status must be notified. For this, perform a POST to /orders/{id}/fulfill indicating:
 - shipping_tracking_url 
 - shipping_tracking_number 
-<br>
 
 [View more about how to report a tracking code](https://github.com/TiendaNube/api-docs/blob/master/resources/order.md#post-ordersidfulfill "View more about hot to report shipping code")
 
