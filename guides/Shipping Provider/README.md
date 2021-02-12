@@ -21,7 +21,7 @@
 - Report a tracking code
 - Shipping status updates
 
-## GlossaryGlossary
+## Glossary
 - Carrier: It is the entity that represents the shipping company in Tiendanube. 
 - Carrier option: Shipping service offered by a carrier. 
 - Shipping rates: Set of shipping calculations that the carrier offers for each carrier option created in the store. 
@@ -380,6 +380,9 @@ Once the shipment management has been done, the tracking number and the URL wher
 Notification and visibility of a shipment's status change is very important to buyers. Lower the levels of uncertainty and adjust the expectations of receiving the shipment. This translates to fewer interactions between consumers and store owners. For this reason, it is very important to be able to inform us about status changes on our tracking page.
 
 You can see all the states that we support in the documentation. In order to update them, you have to do a POST to POST /orders/#{order_id}/fulfillments sending as much information as possible. This will mean that the buyer can accompany the order at all times on the order confirmation page.
+<br>
+[View more about shipping status update](https://github.com/TiendaNube/api-docs/blob/master/resources/shipping_carrier.md#fulfillment-events "View more about shipping status update")
+
 
 <br><br>
 
