@@ -371,14 +371,14 @@ The admin links are the bridge between Tiendanube and the APP delivery system. A
 
 ### Process the order 
 To process the order, the data must be obtained. For this, make a request to the order endpoint using the store id and order id values, received in the admin link, to obtain the order data and process the shipment. View more about get order 
-<br><br>
+<br>
 [View more about get the order info](https://github.com/TiendaNube/api-docs/blob/master/resources/order.md#get-ordersid "View more about get the order info")
 
 ### Reporting a tracking code
 Once the shipment management has been done, the tracking number and the URL where to check the shipment status must be notified. For this, perform a POST to /orders/{id}/fulfill indicating:
 - shipping_tracking_url 
 - shipping_tracking_number 
-<br><br>
+<br>
 
 [View more about how to report a tracking code](https://github.com/TiendaNube/api-docs/blob/master/resources/order.md#post-ordersidfulfill "View more about hot to report shipping code")
 
@@ -386,7 +386,7 @@ Once the shipment management has been done, the tracking number and the URL wher
 Notification and visibility of a shipment's status change is very important to buyers. Lower the levels of uncertainty and adjust the expectations of receiving the shipment. This translates to fewer interactions between consumers and store owners. For this reason, it is very important to be able to inform us about status changes on our tracking page.
 
 You can see all the states that we support in the documentation. In order to update them, you have to do a POST to POST /orders/#{order_id}/fulfillments sending as much information as possible. This will mean that the buyer can accompany the order at all times on the order confirmation page.
-<br><br>
+<br>
 [View more about shipping status update](https://github.com/TiendaNube/api-docs/blob/master/resources/shipping_carrier.md#fulfillment-events "View more about shipping status update")
 
 
