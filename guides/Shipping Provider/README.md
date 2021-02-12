@@ -374,12 +374,13 @@ To process the order, the data must be obtained. For this, make a request to the
 <br><br>
 [View more about get the order info](https://github.com/TiendaNube/api-docs/blob/master/resources/order.md#get-ordersid "View more about get the order info")
 
-### Report shipping code
+### Reporting a tracking code
 Once the shipment management has been done, the tracking number and the URL where to check the shipment status must be notified. For this, perform a POST to /orders/{id}/fulfill indicating:
 - shipping_tracking_url 
 - shipping_tracking_number 
 <br><br>
-[View more about hot to report shipping code] (https://github.com/TiendaNube/api-docs/blob/master/resources/order.md#post-ordersidfulfill "View more about hot to report shipping code")
+
+[View more about how to report a tracking code](https://github.com/TiendaNube/api-docs/blob/master/resources/order.md#post-ordersidfulfill "View more about hot to report shipping code")
 
 ### Shipping status update
 Notification and visibility of a shipment's status change is very important to buyers. Lower the levels of uncertainty and adjust the expectations of receiving the shipment. This translates to fewer interactions between consumers and store owners. For this reason, it is very important to be able to inform us about status changes on our tracking page.
