@@ -46,7 +46,7 @@ This is the URL a Payment Provides should specify when supporting payment refund
 For Payment Providers, it is a webhook that Tienda Nube will call when a consumer wants to be refunded for its purchase.
 When `posting` to this URL, a JSON payload will include the properties: `transaction_id` and `amount`, indicating the associated transaction along with the related amount to be refunded.
 The Payment Provider response `status code must be 202`. This status code indicates the Payment Provider accepts the refund request and eventually will refund the money. This is because refunding a transaction might be an async process and complexity is different for each Payment Provider.
-It is very important to point out that once a refund process is donde by a Payment Provider, it must be notified to Tienda Nube through its Transaction-API. See [Transaction](transaction.md).
+It is very important to point out that once a refund process is done by a Payment Provider, it must be notified to Tienda Nube through its Transaction-API. See [Transaction](transaction.md).
 
 E.g.
 
