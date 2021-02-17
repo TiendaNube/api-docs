@@ -28,6 +28,7 @@ Properties
 | `supported_payment_methods` | Array(Object) | List of available payment methods for each payment method type. See [Payment Methods](#Payment-Methods). |
 | `checkout_js_url`           | String        | HTTPS URL of the JavaScript file to be included in the checkout frontend. See [Checkout](checkout.md). |
 | `checkout_payment_options`  | Array(Object) | Object containing the available payment options for the checkout frontend. See [Checkout Options](#Checkout-Options). |
+| `refund_url`                | String        | [Optional] HTTPS URL of the Payment Provider for refunding payments. See [Refund-URL](#Refund-URL). |
 | `configuration_url`         | String        | [Optional] HTTPS URL of the Payment Provider configuration UI. |
 | `support_url`               | String        | [Optional] Payment Provider support site HTTPS URL.          |
 | `rates`                     | Array(Object) | [Optional] List of rates definitions for merchants by payment method type. See [Rates](#Rates). |
@@ -38,6 +39,25 @@ Properties
 > ***Note:*** All URLs must be secure URLs (https).
 
 > ***Note:*** Read-only properties will only appear in our responses, which means that should not be part of the requests.
+
+### Refund-URL
+
+This is the URL a Payment Provides should specify when supports payment refunds. 
+For Payment Providers, it is a callback URL that Tienda Nube will call when a consumer wants to be refunded for its purchase.
+When calling the URL, a JSON payload will include the properties: *transactionId* and *amount*, indicating the associated transaction along with the related amount to be refunded.
+The Payment Provider response must be 202. This status code indicates the Payment Provider accepts the refund request and eventually will refund the money. This is because refunding a transaction might be an async process and complexity is different for each Payment Provides.
+It is very import to result that once a refund process is donde by a Payment Providers it must be notified to Tienda Nube through its Transaction-API. See [Transaction](transaction.md).
+
+E.g.
+
+- `Method`: POST
+- `URL`: https://some-payment-provider.com/refund
+- `Request JSON Payload`: ``` {"transactionId": "6e760b6e-e4f3-42ba-8a2d-afddf44e6cf1",  "amount": "200.45" }```
+- `Response`: Http status code 202
+
+> ***Note:*** The URL `some-payment-provider.com/refund` is used as an example. Replace with your own domain and path.
+
+> ***Note:*** The Refund URL must have no path variables.
 
 ### Logos
 
