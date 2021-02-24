@@ -126,7 +126,7 @@ The specification field allows the use of specific business rules. This specific
 | :-------------- | :------------ | :----------------------------------------------------------- |
 | `installments`  | Integer       | Number of installments. E.g. `3`.                            |
 | `interest_rate` | String        | Rate to be applied to the total amount for this installments option. E.g. `"0.015"`. |
-| `applies_to`    | Array(String) | List of [supported values (banks, card brands, etc..)](#supported-payment-methods-by-payment-method-type) to which this installments option applies. |
+| `applies_to`    | Array(String) | [Optional] List of [supported values (banks, card brands, etc.)](#supported-payment-methods-by-payment-method-type) to which this installments option applies. |
 
 > ***Note:*** Interest rates are percentages expressed in fractions of 1 in `String` format for better decimal precision handling. For instance, an interest rate of `6.5%` would be expressed as `6.5 / 100 = 0.065`, which stringified would be "0.065".
 
