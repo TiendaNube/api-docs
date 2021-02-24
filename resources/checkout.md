@@ -52,16 +52,16 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
         })
         .then(function(responseBody) {
           // Once you get the redirect URL, invoke the callback by passing it as argument.
-          if( responseBody.success ){
+          if( responseBody.data.success ){
             callback({
               success: true,
-              redirect: responseBody.redirect_url,
+              redirect: responseBody.data.redirect_url,
               extraAuthorize: true // Legacy paameter, but currently required with "true" value. Will be deprecrated soon.
             });
           } else {
             callback({
               success: false,
-              error_code: responseBody.error_code
+              error_code: responseBody.data.error_code
             });
           }
         })
@@ -170,7 +170,7 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
       Checkout.http.post('https://app.acmepayments.com/charge', acmeCardRelevantData)
         .then(function(responseBody) {
           
-          if (responseBody.success) {
+          if (responseBody.data.success) {
             // If the charge was successful, invoke the callback to indicate you want to close order.
             callback({
                 success: true
@@ -180,7 +180,7 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
 
             callback({
                 success: false,
-                error_code: responseBody.error_code
+                error_code: responseBody.data.error_code
             });
 
           }

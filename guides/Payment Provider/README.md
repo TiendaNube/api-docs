@@ -485,11 +485,11 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
           
           // Once you get the redirect_url, invoke the callback passing it in the
           // object argument with result params.
-          if( responseBody.success ){
+          if( responseBody.data.success ){
 
             callback({ 
               success: true,
-              redirect: responseBody.redirect_url,
+              redirect: responseBody.data.redirect_url,
               extraAuthorized: true // Legacy paameter, but currently required with "true" value. Will be deprecrated soon.
             });
 
@@ -497,7 +497,7 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
 
             callback({ 
               success: false,
-              error_code: responseBody.error_code // Check the documentation for a full list of failure and error codes.
+              error_code: responseBody.data.error_code // Check the documentation for a full list of failure and error codes.
             });
 
           }
@@ -618,7 +618,7 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
       // Let's imagine the app provides this endpoint to process credit card payments.
       Checkout.http.post('https://app.acmepayments.com/charge', acmeCardRelevantData)
         .then(function(responseBody){
-          if (responseBody.success) {
+          if (responseBody.data.success) {
 
             // If the charge was successful, invoke the callback indicating we want to close order.
             callback({
@@ -629,7 +629,7 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
 
             callback({
               success: false
-              error_code: responseBody.error_code // Check the documentation for a full list of failure and error codes.
+              error_code: responseBody.data.error_code // Check the documentation for a full list of failure and error codes.
             });
 
           }
