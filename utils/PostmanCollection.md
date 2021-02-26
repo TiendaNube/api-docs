@@ -16,7 +16,7 @@ Want to get started with using our collection? Here's a quick check list:
 Downloading the collection
 --------------------------
 
-[Download this file](utils/postman.json)
+[Download this file](postman.json)
 
 Import it into Postman
 ----------------------
