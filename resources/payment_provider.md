@@ -28,7 +28,7 @@ Properties
 | `supported_payment_methods` | Array(Object) | List of available payment methods for each payment method type. See [Payment Methods](#Payment-Methods). |
 | `checkout_js_url`           | String        | HTTPS URL of the JavaScript file to be included in the checkout frontend. See [Checkout](checkout.md). |
 | `checkout_payment_options`  | Array(Object) | Object containing the available payment options for the checkout frontend. See [Checkout Options](#Checkout-Options). |
-| `refund_url`                | String        | [Optional] HTTPS URL of the Payment Provider for refunding payments. See [Refund-URL](#Refund-URL). |
+| `refund_url`                | String        | [Optional] HTTPS URL of the Payment Provider for refunding payments. See [Refund URL](#Refund-URL). |
 | `configuration_url`         | String        | [Optional] HTTPS URL of the Payment Provider configuration UI. |
 | `support_url`               | String        | [Optional] Payment Provider support site HTTPS URL.          |
 | `rates`                     | Array(Object) | [Optional] List of rates definitions for merchants by payment method type. See [Rates](#Rates). |
@@ -40,24 +40,31 @@ Properties
 
 > ***Note:*** Read-only properties will only appear in our responses, which means that should not be part of the requests.
 
-### Refund-URL
+### Refund URL
 
-This is the URL a Payment Provides should specify when supporting payment refunds. 
-For Payment Providers, it is a webhook that Tienda Nube will call when a consumer wants to be refunded for its purchase.
-When `posting` to this URL, a JSON payload will include the properties: `transaction_id` and `amount`, indicating the associated transaction along with the related amount to be refunded.
-The Payment Provider response `status code must be 202`. This status code indicates the Payment Provider accepts the refund request and eventually will refund the money. This is because refunding a transaction might be an async process and complexity is different for each Payment Provider.
-It is very important to point out that once a refund process is done by a Payment Provider, it must be notified to Tienda Nube through its Transaction-API. See [Transaction](transaction.md).
+This is the URL a Payment Provider should specify to support payment refunds. It is a webhook that Tiendanube will call when a merchant wants to refund a purchase.
+When `posting` to this URL, the JSON payload will include the properties: `store_id`, `payment_provider_id`, `transaction_id` and `amount`, indicating the associated [Transaction](transaction.md#properties) along with the related amount to be refunded.
+The `status code` of the request response must be `202`. This status code indicates the Payment Provider accepts the refund request and eventually will refund the money. This is because refunding a transaction might be an async process and complexity is different for each Payment Provider.
+It is very important to point out that once a refund process is done by a Payment Provider, it must be notified to Tiendanube through a [Transaction Event](transaction.md#transaction-events) of type `refund`.
 
 E.g.
 
 - `Supported Method`: POST
 - `URL`: https://some-payment-provider.com/refund
-- `Request JSON Payload`: ``` {"transaction_id": "6e760b6e-e4f3-42ba-8a2d-afddf44e6cf1",  "amount": "200.45" }```
-- `Response`: Http status code 202
+- `Request JSON Payload`:
+```json
+{
+"store_id": 12345,
+"payment_provider_id": "6b7727b1-f912-4dcf-b0ae-0d006122598f",
+"transaction_id": "6e760b6e-e4f3-42ba-8a2d-afddf44e6cf1",
+"amount": "200.45"
+}
+```
+- `Response`: HTTP status code 202
 
-> ***Note:*** The URL `some-payment-provider.com/refund` is used as an example. Replace with your own domain and path.
+> ***Note:*** The URL `some-payment-provider.com/refund` is used as an example. Replace it with your own domain and path.
 
-> ***Note:*** The Refund URL must have no path variables.
+> ***Note:*** The refund URL must have no path variables.
 
 ### Logos
 
