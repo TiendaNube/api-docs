@@ -1,4 +1,4 @@
-Postman Collection of Tiendanube/Nuvemshop API
+Postman Collection for Tiendanube/Nuvemshop API
 ==============================================
 
 This is the file that you should import in Postman to have the skeleton of our API.
