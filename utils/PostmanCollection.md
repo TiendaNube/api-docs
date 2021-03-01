@@ -20,19 +20,19 @@ Downloading the collection
 
 Import it into Postman
 ----------------------
-
-
+![Import it into Postman](images/import.png)
 
 
 Update variables
 ----------------
+Update the variables that you need to test what you are devolping (not all are always necessary and there could be more):<br />
 
-Update the variables that you need to test what you are devolping (not all are always necessary and there could be more):
-
-api_url (api.tiendanube.com/v1 or api.nuvemshop.com.br/v1)
-store_id
-app_token
-carrier_id
-payment_id
-order_id
+api_url (api.tiendanube.com/v1 or api.nuvemshop.com.br/v1)<br />
+store_id<br />
+app_token<br />
+carrier_id<br />
+payment_id<br />
+order_id<br />
 product_id
+
+![Update variables](images/variables.png)
