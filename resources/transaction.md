@@ -81,8 +81,8 @@ When Tiendanube sends a post request to the refund URL, the Payment App should e
 | Field      | Type   | Description                                               |
 | ---------- | ------ | --------------------------------------------------------- |
 | `store_id` | String | The store ID.
-| `payment_provider_id` | String | The (Payment Provider)[#payment_provider.md] ID. |
-| `transaction_id` | String | The (Transaction)[#Properties] ID. |
+| `payment_provider_id` | String | The [Payment Provider](payment_provider.md) ID. |
+| `transaction_id` | String | The [Transaction](#Properties) ID. |
 | `amount` | String | The value of money to be refunded. E.g. `"10.25"`. |
 
 The Payment App must always response Tiendanube the http status code `202`. This status code indicates the Payment App accepts the refund request and eventually will refund the money. This is because refunding a transaction might be an async process and its complexity is different for each Payment App.
