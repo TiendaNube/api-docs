@@ -404,7 +404,7 @@ These are the fields rendered and available on the `Checkout.data.form` object.
 
 | Name                  | Description                                            | Required     | `fields` value           |
 | --------------------- | ------------------------------------------------------ | ------------ | ------------------------ |
-| `brand`               | Card brand. E.g. `visa`, `master`, etc.                | Always       |                          |
+| `cardBrand`           | Card brand. E.g. `visa`, `master`, etc.                | Always       |                          |
 | `cardNumber`          | Card number.                                           | Always       |                          |
 | `cardHolderName`      | Card holder's name.                                    | Always       |                          |
 | `cardExpiration`      | Card's expiration date in `mm/yy` format.              | Always       |                          |
@@ -439,10 +439,9 @@ These are the input fields rendered and available in the object `Checkout.data.f
 
 These are the input fields rendered and available in the object `Checkout.data.form`.
 
-| Name             | Description                                        | Required     | `fields` value       |
-| ---------------- | -------------------------------------------------- | ------------ | -------------------- |
-| `holderName`     | Consumer name.                                     | Optional     | `boleto_holder_name` |
-| `holderIdNumber` | Consumer identification (DNI, CUIT or equivalent). | Optional     | `efectivo_list`      |
+| Name    | Description                                  | Required     | `fields` value       |
+| --------| -------------------------------------------- | ------------ | -------------------- |
+| `brand` | Brand name for selected efectivo list option | Always       | `efectivo_list`      |
 
 #### `PaymentOption` Configuration Object and it's properties
 
