@@ -404,7 +404,6 @@ These are the fields rendered and available on the `Checkout.data.form` object.
 
 | Name                  | Description                                            | Required     | `fields` value           |
 | --------------------- | ------------------------------------------------------ | ------------ | ------------------------ |
-| `cardBrand`           | Card brand. E.g. `visa`, `master`, etc.                | Always       |                          |
 | `cardNumber`          | Card number.                                           | Always       |                          |
 | `cardHolderName`      | Card holder's name.                                    | Always       |                          |
 | `cardExpiration`      | Card's expiration date in `mm/yy` format.              | Always       |                          |
@@ -415,6 +414,8 @@ These are the fields rendered and available on the `Checkout.data.form` object.
 | `cardHolderBirthDate` | Card holder's birthday in `dd/mm/yy` format.           | Optional     | `card_holder_birth_date` |
 | `cardHolderPhone`     | Card holder's phone number.                            | Optional     | `card_holder_phone`      |
 | `bankId`              | Card's issuing bank.                                   | Optional     | `bankList`               |
+
+> `cardBrand` is inserted after the user enters the first six credit card numbers
 
 ##### DebitPayment
 
