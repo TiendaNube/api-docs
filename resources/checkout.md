@@ -441,7 +441,7 @@ These are the input fields rendered and available in the object `Checkout.data.f
 
 | Name    | Description                                  | Required     | `fields` value       |
 | --------| -------------------------------------------- | ------------ | -------------------- |
-| `brand` | Brand name for selected efectivo list option | Always       | `efectivo_list`      |
+| `brand` | Brand name for selected cash list option     | Always       | `efectivo_list`      |
 
 #### `PaymentOption` Configuration Object and it's properties
 
