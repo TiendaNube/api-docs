@@ -831,11 +831,11 @@ It is important to take into account that Nuvemshop is a platform with 50K+ stor
 Special dates like Black Friday, Cyber Monday and Hotsale should be handled with care. Your app should be able to sustain heavy loads with multiple very high traffic peaks.
 
 ## App Metadata
-The payments configuration dashboard displays the apps to the merchants so that the merchant can directly install them from there, instead of having to go to the app store. Our partners' dashboard currently doesn't support the configuration of category specific parameters to an app, such as information about transaction costs (`rates`), supported payment methods, etc. However, our support team will gladly insert that information for you into your app.
+The payments configuration dashboard displays the available apps for a store so that the merchant can directly install them from there, instead of having to visit  the App Store. Our partner dashboard currently does not support to configure specific parameters of an application category, such as information about transaction costs (`rates`), supported payment methods, etc. However, our support team will gladly insert that information for you into your app.
 
-The information is country specific, so, if your app is to be published in several countries, you'll need to provider a JSON for each country.
+The information is country specific, so, if your app is to be published in several countries, you'll need to provide a JSON for each country.
 
-Here's an example of what a JSON metadata would look like.
+Here's an example of what a JSON metadata would look like:
 
 ```json
 {
@@ -847,14 +847,10 @@ Here's an example of what a JSON metadata would look like.
     "installation_description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam malesuada nunc quis mi fermentum venenatis.",
     "rates_url":"https://tiendanube.payments.acme.com/rates",
     "register_url":"https://payments.acme.com/register",
-    "phone":"+5511923456789",
+    "support_phone":"+5511923456789",
     "supported_payment_method_types":[
        "credit_card",
-       "debit_card",
-       "boleto",
-       "bank_debit",
-       "pix",
-       "wallet",
+       "wallet"
     ],
     "features":[
        "gateway",
