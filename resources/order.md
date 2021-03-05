@@ -125,10 +125,10 @@ Receive a list of all Orders.
 | Parameter      | Explanation                                                                                                 |
 | -------------- | ----------------------------------------------------------------------------------------------------------- |
 | since_id       | Restrict results to after the specified ID                                                                  |
-| status         | Show Orders with a given state. "any" is the default                                                        |
-| channels       | Restrict results to the specified sales channel. "any" is the default (it means orders from pos, api, store, etc) |
-| payment_status | Show Orders with a given payment state. "any" is the default (it means authorized, pending and paid orders) |
-| shipping_status| Show Orders with a given shipping state. "any" is the default                                               |
+| status         | Show Orders with a given state. Possible values are "any" (default), "open", "closed" or "cancelled"  |
+| channels       | Restrict results to the specified sales channel. Possible values are "any" (default), "form" (order created in the admin panel with the draft orders feature), "store" (order created in the storefront), "api" (order created via API) or "meli" (order imported from Mercado Libre) |
+| payment_status | Show Orders with a given payment state. Possible values are "any" (default), "pending", "authorized", "paid", "abandoned", "refunded" or "voided" |
+| shipping_status| Show Orders with a given shipping state. Possible values are "any" (default), "unpacked", "unfulfilled" (means "unshipped") or "fulfilled" (means "shipped") |
 | created_at_min | Show Orders created after date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))                   |
 | created_at_max | Show Orders created before date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))                  |
 | updated_at_min | Show Orders last updated after date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))              |
