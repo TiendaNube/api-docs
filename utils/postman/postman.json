@@ -1646,7 +1646,7 @@
                   ],
                   "body":{
                      "mode":"raw",
-                     "raw":"{\n    \"name\": \"Shipping Carrier Ship Option 4\",\n    \"code\": \"ship-code-4\",\n    \"active\": true,\n    \"additional_days\": 1,\n    \"additional_cost\": 0,\n    \"allow_free_shipping\": false\n}",
+                     "raw":"{\n    \"name\": \"Shipping Carrier Ship Option 4\",\n    \"code\": \"ship-code-4\",\n    \"active\": true,\n    \"additional_days\": 0,\n    \"additional_cost\": 0,\n    \"allow_free_shipping\": false\n}",
                      "options":{
                         "raw":{
                            "language":"json"
