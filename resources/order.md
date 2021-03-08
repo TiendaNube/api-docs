@@ -126,7 +126,7 @@ Receive a list of all Orders.
 | -------------- | ----------------------------------------------------------------------------------------------------------- |
 | since_id       | Restrict results to after the specified ID                                                                  |
 | status         | Show Orders with a given state. Possible values are "any" (default), "open", "closed" or "cancelled"  |
-| channels       | Restrict results to the specified sales channel. Possible values are "any" (default), "form" (draft order created via admin or API), "store" (order created in the storefront), "api" (order created via API - doesn't include draft orders) or "meli" (order imported from Mercado Libre) |
+| channels       | Restrict results to the specified sales channel. Possible values are "form" (draft order created via admin or API), "store" (order created in the storefront), "api" (order created via API - doesn't include draft orders) or "meli" (order imported from Mercado Libre) |
 | payment_status | Show Orders with a given payment state. Possible values are "any" (default), "pending", "authorized", "paid", "abandoned", "refunded" or "voided" |
 | shipping_status| Show Orders with a given shipping state. Possible values are "any" (default), "unpacked", "unfulfilled" (means "unshipped") or "fulfilled" (means "shipped") |
 | created_at_min | Show Orders created after date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))                   |
