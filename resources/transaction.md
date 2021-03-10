@@ -76,7 +76,7 @@ This object is used to indicate specific information of a Transaction. It can be
 ### Refund URL
 
 This is the URL a Payment App should specify when creating a transaction that supports refunding.
-When Tiendanube sends a post request to the refund URL, the Payment App should expect to receive the following JSON payload:
+When Tiendanube sends a POST request to the refund URL, the Payment App should expect to receive the following JSON payload:
 
 | Field      | Type   | Description                                               |
 | ---------- | ------ | --------------------------------------------------------- |
@@ -85,13 +85,13 @@ When Tiendanube sends a post request to the refund URL, the Payment App should e
 | `transaction_id` | String | The [Transaction](#Properties) ID. |
 | `amount` | Object | The money to be refunded. See [Money](#Money). |
 
-The Payment App must always response Tiendanube the http status code `202`. This status code indicates the Payment App accepts the refund request and eventually will refund the money. This is because refunding a transaction might be an async process and its complexity is different for each Payment App.
+The Payment App must response Tiendanube the HTTP status code `202`. This status code indicates the Payment App accepts the refund request and eventually will refund the money. This is because refunding a transaction might be an async process and its complexity is different for each Payment App.
 It is very important to point out that once a refund process is done by a Payment App, it must be notified to Tiendanube through a [Transaction Event](#Transaction-Events) of type `refund`.
 
 
 #### POST https://some-payment-app.com/refund
 
-Requesting a Payment App for its approved/captured transaction to be refunded.
+Requesting a Payment App for its `approved/captured` transaction to be refunded.
 
 <details>
   <summary><b>Request</b></summary>
