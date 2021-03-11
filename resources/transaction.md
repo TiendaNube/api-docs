@@ -78,7 +78,7 @@ This object is used to indicate specific information of a Transaction. It can be
 | ---------------- | ------ | ------------------------------------------------------------ |
 | `id`             | String | [Read-only] Unique identifier of the Transaction Event object. |
 | `transaction_id` | String | [Read-only] ID of the [Transaction](#Transaction) related to this Transaction Event. |
-| `amount`         | Object | Object containing the amount of this Transaction Event. See [Money](#Money). |
+| `amount`         | Object | Object containing the amount of this Transaction Event. See [Money](#Money). <br/><br/>*Note:* For this value, only the cart total price reported by Tiendanube should be considered (See [Cart Data](checkout.md#data)). Extra payment method costs such as credit card interest should be excluded from the Transaction amount and can optionally be included into the [Card Info](#Card-Info) object. |
 | `type`           | String | One of the available [Transaction Event Types](#Transaction-Event-Types). |
 | `status`         | Object | One of the available [Transaction Event Status](#Transaction-Event-Status). |
 | `info`           | Object | Object containing specific info related to this Transaction Event. See [Transaction Event Info](#Transaction-Event-Info). |
@@ -87,7 +87,7 @@ This object is used to indicate specific information of a Transaction. It can be
 | `expires_at`     | Date   | [Optional] ISO 8601 date for date the Transaction Event expires. It will be used to indicate to the merchant the deadline to accept or cancel a transaction under review. |
 | `created_at`     | Date   | [Read-only] ISO 8601 date for the date the Transaction Event was created in our platform. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
 
-> ***Note:*** The `amount` property is required for `authorization` and `sale` Transaction Event Types, and must always be included in the `first_event` field during the Transaction creation. If no `amount` property is specified for  `void`, `refund` or `capture` Transaction Event Types, the total transaction amount is assumed.
+> ***Note:*** The `amount` property is required for `authorization` and `sale` Transaction Event Types, and must always be included in the `first_event` field during the Transaction creation. If no `amount` value is specified for subsequent events  `void`, `refund` or `capture`, the total amount indicated in the first event is assumed.
 
 ### Money
 
@@ -96,7 +96,7 @@ This object is used to indicate specific information of a Transaction. It can be
 | `value`    | String | Amount of money as a string. E.g. `"49.99"`                 |
 | `currency` | String | ISO 4217 code for the currency, such as ARS, BRL, USD, etc. |
 
-> ***Note:*** Decimal numbers will be represented as string format for better decimal precision handling. It must contain two decimal places and use a point as decimal separator.
+> ***Note:*** Decimal numbers are represented as string format for better decimal precision handling. It must contain two decimal places and use a point as decimal separator.
 
 ### Transaction Status
 

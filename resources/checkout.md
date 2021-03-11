@@ -259,116 +259,152 @@ Checkout.http({
 #### Data
 
 The Checkout object provides the app with access to all the data related with ongoing sale. We've got the following data groups:
-- Cart information: `Checkout.data.order.cart`
-- Customer Contact Information: `Checkout.data.order.contact`
-- Billing Information: `Checkout.data.order.billingAddress`
-- Shipping Information: `Checkout.data.order.shippingAddress`
-- Shipping Method Information: `Checkout.data.order.cart.shipping`
-- Payment Method Information: `Checkout.data.form`
+- Cart information: `Checkout.data.order.cart`.
+- Total price of the cart: `totalPrice` (also indicated by `Checkout.data.order.cart.prices.total`).
+- Customer Contact Information: `Checkout.data.order.contact`.
+- Billing Information: `Checkout.data.order.billingAddress`.
+- Shipping Information: `Checkout.data.order.shippingAddress`.
+- Shipping Method Information: `Checkout.data.order.cart.shipping`.
+- Payment Method Information: `Checkout.data.form`.
 
-No all Payment Method Information fields are rendered. They can be rendered as explained [here](./checkout.md#fields-property).
+*Note:* No all Payment Method Information fields are rendered. They can be rendered as explained [here](./checkout.md#fields-property).
 
-Here's an example of the data available in this object.
+Here's an example of the data available in the `Checkout.data` object (rendered as JSON for better readability):
 
-```js
-data: {
-    form: {},
-    order: {
-        cart: {
-            id: 139439691,
-            hash: '1134e8f7a55f926991b5086f52815977eb11f789',
-            number: null,
-            prices: {
-                shipping: 0,
-                discount_gateway: 0,
-                discount_coupon: 0,
-                discount_promotion: 0,
-                discount_coupon_and_promotions: 0,
-                subtotal_with_promotions_and_coupon_applied: 100.95,
-                subtotal: 100.95,
-                total: 100.95,
-                total_usd: 0
+```json
+{
+   "form":{},
+   "totalPrice":135,
+   "order":{
+      "cart":{
+         "id":375854104,
+         "hash":"aebe04afab671411e6d75352fb4f514898b1667a",
+         "number":null,
+         "prices":{
+            "shipping":15,
+            "discount_gateway":0,
+            "discount_coupon":30,
+            "discount_promotion":0,
+            "discount_coupon_and_promotions":30,
+            "subtotal_with_promotions_applied":150,
+            "subtotal_with_promotions_and_coupon_applied":120,
+            "subtotal":150,
+            "total":135,
+            "total_usd":0
+         },
+         "lineItems":[
+            {
+               "id":451294379,
+               "name":"Example Product 1",
+               "price":"50.50",
+               "quantity":1,
+               "free_shipping":false,
+               "product_id":58979310,
+               "variant_id":175499404,
+               "thumbnail":"//d2qa76c3k7tf6c.cloudfront.net/stores/001/196/173/products/example-product-1.jpg",
+               "variant_values":"",
+               "sku":null,
+               "properties":[],
+               "url":"https://examplestore.com/productos/example-product-1/?variant=175499404",
+               "is_ahora_12_eligible":true
             },
-            lineItems: [
-              {
-                id: 159519581,
-                name: 'Camisa Negra',
-                price: '100.95',
-                quantity: 1,
-                free_shipping: false,
-                product_id: 27177360,
-                variant_id: 63612746,
-                thumbnail: '//d26lpennugtm8s.cloudfront.net/stores/781/091/products/camisa-negra.png',
-                variant_values: '',
-                sku: '56868',
-                properties: [],
-                url: 'https://example.mitiendanube.com/productos/camisa-negra/?variant=63612746'
-              }
-            ],
-            currency: 'ARS',
-            currencyFormat: {
-                'short': '$%s',
-                'long': '$%s ARS'
-            },
-            lang: 'es',
-            langCode: 'es_AR',
-            shipping: {
-                type: 'ship',
-                method: 'correo-argentino',
-                option: '1',
-                branch: null,
-                disabled: null,
-                raw_name: 'Correo Argentino - Encomienda Clásica',
-                suboption: null
-            },
-            status: {
-                order: 'open',
-                order_cancellation_reason: null,
-                fulfillment: 'unpacked',
-                payment: 'pending'
-            },
-            completed_at: null
-        },
-        contact: {
-            email: 'johndoe@example.com',
-            name: 'John Doe',
-            phone: '1123456789'
-        },
-        shippingAddress: {
-            zipcode: '1870',
-            first_name: 'John',
-            last_name: 'Doe',
-            address: '9 de Julio',
-            number: '1234',
-            floor: '',
-            locality: 'Piñeyro',
-            city: 'Avellaneda',
-            state: 'Buenos Aires',
-            country: 'AR',
-            phone: '1123456789',
-            between_streets: '',
-            reference: '',
-            id_number: '213'
-        },
-        billingAddress: {
-            zipcode: '1870',
-            first_name: 'John',
-            last_name: 'Doe',
-            address: '9 de Julio',
-            number: '1234',
-            floor: '',
-            locality: 'Piñeyro',
-            city: 'Avellaneda',
-            state: 'Buenos Aires',
-            country: 'AR',
-            phone: '1123456789',
-            between_streets: '',
-            reference: '',
-            id_number: '213'
-        },
-    },
-    storeId: 781091,
-    country: 'AR'
+            {
+               "id":451294230,
+               "name":"Example Product 2",
+               "price":"99.50",
+               "quantity":1,
+               "free_shipping":false,
+               "product_id":58979280,
+               "variant_id":175499176,
+               "thumbnail":"//d2qa76c3k7tf6c.cloudfront.net/stores/001/196/173/products/example-product-2.jpg",
+               "variant_values":"",
+               "sku":null,
+               "properties":[],
+               "url":"https://examplestore.com/productos/example-product-2/?variant=175499176",
+               "is_ahora_12_eligible":true
+            }
+         ],
+         "currency":"ARS",
+         "currencyFormat":{
+            "short":"$%s",
+            "long":"$%s ARS"
+         },
+         "lang":"es",
+         "langCode":"es_AR",
+         "coupon":{
+            "id":1566261,
+            "code":"DESC20",
+            "type":"percentage",
+            "value":"20.00",
+            "valid":true,
+            "used":0,
+            "max_uses":null,
+            "start_date":null,
+            "end_date":null,
+            "min_price":null,
+            "categories":null
+         },
+         "shipping":{
+            "type":"ship",
+            "method":"correo-argentino",
+            "option":6111227,
+            "branch":null,
+            "disabled":null,
+            "raw_name":"Correo Argentino - Encomienda Clásica",
+            "suboption":null
+         },
+         "status":{
+            "order":"open",
+            "order_cancellation_reason":null,
+            "fulfillment":"unpacked",
+            "payment":"pending"
+         },
+         "completedAt":null,
+         "minimumValue":null,
+         "hasNonShippableProducts":false,
+         "hasShippableProducts":true,
+         "isAhora12Eligible":true
+      },
+      "shippingAddress":{
+         "first_name":"John"",
+         "last_name":"Doe",
+         "phone":"+54123456789",
+         "address":"Example Street",
+         "number":"1234",
+         "floor":"",
+         "locality":"",
+         "city":"Buenos Aires",
+         "state":"Buenos Aires",
+         "zipcode":"1428",
+         "country":"AR",
+         "between_streets":"",
+         "reference":"",
+         "id_number":"11223344"
+      },
+      "billingAddress":{
+         "first_name":"John",
+         "last_name":"Doe",
+         "phone":"+54123456789",
+         "address":"Example Street",
+         "number":"1234",
+         "floor":"",
+         "locality":"",
+         "city":"Buenos Aires",
+         "state":"Buenos Aires",
+         "zipcode":"1234",
+         "country":"AR",
+         "between_streets":"",
+         "reference":"",
+         "id_number":"11223344"
+      },
+      "contact":{
+         "email":"john.doe@example.com",
+         "name":"John Doe",
+         "phone":"+54123456789"
+      }
+   },
+   "country":"AR",
+   "storeId":1196173
 }
 ```
 
