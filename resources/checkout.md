@@ -260,7 +260,7 @@ Checkout.http({
 
 The Checkout object provides the app with access to all the data related with ongoing sale. We've got the following data groups:
 - Cart information: `Checkout.data.order.cart`.
-- Total price of the cart: `totalPrice` (also indicated by `Checkout.data.order.cart.prices.total`).
+- Total cart price: `totalPrice` (also indicated by `Checkout.data.order.cart.prices.total`).
 - Customer Contact Information: `Checkout.data.order.contact`.
 - Billing Information: `Checkout.data.order.billingAddress`.
 - Shipping Information: `Checkout.data.order.shippingAddress`.
