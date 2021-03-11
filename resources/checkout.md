@@ -444,6 +444,15 @@ These are the input fields rendered and available in the object `Checkout.data.f
 | --------| -------------------------------------------- | ------------ | -------------------- |
 | `brand` | Brand name for selected cash list option     | Always       | `efectivo_list`      |
 
+#### PixPayment
+
+These are the input fields rendered and available in the object `Checkout.data.form`.
+
+| Name             | Description                      | Required     | `fields` value       |
+| ---------------- | ---------------------------------| ------------ | -------------------- |
+| `holderName`     | Consumer's name.                 | Optional     | `holder_name`        |
+| `holderIdNumber` | Consumer's identification (CPF). | Optional     | `holder_id_number`   |
+
 #### `PaymentOption` Configuration Object and it's properties
 
 All `PaymentOptions` functions take a configuration object. The generic properties of the configuration object for all `PaymentOptions` are:
