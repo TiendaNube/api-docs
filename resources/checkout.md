@@ -17,8 +17,6 @@ The file with the handlers implemented for the different options should be hoste
 Let's take a look at a simple script for a hypothetical integration with a Payment Provider that redirects the user to *'acmepayments.com'* to finish the purchase in their checkout. This is what we call a `redirect` checkout.
 
 ```javascript
-// File: AcmeExternalPaymentOption.js
-
 // Call 'LoadCheckoutPaymentContext' method and pass a function as parameter
 // to get access to the Checkout context and the Payment Options object.
 LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
@@ -40,7 +38,6 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
       let acmeRelevantData = {
         // You should include all the relevant data here.
         orderId: Checkout.data.order.cart.id,
-        paymentProviderId: Checkout.data.payment_provider_id,
         currency: Checkout.data.order.cart.currency,
         total: Checkout.data.order.cart.prices.total
       }
@@ -91,7 +88,6 @@ This type of payment renders a form where the consumer inputs their credit card 
 In this example, whenever the consumer inputs or changes the credit card number we fetch the first 6 digits and populate the list of available installments.
 
 ```javascript
-// AcmePaymentsCardMethod.js
 LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
 
   var currentTotalPrice = Checkout.data.order.cart.prices.total;
@@ -409,7 +405,7 @@ Here's an example of the data available in the `Checkout.data` object (rendered 
 }
 ```
 
-### `PaymentOptions`
+### PaymentOptions
 
 The second argument of the function passed as an argument to `LoadCheckoutPaymentContext` is `PaymentOptions`. It contains functions for each of the different possible integration types. Each of the functions take a configuration object as an argument and, in turn, will return a javascript instance of the `PaymentOption`.
 
@@ -422,18 +418,18 @@ The second argument of the function passed as an argument to `LoadCheckoutPaymen
 
 Note: ExternalPayment and ModalPayment won't render any input fields on the frontend. The main difference between them is on their `onSubmit` `callback` parameters.
 
-#### `Transparent` integration type
+#### Transparent Integration Type
 
 The `PaymentOptions.Transparent` has one function per each of the payment methods for which we support transparent integration type. Each of these funcitons return an instance of the `PaymentOption` for their specific payment methods and, if added to the Checkout using `Checkout.addPaymentOption(paymentOptionInstance)` a form will be rendered with all the required input fields for that payment method.
 
 
-| Name              | Description                                                                      |
-| ----------------- | -------------------------------------------------------------------------------- |
-| `CardPayment()`   | For credit card, debit card, gift card, and probably more, card payment methods. |
-| `DebitPayment()`  | For online debit (aka "bank debit" payment method.                               |
-| `BoletoPayment()` | For payments with `boleto` payment method.                                       |
-| `TicketPayment()` | For payments with `ticket` payment method.                                       |
-| `PixPayment()`    | For payments with `pix` payment method.                                          |
+| Name              | Description                                           |
+| ----------------- | ----------------------------------------------------- |
+| `CardPayment()`   | For `credit_card` and `debit_card` payment methods.   |
+| `DebitPayment()`  | For `bank_debit` payment method (aka "online debit"). |
+| `BoletoPayment()` | For payments with `boleto` payment method.            |
+| `TicketPayment()` | For payments with `ticket` payment method.            |
+| `PixPayment()`    | For payments with `pix` payment method.               |
 
 ##### CardPayment
 
@@ -481,7 +477,7 @@ These are the input fields rendered and available in the object `Checkout.data.f
 | --------| -------------------------------------------- | ------------ | -------------------- |
 | `brand` | Brand name for selected cash list option     | Always       | `efectivo_list`      |
 
-#### PixPayment
+##### PixPayment
 
 These are the input fields rendered and available in the object `Checkout.data.form`.
 
@@ -490,13 +486,13 @@ These are the input fields rendered and available in the object `Checkout.data.f
 | `holderName`     | Consumer's name.                 | Optional     | `holder_name`        |
 | `holderIdNumber` | Consumer's identification (CPF). | Optional     | `holder_id_number`   |
 
-#### `PaymentOption` Configuration Object and it's properties
+#### PaymentOption Configuration Object and it's properties
 
 All `PaymentOptions` functions take a configuration object. The generic properties of the configuration object for all `PaymentOptions` are:
 
 | Name           | Description                                                  |
 | -------------- | ------------------------------------------------------------ |
-| `id`           | **Must match the id set in the `payment_provider.checkout_payment_options[i]`.** |
+| `id`           | Must match the `id` set in the Payment Provider's `checkout_payment_options[i]`. |
 | `name`         | Payment option display name.                                 |
 | `fields`       | Object containing a propertires of extra input fields for transparent payment options and a boolean value to wither render it or not. |
 | `scripts`      | List of external JavaScript files to be loaded before registering this method. |
@@ -508,7 +504,7 @@ All `PaymentOptions` functions take a configuration object. The generic properti
 
 For each of the transparent payment options, the following extra input fields can be rendered if specified in this property.
 
-###### CreditPayment:
+###### CreditPayment
 
 | Name                     | Description                               |
 | ------------------------ | ----------------------------------------- |
@@ -520,13 +516,13 @@ For each of the transparent payment options, the following extra input fields ca
 | `card_holder_phone`      | Card holder number.                       |
 
 
-###### DebitPayment:
+###### DebitPayment
 
 | Name        | Description |
 | ----------- | ----------- |
 | `bank_list` | Banks list. |
 
-###### BoletoPayment:
+###### BoletoPayment
 
 | Name                 | Description      |
 | -------------------- | ---------------- |
@@ -535,7 +531,7 @@ For each of the transparent payment options, the following extra input fields ca
 
 > No including an input field on this object is enough to prevent it from rendering. It's not necessary to set it as `false`.
 
-###### For all payment options:
+###### For all payment options
 
 | Name              | Description          |
 | ----------------- | -------------------- |
