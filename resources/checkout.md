@@ -276,6 +276,8 @@ Here's an example of the data available in the `Checkout.data` object (rendered 
 {
    "form":{},
    "totalPrice":135,
+   "country":"AR",
+   "storeId":1196173,
    "order":{
       "cart":{
          "id":375854104,
@@ -373,10 +375,10 @@ Here's an example of the data available in the `Checkout.data` object (rendered 
          "address":"Example Street",
          "number":"1234",
          "floor":"",
-         "locality":"",
-         "city":"Buenos Aires",
+         "locality":"Valentín Alsina",
+         "city":"Lanús",
          "state":"Buenos Aires",
-         "zipcode":"1428",
+         "zipcode":"1822",
          "country":"AR",
          "between_streets":"",
          "reference":"",
@@ -389,10 +391,10 @@ Here's an example of the data available in the `Checkout.data` object (rendered 
          "address":"Example Street",
          "number":"1234",
          "floor":"",
-         "locality":"",
-         "city":"Buenos Aires",
+         "locality":"Valentín Alsina",
+         "city":"Lanús",
          "state":"Buenos Aires",
-         "zipcode":"1234",
+         "zipcode":"1822",
          "country":"AR",
          "between_streets":"",
          "reference":"",
@@ -403,9 +405,7 @@ Here's an example of the data available in the `Checkout.data` object (rendered 
          "name":"John Doe",
          "phone":"+54123456789"
       }
-   },
-   "country":"AR",
-   "storeId":1196173
+   }
 }
 ```
 
