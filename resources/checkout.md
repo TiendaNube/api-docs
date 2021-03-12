@@ -17,8 +17,6 @@ The file with the handlers implemented for the different options should be hoste
 Let's take a look at a simple script for a hypothetical integration with a Payment Provider that redirects the user to *'acmepayments.com'* to finish the purchase in their checkout. This is what we call a `redirect` checkout.
 
 ```javascript
-// File: AcmeExternalPaymentOption.js
-
 // Call 'LoadCheckoutPaymentContext' method and pass a function as parameter
 // to get access to the Checkout context and the Payment Options object.
 LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
@@ -40,7 +38,6 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
       let acmeRelevantData = {
         // You should include all the relevant data here.
         orderId: Checkout.data.order.cart.id,
-        paymentProviderId: Checkout.data.payment_provider_id,
         currency: Checkout.data.order.cart.currency,
         total: Checkout.data.order.cart.prices.total
       }
@@ -91,7 +88,6 @@ This type of payment renders a form where the consumer inputs their credit card 
 In this example, whenever the consumer inputs or changes the credit card number we fetch the first 6 digits and populate the list of available installments.
 
 ```javascript
-// AcmePaymentsCardMethod.js
 LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
 
   var currentTotalPrice = Checkout.data.order.cart.prices.total;
@@ -259,120 +255,157 @@ Checkout.http({
 #### Data
 
 The Checkout object provides the app with access to all the data related with ongoing sale. We've got the following data groups:
-- Cart information: `Checkout.data.order.cart`
-- Customer Contact Information: `Checkout.data.order.contact`
-- Billing Information: `Checkout.data.order.billingAddress`
-- Shipping Information: `Checkout.data.order.shippingAddress`
-- Shipping Method Information: `Checkout.data.order.cart.shipping`
-- Payment Method Information: `Checkout.data.form`
+- Cart Information: `Checkout.data.order.cart`.
+- Total cart price: `Checkout.data.totalPrice` (also indicated by `Checkout.data.order.cart.prices.total`).
+- ID of the store to which the cart belongs: `Checkout.data.storeId`.
+- Customer Contact Information: `Checkout.data.order.contact`.
+- Billing Information: `Checkout.data.order.billingAddress`.
+- Shipping Information: `Checkout.data.order.shippingAddress`.
+- Shipping Method Information: `Checkout.data.order.cart.shipping`.
+- Payment Method Information: `Checkout.data.form`.
 
-No all Payment Method Information fields are rendered. They can be rendered as explained [here](./checkout.md#fields-property).
+*Note:* No all Payment Method Information fields are rendered. They can be rendered as explained [here](./checkout.md#fields-property).
 
-Here's an example of the data available in this object.
+Here's an example of the data available in the `Checkout.data` object (rendered as JSON for better readability):
 
-```js
-data: {
-    form: {},
-    order: {
-        cart: {
-            id: 139439691,
-            hash: '1134e8f7a55f926991b5086f52815977eb11f789',
-            number: null,
-            prices: {
-                shipping: 0,
-                discount_gateway: 0,
-                discount_coupon: 0,
-                discount_promotion: 0,
-                discount_coupon_and_promotions: 0,
-                subtotal_with_promotions_and_coupon_applied: 100.95,
-                subtotal: 100.95,
-                total: 100.95,
-                total_usd: 0
+```json
+{
+   "form":{},
+   "totalPrice":135,
+   "country":"AR",
+   "storeId":1196173,
+   "order":{
+      "cart":{
+         "id":375854104,
+         "hash":"aebe04afab671411e6d75352fb4f514898b1667a",
+         "number":null,
+         "prices":{
+            "shipping":15,
+            "discount_gateway":0,
+            "discount_coupon":30,
+            "discount_promotion":0,
+            "discount_coupon_and_promotions":30,
+            "subtotal_with_promotions_applied":150,
+            "subtotal_with_promotions_and_coupon_applied":120,
+            "subtotal":150,
+            "total":135,
+            "total_usd":0
+         },
+         "lineItems":[
+            {
+               "id":451294379,
+               "name":"Example Product 1",
+               "price":"50.50",
+               "quantity":1,
+               "free_shipping":false,
+               "product_id":58979310,
+               "variant_id":175499404,
+               "thumbnail":"//d2qa76c3k7tf6c.cloudfront.net/stores/001/196/173/products/example-product-1.jpg",
+               "variant_values":"",
+               "sku":null,
+               "properties":[],
+               "url":"https://examplestore.com/productos/example-product-1/?variant=175499404",
+               "is_ahora_12_eligible":true
             },
-            lineItems: [
-              {
-                id: 159519581,
-                name: 'Camisa Negra',
-                price: '100.95',
-                quantity: 1,
-                free_shipping: false,
-                product_id: 27177360,
-                variant_id: 63612746,
-                thumbnail: '//d26lpennugtm8s.cloudfront.net/stores/781/091/products/camisa-negra.png',
-                variant_values: '',
-                sku: '56868',
-                properties: [],
-                url: 'https://example.mitiendanube.com/productos/camisa-negra/?variant=63612746'
-              }
-            ],
-            currency: 'ARS',
-            currencyFormat: {
-                'short': '$%s',
-                'long': '$%s ARS'
-            },
-            lang: 'es',
-            langCode: 'es_AR',
-            shipping: {
-                type: 'ship',
-                method: 'correo-argentino',
-                option: '1',
-                branch: null,
-                disabled: null,
-                raw_name: 'Correo Argentino - Encomienda Clásica',
-                suboption: null
-            },
-            status: {
-                order: 'open',
-                order_cancellation_reason: null,
-                fulfillment: 'unpacked',
-                payment: 'pending'
-            },
-            completed_at: null
-        },
-        contact: {
-            email: 'johndoe@example.com',
-            name: 'John Doe',
-            phone: '1123456789'
-        },
-        shippingAddress: {
-            zipcode: '1870',
-            first_name: 'John',
-            last_name: 'Doe',
-            address: '9 de Julio',
-            number: '1234',
-            floor: '',
-            locality: 'Piñeyro',
-            city: 'Avellaneda',
-            state: 'Buenos Aires',
-            country: 'AR',
-            phone: '1123456789',
-            between_streets: '',
-            reference: '',
-            id_number: '213'
-        },
-        billingAddress: {
-            zipcode: '1870',
-            first_name: 'John',
-            last_name: 'Doe',
-            address: '9 de Julio',
-            number: '1234',
-            floor: '',
-            locality: 'Piñeyro',
-            city: 'Avellaneda',
-            state: 'Buenos Aires',
-            country: 'AR',
-            phone: '1123456789',
-            between_streets: '',
-            reference: '',
-            id_number: '213'
-        },
-    },
-    storeId: 781091,
-    country: 'AR'
+            {
+               "id":451294230,
+               "name":"Example Product 2",
+               "price":"99.50",
+               "quantity":1,
+               "free_shipping":false,
+               "product_id":58979280,
+               "variant_id":175499176,
+               "thumbnail":"//d2qa76c3k7tf6c.cloudfront.net/stores/001/196/173/products/example-product-2.jpg",
+               "variant_values":"",
+               "sku":null,
+               "properties":[],
+               "url":"https://examplestore.com/productos/example-product-2/?variant=175499176",
+               "is_ahora_12_eligible":true
+            }
+         ],
+         "currency":"ARS",
+         "currencyFormat":{
+            "short":"$%s",
+            "long":"$%s ARS"
+         },
+         "lang":"es",
+         "langCode":"es_AR",
+         "coupon":{
+            "id":1566261,
+            "code":"DESC20",
+            "type":"percentage",
+            "value":"20.00",
+            "valid":true,
+            "used":0,
+            "max_uses":null,
+            "start_date":null,
+            "end_date":null,
+            "min_price":null,
+            "categories":null
+         },
+         "shipping":{
+            "type":"ship",
+            "method":"correo-argentino",
+            "option":6111227,
+            "branch":null,
+            "disabled":null,
+            "raw_name":"Correo Argentino - Encomienda Clásica",
+            "suboption":null
+         },
+         "status":{
+            "order":"open",
+            "order_cancellation_reason":null,
+            "fulfillment":"unpacked",
+            "payment":"pending"
+         },
+         "completedAt":null,
+         "minimumValue":null,
+         "hasNonShippableProducts":false,
+         "hasShippableProducts":true,
+         "isAhora12Eligible":true
+      },
+      "shippingAddress":{
+         "first_name":"John"",
+         "last_name":"Doe",
+         "phone":"+54123456789",
+         "address":"Example Street",
+         "number":"1234",
+         "floor":"",
+         "locality":"Valentín Alsina",
+         "city":"Lanús",
+         "state":"Buenos Aires",
+         "zipcode":"1822",
+         "country":"AR",
+         "between_streets":"",
+         "reference":"",
+         "id_number":"11223344"
+      },
+      "billingAddress":{
+         "first_name":"John",
+         "last_name":"Doe",
+         "phone":"+54123456789",
+         "address":"Example Street",
+         "number":"1234",
+         "floor":"",
+         "locality":"Valentín Alsina",
+         "city":"Lanús",
+         "state":"Buenos Aires",
+         "zipcode":"1822",
+         "country":"AR",
+         "between_streets":"",
+         "reference":"",
+         "id_number":"11223344"
+      },
+      "contact":{
+         "email":"john.doe@example.com",
+         "name":"John Doe",
+         "phone":"+54123456789"
+      }
+   }
 }
 ```
 
-### `PaymentOptions`
+### PaymentOptions
 
 The second argument of the function passed as an argument to `LoadCheckoutPaymentContext` is `PaymentOptions`. It contains functions for each of the different possible integration types. Each of the functions take a configuration object as an argument and, in turn, will return a javascript instance of the `PaymentOption`.
 
@@ -385,18 +418,18 @@ The second argument of the function passed as an argument to `LoadCheckoutPaymen
 
 Note: ExternalPayment and ModalPayment won't render any input fields on the frontend. The main difference between them is on their `onSubmit` `callback` parameters.
 
-#### `Transparent` integration type
+#### Transparent Integration Type
 
 The `PaymentOptions.Transparent` has one function per each of the payment methods for which we support transparent integration type. Each of these funcitons return an instance of the `PaymentOption` for their specific payment methods and, if added to the Checkout using `Checkout.addPaymentOption(paymentOptionInstance)` a form will be rendered with all the required input fields for that payment method.
 
 
-| Name              | Description                                                                      |
-| ----------------- | -------------------------------------------------------------------------------- |
-| `CardPayment()`   | For credit card, debit card, gift card, and probably more, card payment methods. |
-| `DebitPayment()`  | For online debit (aka "bank debit" payment method.                               |
-| `BoletoPayment()` | For payments with `boleto` payment method.                                       |
-| `TicketPayment()` | For payments with `ticket` payment method.                                       |
-| `PixPayment()`    | For payments with `pix` payment method.                                          |
+| Name              | Description                                           |
+| ----------------- | ----------------------------------------------------- |
+| `CardPayment()`   | For `credit_card` and `debit_card` payment methods.   |
+| `DebitPayment()`  | For `bank_debit` payment method (aka "online debit"). |
+| `BoletoPayment()` | For payments with `boleto` payment method.            |
+| `TicketPayment()` | For payments with `ticket` payment method.            |
+| `PixPayment()`    | For payments with `pix` payment method.               |
 
 ##### CardPayment
 
@@ -444,7 +477,7 @@ These are the input fields rendered and available in the object `Checkout.data.f
 | --------| -------------------------------------------- | ------------ | -------------------- |
 | `brand` | Brand name for selected cash list option     | Always       | `efectivo_list`      |
 
-#### PixPayment
+##### PixPayment
 
 These are the input fields rendered and available in the object `Checkout.data.form`.
 
@@ -453,13 +486,13 @@ These are the input fields rendered and available in the object `Checkout.data.f
 | `holderName`     | Consumer's name.                 | Optional     | `holder_name`        |
 | `holderIdNumber` | Consumer's identification (CPF). | Optional     | `holder_id_number`   |
 
-#### `PaymentOption` Configuration Object and it's properties
+#### PaymentOption Configuration Object and it's properties
 
 All `PaymentOptions` functions take a configuration object. The generic properties of the configuration object for all `PaymentOptions` are:
 
 | Name           | Description                                                  |
 | -------------- | ------------------------------------------------------------ |
-| `id`           | **Must match the id set in the `payment_provider.checkout_payment_options[i]`.** |
+| `id`           | Must match the `id` set in the Payment Provider's `checkout_payment_options[i]`. |
 | `name`         | Payment option display name.                                 |
 | `fields`       | Object containing a propertires of extra input fields for transparent payment options and a boolean value to wither render it or not. |
 | `scripts`      | List of external JavaScript files to be loaded before registering this method. |
@@ -471,7 +504,7 @@ All `PaymentOptions` functions take a configuration object. The generic properti
 
 For each of the transparent payment options, the following extra input fields can be rendered if specified in this property.
 
-###### CreditPayment:
+###### CreditPayment
 
 | Name                     | Description                               |
 | ------------------------ | ----------------------------------------- |
@@ -483,13 +516,13 @@ For each of the transparent payment options, the following extra input fields ca
 | `card_holder_phone`      | Card holder number.                       |
 
 
-###### DebitPayment:
+###### DebitPayment
 
 | Name        | Description |
 | ----------- | ----------- |
 | `bank_list` | Banks list. |
 
-###### BoletoPayment:
+###### BoletoPayment
 
 | Name                 | Description      |
 | -------------------- | ---------------- |
@@ -498,7 +531,7 @@ For each of the transparent payment options, the following extra input fields ca
 
 > No including an input field on this object is enough to prevent it from rendering. It's not necessary to set it as `false`.
 
-###### For all payment options:
+###### For all payment options
 
 | Name              | Description          |
 | ----------------- | -------------------- |
