@@ -48,6 +48,7 @@ This object is used to indicate specific information of a Transaction. It can be
 | `external_resource_url`        | String | [Required for transparent transactions with `boleto`, `ticket`, `wire_transfer`, `bank_debit` and `pix`] HTTPS URL of the boleto or ticket to show to the consumer to resume the payment. In the case of bank debit and wire transfer, link to the bank selected by the consumer to make the transaction. In the case of PIX, source to the QR code image to show to the consumer to make the payment, it could be a URL or a `base64` code. |
 | `external_resource_code`       | String | [Required for transparent transactions with `boleto`, `ticket`, `wire_transfer`, `bank_debit` and `pix`] Barcode for boleto, or code for ticket. For all other cases, used as a reference code for the consumer. |
 | `external_resource_expires_at` | Date   | [Required for transparent transactions with `boleto`, `ticket` and `pix`] ISO 8601 date for the expiration date of a boleto or ticket. |
+| `refund_url`                   | String | [Optional] HTTPS URL for refunding this transaction. See [Refund URL](#Refund-URL). |
 | `ip`                           | String | [Optional] IP of the device that initiated this Transaction. |
 
 > ***Note:*** All URLs must be secure URLs (https).
@@ -71,6 +72,55 @@ This object is used to indicate specific information of a Transaction. It can be
 | ---------- | ------ | --------------------------------------------------------- |
 | `quantity` | Number | The number of installments. E.g. `3`.                     |
 | `interest` | String | The interest applied to each installment. E.g. `"0.015"`. |
+
+### Refund URL
+
+This is the URL a Payment App should specify when creating a transaction that supports refunding.
+When Tiendanube sends a POST request to the refund URL, the Payment App should expect to receive the following JSON payload:
+
+| Field      | Type   | Description                                               |
+| ---------- | ------ | --------------------------------------------------------- |
+| `store_id` | String | The store ID.
+| `payment_provider_id` | String | The [Payment Provider](payment_provider.md) ID. |
+| `transaction_id` | String | The [Transaction](#Properties) ID. |
+| `amount` | Object | [Optional] The money to be refunded. See [Money](#Money). |
+
+The Payment App must response Tiendanube the HTTP status code `202`. This status code indicates the Payment App accepts the refund request and eventually will refund the money. This is because refunding a transaction might be an async process and its complexity is different for each Payment App.
+It is very important to point out that once a refund process is done by a Payment App, it must be notified to Tiendanube through a [Transaction Event](#Transaction-Events) of type `refund`.
+
+#### POST https://some-payment-app.com/refund
+
+Requesting a Payment App for its `approved/captured` transaction to be refunded.
+
+<details>
+  <summary><b>Request</b></summary>
+
+```
+{
+"store_id": "12345",
+"payment_provider_id": "6b7727b1-f912-4dcf-b0ae-0d006122598f",
+"transaction_id": "6e760b6e-e4f3-42ba-8a2d-afddf44e6cf1",
+"amount" : {
+    "value": "200.45",
+    "currency": "BRL"
+  }
+}
+```
+
+</details>
+
+<details>
+  <summary><b>Response</b></summary>
+
+`HTTP/1.1 202 OK`
+
+</details>
+
+> ***Note:*** The URL `some-payment-app.com/refund` is used as an example. Replace it with your own domain and path.
+
+> ***Note:*** The refund URL must have no path variables.
+
+> ***Note:*** If the `amount` property is not specified, then the Payment App must refund the total amount for the transaction.
 
 ### Transaction Events
 
@@ -345,6 +395,7 @@ Get a specific Transaction for a given order.
     },
     "external_id": "1234",
     "external_url": "https://mypayments.com/account/transactions/1234",
+    "refund_url": "https://mypayments.com/refund",
     "ip": "192.168.0.25"
   },
   "first_event": {
@@ -398,6 +449,7 @@ Get a specific Transaction for a given order.
     },
     "external_id": "1234",
     "external_url": "https://mypayments.com/account/transactions/1234",
+    "refund_url": "https://mypayments.com/refund",
     "ip": "192.168.0.25"
   },
   "failure_code": null,
@@ -602,6 +654,7 @@ Get a specific Transaction for a given order.
     },
     "external_id": "1234",
     "external_url": "https://mypayments.com/account/transactions/1234",
+    "refund_url": "https://mypayments.com/refund",
     "ip": "192.168.0.25"
   },
   "failure_code": null,
