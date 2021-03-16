@@ -395,6 +395,7 @@ Get a specific Transaction for a given order.
     },
     "external_id": "1234",
     "external_url": "https://mypayments.com/account/transactions/1234",
+    "refund_url": "https://mypayments.com/refund",
     "ip": "192.168.0.25"
   },
   "first_event": {
@@ -448,6 +449,7 @@ Get a specific Transaction for a given order.
     },
     "external_id": "1234",
     "external_url": "https://mypayments.com/account/transactions/1234",
+    "refund_url": "https://mypayments.com/refund",
     "ip": "192.168.0.25"
   },
   "failure_code": null,
@@ -652,6 +654,7 @@ Get a specific Transaction for a given order.
     },
     "external_id": "1234",
     "external_url": "https://mypayments.com/account/transactions/1234",
+    "refund_url": "https://mypayments.com/refund",
     "ip": "192.168.0.25"
   },
   "failure_code": null,
