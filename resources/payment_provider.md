@@ -90,7 +90,8 @@ If applicable, the installments data supported by the payment method type is det
 #### Installments
 
 Most Payment Providers provide different installment based payments options.
-Installments are allowed only for *credit_card* payment method type.
+
+*Note:* At the moment, installments are only allowed for *credit_card* payment method type.
 
 | Field                   | Type          | Description                                                  |
 | :---------------------- | :------------ | :----------------------------------------------------------- |
