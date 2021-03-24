@@ -247,21 +247,21 @@ If your app needs to know when access to the API is suspended or resumed (becaus
 API resources
 -----------------
 
-* [Store](https://github.com/tiendanube/api-docs/blob/master/resources/store.md)
-* [Product](https://github.com/tiendanube/api-docs/blob/master/resources/product.md)
-* [Product Variant](https://github.com/tiendanube/api-docs/blob/master/resources/product_variant.md)
-* [Product Image](https://github.com/tiendanube/api-docs/blob/master/resources/product_image.md)
 * [Category](https://github.com/tiendanube/api-docs/blob/master/resources/category.md)
-* [Order](https://github.com/tiendanube/api-docs/blob/master/resources/order.md)
-* [Customer](https://github.com/tiendanube/api-docs/blob/master/resources/customer.md)
-* [Script](https://github.com/tiendanube/api-docs/blob/master/resources/script.md)
-* [Webhook](https://github.com/tiendanube/api-docs/blob/master/resources/webhook.md)
 * [Coupons](https://github.com/tiendanube/api-docs/blob/master/resources/coupon.md)
-* [Metafields](https://github.com/tiendanube/api-docs/blob/master/resources/metafields.md)
-* [Shipping Carrier](https://github.com/TiendaNube/api-docs/blob/master/resources/shipping_carrier.md)
-* [Payment Provider](https://github.com/tiendanube/api-docs/blob/master/resources/payment_provider.md)
-* [Transaction](https://github.com/tiendanube/api-docs/blob/master/resources/transaction.md)
+* [Customer](https://github.com/tiendanube/api-docs/blob/master/resources/customer.md)
 * [Draft Order](https://github.com/tiendanube/api-docs/blob/master/resources/draft_order.md)
+* [Metafields](https://github.com/tiendanube/api-docs/blob/master/resources/metafields.md)
+* [Order](https://github.com/tiendanube/api-docs/blob/master/resources/order.md)
+* [Payment Provider](https://github.com/tiendanube/api-docs/blob/master/resources/payment_provider.md)
+* [Product](https://github.com/tiendanube/api-docs/blob/master/resources/product.md)
+* [Product Image](https://github.com/tiendanube/api-docs/blob/master/resources/product_image.md)
+* [Product Variant](https://github.com/tiendanube/api-docs/blob/master/resources/product_variant.md)
+* [Script](https://github.com/tiendanube/api-docs/blob/master/resources/script.md)
+* [Shipping Carrier](https://github.com/TiendaNube/api-docs/blob/master/resources/shipping_carrier.md)
+* [Store](https://github.com/tiendanube/api-docs/blob/master/resources/store.md)
+* [Transaction](https://github.com/tiendanube/api-docs/blob/master/resources/transaction.md)
+* [Webhook](https://github.com/tiendanube/api-docs/blob/master/resources/webhook.md)
 
 
 Help us make it better
