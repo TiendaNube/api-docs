@@ -298,7 +298,7 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
 
 The  `fields` porperty lets you select which optional input fields must be rendered on the card form. More information and a list of the available *fields* for this payment option can be found [here](../../resources/checkout.md#cardpayment).
 
-The handler `onDataChange` will be invoked every time the object `Checkout.data` is modified. This handler should implement  business rules to validate the card's information and to update the installments data that is displayed to the buyer.
+The handler `onDataChange` will be invoked every time the checkout data is modified. This handler should implement  business rules to validate the card's information and to update the installments data that is displayed to the buyer.
 
 ##### External Payment Implementation Example
 Let's assume we've created a payment app called "Acme Payments" and now we want to implement an External Payment Option so the user can paid from Acme's website. So, we have to create an instance of `PaymentOptions.ExternalPayment` and add it to the Checkout by using the `Checkout.addPaymentOption()` method:
@@ -322,20 +322,20 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
 #### Available Information about the Ongoing Sale
 The *Checkout* object provides the app with access to all the data related to the ongoing sale. We've got the following data groups:
 
-- Cart Information: `Checkout.data.order.cart`.
-- Total cart price: `Checkout.data.totalPrice` (also indicated by `Checkout.data.order.cart.prices.total`).
-- ID of the store to which the cart belongs: `Checkout.data.storeId`.
-- Customer Contact Information: `Checkout.data.order.contact`.
-- Billing Information: `Checkout.data.order.billingAddress`.
-- Shipping Information: `Checkout.data.order.shippingAddress`.
-- Shipping Method Information: `Checkout.data.order.cart.shipping`.
-- Payment Method Information: `Checkout.data.form`.
+- Cart Information: `Checkout.getData('order.cart')`.
+- Total cart price: `Checkout.getData('totalPrice')` (also indicated by `Checkout.getData('order.cart.prices.total')`).
+- ID of the store to which the cart belongs: `Checkout.getData('storeId')`.
+- Customer Contact Information: `Checkout.getData('order.contact')`.
+- Billing Information: `Checkout.getData('order.billingAddress')`.
+- Shipping Information: `Checkout.getData('order.shippingAddress')`.
+- Shipping Method Information: `Checkout.getData('order.cart.shipping')`.
+- Payment Method Information: `Checkout.getData('form')`.
 
 #### Form Data
 
 Some SDKs have mechanisms to render forms using field names as required. To protect the UI and provide the user with a clean and smooth user experience, all forms are rendered by our own code following our standards with custom field names, as explained above.
 
-The object `Checkout.data.form` provides access to all the form fields. The payment method implementation must map each of the provided fields to the Payment Provider specific ones. In cases where a form with specific attributes needs to be submitted, we recommend using workarounds such as dynamically creating a hidden HTML form and submitting it using JavaScript.
+The object `Checkout.getData('form')` provides access to all the form fields. The payment method implementation must map each of the provided fields to the Payment Provider specific ones. In cases where a form with specific attributes needs to be submitted, we recommend using workarounds such as dynamically creating a hidden HTML form and submitting it using JavaScript.
 
 Take into account that it is possible to request the consumer with more payment method information by rendering the optional fields on the form, depending on the selected payment method.
 

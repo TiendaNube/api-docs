@@ -36,9 +36,9 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
 
 			// Gather the minimum required information. You should include all the relevant data here.
 			let acmeRelevantData = {
-				orderId: Checkout.data.order.cart.id,
-				currency: Checkout.data.order.cart.currency,
-				total: Checkout.data.order.cart.prices.total
+				orderId: Checkout.getData('order.cart.id'),
+				currency: Checkout.getData('order.cart.currency'),
+				total: Checkout.getData('order.cart.prices.total')
 			};
 
 			// Use the Checkout HTTP library to post a request to our server and fetch the redirect URL.
@@ -88,18 +88,14 @@ In this example, whenever the consumer inputs or changes the credit card number 
 ```javascript
 LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
 
-	var currentTotalPrice = Checkout.data.order.cart.prices.total;
+	var currentTotalPrice = Checkout.getData('order.cart.prices.total');
 	var currencCardBin = null;
 
 	// Some helper functions.
 
 	// Get credit the card number from transparent form.
 	var getCardNumber = function() {
-		var cardNumber = '';
-		if (Checkout.data.form.cardNumber) {
-			cardNumber = Checkout.data.form.cardNumber.split(' ').join('');
-		}
-		return cardNumber;
+		return Checkout.getData('form.cardNumber');
 	};
 
 	// Get the first 6 digits from the credit card number.
@@ -111,9 +107,9 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
 	var mustRefreshInstallments = function() {
 		var cardBin = getCardNumberBin();
 		var hasCardBin = cardBin && cardBin.length >= 6;
-		var hasPrice = Boolean(Checkout.data.totalPrice);
+		var hasPrice = Boolean(Checkout.getData('totalPrice'));
 		var changedCardBin = cardBin !== currencCardBin;
-		var changedPrice = Checkout.data.totalPrice !== currentTotalPrice;
+		var changedPrice = Checkout.getData('totalPrice') !== currentTotalPrice;
 		return (hasCardBin && hasPrice) && (changedCardBin || changedPrice);
 	};
 
@@ -122,7 +118,7 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
 		// Let's imagine the App provides this endpoint to obtain installments.
     
 		Checkout.http.post('https://acmepayments.com/card/installments', {
-			amount: Checkout.data.totalPrice,
+			amount: Checkout.getData('totalPrice'),
 			bin: getCardNumberBin()
 		}).then(function(response) {
 			Checkout.setInstallments(response.data.installments);
@@ -148,15 +144,15 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
 		onSubmit: function(callback) {
 			// Gather the minimum required information.
 			var acmeCardRelevantData = {
-				orderId: Checkout.data.order.cart.id,
-				currency: Checkout.data.order.cart.currency,
-				total: Checkout.data.order.cart.prices.total,
+				orderId: Checkout.getData('order.cart.id'),
+				currency: Checkout.getData('order.cart.currency'),
+				total: Checkout.getData('order.cart.prices.total'),
 				card: {
-					number: Checkout.data.form.cardNumber,
-					name: Checkout.data.form.cardHolderName,
-					expiration: Checkout.data.form.cardExpiration,
-					cvv: Checkout.data.form.cardCvv,
-					installments: Checkout.data.form.cardInstallments
+					number: Checkout.getData('form.cardNumber'),
+					name: Checkout.getData('form.cardHolderName'),
+					expiration: Checkout.getData('form.cardExpiration'),
+					cvv: Checkout.getData('form.cardCvv'),
+					installments: Checkout.getData('form.cardInstallments')
 				}
 			};
 			// Let's imagine the App provides this endpoint to process credit card payments.
@@ -200,7 +196,7 @@ The `LoadCheckoutPaymentContext` function takes function as a argument, which wi
 | `updateFields`     | Let's you add or remove optional input fields from the payment option selection form. |
 | `addPaymentOption` | Register the option so the checkout can inject the configuration params and render it. |
 | `setInstallments`  | Update the attributes of the `data.installments` object. See [Installments](#Installments). |
-| `data`             | Object containing the data of the shopping cart, the consumer and more. See [Data](#Data). |
+| `getData`          | function to obtain the data of the shopping cart, the consumer and more. See [getData](#getData). |
 | `http`             | Function to perform AJAX requests. See [HTTP](#HTTP).        |
 | `utils`            | Collection of helper functions. See [Utils](#Utils).         |
 
@@ -242,21 +238,21 @@ Checkout.http({
 - `Checkout.utils.LoadScript`
 - `Checkout.utils.FlattenObject`
 
-#### Data
+#### getData
 
 The Checkout object provides the app with access to all the data related with ongoing sale. We've got the following data groups:
-- Cart Information: `Checkout.data.order.cart`.
-- Total cart price: `Checkout.data.totalPrice` (also indicated by `Checkout.data.order.cart.prices.total`).
-- ID of the store to which the cart belongs: `Checkout.data.storeId`.
-- Customer Contact Information: `Checkout.data.order.contact`.
-- Billing Information: `Checkout.data.order.billingAddress`.
-- Shipping Information: `Checkout.data.order.shippingAddress`.
-- Shipping Method Information: `Checkout.data.order.cart.shipping`.
-- Payment Method Information: `Checkout.data.form`.
+- Cart Information: `Checkout.getData('order.cart')`.
+- Total cart price: `Checkout.getData('totalPrice')` (also indicated by `Checkout.getData('order.cart.prices.total')`).
+- ID of the store to which the cart belongs: `Checkout.getData('storeId')`.
+- Customer Contact Information: `Checkout.getData('order.contact')`.
+- Billing Information: `Checkout.getData('order.billingAddress')`.
+- Shipping Information: `Checkout.getData('order.shippingAddress')`.
+- Shipping Method Information: `Checkout.getData('order.cart.shipping')`.
+- Payment Method Information: `Checkout.getData('form')`.
 
 *Note:* No all Payment Method Information fields are rendered. They can be rendered as explained [here](./checkout.md#fields-property).
 
-Here's an example of the data available in the `Checkout.data` object (rendered as JSON for better readability):
+Here's an example of the data available in the `Checkout.getData()` object (rendered as JSON for better readability):
 
 ```json
 {
@@ -423,7 +419,7 @@ The `PaymentOptions.Transparent` has one function per each of the payment method
 
 ##### CardPayment
 
-These are the fields rendered and available on the `Checkout.data.form` object.
+These are the fields rendered and available on the `Checkout.getData('form')` object.
 
 | Name                  | Description                                            | Required     | `fields` value           |
 | --------------------- | ------------------------------------------------------ | ------------ | ------------------------ |
@@ -442,7 +438,7 @@ These are the fields rendered and available on the `Checkout.data.form` object.
 
 ##### DebitPayment
 
-These are the input fields rendered and available in the object `Checkout.data.form`.
+These are the input fields rendered and available in the object `Checkout.getData('form')`.
 
 | Name             | Description                                                | Required     | `fields` value           |
 | ---------------- | ---------------------------------------------------------- | ------------ | ------------------------ |
@@ -452,7 +448,7 @@ These are the input fields rendered and available in the object `Checkout.data.f
 
 ##### BoletoPayment
 
-These are the input fields rendered and available in the object `Checkout.data.form`.
+These are the input fields rendered and available in the object `Checkout.getData('form')`.
 
 | Name             | Description                                          | Required     | `fields` value       |
 | ---------------- | ---------------------------------------------------- | ------------ | -------------------- |
@@ -461,7 +457,7 @@ These are the input fields rendered and available in the object `Checkout.data.f
 
 ##### TicketPayment
 
-These are the input fields rendered and available in the object `Checkout.data.form`.
+These are the input fields rendered and available in the object `Checkout.getData('form')`.
 
 | Name    | Description                                  | Required     | `fields` value       |
 | --------| -------------------------------------------- | ------------ | -------------------- |
@@ -469,7 +465,7 @@ These are the input fields rendered and available in the object `Checkout.data.f
 
 ##### PixPayment
 
-These are the input fields rendered and available in the object `Checkout.data.form`.
+These are the input fields rendered and available in the object `Checkout.getData('form')`.
 
 | Name             | Description                      | Required     | `fields` value       |
 | ---------------- | ---------------------------------| ------------ | -------------------- |
@@ -487,7 +483,7 @@ All `PaymentOptions` functions take a configuration object. The generic properti
 | `fields`       | Object containing a propertires of extra input fields for transparent payment options and a boolean value to wither render it or not. |
 | `scripts`      | List of external JavaScript files to be loaded before registering this method. |
 | `onLoad`       | Function to be invoked after registering this method.        |
-| `onDataChange` | Function to be invoked whenever there's a change in `Checkout.data`. |
+| `onDataChange` | Function to be invoked whenever there's a change in checkout data. |
 | `onSubmit`     | Function to be invoked whenever the consumer clicks on "Finish checkout" and all mandatory fields are filled correctly. |
 
 ##### `fields` property
@@ -576,7 +572,7 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
 
     onDataChange: Checkout.utils.throttle(function() {
       // Do something when the input form data changes.
-      // Data changed is already available on `Checkout.data`.
+      // Data changed is already available on `Checkout.getData()`.
       // Example: update credit card installments when the order value changes.
     }, 700),
     
