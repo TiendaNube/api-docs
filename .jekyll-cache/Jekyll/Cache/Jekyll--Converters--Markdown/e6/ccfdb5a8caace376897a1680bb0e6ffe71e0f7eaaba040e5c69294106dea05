@@ -1,0 +1,321 @@
+I"�N<h1 id="product-image">Product Image</h1>
+
+<p>Product images could well be the single most important design aspect of any store. Without the ability to touch, hold, smell, taste or otherwise handle the products they are interested in, potential customers have only images to interact with.</p>
+
+<p>The product images have the following restrictions:</p>
+
+<ul>
+  <li>Must weight less than 10MB</li>
+  <li>Must be in one of the following formats: .gif, .jpg, .png</li>
+</ul>
+
+<h2 id="properties">Properties</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Explanation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>id</td>
+      <td>The unique numeric identifier for the Product Image</td>
+    </tr>
+    <tr>
+      <td>product_id</td>
+      <td>The id of the product associated with the image</td>
+    </tr>
+    <tr>
+      <td>src</td>
+      <td>URL of the product image</td>
+    </tr>
+    <tr>
+      <td>position</td>
+      <td>Number indicating the position of the image in the product’s image list. 1 is the first and the main product image</td>
+    </tr>
+    <tr>
+      <td>created_at</td>
+      <td>Date when the Product Image was created in (<a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a></td>
+    </tr>
+    <tr>
+      <td>)</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>updated_at</td>
+      <td>Date when the Product Image was last updated in (<a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a></td>
+    </tr>
+    <tr>
+      <td>)</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="endpoints">Endpoints</h2>
+
+<h3 id="get-productsproduct_idimages">GET /products/{product_id}/images</h3>
+
+<p>Receive a list of all Product Images for a given product.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Explanation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>since_id</td>
+      <td>Restrict results to after the specified ID</td>
+    </tr>
+    <tr>
+      <td>src</td>
+      <td>Show Product Images with a given URL</td>
+    </tr>
+    <tr>
+      <td>position</td>
+      <td>Show Product Images at a given position</td>
+    </tr>
+    <tr>
+      <td>page</td>
+      <td>Page to show</td>
+    </tr>
+    <tr>
+      <td>per_page</td>
+      <td>Amount of results</td>
+    </tr>
+    <tr>
+      <td>fields</td>
+      <td>Comma-separated list of fields to include in the response</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="get-products1234images">GET /products/1234/images</h4>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">101</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"src"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/servine-640-0.jpg"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"position"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"product_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1234</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-01-03T09:11:51-03:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-03-11T09:14:11-03:00"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">112</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"src"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/onyx-640-0.jpg"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"position"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"product_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1234</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-01-03T09:11:51-03:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-03-11T09:14:11-03:00"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"src"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/stoutland-640-0.jpg"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"position"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"product_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1234</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-01-03T09:11:51-03:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-03-11T09:14:11-03:00"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<h4 id="get-product1234imagessince_id105">GET /product/1234/images?since_id=105</h4>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">112</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"src"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/onyx-640-0.jpg"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"position"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"product_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1234</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-01-03T09:11:51-03:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-03-11T09:14:11-03:00"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"src"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/stoutland-640-0.jpg"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"position"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"product_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1234</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-01-03T09:11:51-03:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-03-11T09:14:11-03:00"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="get-productsproduct_idimages-1">GET /products/{product_id}/images</h3>
+
+<p>Receive a single Product Image</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Explanation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>fields</td>
+      <td>Comma-separated list of fields to include in the response</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="get-products1234images112">GET /products/1234/images/112</h4>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">112</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"src"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/onyx-640-0.jpg"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"position"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"product_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1234</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-01-03T09:11:51-03:00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-03-11T09:14:11-03:00"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="post-productsproduct_idimages">POST /products/{product_id}/images</h3>
+
+<p>Create a new Product Image</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Explanation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>src</td>
+      <td>The URL to the image (ex: http://example.com/charmander.jpg)</td>
+    </tr>
+    <tr>
+      <td>attachment</td>
+      <td>Must be image encoded in a Base64 String.</td>
+    </tr>
+    <tr>
+      <td>filename</td>
+      <td>A filename containing only letters, numbers, dashes, underscores and dots (ex: mewtwo.gif)</td>
+    </tr>
+    <tr>
+      <td>position</td>
+      <td>A number indicating in which position of the image list, the new image should be placed</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Check the examples below for more details.</p>
+
+<h4 id="post-products1234images">POST /products/1234/images</h4>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"invalid_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"foobar"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 422 Unprocessable Entity</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"src"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="s2">"can't be blank"</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h4 id="post-products1234images-1">POST /products/1234/images</h4>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"src"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://example.com/charmander.jpg"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 201 Created</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">134</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"src"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/charmander-640-0.jpg"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"position"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"product_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1234</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-12T09:14:11-03:00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-12T09:14:11-03:00"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h4 id="post-products1234images-2">POST /products/1234/images</h4>
+
+<p>The attachament must be the image encoded in Base64 String.</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"filename"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mewtwo.gif"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"position"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"attachment"</span><span class="p">:</span><span class="w"> </span><span class="s2">"R0lGODlhIAAgAPIAAPj4+MCgyHh4eGBgWLgomEBAQP///wAAACH/C05FVFNDQVBFMi4wAwEAAAAh
+/hFwb2tlZ3VpZGUuZmlsYi5kZQAh+QQJEQAGACwAAAAAIAAgAAADj2i63P4wykmrvTjrzbv/YNgU
+BUN+BUCuQFB2JNCmgeulbV2/y3rhup2pReBJgDuhgkYoUnA5mm0ZaBojyAJBadAWr8fgylXSgrEF
+Mim5M1uka3H8VEm7BOmx3T59lvFVRWJcbyRNgjo+GAMCjQOHAzoDGoyOBgOYmAGTG5kOkZsil0Gc
+IQMyNaUgmaqirhcJACH5BAkRAAYALAAAAAAgACAAAAOLaLrc/jDKSau9OOvNu/9gKEpFwZRfAZQs
+EJhdCbhq8Hqqa9tww1a5Hc9RI/QgQd7w5CIYSTNd7XYKOI+PZIGwXGyNWKSQ9UIZtmExq6DclZ5A
+KXtc4qWzPAGbPJ9TKSgFelZGY10VAyxOhW5mFgMCkQMDiwM7AxuTmAaamgGTI5aXoTM2myGdI6oa
+CQA7"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 201 Created</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">145</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"src"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/mewtwo-640-0.jpg"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"position"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"product_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1234</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-12T09:15:11-03:00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-12T09:15:11-03:00"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="put-productsproduct_idimagesid">PUT /products/{product_id}/images/{id}</h3>
+
+<p>Modify an existing Product Image</p>
+
+<h4 id="put-products1234images145">PUT /products/1234/images/145</h4>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">145</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"src"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/mewtwo-640-0.jpg"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"position"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"product_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1234</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">145</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"src"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/mewtwo-640-0.jpg"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"position"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"product_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1234</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-01-03T09:11:51-03:00"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-03-11T09:14:16-03:00"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="delete-productsproduct_idimagesid">DELETE /products/{product_id}/images/{id}</h3>
+
+<p>Remove a Product Image</p>
+
+<h4 id="delete-products1234images145">DELETE /products/1234/images/145</h4>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{}</span><span class="w">
+</span></code></pre></div></div>
+:ET

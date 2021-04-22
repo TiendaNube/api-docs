@@ -1,0 +1,369 @@
+I"�P<h1 id="webhook">Webhook</h1>
+
+<p>A Webhook is a tool that allows you to receive a notification for a certain event. It allows you to register an <em>https</em> URL which will receive the event data, stored in JSON. Webhooks can be registered for the following events:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Events</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>App</td>
+      <td>uninstalled/suspended/resumed</td>
+    </tr>
+    <tr>
+      <td>Category</td>
+      <td>created/updated/deleted</td>
+    </tr>
+    <tr>
+      <td>Order</td>
+      <td>created/updated/paid/packed/fulfilled/cancelled</td>
+    </tr>
+    <tr>
+      <td>Product</td>
+      <td>created/updated/deleted</td>
+    </tr>
+    <tr>
+      <td>Domain</td>
+      <td>updated</td>
+    </tr>
+    <tr>
+      <td>Theme</td>
+      <td>updated</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>To register for the product created event, for example, you should send <code class="language-plaintext highlighter-rouge">product/created</code> in the event field.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">app/suspended</code> and <code class="language-plaintext highlighter-rouge">app/resumed</code> events refer to the <a href="https://github.com/TiendaNube/api-docs/#suspension-of-api-access-due-to-lack-of-payment">suspension of API access due to lack of payment</a>.</p>
+
+<p>You are not allowed to use a localhost/tiendanube/nuvemshop domain for webhooks.</p>
+
+<p>To aid in your development you can use <a href="https://requestcatcher.com/">RequestCatcher</a>. PostCatcher is a web app that generates a unique url that you can use as a webhook endpoint and display any POST requests sent to it for you to examine.</p>
+
+<h2 id="properties">Properties</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Explanation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>id</td>
+      <td>The unique numeric identifier for the Webhook</td>
+    </tr>
+    <tr>
+      <td>url</td>
+      <td>The URL where the webhook should send the POST request when the event occurs. <strong>Must be HTTPS</strong>.</td>
+    </tr>
+    <tr>
+      <td>event</td>
+      <td>The event that will trigger the webhook</td>
+    </tr>
+    <tr>
+      <td>created_at</td>
+      <td>Date when the Webhook was created in <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a></td>
+    </tr>
+    <tr>
+      <td>updated_at</td>
+      <td>Date when the Webhook was last updated in <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="verifying-a-webhook">Verifying a webhook</h3>
+
+<p>Webhooks created through the API can be verified by calculating a digital signature.</p>
+
+<p>Each Webhook request includes a X-Linkedstore-HMAC-SHA256 header which is generated using the app’s secret, along with the data sent in the request.</p>
+
+<p><strong>Note that some frameworks will change the header to HTTP_X_LINKEDSTORE_HMAC_SHA256</strong>.</p>
+
+<p>See PHP example below:</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+
+<span class="nb">define</span><span class="p">(</span><span class="s1">'APP_SECRET'</span><span class="p">,</span> <span class="s1">'secret'</span><span class="p">);</span>
+
+<span class="k">function</span> <span class="n">verify_webhook</span><span class="p">(</span><span class="nv">$data</span><span class="p">,</span> <span class="nv">$hmac_header</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nv">$hmac_header</span> <span class="o">==</span> <span class="nb">hash_hmac</span><span class="p">(</span><span class="s1">'sha256'</span><span class="p">,</span> <span class="nv">$data</span><span class="p">,</span> <span class="no">APP_SECRET</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nv">$hmac_header</span> <span class="o">=</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">'HTTP_X_LINKEDSTORE_HMAC_SHA256'</span><span class="p">];</span>
+<span class="nv">$data</span> <span class="o">=</span> <span class="nb">file_get_contents</span><span class="p">(</span><span class="s1">'php://input'</span><span class="p">);</span>
+<span class="nv">$verified</span> <span class="o">=</span> <span class="nf">verify_webhook</span><span class="p">(</span><span class="nv">$data</span><span class="p">,</span> <span class="nv">$hmac_header</span><span class="p">);</span>
+<span class="k">echo</span> <span class="s1">'Webhook verified: '</span> <span class="mf">.</span> <span class="nb">var_export</span><span class="p">(</span><span class="nv">$verified</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h3 id="parameters">Parameters</h3>
+
+<p>When doing the POST request, all webhooks will send the following parameters in JSON format:</p>
+
+<ul>
+  <li><strong>store_id</strong>: Store from where the event originated (received as <code class="language-plaintext highlighter-rouge">user_id</code> at the <a href="./authentication.md">authentication</a> step)</li>
+  <li><strong>event</strong>: Event’s name (product/created, product/updated, etc.)</li>
+</ul>
+
+<p>Also, every webhook will send custom parameters, as follows:</p>
+
+<h4 id="appuninstalled">app/uninstalled</h4>
+
+<ul>
+  <li><strong>id</strong>: App’s id.</li>
+</ul>
+
+<h4 id="categorycreated---categoryupdated---categorydeleted">category/created - category/updated - category/deleted</h4>
+
+<ul>
+  <li><strong>id</strong>: Category’s id.</li>
+</ul>
+
+<h4 id="ordercreated---orderupdated---orderpaid---orderpacked---orderfulfilled---ordercancelled">order/created - order/updated - order/paid - order/packed - order/fulfilled - order/cancelled</h4>
+
+<ul>
+  <li><strong>id</strong>: Order’s id.</li>
+</ul>
+
+<h4 id="productcreated---productupdated---productdeleted">product/created - product/updated - product/deleted</h4>
+
+<ul>
+  <li><strong>id</strong>: Product’s id.</li>
+</ul>
+
+<h4 id="domainupdated">domain/updated</h4>
+
+<p>No additional parameter is sent along with this event. To get the list of domains one may refer to <a href="https://github.com/tiendanube/api-docs/blob/master/resources/store.md">Store</a> resources.</p>
+
+<h4 id="themeupdated">theme/updated</h4>
+
+<ul>
+  <li><strong>old_theme</strong>: Old Theme’s code.</li>
+  <li><strong>new_theme</strong>: New Theme’s code.</li>
+</ul>
+
+<h4 id="example-webhook-content">Example webhook content</h4>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+  <span class="dl">'</span><span class="s1">store_id</span><span class="dl">'</span><span class="p">:</span><span class="mi">123</span><span class="p">,</span>
+  <span class="dl">'</span><span class="s1">event</span><span class="dl">'</span><span class="p">:</span><span class="dl">'</span><span class="s1">product/created</span><span class="dl">'</span><span class="p">,</span>
+  <span class="dl">'</span><span class="s1">id</span><span class="dl">'</span><span class="p">:</span><span class="mi">1948209</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="retry-policies">Retry policies</h3>
+
+<p>A webhook notification expects a 200 status code in response (40 seconds timeout). If this does not happen (it gets another response code or no response at all) we will try to deliver the notification up to 17 times (a success response code will stop next notifications) along the next two days in incremental lapses of time. After this, the notification is lost.</p>
+
+<h2 id="endpoints">Endpoints</h2>
+
+<h3 id="get-webhooks">GET /webhooks</h3>
+
+<p>Receive a list of all Webhooks for your application.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Explanation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>since_id</td>
+      <td>Restrict results to after the specified ID</td>
+    </tr>
+    <tr>
+      <td>url</td>
+      <td>Show webhooks tags with a given URL</td>
+    </tr>
+    <tr>
+      <td>event</td>
+      <td>Show webhooks with a given event</td>
+    </tr>
+    <tr>
+      <td>created_at_min</td>
+      <td>Show Webhooks created after date (<a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a>)</td>
+    </tr>
+    <tr>
+      <td>created_at_max</td>
+      <td>Show Webhooks created before date (<a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a>)</td>
+    </tr>
+    <tr>
+      <td>updated_at_min</td>
+      <td>Show Webhooks last updated after date (<a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a>)</td>
+    </tr>
+    <tr>
+      <td>updated_at_max</td>
+      <td>Show Webhooks last updated before date (<a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a>)</td>
+    </tr>
+    <tr>
+      <td>page</td>
+      <td>Page to show</td>
+    </tr>
+    <tr>
+      <td>per_page</td>
+      <td>Amount of results</td>
+    </tr>
+    <tr>
+      <td>fields</td>
+      <td>Comma-separated list of fields to include in the response</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="get-webhooks-1">GET /webhooks</h4>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-01-03T09:11:51-03:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"event"</span><span class="p">:</span><span class="w"> </span><span class="s2">"app/uninstalled"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">101</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-03-11T09:14:11-03:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://myapp.com/uninstall"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-07T09:11:51-03:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"event"</span><span class="p">:</span><span class="w"> </span><span class="s2">"order/created"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5670</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-08T11:11:51-03:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://myapp.com/order_created_hook"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<h4 id="get-webhookssince_id1234">GET /webhooks?since_id=1234</h4>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-07T09:11:51-03:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"event"</span><span class="p">:</span><span class="w"> </span><span class="s2">"order/created"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5670</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-08T11:11:51-03:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://myapp.com/order_created_hook"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="get-webhooksid">GET /webhooks/{id}</h3>
+
+<p>Receive a single Webhook</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Explanation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>fields</td>
+      <td>Comma-separated list of fields to include in the response</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="get-webhooks5670">GET /webhooks/5670</h4>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-07T09:11:51-03:00"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"event"</span><span class="p">:</span><span class="w"> </span><span class="s2">"order/created"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5670</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-08T11:11:51-03:00"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://myapp.com/order_created_hook"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="post-webhooks">POST /webhooks</h3>
+
+<p>Create a new Webhook</p>
+
+<h4 id="post-webhooks-1">POST /webhooks</h4>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"foobar"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"event"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"invalid_event"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 422 Unprocessable Entity</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"event"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="s2">"Invalid event specified. Events allowed: app/uninstalled, cart/created, cart/updated, category/created, category/updated, category/deleted, order/created, order/updated, order/paid, order/fulfilled, order/cancelled, product/created, product/updated, product/deleted"</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="s2">"invalid url specified"</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h4 id="post-webhooks-2">POST /webhooks</h4>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"event"</span><span class="p">:</span><span class="w"> </span><span class="s2">"product/created"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://myapp.com/product_created_hook"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 201 Created</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-06-01T15:12:15-03:00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"event"</span><span class="p">:</span><span class="w"> </span><span class="s2">"product/created"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">8901</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-06-01T15:12:15-03:00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://myapp.com/product_created_hook"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="put-webhooksid">PUT /webhooks/{id}</h3>
+
+<p>Modify an existing Webhook</p>
+
+<h4 id="put-webhooks5670">PUT /webhooks/5670</h4>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-07T09:11:51-03:00"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"event"</span><span class="p">:</span><span class="w"> </span><span class="s2">"category/created"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5670</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-08T11:11:51-03:00"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://myapp.com/category_created_hook"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-07T09:11:51-03:00"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"event"</span><span class="p">:</span><span class="w"> </span><span class="s2">"category/created"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5670</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-06-01T12:11:14-03:00"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://myapp.com/category_created_hook"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="delete-webhooksid">DELETE /webhooks/{id}</h3>
+
+<p>Remove a Webhook</p>
+
+<h4 id="delete-webhooks5670">DELETE /webhooks/5670</h4>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{}</span><span class="w">
+</span></code></pre></div></div>
+:ET

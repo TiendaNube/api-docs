@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#157878">
+  <link rel="stylesheet" href="/tiendanube.api.docs/css/normalize.css">
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="/tiendanube.api.docs/css/fonts.css">
+  <link rel="stylesheet" href="/tiendanube.api.docs/css/cayman.css">
+</head>
+
+
+  <body>
+    <section class="page-header">
+  <span class="project-name">Tiendanube/Nuvemshop</span>
+  <span class="project-tagline">Developers Documentation</span>
+</section>
+
+
+    <section class="main-content">
+      
+      <h1 id="category">Category</h1>
+
+<p>A Category lets the store owner group his/her products to make the store easier to browse.</p>
+
+<h2 id="properties">Properties</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Explanation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>id</td>
+      <td>The unique numeric identifier for the Category</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>List of the names of the Category, in every language supported by the store</td>
+    </tr>
+    <tr>
+      <td>descripton</td>
+      <td>List of the descriptions of the Category, as HTML, in every language supported by the store</td>
+    </tr>
+    <tr>
+      <td>handle</td>
+      <td>List of the url-friendly strings generated from the Category’s names, in every language supported by the store</td>
+    </tr>
+    <tr>
+      <td>parent</td>
+      <td>Id of the Category’s parent. <em>null</em> if it has no parent</td>
+    </tr>
+    <tr>
+      <td>subcategories</td>
+      <td>The ids of the Category’s first level subcategories</td>
+    </tr>
+    <tr>
+      <td>created_at</td>
+      <td>Date when the Category was created in <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a></td>
+    </tr>
+    <tr>
+      <td>updated_at</td>
+      <td>Date when the Category was last updated in <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="endpoints">Endpoints</h2>
+
+<h3 id="get-categories">GET /categories</h3>
+
+<p>Receive a list of all Categories.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Explanation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>since_id</td>
+      <td>Restrict results to after the specified ID</td>
+    </tr>
+    <tr>
+      <td>language</td>
+      <td>Specify search language (required when serching for handle)</td>
+    </tr>
+    <tr>
+      <td>handle</td>
+      <td>Show Categories with a given URL</td>
+    </tr>
+    <tr>
+      <td>parent_id</td>
+      <td>Show Categories with a given parent category</td>
+    </tr>
+    <tr>
+      <td>created_at_min</td>
+      <td>Show Categories created after date (<a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a>)</td>
+    </tr>
+    <tr>
+      <td>created_at_max</td>
+      <td>Show Categories created before date (<a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a>)</td>
+    </tr>
+    <tr>
+      <td>updated_at_min</td>
+      <td>Show Categories last updated after date (<a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a>)</td>
+    </tr>
+    <tr>
+      <td>updated_at_max</td>
+      <td>Show Categories last updated before date (<a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a>)</td>
+    </tr>
+    <tr>
+      <td>page</td>
+      <td>Page to show</td>
+    </tr>
+    <tr>
+      <td>per_page</td>
+      <td>Amount of results</td>
+    </tr>
+    <tr>
+      <td>fields</td>
+      <td>Comma-separated list of fields to include in the response</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="get-categories-1">GET /categories</h4>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-01-03T09:11:51-03:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"pt"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"handle"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"poke-balls"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"poke-balls"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"pt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"poke-balls"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">4567</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Poké Balls"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Poké Balls"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"pt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Poké Balls"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"parent"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"subcategories"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+      </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-03-11T09:14:11-03:00"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<h4 id="get-categoriesfieldsidnamesubcategories">GET /categories?fields=id,name,subcategories</h4>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">4567</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Poké Balls"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Poké Balls"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"pt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Poké Balls"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"subcategories"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="get-categoriesid">GET /categories/{id}</h3>
+
+<p>Receive a single Category</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Explanation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>fields</td>
+      <td>Comma-separated list of fields to include in the response</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="get-categories4567">GET /categories/4567</h4>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-01-03T09:11:51-03:00"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"pt"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"handle"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"poke-balls"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"poke-balls"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"pt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"poke-balls"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">4567</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Poké Balls"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Poké Balls"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"pt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Poké Balls"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"parent"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"subcategories"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+  </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-03-11T09:14:11-03:00"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="post-categories">POST /categories</h3>
+
+<p>Create a new Category</p>
+
+<h4 id="post-categories-1">POST /categories</h4>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"invalid_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"foobar"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 422 Unprocessable Entity</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="s2">"can't be blank"</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h4 id="post-categories-2">POST /categories</h4>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Gen I"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Gen I"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"pt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Gen I"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"parent"</span><span class="p">:</span><span class="w"> </span><span class="mi">4567</span><span class="w">    
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 201 Created</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-06-01T12:15:11-03:00"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"pt"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"handle"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gen-i"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gen-i"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"pt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gen-i"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5678</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Gen I"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Gen I"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"pt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Gen I"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"parent"</span><span class="p">:</span><span class="w"> </span><span class="mi">4567</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"subcategories"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+  </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-06-01T12:15:11-03:00"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="put-categoriesid">PUT /categories/{id}</h3>
+
+<p>Modify an existing Category</p>
+
+<h4 id="put-categories5678">PUT /categories/5678</h4>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5678</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"parent"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-06-01T12:15:11-03:00"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"pt"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"handle"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gen-i"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gen-i"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"pt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gen-i"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5678</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Gen I"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Gen I"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"pt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Gen I"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"parent"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"subcategories"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+  </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-06-01T12:15:11-03:00"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="delete-categoriesid">DELETE /categories/{id}</h3>
+
+<p>Remove a Category</p>
+
+<h4 id="delete-categories4567">DELETE /categories/4567</h4>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{}</span><span class="w">
+</span></code></pre></div></div>
+
+
+    </section>
+	<footer class="site-footer">
+	<div class="footer-content">
+		<span class="small-logo">
+			<symbol id="svg_logo_nube_light"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 599.7 100.7"><path d="M89.1,0L89.1,0C75.9,0,63.5,5.1,54.2,14.2c-4.7-2-9.9-3.1-15.2-3.1C17.6,11.1,0.1,28.5,0.1,50	S17.5,88.9,39,88.9c5.2,0,10.4-1.1,15.1-3.1c9,8.8,21.3,14.2,34.8,14.2c27.6,0,50-22.4,50-50C139,22.5,116.6,0,89.1,0L89.1,0z M89,88.9c-21.4,0-38.9-17.4-38.9-38.9H39c0,9.8,2.8,19,7.7,26.7c-2.5,0.7-5.1,1.1-7.7,1.1c-15.3,0-27.8-12.5-27.8-27.8	S23.7,22.2,39,22.2c6.1,0,11.8,1.9,16.7,5.6c7.1,5.3,11.1,13.4,11.1,22.2H78c0-11.6-5-22.4-13.9-29.8c7-5.8,15.8-9.1,25-9.1	c21.4,0,38.9,17.5,38.9,38.9C127.9,71.4,110.5,88.9,89,88.9z M167.2,77.9V42.3h-7.5v-8.9h7.5V20.2h10.5v13.2h7.5v8.9h-7.5v35.6	H167.2z M196.1,26.9c-3.5,0-6.4-2.9-6.4-6.4c0-3.6,2.9-6.5,6.4-6.5c3.7,0,6.5,3,6.5,6.5S199.9,26.9,196.1,26.9z M191,77.9V33.4h10.5	v44.5H191z M250.8,67.4c-3.7,7-10.6,11.5-20.1,11.5c-13.5,0-23.1-9.6-23.1-23.3c0-13.3,9.8-23.3,22.6-23.3c13,0,22.1,10,22.1,23.3	c0,0.8,0,1.9-0.1,3.2H218c0.5,6.4,6.2,11.3,12.8,11.3c5.8,0,8.8-2.8,11.3-6.7L250.8,67.4z M241.9,51.2c-0.7-5.9-5.4-10.3-11.9-10.3	c-6.3,0-11.2,5.2-11.9,10.3H241.9z M268.5,77.9H258V33.4h10.5v5.9c2.8-4.3,7.4-7,13.6-7c10.9,0,17.2,7.2,17.2,18.8v26.8h-10.5V53.1	c0-6.9-3.4-11.1-9.9-11.1c-6.3,0-10.4,4.8-10.4,12.4V77.9L268.5,77.9z M341.6,77.9v-6.4c-3.3,4.6-8.9,7.4-15.1,7.4	c-12.3,0-21.7-10-21.7-23.3c0-13.1,9.4-23.3,21.7-23.3c6.2,0,11.8,2.5,15.1,7.2V16.7H352v61.2H341.6z M328.7,69.4	c7.5,0,13.3-6.2,13.3-13.8s-5.8-13.8-13.3-13.8s-13.3,6.2-13.3,13.8S321.2,69.4,328.7,69.4z M374,51.6l12.1-1.5v-1.9	c0-4.4-3.1-7.3-7.9-7.3c-4.5,0-7.4,2.3-8.8,6.7l-9.6-2.5c2.2-8,9.3-12.9,18.4-12.9c11.6,0,18.1,6.1,18.1,16.6v28.9h-9.8l-0.1-5.4	c-3,4.3-8.1,6.5-13.9,6.5c-8.4,0-14.3-5.4-14.3-12.9C358.2,58,363.5,53.2,374,51.6z M375,70.5c6.5,0,11.2-4.2,11.2-10.1v-2.5	l-10.1,1.4c-5,0.6-7.4,2.9-7.4,6.1C368.7,68.6,371.3,70.5,375,70.5z M415.3,77.9h-10.5V33.4h10.5v5.9c2.8-4.3,7.4-7,13.6-7	c10.9,0,17.2,7.2,17.2,18.8v26.8h-10.5V53.1c0-6.9-3.4-11.1-9.9-11.1c-6.3,0-10.4,4.8-10.4,12.4V77.9L415.3,77.9z M453.7,58.7V33.4	h10.5v24.7c0,7,3.4,11.2,9.3,11.2c5.8,0,9.3-4.2,9.3-11.2V33.4h10.5v25.3c0,12.8-7.4,20.2-19.8,20.2C461.2,79,453.7,71.5,453.7,58.7	z M501.7,77.9V16.7h10.4v23.1c3.3-4.6,8.9-7.4,15.1-7.4c12.3,0,21.7,10,21.7,23.3c0,13.1-9.4,23.3-21.7,23.3	c-6.2,0-11.8-2.5-15.1-7.2v6.1H501.7L501.7,77.9z M525.1,41.8c-7.5,0-13.3,6.2-13.3,13.8s5.8,13.8,13.3,13.8s13.3-6.2,13.3-13.8	S532.6,41.8,525.1,41.8L525.1,41.8z M595.7,67.4c-3.7,7-10.6,11.5-20.1,11.5c-13.5,0-23.1-9.6-23.1-23.3c0-13.3,9.8-23.3,22.6-23.3	c13,0,22.1,10,22.1,23.3c0,0.8,0,1.9-0.1,3.2h-34.2c0.5,6.4,6.2,11.3,12.8,11.3c5.8,0,8.8-2.8,11.3-6.7L595.7,67.4L595.7,67.4z M586.8,51.2c-0.7-5.9-5.4-10.3-11.9-10.3c-6.3,0-11.2,5.2-11.9,10.3H586.8z" fill="#fff"></path></svg></symbol>
+		</span>
+	  <p class="copyright">
+		  <span>2011 - 2021 © Tiendanube/Nuvemshop</span>
+		<span>Todos los derechos reservados.</span>
+        <span>
+            <a href="https://www.tiendanube.com/que-es-tienda-nube/terminos-de-uso" title="">Términos y condiciones</a>.
+            <a href="https://www.tiendanube.com/politicas-de-privacidad" title="">Políticas de privacidad</a>.
+            <a href="https://www.tiendanube.com/politica-de-calidad" title="">Política de calidad</a>.
+        </span>
+	  </p>
+	</div>
+</footer>
+
+  </body>
+</html>

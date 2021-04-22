@@ -1,0 +1,12 @@
+# ISO Links
+date:
+  name: ISO 8601 format
+  link: http://en.wikipedia.org/wiki/ISO_8601
+
+country:
+  name: ISO 3166-1 format
+  link: http://en.wikipedia.org/wiki/ISO_3166-1
+
+currency:
+  name: ISO 4217 format
+  link: http://en.wikipedia.org/wiki/ISO_4217

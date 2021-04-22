@@ -1,0 +1,207 @@
+I"q<h1 id="data-objects">Data Objects</h1>
+
+<h2 id="root-object">Root Object</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>products</td>
+      <td>Array  <Product></Product></td>
+    </tr>
+    <tr>
+      <td>shipping</td>
+      <td>Object</td>
+    </tr>
+    <tr>
+      <td>payment</td>
+      <td>Object</td>
+    </tr>
+    <tr>
+      <td>package</td>
+      <td>Object</td>
+    </tr>
+    <tr>
+      <td>currency</td>
+      <td>String</td>
+    </tr>
+    <tr>
+      <td>language</td>
+      <td>String</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="product-object">Product Object</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>barcode</td>
+      <td>String</td>
+    </tr>
+    <tr>
+      <td>depth</td>
+      <td>String</td>
+    </tr>
+    <tr>
+      <td>free\discount-request-flow.png_shipping</td>
+      <td>Boolean</td>
+    </tr>
+    <tr>
+      <td>height</td>
+      <td>String</td>
+    </tr>
+    <tr>
+      <td>id</td>
+      <td>Integer</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>String</td>
+    </tr>
+    <tr>
+      <td>price</td>
+      <td>String</td>
+    </tr>
+    <tr>
+      <td>price_long</td>
+      <td>String</td>
+    </tr>
+    <tr>
+      <td>price_short</td>
+      <td>String</td>
+    </tr>
+    <tr>
+      <td>product_id</td>
+      <td>Integer</td>
+    </tr>
+    <tr>
+      <td>properties</td>
+      <td>Array</td>
+    </tr>
+    <tr>
+      <td>quantity</td>
+      <td>Integer</td>
+    </tr>
+    <tr>
+      <td>sku</td>
+      <td>String</td>
+    </tr>
+    <tr>
+      <td>subtotal_long</td>
+      <td>String</td>
+    </tr>
+    <tr>
+      <td>subtotal_short</td>
+      <td>String</td>
+    </tr>
+    <tr>
+      <td>url</td>
+      <td>String</td>
+    </tr>
+    <tr>
+      <td>variant_id</td>
+      <td>Integer</td>
+    </tr>
+    <tr>
+      <td>variant_values</td>
+      <td>Array</td>
+    </tr>
+    <tr>
+      <td>weight</td>
+      <td>String</td>
+    </tr>
+    <tr>
+      <td>width</td>
+      <td>String</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="shipping-object">Shipping Object</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>city</td>
+      <td>String</td>
+    </tr>
+    <tr>
+      <td>cost</td>
+      <td>String</td>
+    </tr>
+    <tr>
+      <td>country</td>
+      <td>String</td>
+    </tr>
+    <tr>
+      <td>postalcode</td>
+      <td>String</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="package-object">Package Object</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>weight</td>
+      <td>String</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="shipping-object-1">Shipping Object</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>city</td>
+      <td>String</td>
+    </tr>
+    <tr>
+      <td>cost</td>
+      <td>String</td>
+    </tr>
+    <tr>
+      <td>country</td>
+      <td>String</td>
+    </tr>
+    <tr>
+      <td>postalcode</td>
+      <td>String</td>
+    </tr>
+  </tbody>
+</table>
+:ET

@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#157878">
+  <link rel="stylesheet" href="/tiendanube.api.docs/css/normalize.css">
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="/tiendanube.api.docs/css/fonts.css">
+  <link rel="stylesheet" href="/tiendanube.api.docs/css/cayman.css">
+</head>
+
+
+  <body>
+    <section class="page-header">
+  <span class="project-name">Tiendanube/Nuvemshop</span>
+  <span class="project-tagline">Developers Documentation</span>
+</section>
+
+
+    <section class="main-content">
+      
+      <h1 id="transaction">Transaction</h1>
+
+<p>Each movement of money is modeled through a <code class="language-plaintext highlighter-rouge">Transaction</code> object, which can be of different types (e.g. credit card, debit card, boleto, wire transfer, etc.). Each <code class="language-plaintext highlighter-rouge">Transaction</code> type has a Finite State Machine (FSM) that defines its current status. The <code class="language-plaintext highlighter-rouge">Transaction Event</code> object represents transitions in the <code class="language-plaintext highlighter-rouge">Transaction</code>’s FSM.</p>
+
+<p>A <a href="payment_provider.md">Payment Provider</a> can create a Transaction and update its status through Transaction Events as it changes over time. Since an order can be related to multiple payment methods, a different Transaction must be created for each of them using the same order ID.</p>
+
+<h2 id="properties">Properties</h2>
+
+<p>All <code class="language-plaintext highlighter-rouge">Transaction</code> types have the same attributes, but may generate different kinds of  <em>events</em> and contain some <em>info</em> fields specific to their type.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Field</th>
+      <th style="text-align: left">Type</th>
+      <th style="text-align: left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">id</code></td>
+      <td style="text-align: left">String</td>
+      <td style="text-align: left">[Read-only] Unique identifier of the Transaction object.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">payment_provider_id</code></td>
+      <td style="text-align: left">String</td>
+      <td style="text-align: left">ID of the <a href="payment_provider.md">Payment Provider</a> that processed this Transaction.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">payment_method</code></td>
+      <td style="text-align: left">Object</td>
+      <td style="text-align: left">Object containing the payment method used in this Transaction. See <a href="#Payment-Method">Payment Method</a>.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">info</code></td>
+      <td style="text-align: left">Object</td>
+      <td style="text-align: left">Object containing specific info related to this Transaction. See <a href="#Transaction-Info">Transaction Info</a>.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">status</code></td>
+      <td style="text-align: left">Object</td>
+      <td style="text-align: left">[Read-only] The state of the FSM in which the Transaction is. See <a href="#Transaction-Status">Transaction Status</a>.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">events</code></td>
+      <td style="text-align: left">Array(Object)</td>
+      <td style="text-align: left">[Read-only] List of fulfillment events related to this Transaction. See <a href="#Transaction-Events">Transaction Events</a>.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">captured_amount</code></td>
+      <td style="text-align: left">Object</td>
+      <td style="text-align: left">[Read-only] Object containing the captured amount of this Transaction. See <a href="#Money">Money</a>.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">refunded_amount</code></td>
+      <td style="text-align: left">Object</td>
+      <td style="text-align: left">[Read-only] Object containing the refunded amount of this Transaction. See <a href="#Money">Money</a>.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">authorized_amount</code></td>
+      <td style="text-align: left">Object</td>
+      <td style="text-align: left">[Read-only] Object containing the authorized amount of this Transaction. See <a href="#Money">Money</a>.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">voided_amount</code></td>
+      <td style="text-align: left">Object</td>
+      <td style="text-align: left">[Read-only] Object containing the voided amount of this Transaction. See <a href="#Money">Money</a>.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">failure_code</code></td>
+      <td style="text-align: left">String</td>
+      <td style="text-align: left">[Read-only] If the transaction failed, this field is used to indicate the code related to the failure cause. See <a href="#Transaction-Failure-Codes">Transaction Failure Codes</a>.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">created_at</code></td>
+      <td style="text-align: left">Date</td>
+      <td style="text-align: left">[Read-only] ISO 8601 date for the date the Transaction was created in our platform. Defaults to current time. E.g. <code class="language-plaintext highlighter-rouge">"2020-03-11T12:42:15.000Z"</code>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<blockquote>
+  <p><strong><em>Note:</em></strong> Read-only properties will only appear in our responses, which means that should not be part of the requests.</p>
+</blockquote>
+
+<h3 id="payment-method">Payment Method</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">type</code></td>
+      <td>String</td>
+      <td>One of the available <a href="payment_provider.md#Payment-Method-Types">Payment Method Types</a>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">id</code></td>
+      <td>String</td>
+      <td>[Optional for <code class="language-plaintext highlighter-rouge">cash</code>, <code class="language-plaintext highlighter-rouge">pix</code> and <code class="language-plaintext highlighter-rouge">wallet</code>] ID of the payment method used for this Transaction. See <a href="payment_provider.md#Supported-Payment-Methods-by-Payment-Method-Type">Supported Payment Methods by Payment Method Type</a>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="transaction-info">Transaction Info</h3>
+
+<p>This object is used to indicate specific information of a Transaction. It can be omitted in the Transaction body if all its fields are unfilled.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">card</code></td>
+      <td>Object</td>
+      <td>[Optional] Object containing data related to the consumer’s credit or debit card. See <a href="#Card-Info">Card Info</a>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">installments</code></td>
+      <td>Object</td>
+      <td>[Required for <code class="language-plaintext highlighter-rouge">credit_card</code>] Object containing the installments data related to this Transaction. See <a href="#Installments-Info">Installments Info</a>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">integration_type</code></td>
+      <td>String</td>
+      <td>One of the available <a href="#Transaction-Integration-Types">Transaction Integration Types</a>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">external_id</code></td>
+      <td>String</td>
+      <td>[Optional] ID used by the Payment Provider.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">external_url</code></td>
+      <td>String</td>
+      <td>[Optional] HTTPS URL with details of this Transaction for the merchant.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">external_resource_url</code></td>
+      <td>String</td>
+      <td>[Required for transparent transactions with <code class="language-plaintext highlighter-rouge">boleto</code>, <code class="language-plaintext highlighter-rouge">ticket</code>, <code class="language-plaintext highlighter-rouge">wire_transfer</code>, <code class="language-plaintext highlighter-rouge">bank_debit</code> and <code class="language-plaintext highlighter-rouge">pix</code>] HTTPS URL of the boleto or ticket to show to the consumer to resume the payment. In the case of bank debit and wire transfer, link to the bank selected by the consumer to make the transaction. In the case of PIX, source to the QR code image to show to the consumer to make the payment, it could be a URL or a <code class="language-plaintext highlighter-rouge">base64</code> code.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">external_resource_code</code></td>
+      <td>String</td>
+      <td>[Required for transparent transactions with <code class="language-plaintext highlighter-rouge">boleto</code>, <code class="language-plaintext highlighter-rouge">ticket</code>, <code class="language-plaintext highlighter-rouge">wire_transfer</code>, <code class="language-plaintext highlighter-rouge">bank_debit</code> and <code class="language-plaintext highlighter-rouge">pix</code>] Barcode for boleto, or code for ticket. For all other cases, used as a reference code for the consumer.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">external_resource_expires_at</code></td>
+      <td>Date</td>
+      <td>[Required for transparent transactions with <code class="language-plaintext highlighter-rouge">boleto</code>, <code class="language-plaintext highlighter-rouge">ticket</code> and <code class="language-plaintext highlighter-rouge">pix</code>] ISO 8601 date for the expiration date of a boleto or ticket.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">refund_url</code></td>
+      <td>String</td>
+      <td>[Optional] HTTPS URL for refunding this transaction. See <a href="#Refund-URL">Refund URL</a>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ip</code></td>
+      <td>String</td>
+      <td>[Optional] IP of the device that initiated this Transaction.</td>
+    </tr>
+  </tbody>
+</table>
+
+<blockquote>
+  <p><strong><em>Note:</em></strong> All URLs must be secure URLs (https).</p>
+</blockquote>
+
+<h3 id="card-info">Card Info</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">brand</code></td>
+      <td>String</td>
+      <td>The brand of the card. See <a href="payment_provider.md#Supported-Payment-Methods-by-Payment-Method-Type">Supported Card Brands</a>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">issuer</code></td>
+      <td>String</td>
+      <td>[Optional] The issuer of the card.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">expiration_month</code></td>
+      <td>Number</td>
+      <td>The expiration month of the card.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">expiration_year</code></td>
+      <td>Number</td>
+      <td>The expiration year of the card.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">first_digits</code></td>
+      <td>String</td>
+      <td>The first 6 (six) digits of the card.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">last_digits</code></td>
+      <td>String</td>
+      <td>The last 4 (four) digits of the card.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">masked_number</code></td>
+      <td>String</td>
+      <td>[Optional] Masked card number displaying only the last 4 (four) digits. E.g. <code class="language-plaintext highlighter-rouge">"XXXXXXXXXXXX1234"</code>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">name</code></td>
+      <td>String</td>
+      <td>Name of the card holder.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="installments-info">Installments Info</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">quantity</code></td>
+      <td>Number</td>
+      <td>The number of installments. E.g. <code class="language-plaintext highlighter-rouge">3</code>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">interest</code></td>
+      <td>String</td>
+      <td>The interest applied to each installment. E.g. <code class="language-plaintext highlighter-rouge">"0.015"</code>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="refund-url">Refund URL</h3>
+
+<p>This is the URL a Payment App should specify when creating a transaction that supports refunding.
+When Tiendanube sends a POST request to the refund URL, the Payment App should expect to receive the following JSON payload:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">store_id</code></td>
+      <td>String</td>
+      <td>The store ID.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">payment_provider_id</code></td>
+      <td>String</td>
+      <td>The <a href="payment_provider.md">Payment Provider</a> ID.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">transaction_id</code></td>
+      <td>String</td>
+      <td>The <a href="#Properties">Transaction</a> ID.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">amount</code></td>
+      <td>Object</td>
+      <td>[Optional] The money to be refunded. See <a href="#Money">Money</a>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The Payment App must response Tiendanube the HTTP status code <code class="language-plaintext highlighter-rouge">202</code>. This status code indicates the Payment App accepts the refund request and eventually will refund the money. This is because refunding a transaction might be an async process and its complexity is different for each Payment App.
+It is very important to point out that once a refund process is done by a Payment App, it must be notified to Tiendanube through a <a href="#Transaction-Events">Transaction Event</a> of type <code class="language-plaintext highlighter-rouge">refund</code>.</p>
+
+<h4 id="post-httpssome-payment-appcomrefund">POST https://some-payment-app.com/refund</h4>
+
+<p>Requesting a Payment App for its <code class="language-plaintext highlighter-rouge">approved/captured</code> transaction to be refunded.</p>
+
+<details>
+  <summary><b>Request</b></summary>
+
+```
+{
+"store_id": "12345",
+"payment_provider_id": "6b7727b1-f912-4dcf-b0ae-0d006122598f",
+"transaction_id": "6e760b6e-e4f3-42ba-8a2d-afddf44e6cf1",
+"amount" : {
+    "value": "200.45",
+    "currency": "BRL"
+  }
+}
+```
+
+</details>
+
+<details>
+  <summary><b>Response</b></summary>
+
+`HTTP/1.1 202 OK`
+
+</details>
+
+<blockquote>
+  <p><strong><em>Note:</em></strong> The URL <code class="language-plaintext highlighter-rouge">some-payment-app.com/refund</code> is used as an example. Replace it with your own domain and path.</p>
+</blockquote>
+
+<blockquote>
+  <p><strong><em>Note:</em></strong> The refund URL must have no path variables.</p>
+</blockquote>
+
+<blockquote>
+  <p><strong><em>Note:</em></strong> If the <code class="language-plaintext highlighter-rouge">amount</code> property is not specified, then the Payment App must refund the total amount for the transaction.</p>
+</blockquote>
+
+<h3 id="transaction-events">Transaction Events</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">id</code></td>
+      <td>String</td>
+      <td>[Read-only] Unique identifier of the Transaction Event object.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">transaction_id</code></td>
+      <td>String</td>
+      <td>[Read-only] ID of the <a href="#Transaction">Transaction</a> related to this Transaction Event.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">amount</code></td>
+      <td>Object</td>
+      <td>Object containing the amount of this Transaction Event. See <a href="#Money">Money</a>. <br /><br /><em>Note:</em> For this value, only the cart total price reported by Tiendanube should be considered (See <a href="checkout.md#data">Cart Data</a>). Extra payment method costs such as credit card interest should be excluded from the Transaction amount and can optionally be included into the <a href="#Card-Info">Card Info</a> object. If multiple payments for the same order are allowed by the payment provider, then the sum of the amount of the generated transactions should be equal to the cart total price, disregarding costs associated with the payment provider. <em>Not doing this could cause some fraud scenarios</em>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">type</code></td>
+      <td>String</td>
+      <td>One of the available <a href="#Transaction-Event-Types">Transaction Event Types</a>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">status</code></td>
+      <td>Object</td>
+      <td>One of the available <a href="#Transaction-Event-Status">Transaction Event Status</a>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">info</code></td>
+      <td>Object</td>
+      <td>Object containing specific info related to this Transaction Event. See <a href="#Transaction-Event-Info">Transaction Event Info</a>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">failure_code</code></td>
+      <td>String</td>
+      <td>If the Transaction Event failed, this field is used to indicate the code related to the failure cause. See <a href="#Transaction-Failure-Codes">Transaction Failure Codes</a>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">happened_at</code></td>
+      <td>Date</td>
+      <td>ISO 8601 date for the date the Transaction Event was processed. Defaults to current time. E.g. <code class="language-plaintext highlighter-rouge">"2020-03-11T12:42:15.000Z"</code>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">expires_at</code></td>
+      <td>Date</td>
+      <td>[Optional] ISO 8601 date for date the Transaction Event expires. It will be used to indicate to the merchant the deadline to accept or cancel a transaction under review.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">created_at</code></td>
+      <td>Date</td>
+      <td>[Read-only] ISO 8601 date for the date the Transaction Event was created in our platform. Defaults to current time. E.g. <code class="language-plaintext highlighter-rouge">"2020-03-11T12:42:15.000Z"</code>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<blockquote>
+  <p><strong><em>Note:</em></strong> The <code class="language-plaintext highlighter-rouge">amount</code> property is required for <code class="language-plaintext highlighter-rouge">authorization</code> and <code class="language-plaintext highlighter-rouge">sale</code> Transaction Event Types, and must always be included in the <code class="language-plaintext highlighter-rouge">first_event</code> field during the Transaction creation. If no <code class="language-plaintext highlighter-rouge">amount</code> value is specified for subsequent events  <code class="language-plaintext highlighter-rouge">void</code>, <code class="language-plaintext highlighter-rouge">refund</code> or <code class="language-plaintext highlighter-rouge">capture</code>, the total amount indicated in the first event is assumed.</p>
+</blockquote>
+
+<h3 id="money">Money</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">value</code></td>
+      <td>String</td>
+      <td>Amount of money as a string. E.g. <code class="language-plaintext highlighter-rouge">"49.99"</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">currency</code></td>
+      <td>String</td>
+      <td>ISO 4217 code for the currency, such as ARS, BRL, USD, etc.</td>
+    </tr>
+  </tbody>
+</table>
+
+<blockquote>
+  <p><strong><em>Note:</em></strong> Decimal numbers are represented as string format for better decimal precision handling. It must contain two decimal places and use a point as decimal separator.</p>
+</blockquote>
+
+<h3 id="transaction-status">Transaction Status</h3>
+
+<p>Each type of Transaction has a Finite State Machine (FSM) that defines its status:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">authorized</code>: The transaction is authorized.</li>
+  <li><code class="language-plaintext highlighter-rouge">expired</code>: The transaction is expired.</li>
+  <li><code class="language-plaintext highlighter-rouge">failed</code>: The transaction failed.</li>
+  <li><code class="language-plaintext highlighter-rouge">in_fraud_analysis</code>: The transaction is under fraud analysis by the payment provider.</li>
+  <li><code class="language-plaintext highlighter-rouge">needs_merchant_review</code>: The transaction needs merchant action to continue.</li>
+  <li><code class="language-plaintext highlighter-rouge">paid</code>: The transaction is confirmed.</li>
+  <li><code class="language-plaintext highlighter-rouge">partially_refunded</code>: The transaction is partially refunded.</li>
+  <li><code class="language-plaintext highlighter-rouge">pending</code>: The transaction is pending.</li>
+  <li><code class="language-plaintext highlighter-rouge">refunded</code>: The transaction is refunded.</li>
+  <li><code class="language-plaintext highlighter-rouge">voided</code>: The transaction is voided.</li>
+</ul>
+
+<h3 id="transaction-integration-types">Transaction Integration Types</h3>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">external</code>: Payment was processed on the payment provider’s site.</li>
+  <li><code class="language-plaintext highlighter-rouge">modal</code>: Payment was processed opening a modal to the payment provider’s site.</li>
+  <li><code class="language-plaintext highlighter-rouge">transparent</code>: Payment was processed directly on the merchant’s checkout.</li>
+</ul>
+
+<h3 id="transaction-event-types">Transaction Event Types</h3>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">authorization</code>: The credit card transaction has been authorized.</li>
+  <li><code class="language-plaintext highlighter-rouge">capture</code>: The credit card transaction has been captured.</li>
+  <li><code class="language-plaintext highlighter-rouge">expiration</code>: The transaction has expired.</li>
+  <li><code class="language-plaintext highlighter-rouge">in_fraud_analysis</code>: The credit card transaction is being reviewed by the payment provider (no merchant action is required).</li>
+  <li><code class="language-plaintext highlighter-rouge">refund</code>: The sale has been fully refunded.</li>
+  <li><code class="language-plaintext highlighter-rouge">needs_merchant_review</code>: The credit card transaction has to be approved or rejected by the merchant.</li>
+  <li><code class="language-plaintext highlighter-rouge">sale</code>: Represents an authorization along with capture for credit card transactions, or a sale event for all other payment method types.</li>
+  <li><code class="language-plaintext highlighter-rouge">void</code>: The credit card transaction has been voided.</li>
+</ul>
+
+<h3 id="transaction-event-status">Transaction Event Status</h3>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">error</code>: There was an error processing the transaction event.</li>
+  <li><code class="language-plaintext highlighter-rouge">failure</code>: The transaction event failed. See <a href="#Transaction-Failure-Codes">this list</a> for possible failure causes.</li>
+  <li><code class="language-plaintext highlighter-rouge">pending</code>: The transaction event is pending.</li>
+  <li><code class="language-plaintext highlighter-rouge">success</code>: The transaction event succeded.</li>
+</ul>
+
+<h3 id="transaction-event-info">Transaction Event Info</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">message</code></td>
+      <td>String</td>
+      <td>[Optional] Description to explain a Transaction Event update.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">fraud_score</code></td>
+      <td>String</td>
+      <td>[Optional] Decimal score between 0 to 1. The closer the score is to 1, the more likely the Transaction is fraudulent. E.g <code class="language-plaintext highlighter-rouge">"0.15"</code>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">risk_level</code></td>
+      <td>String</td>
+      <td>[Optional] Risk level that an Order is fraudulent. One of <code class="language-plaintext highlighter-rouge">low</code>, <code class="language-plaintext highlighter-rouge">medium</code> or <code class="language-plaintext highlighter-rouge">high</code>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">accept_url</code></td>
+      <td>String</td>
+      <td>[Optional] HTTPS URL we will call to accept the Transaction from our platform. It should return a 2xx HTTP code or we will return an error to the merchant.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cancel_url</code></td>
+      <td>String</td>
+      <td>[Optional] HTTPS URL we will call to cancel the Transaction from our platform. It should return a 2xx HTTP code or we will return an error to the merchant.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="transaction-event-workflow">Transaction Event Workflow</h3>
+
+<p>Transaction Events are used to alter the status of a Transaction and to provide related information to take action on it.</p>
+
+<p>There are specific <em>status</em> values and transitions for each Transaction Event Type, which are shown in the following diagram.</p>
+
+<blockquote>
+  <p>The green boxes contains the list of <em>status</em> values that each Transaction Event Type supports.</p>
+</blockquote>
+
+<p><img style="text-align:center" src="images/event_types.png" alt="event_types" width="900" /></p>
+
+<h4 id="available-transaction-event-types-by-payment-method-type">Available Transaction Event Types by Payment Method Type</h4>
+
+<p>The following table shows the Transaction Event Types supported for each <em>payment method type</em>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Payment Method Type</th>
+      <th>Transaction Event Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">credit_card</code></td>
+      <td><code class="language-plaintext highlighter-rouge">sale</code>, <code class="language-plaintext highlighter-rouge">authorization</code>, <code class="language-plaintext highlighter-rouge">capture</code>, <code class="language-plaintext highlighter-rouge">in_fraud_analysis</code>, <code class="language-plaintext highlighter-rouge">needs_merchant_review</code>, <code class="language-plaintext highlighter-rouge">void</code>, <code class="language-plaintext highlighter-rouge">refund</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">boleto</code>, <code class="language-plaintext highlighter-rouge">pix</code>, <code class="language-plaintext highlighter-rouge">ticket</code></td>
+      <td><code class="language-plaintext highlighter-rouge">sale</code>, <code class="language-plaintext highlighter-rouge">expiration</code>, <code class="language-plaintext highlighter-rouge">refund</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">bank_debit</code>, <code class="language-plaintext highlighter-rouge">cash</code>, <code class="language-plaintext highlighter-rouge">debit_card</code>, <code class="language-plaintext highlighter-rouge">wallet</code>, <code class="language-plaintext highlighter-rouge">wire_transfer</code></td>
+      <td><code class="language-plaintext highlighter-rouge">sale</code>, <code class="language-plaintext highlighter-rouge">refund</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="transaction-status-workflow">Transaction Status Workflow</h3>
+
+<p>A Transaction may change its <em>status</em> upon receiving a Transaction Event. The following diagram shows the possible Transaction Status transitions based on the events the Transaction receives.</p>
+
+<blockquote>
+  <p>The arrows represent the occurrence of a Transaction Event with <em>status</em> <code class="language-plaintext highlighter-rouge">success</code> unless another status is mentioned in its description.</p>
+</blockquote>
+
+<p><img style="text-align:center" src="images/transaction_status.png" alt="transaction_status" width="950" /></p>
+
+<h2 id="endpoints">Endpoints</h2>
+
+<h3 id="post-ordersorder_idtransactions">POST /orders/{<em>order_id</em>}/transactions</h3>
+
+<p>Create a Transaction for a given order.</p>
+
+<details>
+  <summary><b>Request</b></summary>
+
+
+
+
+
+| Field                 | Type   | Description                                                  |
+| :-------------------- | :----- | :----------------------------------------------------------- |
+| `payment_provider_id` | String | [Required] ID of the [Payment Provider](https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/payment_provider.md) that processed this Transaction. |
+| `payment_method`      | Object | [Required] Object containing the payment method used in this Transaction. See [Payment Method](#Payment-Method). |
+| `first_event`         | Object | [Required] First transaction event that generated this Transaction. See [Transaction Events](#Transaction-Events). |
+| `info`                | Object | [Optional] Object containing specific info related to this Transaction. See [Transaction Info](#Transaction-Info). |
+
+</details>
+
+<details>
+  <summary><b>Response</b></summary>
+
+
+
+
+`HTTP/1.1 201 Created`
+
+The created [Transaction Object](#Transaction) is returned.
+
+</details>
+
+<h3 id="post-ordersorder_idtransactionstransaction_idevents">POST /orders/{<em>order_id</em>}/transactions/{<em>transaction_id</em>}/events</h3>
+
+<p>Create a Transaction Event for a given Transaction.</p>
+
+<details>
+  <summary><b>Request</b></summary>
+
+
+
+
+| Field          | Type   | Description                                                  |
+| -------------- | ------ | ------------------------------------------------------------ |
+| `type`         | String | [Required] One of the available [Transaction Event Types](#Transaction-Event-Types). |
+| `status`       | Object | [Required] One of the available [Transaction Event Status](#Transaction-Event-Status). |
+| `happened_at`  | Date   | [Required] ISO 8601 date for the date the Transaction Event was processed. Defaults to current time. E.g. `"2020-03-11T12:42:15.456Z"`. |
+| `amount`       | Object | [Optional] Object containing the amount of this Transaction Event. See [Money](#Money). |
+| `info`         | Object | [Optional] Object containing specific info related to this Transaction Event. See [Transaction Event Info](#Transaction-Event-Info). |
+| `failure_code` | String | [Optional] If the Transaction Event failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
+
+</details>
+
+<details>
+  <summary><b>Response</b></summary>
+
+
+
+
+`HTTP/1.1 201 Created`
+
+The created [Transaction Event Object](#Transaction-Events) is returned.
+
+</details>
+
+<h3 id="get-ordersorder_idtransactions">GET /orders/{<em>order_id</em>}/transactions</h3>
+
+<p>Get all Transactions for a given order.</p>
+
+<details>
+  <summary><b>Request</b></summary>
+
+
+
+
+```
+{}
+```
+
+</details>
+
+<details>
+  <summary><b>Response</b></summary>
+
+
+
+
+`HTTP/1.1 200 OK`
+
+Array of [Transaction Objects](#Transaction)
+
+</details>
+
+<h3 id="get-ordersorder_idtransactionstransaction_id">GET /orders/{<em>order_id</em>}/transactions/{<em>transaction_id</em>}</h3>
+
+<p>Get a specific Transaction for a given order.</p>
+
+<details>
+  <summary><b>Request</b></summary>
+
+
+
+
+```
+{}
+```
+
+</details>
+
+<details>
+  <summary><b>Response</b></summary>
+
+
+
+
+`HTTP/1.1 200 OK`
+
+[Transaction Object](#Transaction)
+
+</details>
+
+<h2 id="http-errors-list">HTTP Errors List</h2>
+
+<ul>
+  <li><strong>400 Bad Request</strong> - the request could not be understood or was missing required parameters.</li>
+  <li><strong>401 Unauthorized</strong> - authentication failed or user doesn’t have permissions for requested operation.</li>
+  <li><strong>403 Forbidden</strong> - access denied.</li>
+  <li><strong>404 Not Found</strong> - resource was not found.</li>
+  <li><strong>405 Method Not Allowed</strong> - requested method is not supported for resource.</li>
+</ul>
+
+<h2 id="common-examples">Common Examples</h2>
+
+<details>
+  <summary><b>Example Nº 1: Create a credit card transaction that is authorized and captured within a single event</b></summary>
+
+
+
+
+
+#### POST /orders/12345/transactions
+
+##### Request
+
+```json
+{
+  "payment_provider_id": "eeac118e-5534-40ba-b539-443449bc67a3",
+  "payment_method": {
+    "type": "credit_card",
+    "id": "visa"
+  },
+  "info": {
+    "card": {
+      "brand": "visa",
+      "expiration_month": 12,
+      "expiration_year": 2020,
+      "first_digits": "445566",
+      "last_digits": "1234",
+      "masked_number": "XXXXXXXXXXXX1234",
+      "name": "Ash Ketchum"
+    },
+    "installments": {
+      "quantity": 3,
+      "interest": "0.15"
+    },
+    "external_id": "1234",
+    "external_url": "https://mypayments.com/account/transactions/1234",
+    "refund_url": "https://mypayments.com/refund",
+    "ip": "192.168.0.25"
+  },
+  "first_event": {
+    "amount": {
+      "value": "132.95",
+      "currency": "ARS"
+    },
+    "type": "sale",
+    "status": "success",
+    "happened_at": "2020-01-25T12:30:15.000Z"
+  }
+}
+```
+
+##### Response
+
+`201 Created`
+
+```json
+{
+  "id": "aee7e83e-9537-4baf-a4ea-20e6b38521c7",
+  "payment_provider_id": "eeac118e-5534-40ba-b539-443449bc67a3",
+  "captured_amount": {
+    "value": "132.95",
+    "currency": "ARS"
+  },
+  "refunded_amount": {
+    "value": "0.00",
+    "currency": "ARS"
+  },
+  "authorized_amount": null,
+  "voided_amount": null,
+  "payment_method": {
+    "type": "credit_card",
+    "id": "visa"
+  },
+  "status": "paid",
+  "info": {
+    "card": {
+      "brand": "visa",
+      "expiration_month": 12,
+      "expiration_year": 2020,
+      "first_digits": "445566",
+      "last_digits": "1234",
+      "masked_number": "XXXXXXXXXXXX1234",
+      "name": "Ash Ketchum"
+    },
+    "installments": {
+      "quantity": 3,
+      "interest": "0.1500"
+    },
+    "external_id": "1234",
+    "external_url": "https://mypayments.com/account/transactions/1234",
+    "refund_url": "https://mypayments.com/refund",
+    "ip": "192.168.0.25"
+  },
+  "failure_code": null,
+  "created_at": "2020-07-25 17:26:23",
+  "events": [
+    {
+      "transaction_id": "aee7e83e-9537-4baf-a4ea-20e6b38521c7",
+      "amount": {
+        "value": "132.95",
+        "currency": "ARS"
+      },
+      "type": "sale",
+      "status": "success",
+      "failure_code": null,
+      "created_at": "2020-07-25T20:26:23.323Z",
+      "happened_at": "2020-01-25T12:30:15Z",
+      "expires_at": null
+    }
+  ]
+}
+```
+
+</details>
+
+<details>
+  <summary><b>Example Nº 2: Create a boleto transaction that starts pending and then is paid by the buyer</b></summary>
+
+
+
+
+
+#### POST /orders/56789/transactions
+
+##### Request
+
+```json
+{
+  "payment_provider_id": "eeac118e-5534-40ba-b539-443449bc67a3",
+  "payment_method": {
+    "type": "boleto",
+    "id": "bradesco"
+  },
+  "info": {
+    "external_id": "1234",
+    "external_url": "https://mypayments.com/account/transactions/1234",
+    "external_resource_url": "https://mypayments.com/boleto/1234",
+    "external_resource_code": "00190500954014481606906809350314337370000000100",
+    "external_resource_expires_at": "2020-02-05T12:30:15.000Z",
+    "ip": "192.168.0.25"
+  },
+  "first_event": {
+    "amount": {
+      "value": "132.95",
+      "currency": "ARS"
+    },
+    "type": "sale",
+    "status": "pending",
+    "happened_at": "2020-01-25T12:30:15.000Z"
+  }
+}
+```
+
+##### Response
+
+`201 Created`
+
+```json
+{
+  "id": "6b765950-e8e2-49f1-9c6a-0bb7c15a4f41",
+  "payment_provider_id": "eeac118e-5534-40ba-b539-443449bc67a3",
+  "captured_amount": {
+    "value": "0.00",
+    "currency": "ARS"
+  },
+  "refunded_amount": {
+    "value": "0.00",
+    "currency": "ARS"
+  },
+  "authorized_amount": null,
+  "voided_amount": null,
+  "payment_method": {
+    "type": "boleto",
+    "id": "bradesco"
+  },
+  "status": "pending",
+  "info": {
+    "external_resource_url": "https://mypayments.com/boleto/1234",
+    "external_resource_code": "00190500954014481606906809350314337370000000100",
+    "external_resource_expires_at": "2020-02-05T12:30:15Z",
+    "external_id": "1234",
+    "external_url": "https://mypayments.com/account/transactions/1234",
+    "ip": "192.168.0.25"
+  },
+  "failure_code": null,
+  "created_at": "2020-07-25 17:27:42",
+  "events": [
+    {
+      "transaction_id": "6b765950-e8e2-49f1-9c6a-0bb7c15a4f41",
+      "amount": {
+        "value": "132.95",
+        "currency": "ARS"
+      },
+      "type": "sale",
+      "status": "pending",
+      "failure_code": null,
+      "created_at": "2020-07-25T20:27:42.784Z",
+      "happened_at": "2020-01-25T12:30:15Z",
+      "expires_at": null
+    }
+  ]
+}
+```
+
+#### POST /orders/56789/transactions/6b765950-e8e2-49f1-9c6a-0bb7c15a4f41/events
+
+##### Request
+
+```json
+{
+  "type": "sale",
+  "status": "success",
+  "happened_at": "2020-01-27T12:30:15.000Z"
+}
+```
+
+##### Response
+
+`201 Created`
+
+```json
+{
+  "transaction_id": "6b765950-e8e2-49f1-9c6a-0bb7c15a4f41",
+  "amount": {
+    "value": "132.95",
+    "currency": "ARS"
+  },
+  "type": "sale",
+  "status": "success",
+  "failure_code": null,
+  "created_at": "2020-07-25T20:28:26.590Z",
+  "happened_at": "2020-01-27T12:30:15Z",
+  "expires_at": null
+}
+```
+
+</details>
+
+<details>
+  <summary><b>Example Nº 3: Get a credit card transaction that has been authorized, captured and then refunded</b></summary>
+
+
+
+
+
+#### GET /orders/56789/transactions/21781944-a977-4b0d-93dc-908ddb87d778
+
+##### Request
+
+```
+{}
+```
+
+##### Response
+
+`201 OK`
+
+```json
+{
+  "id": "21781944-a977-4b0d-93dc-908ddb87d778",
+  "payment_provider_id": "eeac118e-5534-40ba-b539-443449bc67a3",
+  "captured_amount": {
+    "value": "132.95",
+    "currency": "ARS"
+  },
+  "refunded_amount": {
+    "value": "132.95",
+    "currency": "ARS"
+  },
+  "authorized_amount": {
+    "value": "132.95",
+    "currency": "ARS"
+  },
+  "voided_amount": null,
+  "payment_method": {
+    "type": "credit_card",
+    "id": "visa"
+  },
+  "status": "refunded",
+  "info": {
+    "card": {
+      "brand": "visa",
+      "expiration_month": 12,
+      "expiration_year": 2020,
+      "first_digits": "445566",
+      "last_digits": "1234",
+      "masked_number": "XXXXXXXXXXXX1234",
+      "name": "Ash Ketchum"
+    },
+    "installments": {
+      "quantity": 3,
+      "interest": "0.1500"
+    },
+    "external_id": "1234",
+    "external_url": "https://mypayments.com/account/transactions/1234",
+    "refund_url": "https://mypayments.com/refund",
+    "ip": "192.168.0.25"
+  },
+  "failure_code": null,
+  "created_at": "2020-07-25 17:30:15",
+  "events": [
+    {
+      "transaction_id": "21781944-a977-4b0d-93dc-908ddb87d778",
+      "amount": {
+        "value": "132.95",
+        "currency": "ARS"
+      },
+      "type": "authorization",
+      "status": "success",
+      "failure_code": null,
+      "created_at": "2020-07-25T20:30:15.138Z",
+      "happened_at": "2020-01-25T12:30:15Z",
+      "expires_at": null
+    },
+    {
+      "transaction_id": "21781944-a977-4b0d-93dc-908ddb87d778",
+      "amount": {
+        "value": "132.95",
+        "currency": "ARS"
+      },
+      "type": "capture",
+      "status": "success",
+      "failure_code": null,
+      "created_at": "2020-07-25T20:30:25.481Z",
+      "happened_at": "2020-01-27T12:30:15Z",
+      "expires_at": null
+    },
+    {
+      "transaction_id": "21781944-a977-4b0d-93dc-908ddb87d778",
+      "amount": {
+        "value": "132.95",
+        "currency": "ARS"
+      },
+      "type": "refund",
+      "status": "success",
+      "failure_code": null,
+      "created_at": "2020-07-25T20:30:33.517Z",
+      "happened_at": "2020-01-27T12:30:15Z",
+      "expires_at": null
+    }
+  ]
+}
+```
+
+</details>
+
+<details>
+  <summary><b>Example Nº 4: Create a confirmed wallet transaction</b></summary>
+
+
+
+
+
+#### POST /orders/24680/transactions
+
+##### Request
+
+```json
+{
+  "payment_provider_id": "eeac118e-5534-40ba-b539-443449bc67a3",
+  "payment_method": {
+    "type": "wallet"
+  },
+  "info": {
+    "external_id": "1234",
+    "external_url": "https://mypayments.com/account/transactions/1234"
+  },
+  "first_event": {
+    "amount": {
+      "value": "100.00",
+      "currency": "BRL"
+    },
+    "type": "sale",
+    "status": "success",
+    "happened_at": "2020-01-25T12:30:15.000Z"
+  }
+}
+```
+
+##### Response
+
+`201 Created`
+
+```json
+{
+    "id": "364df14b-2433-4c7d-a4f6-60a512451592",
+    "payment_provider_id": "eeac118e-5534-40ba-b539-443449bc67a3",
+    "captured_amount": {
+        "value": "100.00",
+        "currency": "BRL"
+    },
+    "refunded_amount": {
+        "value": "0.00",
+        "currency": "BRL"
+    },
+    "authorized_amount": null,
+    "voided_amount": null,
+    "payment_method": {
+        "type": "wallet",
+        "id": "wallet"
+    },
+    "status": "paid",
+    "info": {
+        "external_id": "1234",
+        "external_url": "https://mypayments.com/account/transactions/1234"
+    },
+    "failure_code": null,
+    "created_at": "2020-09-04 14:27:30",
+    "events": [
+        {
+            "transaction_id": "364df14b-2433-4c7d-a4f6-60a512451592",
+            "amount": {
+                "value": "100.00",
+                "currency": "BRL"
+            },
+            "type": "sale",
+            "status": "success",
+            "failure_code": null,
+            "created_at": "2020-09-04T17:27:30.584Z",
+            "happened_at": "2020-01-25T12:30:15Z",
+            "expires_at": null
+        }
+    ]
+}
+```
+
+</details>
+
+<h2 id="appendix">Appendix</h2>
+
+<h3 id="transaction-failure-codes">Transaction Failure Codes</h3>
+
+<p>The following list contains all the Transaction failures codes currently supported by our platform, organized by data groups.</p>
+
+<details>
+  <summary><b>Consumer</b></summary>
+
+
+
+
+| Failure Code                     | Description                                                  |
+| -------------------------------- | ------------------------------------------------------------ |
+| `consumer_blocked`               | The consumer is blocked by the payment provider.             |
+| `consumer_city_invalid`          | The consumer city is invalid.                                |
+| `consumer_country_invalid`       | The consumer country is invalid.                             |
+| `consumer_district_invalid`      | The consumer district is invalid.                            |
+| `consumer_email_invalid`         | The consumer email is invalid.                               |
+| `consumer_firstname_invalid`     | The consumer firstname is invalid.                           |
+| `consumer_floor_invalid`         | The consumer address floor is invalid.                       |
+| `consumer_id_invalid`            | The consumer identification is invalid.                      |
+| `consumer_id_type_invalid`       | The consumer identification type is invalid.                 |
+| `consumer_lastname_invalid`      | The consumer lastname is invalid.                            |
+| `consumer_phone_invalid`         | The consumer phone number is invalid.                        |
+| `consumer_province_invalid`      | The consumer province is invalid.                            |
+| `consumer_region_invalid`        | The consumer region is invalid.                              |
+| `consumer_same_as_merchant`      | The payment provider does not allow payments where the consumer is the same person as the merchant. |
+| `consumer_state_invalid`         | The consumer state is invalid.                               |
+| `consumer_street_invalid`        | The consumer address street is invalid.                      |
+| `consumer_street_number_invalid` | The consumer address number is invalid.                      |
+| `consumer_zip_invalid`           | The consumer ZIP code is invalid.                            |
+
+</details>
+
+<details>
+  <summary><b>Payment Methods</b></summary>
+
+
+
+
+#### Bank Debit
+
+| Failure Code                       | Description                                          |
+| ---------------------------------- | ---------------------------------------------------- |
+| `bank_debit_bank_invalid`          | The bank debit bank is invalid.                      |
+| `bank_debit_method_unavailable`    | The bank debit payment method is not available.      |
+| `bank_debit_payer_id_invalid`      | The bank debit payer identification is invalid.      |
+| `bank_debit_payer_id_type_invalid` | The bank debit payer identification type is invalid. |
+| `bank_debit_payer_name_invalid`    | The bank debit payer name is invalid.                |
+
+#### Boleto
+
+| Failure Code                   | Description                                      |
+| ------------------------------ | ------------------------------------------------ |
+| `boleto_method_unavailable`    | The boleto method is not available.              |
+| `boleto_payer_id_invalid`      | The boleto payer identification is invalid.      |
+| `boleto_payer_id_type_invalid` | The boleto payer identification type is invalid. |
+| `boleto_payer_name_invalid`    | The boleto payer name is invalid.                |
+
+#### Card
+
+| Failure Code                         | Description                                                  |
+| ------------------------------------ | ------------------------------------------------------------ |
+| `card_cvv_invalid`                   | The card security code is invalid.                           |
+| `card_expiration_date_invalid`       | The card expiration date is invalid.                         |
+| `card_holder_birthdate_invalid`      | The cardholder date of birth is invalid.                     |
+| `card_holder_id_invalid`             | The cardholder identification is invalid.                    |
+| `card_holder_id_type_invalid`        | The cardholder identification type is invalid.               |
+| `card_holder_name_invalid`           | The cardholder name is invalid.                              |
+| `card_holder_phone_invalid`          | The cardholder phone number is invalid.                      |
+| `card_info_invalid`                  | The card information is invalid.                             |
+| `card_issuer_invalid`                | The card issuer is invalid.                                  |
+| `card_method_unavailable`            | The card method is not available.                            |
+| `card_number_invalid`                | The card number is invalid.                                  |
+| `card_rejected`                      | Card rejected.                                               |
+| `card_rejected_call_for_authorize`   | Card rejected because payment must be authorized by the issuer. |
+| `card_rejected_deny_list`            | Card rejected for being on a list of non accepted cards.     |
+| `card_rejected_disabled`             | Card rejected for being disabled.                            |
+| `card_rejected_duplicated_payment`   | Card rejected because payment seems to be duplicated.        |
+| `card_rejected_fraud_high_risk`      | Card rejected due to high fraud risk.                        |
+| `card_rejected_insufficient_funds`   | Card rejected for insufficient funds.                        |
+| `card_rejected_invalid_installments` | Card rejected for not supporting the specified installments. |
+| `card_rejected_max_attemps`          | Card rejected for exceeding the number of attempts.          |
+
+#### Ticket
+
+| Failure Code                | Description                         |
+| --------------------------- | ----------------------------------- |
+| `ticket_method_unavailable` | The ticket method is not available. |
+| `ticket_operator_invalid`   | The ticket operator is invalid.     |
+
+</details>
+
+<details>
+  <summary><b>Shipping</b></summary>
+
+
+
+
+| Failure Code                     | Description                                     |
+| -------------------------------- | ----------------------------------------------- |
+| `shipping_city_invalid`          | The shipping city is invalid.                   |
+| `shipping_district_invalid`      | The shipping district is invalid.               |
+| `shipping_email_invalid`         | The shipping recipient email is invalid.        |
+| `shipping_firstname_invalid`     | The shipping recipient firstname is invalid.    |
+| `shipping_floor_invalid`         | The shipping address floor is invalid.          |
+| `shipping_lastname_invalid`      | The shipping recipient lastname is invalid.     |
+| `shipping_method_invalid`        | The shipping method is invalid.                 |
+| `shipping_method_unavailable`    | The shipping method is not available.           |
+| `shipping_phone_invalid`         | The shipping recipient phone number is invalid. |
+| `shipping_price_invalid`         | The shipping price value is invalid.            |
+| `shipping_province_invalid`      | The shipping province is invalid.               |
+| `shipping_region_invalid`        | The shipping region is invalid.                 |
+| `shipping_state_invalid`         | The shipping state is invalid.                  |
+| `shipping_street_invalid`        | The shipping address street is invalid.         |
+| `shipping_street_number_invalid` | The shipping address number is invalid.         |
+| `shipping_total_curreny_invalid` | The shipping amount currency is invalid.        |
+| `shipping_zip_invalid`           | The shipping ZIP code is invalid.               |
+
+</details>
+
+<details>
+  <summary><b>Order</b></summary>
+
+
+
+
+| Failure Code                     | Description                                                  |
+| -------------------------------- | ------------------------------------------------------------ |
+| `line_items_currency_invalid`    | An order item amount currency is invalid.                    |
+| `line_items_description_invalid` | An order item description is invalid.                        |
+| `line_items_price_invalid`       | An order item price value is invalid.                        |
+| `line_items_quantity_invalid`    | An order item quantity is invalid.                           |
+| `order_total_currency_invalid`   | The order amount currency is invalid.                        |
+| `order_total_price_invalid`      | The order price value is invalid.                            |
+| `order_total_price_too_small`    | The order price value is less than the minimum supported value. |
+
+</details>
+
+
+    </section>
+	<footer class="site-footer">
+	<div class="footer-content">
+		<span class="small-logo">
+			<symbol id="svg_logo_nube_light"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 599.7 100.7"><path d="M89.1,0L89.1,0C75.9,0,63.5,5.1,54.2,14.2c-4.7-2-9.9-3.1-15.2-3.1C17.6,11.1,0.1,28.5,0.1,50	S17.5,88.9,39,88.9c5.2,0,10.4-1.1,15.1-3.1c9,8.8,21.3,14.2,34.8,14.2c27.6,0,50-22.4,50-50C139,22.5,116.6,0,89.1,0L89.1,0z M89,88.9c-21.4,0-38.9-17.4-38.9-38.9H39c0,9.8,2.8,19,7.7,26.7c-2.5,0.7-5.1,1.1-7.7,1.1c-15.3,0-27.8-12.5-27.8-27.8	S23.7,22.2,39,22.2c6.1,0,11.8,1.9,16.7,5.6c7.1,5.3,11.1,13.4,11.1,22.2H78c0-11.6-5-22.4-13.9-29.8c7-5.8,15.8-9.1,25-9.1	c21.4,0,38.9,17.5,38.9,38.9C127.9,71.4,110.5,88.9,89,88.9z M167.2,77.9V42.3h-7.5v-8.9h7.5V20.2h10.5v13.2h7.5v8.9h-7.5v35.6	H167.2z M196.1,26.9c-3.5,0-6.4-2.9-6.4-6.4c0-3.6,2.9-6.5,6.4-6.5c3.7,0,6.5,3,6.5,6.5S199.9,26.9,196.1,26.9z M191,77.9V33.4h10.5	v44.5H191z M250.8,67.4c-3.7,7-10.6,11.5-20.1,11.5c-13.5,0-23.1-9.6-23.1-23.3c0-13.3,9.8-23.3,22.6-23.3c13,0,22.1,10,22.1,23.3	c0,0.8,0,1.9-0.1,3.2H218c0.5,6.4,6.2,11.3,12.8,11.3c5.8,0,8.8-2.8,11.3-6.7L250.8,67.4z M241.9,51.2c-0.7-5.9-5.4-10.3-11.9-10.3	c-6.3,0-11.2,5.2-11.9,10.3H241.9z M268.5,77.9H258V33.4h10.5v5.9c2.8-4.3,7.4-7,13.6-7c10.9,0,17.2,7.2,17.2,18.8v26.8h-10.5V53.1	c0-6.9-3.4-11.1-9.9-11.1c-6.3,0-10.4,4.8-10.4,12.4V77.9L268.5,77.9z M341.6,77.9v-6.4c-3.3,4.6-8.9,7.4-15.1,7.4	c-12.3,0-21.7-10-21.7-23.3c0-13.1,9.4-23.3,21.7-23.3c6.2,0,11.8,2.5,15.1,7.2V16.7H352v61.2H341.6z M328.7,69.4	c7.5,0,13.3-6.2,13.3-13.8s-5.8-13.8-13.3-13.8s-13.3,6.2-13.3,13.8S321.2,69.4,328.7,69.4z M374,51.6l12.1-1.5v-1.9	c0-4.4-3.1-7.3-7.9-7.3c-4.5,0-7.4,2.3-8.8,6.7l-9.6-2.5c2.2-8,9.3-12.9,18.4-12.9c11.6,0,18.1,6.1,18.1,16.6v28.9h-9.8l-0.1-5.4	c-3,4.3-8.1,6.5-13.9,6.5c-8.4,0-14.3-5.4-14.3-12.9C358.2,58,363.5,53.2,374,51.6z M375,70.5c6.5,0,11.2-4.2,11.2-10.1v-2.5	l-10.1,1.4c-5,0.6-7.4,2.9-7.4,6.1C368.7,68.6,371.3,70.5,375,70.5z M415.3,77.9h-10.5V33.4h10.5v5.9c2.8-4.3,7.4-7,13.6-7	c10.9,0,17.2,7.2,17.2,18.8v26.8h-10.5V53.1c0-6.9-3.4-11.1-9.9-11.1c-6.3,0-10.4,4.8-10.4,12.4V77.9L415.3,77.9z M453.7,58.7V33.4	h10.5v24.7c0,7,3.4,11.2,9.3,11.2c5.8,0,9.3-4.2,9.3-11.2V33.4h10.5v25.3c0,12.8-7.4,20.2-19.8,20.2C461.2,79,453.7,71.5,453.7,58.7	z M501.7,77.9V16.7h10.4v23.1c3.3-4.6,8.9-7.4,15.1-7.4c12.3,0,21.7,10,21.7,23.3c0,13.1-9.4,23.3-21.7,23.3	c-6.2,0-11.8-2.5-15.1-7.2v6.1H501.7L501.7,77.9z M525.1,41.8c-7.5,0-13.3,6.2-13.3,13.8s5.8,13.8,13.3,13.8s13.3-6.2,13.3-13.8	S532.6,41.8,525.1,41.8L525.1,41.8z M595.7,67.4c-3.7,7-10.6,11.5-20.1,11.5c-13.5,0-23.1-9.6-23.1-23.3c0-13.3,9.8-23.3,22.6-23.3	c13,0,22.1,10,22.1,23.3c0,0.8,0,1.9-0.1,3.2h-34.2c0.5,6.4,6.2,11.3,12.8,11.3c5.8,0,8.8-2.8,11.3-6.7L595.7,67.4L595.7,67.4z M586.8,51.2c-0.7-5.9-5.4-10.3-11.9-10.3c-6.3,0-11.2,5.2-11.9,10.3H586.8z" fill="#fff"></path></svg></symbol>
+		</span>
+	  <p class="copyright">
+		  <span>2011 - 2021 © Tiendanube/Nuvemshop</span>
+		<span>Todos los derechos reservados.</span>
+        <span>
+            <a href="https://www.tiendanube.com/que-es-tienda-nube/terminos-de-uso" title="">Términos y condiciones</a>.
+            <a href="https://www.tiendanube.com/politicas-de-privacidad" title="">Políticas de privacidad</a>.
+            <a href="https://www.tiendanube.com/politica-de-calidad" title="">Política de calidad</a>.
+        </span>
+	  </p>
+	</div>
+</footer>
+
+  </body>
+</html>

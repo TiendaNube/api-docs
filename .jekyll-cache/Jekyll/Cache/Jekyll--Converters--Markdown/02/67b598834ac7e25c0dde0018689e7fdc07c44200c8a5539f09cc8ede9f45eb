@@ -1,0 +1,899 @@
+I"�<h1 id="shipping-carrier">Shipping Carrier</h1>
+
+<p>A shipping carrier (or shipping company) service provides real-time shipping rates for merchants.</p>
+
+<p>Using these endpoints, you can add a shipping carrier to a store and provide shipping rates at checkout.</p>
+
+<h2 id="shipping-carrier-properties">Shipping Carrier Properties</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Explanation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>id</td>
+      <td>The unique numeric identifier for the Shipping Carrier.</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>The name of the Shipping Carrier as seen by both merchants and buyers.</td>
+    </tr>
+    <tr>
+      <td>callback_url</td>
+      <td>The URL endpoint that we need to retrieve shipping rates. <strong>Must be HTTPS.</strong></td>
+    </tr>
+    <tr>
+      <td>types</td>
+      <td>The supported shipping types, can be one or both <em>ship</em> or <em>pickup</em>.</td>
+    </tr>
+    <tr>
+      <td>active</td>
+      <td>Whether this Shipping Carrier is active.</td>
+    </tr>
+    <tr>
+      <td>created_at</td>
+      <td>Date when the Shipping Carrier was created in <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a>.</td>
+    </tr>
+    <tr>
+      <td>updated_at</td>
+      <td>Date when the Shipping Carrier was last updated in <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="shipping-carrier-options">Shipping Carrier Options</h2>
+
+<p>Almost every shipping carrier has multiple options to offer to the consumers, like standard and express shipping options. These options may provide some configurable values to the merchants through the store’s admin, like additional costs and days, and also free shipping availability options.</p>
+
+<h2 id="shipping-carrier-options-properties">Shipping Carrier Options Properties</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Explanation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>id</td>
+      <td>The unique numeric identifier for the Shipping Carrier Option.</td>
+    </tr>
+    <tr>
+      <td>code</td>
+      <td>A unique code associated with the Shipping Carrier Option.</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>The name of the Shipping Carrier Option as seen by both merchants and buyers.</td>
+    </tr>
+    <tr>
+      <td>additional_days</td>
+      <td>The additional days configurable value that will be added to the option’s estimated delivery time.</td>
+    </tr>
+    <tr>
+      <td>additional_cost</td>
+      <td>The additional cost configurable value that will be added to the option’s consumer price.</td>
+    </tr>
+    <tr>
+      <td>allow_free_shipping</td>
+      <td>The configurable free shipping eligible parameter that specifies that an option allows free shipping.</td>
+    </tr>
+    <tr>
+      <td>active</td>
+      <td>Whether this Shipping Carrier Option is active.</td>
+    </tr>
+    <tr>
+      <td>created_at</td>
+      <td>Date when the Shipping Carrier Option was created in <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a>.</td>
+    </tr>
+    <tr>
+      <td>updated_at</td>
+      <td>Date when the Shipping Carrier Option was last updated in <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="providing-rates-to-our-merchants">Providing rates to our merchants</h2>
+
+<p>When adding a Shipping Carrier to a store, you need to provide POST endpoints in the callback properties where we can retrieve the shipping rates.</p>
+
+<p>We provide to different kind of shipments. Shipments that will be shipped to a buyer’s address (<em>ship</em>) or shipments that will be picked up by the buyer (<em>pickup</em>).</p>
+
+<p>The response object rates must be a JSON array of objects with the following fields. We need all required fields for the integration to work properly.</p>
+
+<h5 id="important-you-have-to-post-all-your-available-rates-our-api-will-filter-by-carrier-options-active-and-apply-the-settings-made-by-users-over-the-rates-additional-days-and-additional-cost">Important: you have to post all your available rates, our API will filter by carrier options active, and apply the settings made by users over the rates (additional days and additional cost).</h5>
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Explanation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>name</td>
+      <td><strong>(required)</strong> The name of the rate which buyers will see at checkout.</td>
+    </tr>
+    <tr>
+      <td>code</td>
+      <td><strong>(required)</strong> A unique code associated with the carrier option code. It´s used to apply the settings over the rate.</td>
+    </tr>
+    <tr>
+      <td>price</td>
+      <td><strong>(required)</strong> The rate’s price that will be payed by the buyer.</td>
+    </tr>
+    <tr>
+      <td>currency</td>
+      <td><strong>(required)</strong> The rate’s currency. Currency codes must be specified according to <a href="https://www.currency-iso.org/en/home/tables/table-a1.html">ISO 4217</a></td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td><strong>(required)</strong> The rate’s type: <em>ship</em> if it will be deliverd to a buyer’s address or <em>pickup</em> if it will be picked up by the buyer.</td>
+    </tr>
+    <tr>
+      <td>address</td>
+      <td><strong>(required)</strong> <em>(pickup only)</em> Where the pickup point is located.</td>
+    </tr>
+    <tr>
+      <td>hours</td>
+      <td><strong>(required)</strong> <em>(pickup only)</em> The location open hours providing: <code class="language-plaintext highlighter-rouge">day</code> (0: sunday, 6: saturday), <code class="language-plaintext highlighter-rouge">start</code> and <code class="language-plaintext highlighter-rouge">end</code> on <code class="language-plaintext highlighter-rouge">HHMM</code> format.</td>
+    </tr>
+    <tr>
+      <td>price_merchant</td>
+      <td>The rate’s price that will be payed by the merchant. It may be different than <code class="language-plaintext highlighter-rouge">price</code> due to items with free shipping. Defaults to <code class="language-plaintext highlighter-rouge">price</code>.</td>
+    </tr>
+    <tr>
+      <td>min_delivery_date</td>
+      <td>The earliest estimated delivery date in <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a>. Defaults to <code class="language-plaintext highlighter-rouge">null</code>.</td>
+    </tr>
+    <tr>
+      <td>max_delivery_date</td>
+      <td>The latest estimated delivery date in <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a>. Defaults to <code class="language-plaintext highlighter-rouge">null</code>.</td>
+    </tr>
+    <tr>
+      <td>id_required</td>
+      <td>Whether the customer must provide an identification number at checkout. Defaults to <code class="language-plaintext highlighter-rouge">false</code>.</td>
+    </tr>
+    <tr>
+      <td>phone_required</td>
+      <td>Whether the customer must provide a phone number at checkout. Defaults to <code class="language-plaintext highlighter-rouge">false</code>.</td>
+    </tr>
+    <tr>
+      <td>accepts_cod</td>
+      <td>Whether the customer is allowed to pay for this rate with a Cash on Delivery (COD) payment method (defaults to <code class="language-plaintext highlighter-rouge">true</code>).</td>
+    </tr>
+    <tr>
+      <td>reference</td>
+      <td>An internal reference yo wish to save for the rate. We will save it and return it on the Order as <code class="language-plaintext highlighter-rouge">shipping_option_reference</code>.</td>
+    </tr>
+    <tr>
+      <td>availability</td>
+      <td><em>(pickup only)</em> Whether there is availability for all items at the location. Defaults to <code class="language-plaintext highlighter-rouge">true</code>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="example-requests-for-shipping-rates">Example requests for shipping rates</h3>
+
+<h4 id="post-your_callback_url">POST /your_callback_url</h4>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"store_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">123456</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ARS"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"language"</span><span class="p">:</span><span class="w"> </span><span class="s2">"es"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"origin"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Avenida Cabildo"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4781"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"floor"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"locality"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Nuñez"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Capital Federal"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"province"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Capital Federal"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"AR"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"postal_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1602"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"phone"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"destination"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Juan B. Justo"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3000"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"floor"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"locality"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Nuñez"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Capital Federal"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"province"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Capital Federal"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"AR"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"postal_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1602"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"phone"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">   
+            </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"product_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"My product"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"sku"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"quantity"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"free_shipping"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"grams"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"price"</span><span class="p">:</span><span class="w"> </span><span class="mf">20.00</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"dimensions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"width"</span><span class="p">:</span><span class="w"> </span><span class="mf">12.0</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"height"</span><span class="p">:</span><span class="w"> </span><span class="mf">10.0</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"depth"</span><span class="p">:</span><span class="w"> </span><span class="mf">10.0</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+   </span><span class="nl">"rates"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+       </span><span class="p">{</span><span class="w">
+           </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Standard Shipping"</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"standard"</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"price"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.00</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"price_merchant"</span><span class="p">:</span><span class="w"> </span><span class="mf">14.15</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ARS"</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ship"</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"min_delivery_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-07-14T14:48:45-0300"</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"max_delivery_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-07-17T14:48:45-0300"</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"phone_required"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"reference"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ref123"</span><span class="w">
+       </span><span class="p">},</span><span class="w">
+       </span><span class="p">{</span><span class="w">
+           </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Express Shipping"</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"express"</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"price"</span><span class="p">:</span><span class="w"> </span><span class="mf">28.15</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ARS"</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ship"</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"min_delivery_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-07-12T14:48:45-0300"</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"max_delivery_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-07-13T14:48:45-0300"</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"id_required"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"reference"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ref123"</span><span class="w">
+       </span><span class="p">},</span><span class="w">
+       </span><span class="p">{</span><span class="w">
+           </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Shipping branch #1"</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pickup_1"</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"price"</span><span class="p">:</span><span class="w"> </span><span class="mf">14.15</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ARS"</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pickup"</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"min_delivery_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-07-14T14:48:45-0300"</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"max_delivery_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-07-17T14:48:45-0300"</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"phone_required"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"id_required"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"accepts_cod"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+               </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"My address"</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"345"</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"floor"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"locality"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Lanús"</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Lanús"</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"province"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Buenos Aires"</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"AR"</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"+54 11 5678-1234"</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"zipcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1824"</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"latitude"</span><span class="p">:</span><span class="w"> </span><span class="s2">"123456"</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"longitude"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-123456"</span><span class="w">
+           </span><span class="p">},</span><span class="w">
+           </span><span class="nl">"hours"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+               </span><span class="p">{</span><span class="w">
+                   </span><span class="nl">"day"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+                   </span><span class="nl">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0900"</span><span class="p">,</span><span class="w">
+                   </span><span class="nl">"end"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1800"</span><span class="w">
+               </span><span class="p">},</span><span class="w">
+               </span><span class="p">{</span><span class="w">
+                   </span><span class="nl">"day"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+                   </span><span class="nl">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0900"</span><span class="p">,</span><span class="w">
+                   </span><span class="nl">"end"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1800"</span><span class="w">
+               </span><span class="p">},</span><span class="w">
+               </span><span class="p">{</span><span class="w">
+                   </span><span class="nl">"day"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+                   </span><span class="nl">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0900"</span><span class="p">,</span><span class="w">
+                   </span><span class="nl">"end"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1800"</span><span class="w">
+               </span><span class="p">},</span><span class="w">
+               </span><span class="p">{</span><span class="w">
+                   </span><span class="nl">"day"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+                   </span><span class="nl">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0900"</span><span class="p">,</span><span class="w">
+                   </span><span class="nl">"end"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1800"</span><span class="w">
+               </span><span class="p">},</span><span class="w">
+               </span><span class="p">{</span><span class="w">
+                   </span><span class="nl">"day"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+                   </span><span class="nl">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0900"</span><span class="p">,</span><span class="w">
+                   </span><span class="nl">"end"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1800"</span><span class="w">
+               </span><span class="p">}</span><span class="w">
+           </span><span class="p">],</span><span class="w">
+           </span><span class="nl">"availability"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"reference"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ref123"</span><span class="w">
+       </span><span class="p">},</span><span class="w">
+       </span><span class="p">{</span><span class="w">
+           </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Shipping branch #2"</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pickup_2"</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"price"</span><span class="p">:</span><span class="w"> </span><span class="mf">14.15</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ARS"</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pickup"</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"min_delivery_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-07-12T14:48:45-0300"</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"max_delivery_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-07-13T14:48:45-0300"</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"accepts_cod"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"phone_required"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"id_required"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+           </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+               </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Another address"</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"123"</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"floor"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"locality"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Florida"</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Vicente Lopez"</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"province"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Buenos Aires"</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"AR"</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"+54 11 1234-5678"</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"zipcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1602"</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"latitude"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"longitude"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+           </span><span class="p">},</span><span class="w">
+           </span><span class="nl">"hours"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+               </span><span class="p">{</span><span class="w">
+                   </span><span class="nl">"day"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+                   </span><span class="nl">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0900"</span><span class="p">,</span><span class="w">
+                   </span><span class="nl">"end"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1800"</span><span class="w">
+               </span><span class="p">},</span><span class="w">
+               </span><span class="p">{</span><span class="w">
+                   </span><span class="nl">"day"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+                   </span><span class="nl">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0900"</span><span class="p">,</span><span class="w">
+                   </span><span class="nl">"end"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1800"</span><span class="w">
+               </span><span class="p">},</span><span class="w">
+               </span><span class="p">{</span><span class="w">
+                   </span><span class="nl">"day"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+                   </span><span class="nl">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0900"</span><span class="p">,</span><span class="w">
+                   </span><span class="nl">"end"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1800"</span><span class="w">
+               </span><span class="p">},</span><span class="w">
+               </span><span class="p">{</span><span class="w">
+                   </span><span class="nl">"day"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+                   </span><span class="nl">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0900"</span><span class="p">,</span><span class="w">
+                   </span><span class="nl">"end"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1800"</span><span class="w">
+               </span><span class="p">},</span><span class="w">
+               </span><span class="p">{</span><span class="w">
+                   </span><span class="nl">"day"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+                   </span><span class="nl">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0900"</span><span class="p">,</span><span class="w">
+                   </span><span class="nl">"end"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1800"</span><span class="w">
+               </span><span class="p">}</span><span class="w">
+           </span><span class="p">],</span><span class="w">
+           </span><span class="nl">"reference"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ref123"</span><span class="w">
+       </span><span class="p">}</span><span class="w">       
+   </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="server-side-caching-of-requests">Server-side caching of requests</h2>
+
+<p>We will provide server-side caching to reduce the number of requests done to your callback URLs. Any shipping rate request that identically matches the following fields will be retrieved from our cache of the initial response:</p>
+
+<ul>
+  <li>variant ids</li>
+  <li>variant quantities</li>
+  <li>default shipping box weight and dimensions</li>
+  <li>shipping carrier id</li>
+  <li>origin address</li>
+  <li>destination address</li>
+  <li>item weights &amp; dimensions</li>
+</ul>
+
+<p>If any of these fields differ, or if the cache has expired since the original request, then new shipping rates are requested.</p>
+
+<p>About caching expire time (TTL)</p>
+
+<ul>
+  <li>Success responses, with status code <em>200</em> from callback URLs, expire after 15 minutes.</li>
+  <li>Error responses, with status code <em>422</em> from callback URLs, expire after 1 minute.</li>
+  <li>Otherwise, the responses won’t be cached.</li>
+</ul>
+
+<h2 id="endpoints">Endpoints</h2>
+
+<h3 id="post-shipping_carriers">POST /shipping_carriers</h3>
+
+<p>Create a new Shipping Carrier</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Explanation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>name</td>
+      <td><strong>(required)</strong> The name of the Shipping Carrier as seen by both merchants and buyers.</td>
+    </tr>
+    <tr>
+      <td>callback_url</td>
+      <td><strong>(required)</strong> The URL endpoint that we need to retrieve shipping rates when the buyer wants the items ship to an address.</td>
+    </tr>
+    <tr>
+      <td>types</td>
+      <td><strong>(required)</strong> Comma separated values indicating supported methods: can be any of <code class="language-plaintext highlighter-rouge">ship</code> or <code class="language-plaintext highlighter-rouge">pickup</code>.</td>
+    </tr>
+    <tr>
+      <td>active</td>
+      <td>The shipping carrier availability status, used to disable or enable it for the store. Defaults to <strong>true</strong>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="post-shipping_carriers-1">POST /shipping_carriers</h4>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"My Shipping Company"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"callback_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://example.com/rates"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"types"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ship,pickup"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 201 Created</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"My Shipping Company"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"callback_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://example.com/rates"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"types"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ship,pickup"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-06-11T11:12:10-03:00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-06-11T11:12:10-03:00"</span><span class="w">    
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="get-shipping_carriers">GET /shipping_carriers</h3>
+
+<p>Receive a list of all Shipping Carriers.</p>
+
+<h4 id="get-shipping_carriers-1">GET /shipping_carriers</h4>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Example Company"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"callback_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://example.com/rates"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-12T10:15:10-03:00"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-12T10:15:10-03:00"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Another example Company"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"callback_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://example.com/rates"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-12T10:20:13-03:00"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-12T10:20:13-03:00"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="get-shipping_carriersid">GET /shipping_carriers/{id}</h3>
+
+<p>Receive a single Shipping Carrier</p>
+
+<h4 id="get-shipping_carrier1">GET /shipping_carrier/1</h4>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Example Company"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"callback_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://example.com/rates"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-12T10:15:10-03:00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-12T10:15:10-03:00"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="put-shipping_carriersid">PUT /shipping_carriers/{id}</h3>
+
+<p>Modify an existing Shipping Carrier</p>
+
+<h4 id="put-shipping_carriers123">PUT /shipping_carriers/123</h4>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"My Super Shipping Company"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"types"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ship"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">  
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"My Super Shipping Company"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"callback_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://example.com/rates"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"types"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ship"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-06-11T11:12:10-03:00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-06-13T23:09:43-03:00"</span><span class="w">    
+    
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="delete-shipping_carriersid">DELETE /shipping_carriers/{id}</h3>
+
+<p>Remove a Shipping Carrier</p>
+
+<h4 id="delete-shipping_carriers123">DELETE /shipping_carriers/123</h4>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="post-shipping_carrierscarrier_idoptions">POST /shipping_carriers/{carrier_id}/options</h3>
+
+<p>Create a new Shipping Carrier Option</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Explanation</th>
+      <th>Required</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>code</td>
+      <td>A unique code associated with the Shipping Carrier Option. The carrier option <code class="language-plaintext highlighter-rouge">code</code> is used for matching against the shipping rates. This allows merchant to add additional day and cost settings to the retrieved carrier options.</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>The name of the Shipping Carrier Option as seen by both merchants and buyers.</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>additional_days</td>
+      <td>The additional days configurable value that will be added to the option’s estimated delivery time.</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>additional_cost</td>
+      <td>The additional cost configurable value that will be added to the option’s consumer price.</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>allow_free_shipping</td>
+      <td>The configurable free shipping eligible parameter that specifies that an option allows free shipping.</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>active</td>
+      <td>The avaiability status of the Shipping Carrier Option. Defaults to <strong>true</strong></td>
+      <td>No</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="post-shipping_carriers1234options">POST /shipping_carriers/1234/options</h4>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pac"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Correios - PAC"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 201 Created</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pac"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Correios - PAC"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"additional_days"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"additional_cost"</span><span class="p">:</span><span class="w"> </span><span class="mf">10.0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"allow_free_shipping"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-12T10:15:10-03:00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-12T10:15:10-03:00"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="get-shipping_carrierscarrier_idoptions">GET /shipping_carriers/{carrier_id}/options</h3>
+
+<p>Receive a list of all Shipping Carriers Options.</p>
+
+<h4 id="get-shipping_carriers1234options">GET /shipping_carriers/1234/options</h4>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pac"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Correios - PAC"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"additional_days"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"additional_cost"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"allow_free_shipping"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-12T10:15:10-03:00"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-12T10:15:10-03:00"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">456</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sedex"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Correios - SEDEX"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"additional_days"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"additional_cost"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"allow_free_shipping"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="get-shipping_carrierscarrier_idoptionsoption_id">GET /shipping_carriers/{carrier_id}/options/{option_id}</h3>
+
+<p>Receive a single Shipping Carrier Option.</p>
+
+<h4 id="get-shipping_carrier1234options123">GET /shipping_carrier/1234/options/123</h4>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pac"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Correios - PAC"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"additional_days"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"additional_cost"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"allow_free_shipping"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-12T10:15:10-03:00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-12T10:15:10-03:00"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="put-shipping_carrierscarrier_idoptionsoption_id">PUT /shipping_carriers/{carrier_id}/options/{option_id}</h3>
+
+<p>Modify an existing Shipping Carrier Option.</p>
+
+<h4 id="put-shipping_carriers1234options123">PUT /shipping_carriers/1234/options/123</h4>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"additional_days"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"additional_cost"</span><span class="p">:</span><span class="w"> </span><span class="mf">10.0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"allow_free_shipping"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pac"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Correios - PAC"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"additional_days"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"additional_cost"</span><span class="p">:</span><span class="w"> </span><span class="mf">10.0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"allow_free_shipping"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-12T10:15:10-03:00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-12T10:15:10-03:00"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="delete-shipping_carrierscarrier_idoptionsoption_id">DELETE /shipping_carriers/{carrier_id}/options/{option_id}</h3>
+
+<p>Remove a Shipping Carrier Option</p>
+
+<h4 id="delete-shipping_carriers1234options123">DELETE /shipping_carriers/1234/options/123</h4>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{}</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="fulfillment-events">Fulfillment Events</h2>
+
+<p>A Fulfillment Event represents a tracking event belonging to the order’s fulfillment. Fulfillment events are displayed on the order tracking page to give buyers visibility on their shipment status.</p>
+
+<h3 id="get-ordersorder_idfulfillments">GET /orders/{order_id}/fulfillments</h3>
+
+<p>Receive a list of all Fulfillment Events for an order.</p>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"order_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dispatched"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Objeto postado"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"São Paulo"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"province"</span><span class="p">:</span><span class="w"> </span><span class="s2">"São Paulo"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BR"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-20T08:23:42-03:00"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-20T08:23:42-03:00"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"happened_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-20T05:17:02-03:00"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"estimated_delivery_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-22T12:00:00-03:00"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"order_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"in_transit"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Objeto encaminhado"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"São Paulo"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"province"</span><span class="p">:</span><span class="w"> </span><span class="s2">"São Paulo"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BR"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-21T17:15:00-03:00"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-21T17:15:00-03:00"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"happened_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-21T17:14:25-03:00"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"estimated_delivery_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-22T12:00:00-03:00"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="get-ordersorder_idfulfillmentsid">GET /orders/{order_id}/fulfillments/{id}</h3>
+
+<p>Receive a single Fulfillment Event</p>
+
+<h4 id="get-orders123fulfillments1">GET /orders/123/fulfillments/1</h4>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"order_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dispatched"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Objeto postado"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"São Paulo"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"province"</span><span class="p">:</span><span class="w"> </span><span class="s2">"São Paulo"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BR"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-20T08:23:42-03:00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-20T08:23:42-03:00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"happened_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-20T05:17:02-03:00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"estimated_delivery_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-22T12:00:00-03:00"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="post-ordersorder_idfulfillments">POST /orders/{order_id}/fulfillments</h3>
+
+<p>Create a new Fulfillment Event</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Explanation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>status</td>
+      <td>Fulfillment Event’s status (see below for accepted values).</td>
+    </tr>
+    <tr>
+      <td>description</td>
+      <td>Message describing the status.</td>
+    </tr>
+    <tr>
+      <td>city</td>
+      <td>Fulfillment Event’s city.</td>
+    </tr>
+    <tr>
+      <td>province</td>
+      <td>Fulfillment Event’s province.</td>
+    </tr>
+    <tr>
+      <td>country</td>
+      <td>Fulfillment Event’s country in <a href="http://en.wikipedia.org/wiki/ISO_3166-1">ISO 3166-1 format</a>.</td>
+    </tr>
+    <tr>
+      <td>happened_at</td>
+      <td>Date when the Fulfillment Event occured was created in <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a>.</td>
+    </tr>
+    <tr>
+      <td>estimated_delivery_at</td>
+      <td>Estimated date when the package will be delivered in <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Valid status are:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Status</th>
+      <th>Explanation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>dispatched</td>
+      <td>Package has been posted by the merchant.</td>
+    </tr>
+    <tr>
+      <td>received_by_post_office</td>
+      <td>Package has been received by the Shipping Carrier.</td>
+    </tr>
+    <tr>
+      <td>in_transit</td>
+      <td>Package is in transit.</td>
+    </tr>
+    <tr>
+      <td>out_for_delivery</td>
+      <td>Package is out for delivery.</td>
+    </tr>
+    <tr>
+      <td>delivery_attempt_failed</td>
+      <td>Package could not be delivered.</td>
+    </tr>
+    <tr>
+      <td>delayed</td>
+      <td>Package delayed.</td>
+    </tr>
+    <tr>
+      <td>ready_for_pickup</td>
+      <td>Package is ready for pickup.</td>
+    </tr>
+    <tr>
+      <td>delivered</td>
+      <td>Package was delivered.</td>
+    </tr>
+    <tr>
+      <td>returned_to_sender</td>
+      <td>Package was returned to sender.</td>
+    </tr>
+    <tr>
+      <td>lost</td>
+      <td>Package lost.</td>
+    </tr>
+    <tr>
+      <td>failure</td>
+      <td>Package delivery failed.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="post-orders123fulfillments">POST /orders/123/fulfillments</h4>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"delivered"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Objeto entregue ao destinatário"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"São Paulo"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"province"</span><span class="p">:</span><span class="w"> </span><span class="s2">"São Paulo"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BR"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"happened_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-22T11:39:12-03:00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"estimated_delivery_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-22T11:39:12-03:00"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 201 Created</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"order_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"delivered"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Objeto entregue ao destinatário"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"São Paulo"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"province"</span><span class="p">:</span><span class="w"> </span><span class="s2">"São Paulo"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BR"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-20T08:23:42-03:00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-20T08:23:42-03:00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"happened_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-20T05:17:02-03:00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"estimated_delivery_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-22T12:00:00-03:00"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="delete-ordersorder_idfulfillmentsid">DELETE /orders/${order_id}/fulfillments/{id}</h3>
+
+<p>Remove a Fulfillment Event</p>
+
+<h4 id="delete-orders123fulfillments1">DELETE /orders/123/fulfillments/1</h4>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{}</span><span class="w">
+</span></code></pre></div></div>
+
+:ET

@@ -1,0 +1,1015 @@
+I"�"<h1 id="checkout">Checkout</h1>
+
+<h2 id="payment-options-javascript-interface">Payment Options (Javascript Interface)</h2>
+
+<p>Our Checkout flow offers different Payment Options that provides consumers with the means to pay for an order with the payment method of their choice. Payments App developers can create their own Payment Options.</p>
+
+<p>Payment Options configuration params are set via our <a href="payment_provider.md">Payment Provider API</a> by adding <a href="payment_provider.md#Checkout-Options"><code class="language-plaintext highlighter-rouge">checkout_payment_options</code></a> on the Payment Provider object creation.</p>
+
+<p>Our Checkout triggers a variety of events for which we provide a JavaScript API that allows you to handle these events freely to perform the payment process. Hence, you can implement their <em>(most likely)</em> already existing and widely tested Javascript SDKs.</p>
+
+<p>The file with the handlers implemented for the different options should be hosted on a CDN that must be capable of handling high traffic loads. The HTTPS URL to this file must be set in the <a href="payment_provider.md">Payment Provider</a> <code class="language-plaintext highlighter-rouge">checkout_js_url</code> property.</p>
+
+<h2 id="examples">Examples</h2>
+
+<h3 id="external-payment-option">External Payment Option</h3>
+
+<p>Let’s take a look at a simple script for a hypothetical integration with a Payment Provider that redirects the user to <em>‘acmepayments.com’</em> to complete the purchase in their checkout. This is what we call a <code class="language-plaintext highlighter-rouge">redirect</code> checkout.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Call 'LoadCheckoutPaymentContext' method and pass a function as parameter to get access to the Checkout context and the PaymentOptions object.</span>
+
+<span class="nx">LoadCheckoutPaymentContext</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">Checkout</span><span class="p">,</span> <span class="nx">PaymentOptions</span><span class="p">)</span> <span class="p">{</span>
+  
+	<span class="c1">// Create a new instance of external Payment Option and set its properties.</span>
+	<span class="kd">var</span> <span class="nx">AcmeExternalPaymentOption</span> <span class="o">=</span> <span class="nx">PaymentOptions</span><span class="p">.</span><span class="nx">ExternalPayment</span><span class="p">({</span>
+		<span class="c1">// Set the option's unique id as it is configured on the Payment Provider so Checkout can relate them.</span>
+		<span class="na">id</span><span class="p">:</span> <span class="dl">'</span><span class="s1">acme_redirect</span><span class="dl">'</span><span class="p">,</span>
+
+    <span class="c1">// This parameter renders the billing information form and requires the information to the consumer.</span>
+		<span class="na">fields</span><span class="p">:</span> <span class="p">{</span>
+			<span class="na">billing_address</span><span class="p">:</span> <span class="kc">true</span>
+		<span class="p">},</span>
+
+		<span class="c1">// This function handles the order submission event.</span>
+		<span class="na">onSubmit</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+
+			<span class="c1">// Gather the minimum required information. You should include all the relevant data here.</span>
+			<span class="kd">let</span> <span class="nx">acmeRelevantData</span> <span class="o">=</span> <span class="p">{</span>
+				<span class="na">orderId</span><span class="p">:</span> <span class="nx">Checkout</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">order</span><span class="p">.</span><span class="nx">cart</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span>
+				<span class="na">currency</span><span class="p">:</span> <span class="nx">Checkout</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">order</span><span class="p">.</span><span class="nx">cart</span><span class="p">.</span><span class="nx">currency</span><span class="p">,</span>
+				<span class="na">total</span><span class="p">:</span> <span class="nx">Checkout</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">order</span><span class="p">.</span><span class="nx">cart</span><span class="p">.</span><span class="nx">prices</span><span class="p">.</span><span class="nx">total</span>
+			<span class="p">};</span>
+
+			<span class="c1">// Use the Checkout HTTP library to post a request to our server and fetch the redirect URL.</span>
+			<span class="nx">Checkout</span><span class="p">.</span><span class="nx">http</span>
+				<span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://app.acme.com/generate-checkout-url</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+					<span class="na">data</span><span class="p">:</span> <span class="nx">acmeRelevantData</span>
+				<span class="p">})</span>
+				<span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">responseBody</span><span class="p">)</span> <span class="p">{</span>
+					<span class="c1">// Once you get the redirect URL, invoke the callback by passing it as argument.</span>
+					<span class="k">if</span> <span class="p">(</span><span class="nx">responseBody</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">success</span><span class="p">)</span> <span class="p">{</span>
+						<span class="nx">callback</span><span class="p">({</span>
+							<span class="na">success</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+							<span class="na">redirect</span><span class="p">:</span> <span class="nx">responseBody</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">redirect_url</span><span class="p">,</span>
+							<span class="na">extraAuthorize</span><span class="p">:</span> <span class="kc">true</span> <span class="c1">// Legacy paameter, but currently required with `true` value. Will be deprecrated soon.</span>
+						<span class="p">});</span>
+					<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+						<span class="nx">callback</span><span class="p">({</span>
+							<span class="na">success</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+							<span class="na">error_code</span><span class="p">:</span> <span class="nx">responseBody</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">error_code</span>
+						<span class="p">});</span>
+					<span class="p">}</span>
+				<span class="p">})</span>
+				<span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+					<span class="c1">// Handle a potential error in the HTTP request.</span>
+
+					<span class="nx">callback</span><span class="p">({</span>
+						<span class="na">success</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+						<span class="na">error_code</span><span class="p">:</span> <span class="dl">'</span><span class="s1">unknown_error</span><span class="dl">'</span>
+					<span class="p">});</span>
+				<span class="p">});</span>
+		<span class="p">}</span>
+	<span class="p">});</span>
+
+	<span class="c1">// Finally, add the Payment Option to the Checkout object so it can be render according to the configuration set on the Payment Provider.</span>
+	<span class="nx">Checkout</span><span class="p">.</span><span class="nx">addPaymentOption</span><span class="p">(</span><span class="nx">AcmeExternalPaymentOption</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h3 id="card-payment-option">Card Payment Option</h3>
+
+<p>This is a more complex example, since this is a richer interaction with more control over the user experience. The entire flow happens without leaving the Tiendanube checkout, in what we call a <code class="language-plaintext highlighter-rouge">transparent</code> checkout.</p>
+
+<p>This type of payment renders a form where the consumer inputs their credit card information and with which you can interact.</p>
+
+<p>In this example, whenever the consumer inputs or changes the credit card number we fetch the first 6 digits and populate the list of available installments.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">LoadCheckoutPaymentContext</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">Checkout</span><span class="p">,</span> <span class="nx">PaymentOptions</span><span class="p">)</span> <span class="p">{</span>
+
+	<span class="kd">var</span> <span class="nx">currentTotalPrice</span> <span class="o">=</span> <span class="nx">Checkout</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">order</span><span class="p">.</span><span class="nx">cart</span><span class="p">.</span><span class="nx">prices</span><span class="p">.</span><span class="nx">total</span><span class="p">;</span>
+	<span class="kd">var</span> <span class="nx">currencCardBin</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+
+	<span class="c1">// Some helper functions.</span>
+
+	<span class="c1">// Get credit the card number from transparent form.</span>
+	<span class="kd">var</span> <span class="nx">getCardNumber</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">cardNumber</span> <span class="o">=</span> <span class="dl">''</span><span class="p">;</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">Checkout</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">form</span><span class="p">.</span><span class="nx">cardNumber</span><span class="p">)</span> <span class="p">{</span>
+			<span class="nx">cardNumber</span> <span class="o">=</span> <span class="nx">Checkout</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">form</span><span class="p">.</span><span class="nx">cardNumber</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="dl">'</span><span class="s1"> </span><span class="dl">'</span><span class="p">).</span><span class="nx">join</span><span class="p">(</span><span class="dl">''</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="k">return</span> <span class="nx">cardNumber</span><span class="p">;</span>
+	<span class="p">};</span>
+
+	<span class="c1">// Get the first 6 digits from the credit card number.</span>
+	<span class="kd">var</span> <span class="nx">getCardNumberBin</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="nx">getCardNumber</span><span class="p">().</span><span class="nx">substring</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">);</span>
+	<span class="p">};</span>
+
+	<span class="c1">// Check whether the BIN (first 6 digits of the credit card number) has changed. If so, we intend to update the available installments.</span>
+	<span class="kd">var</span> <span class="nx">mustRefreshInstallments</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">cardBin</span> <span class="o">=</span> <span class="nx">getCardNumberBin</span><span class="p">();</span>
+		<span class="kd">var</span> <span class="nx">hasCardBin</span> <span class="o">=</span> <span class="nx">cardBin</span> <span class="o">&amp;&amp;</span> <span class="nx">cardBin</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;=</span> <span class="mi">6</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">hasPrice</span> <span class="o">=</span> <span class="nb">Boolean</span><span class="p">(</span><span class="nx">Checkout</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">totalPrice</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">changedCardBin</span> <span class="o">=</span> <span class="nx">cardBin</span> <span class="o">!==</span> <span class="nx">currencCardBin</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">changedPrice</span> <span class="o">=</span> <span class="nx">Checkout</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">totalPrice</span> <span class="o">!==</span> <span class="nx">currentTotalPrice</span><span class="p">;</span>
+		<span class="k">return</span> <span class="p">(</span><span class="nx">hasCardBin</span> <span class="o">&amp;&amp;</span> <span class="nx">hasPrice</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">changedCardBin</span> <span class="o">||</span> <span class="nx">changedPrice</span><span class="p">);</span>
+	<span class="p">};</span>
+
+	<span class="c1">// Update the list of installments available to the consumer.</span>
+	<span class="kd">var</span> <span class="nx">refreshInstallments</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+		<span class="c1">// Let's imagine the App provides this endpoint to obtain installments.</span>
+    
+		<span class="nx">Checkout</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://acmepayments.com/card/installments</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+			<span class="na">amount</span><span class="p">:</span> <span class="nx">Checkout</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">totalPrice</span><span class="p">,</span>
+			<span class="na">bin</span><span class="p">:</span> <span class="nx">getCardNumberBin</span><span class="p">()</span>
+		<span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+			<span class="nx">Checkout</span><span class="p">.</span><span class="nx">setInstallments</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">installments</span><span class="p">);</span>
+		<span class="p">});</span>
+	<span class="p">};</span>
+
+	<span class="c1">// Create a new instance of card Payment Option and set its properties.</span>
+	<span class="kd">var</span> <span class="nx">AcmeCardPaymentOption</span> <span class="o">=</span> <span class="nx">PaymentOptions</span><span class="p">.</span><span class="nx">Transparent</span><span class="p">.</span><span class="nx">CardPayment</span><span class="p">({</span>
+
+		<span class="c1">// Set the option's unique `i`` as it is configured on the Payment Provider so Checkout can relate them.</span>
+		<span class="na">id</span><span class="p">:</span> <span class="dl">"</span><span class="s2">acme_transparent_card</span><span class="dl">"</span><span class="p">,</span>
+
+		<span class="c1">// Event handler for form field input.</span>
+		<span class="na">onDataChange</span><span class="p">:</span> <span class="nx">Checkout</span><span class="p">.</span><span class="nx">utils</span><span class="p">.</span><span class="nx">throttle</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">mustRefreshInstallments</span><span class="p">())</span> <span class="p">{</span>
+				<span class="nx">refreshInstallments</span><span class="p">();</span>
+			<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">getCardNumberBin</span><span class="p">())</span> <span class="p">{</span>
+				<span class="c1">// Clear installments if customer remove credit card number.</span>
+				<span class="nx">Checkout</span><span class="p">.</span><span class="nx">setInstallments</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
+			<span class="p">}</span>
+		<span class="p">}),</span>
+
+		<span class="na">onSubmit</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+			<span class="c1">// Gather the minimum required information.</span>
+			<span class="kd">var</span> <span class="nx">acmeCardRelevantData</span> <span class="o">=</span> <span class="p">{</span>
+				<span class="na">orderId</span><span class="p">:</span> <span class="nx">Checkout</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">order</span><span class="p">.</span><span class="nx">cart</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span>
+				<span class="na">currency</span><span class="p">:</span> <span class="nx">Checkout</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">order</span><span class="p">.</span><span class="nx">cart</span><span class="p">.</span><span class="nx">currency</span><span class="p">,</span>
+				<span class="na">total</span><span class="p">:</span> <span class="nx">Checkout</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">order</span><span class="p">.</span><span class="nx">cart</span><span class="p">.</span><span class="nx">prices</span><span class="p">.</span><span class="nx">total</span><span class="p">,</span>
+				<span class="na">card</span><span class="p">:</span> <span class="p">{</span>
+					<span class="na">number</span><span class="p">:</span> <span class="nx">Checkout</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">form</span><span class="p">.</span><span class="nx">cardNumber</span><span class="p">,</span>
+					<span class="na">name</span><span class="p">:</span> <span class="nx">Checkout</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">form</span><span class="p">.</span><span class="nx">cardHolderName</span><span class="p">,</span>
+					<span class="na">expiration</span><span class="p">:</span> <span class="nx">Checkout</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">form</span><span class="p">.</span><span class="nx">cardExpiration</span><span class="p">,</span>
+					<span class="na">cvv</span><span class="p">:</span> <span class="nx">Checkout</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">form</span><span class="p">.</span><span class="nx">cardCvv</span><span class="p">,</span>
+					<span class="na">installments</span><span class="p">:</span> <span class="nx">Checkout</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">form</span><span class="p">.</span><span class="nx">cardInstallments</span>
+				<span class="p">}</span>
+			<span class="p">};</span>
+			<span class="c1">// Let's imagine the App provides this endpoint to process credit card payments.</span>
+			<span class="nx">Checkout</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://acmepayments.com/charge</span><span class="dl">'</span><span class="p">,</span> <span class="nx">acmeCardRelevantData</span><span class="p">)</span>
+				<span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">responseBody</span><span class="p">)</span> <span class="p">{</span>
+					<span class="k">if</span> <span class="p">(</span><span class="nx">responseBody</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">success</span><span class="p">)</span> <span class="p">{</span>
+						<span class="c1">// If the charge was successful, invoke the callback to indicate you want to close order.</span>
+						<span class="nx">callback</span><span class="p">({</span>
+							<span class="na">success</span><span class="p">:</span> <span class="kc">true</span>
+						<span class="p">});</span>
+					<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+						<span class="nx">callback</span><span class="p">({</span>
+							<span class="na">success</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+							<span class="na">error_code</span><span class="p">:</span> <span class="nx">responseBody</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">error_code</span>
+						<span class="p">});</span>
+
+					<span class="p">}</span>
+				<span class="p">})</span>
+				<span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+					<span class="c1">// Handle a potential error in the HTTP request.</span>
+        
+					<span class="nx">callback</span><span class="p">({</span>
+						<span class="na">success</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+						<span class="na">error_code</span><span class="p">:</span> <span class="dl">'</span><span class="s1">unknown_error</span><span class="dl">'</span>
+					<span class="p">});</span>
+				<span class="p">});</span>
+		<span class="p">}</span>
+	<span class="p">});</span>
+
+	<span class="c1">// Finally, add the Payment Option to the Checkout object so it can be render according to the configuration set on the Payment Provider.</span>
+	<span class="nx">Checkout</span><span class="p">.</span><span class="nx">addPaymentOption</span><span class="p">(</span><span class="nx">AcmeCardPaymentOption</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h2 id="checkout-context">Checkout Context</h2>
+
+<p>The <code class="language-plaintext highlighter-rouge">LoadCheckoutPaymentContext</code> function takes function as a argument, which will be invoked with two arguments, <code class="language-plaintext highlighter-rouge">Checkout</code> and <code class="language-plaintext highlighter-rouge">PaymentOptions</code>, to provide access to our Checkout’s context.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">updateFields</code></td>
+      <td>Let’s you add or remove optional input fields from the payment option selection form.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">addPaymentOption</code></td>
+      <td>Register the option so the checkout can inject the configuration params and render it.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">setInstallments</code></td>
+      <td>Update the attributes of the <code class="language-plaintext highlighter-rouge">data.installments</code> object. See <a href="#Installments">Installments</a>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">data</code></td>
+      <td>Object containing the data of the shopping cart, the consumer and more. See <a href="#Data">Data</a>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">http</code></td>
+      <td>Function to perform AJAX requests. See <a href="#HTTP">HTTP</a>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">utils</code></td>
+      <td>Collection of helper functions. See <a href="#Utils">Utils</a>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="checkout-1">Checkout</h3>
+
+<h4 id="http">HTTP</h4>
+
+<p>This object is an <a href="https://github.com/axios/axios#request-config">Axios instance</a>. Though the <code class="language-plaintext highlighter-rouge">fetch</code> is now available on all major object, using this method ensures cross-browser compatibility and it will also allow us to detect unexpected behaviours for which we’ll be able to trigger alerts.</p>
+
+<blockquote>
+  <p>Note: This instance of Axios already has a few params set by the Checkout.</p>
+</blockquote>
+
+<h5 id="standard-post-example">Standard POST example</h5>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">Checkout</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://acmepayments.com/charge</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">cartId</span><span class="p">:</span> <span class="nx">cartId</span><span class="p">,</span>
+<span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Do something with the response.</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h5 id="custom-config-request-example">Custom config request example</h5>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">Checkout</span><span class="p">.</span><span class="nx">http</span><span class="p">({</span>
+  <span class="na">url</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://acmepayments.com/charge</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">method</span><span class="p">:</span> <span class="dl">'</span><span class="s1">post</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">data</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">cartId</span><span class="p">:</span> <span class="nx">cartId</span><span class="p">,</span>
+  <span class="p">}</span>
+<span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Do something with the response.</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h4 id="utils">Utils</h4>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Checkout.utils.Throttle</code></li>
+  <li><code class="language-plaintext highlighter-rouge">Checkout.utils.LoadScript</code></li>
+  <li><code class="language-plaintext highlighter-rouge">Checkout.utils.FlattenObject</code></li>
+</ul>
+
+<h4 id="data">Data</h4>
+
+<p>The Checkout object provides the app with access to all the data related with ongoing sale. We’ve got the following data groups:</p>
+<ul>
+  <li>Cart Information: <code class="language-plaintext highlighter-rouge">Checkout.data.order.cart</code>.</li>
+  <li>Total cart price: <code class="language-plaintext highlighter-rouge">Checkout.data.totalPrice</code> (also indicated by <code class="language-plaintext highlighter-rouge">Checkout.data.order.cart.prices.total</code>).</li>
+  <li>ID of the store to which the cart belongs: <code class="language-plaintext highlighter-rouge">Checkout.data.storeId</code>.</li>
+  <li>Customer Contact Information: <code class="language-plaintext highlighter-rouge">Checkout.data.order.contact</code>.</li>
+  <li>Billing Information: <code class="language-plaintext highlighter-rouge">Checkout.data.order.billingAddress</code>.</li>
+  <li>Shipping Information: <code class="language-plaintext highlighter-rouge">Checkout.data.order.shippingAddress</code>.</li>
+  <li>Shipping Method Information: <code class="language-plaintext highlighter-rouge">Checkout.data.order.cart.shipping</code>.</li>
+  <li>Payment Method Information: <code class="language-plaintext highlighter-rouge">Checkout.data.form</code>.</li>
+</ul>
+
+<p><em>Note:</em> No all Payment Method Information fields are rendered. They can be rendered as explained <a href="./checkout.md#fields-property">here</a>.</p>
+
+<p>Here’s an example of the data available in the <code class="language-plaintext highlighter-rouge">Checkout.data</code> object (rendered as JSON for better readability):</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+   </span><span class="nl">"form"</span><span class="p">:{},</span><span class="w">
+   </span><span class="nl">"totalPrice"</span><span class="p">:</span><span class="mi">135</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"country"</span><span class="p">:</span><span class="s2">"AR"</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"storeId"</span><span class="p">:</span><span class="mi">1196173</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"order"</span><span class="p">:{</span><span class="w">
+      </span><span class="nl">"cart"</span><span class="p">:{</span><span class="w">
+         </span><span class="nl">"id"</span><span class="p">:</span><span class="mi">375854104</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"hash"</span><span class="p">:</span><span class="s2">"aebe04afab671411e6d75352fb4f514898b1667a"</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"number"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"prices"</span><span class="p">:{</span><span class="w">
+            </span><span class="nl">"shipping"</span><span class="p">:</span><span class="mi">15</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"discount_gateway"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"discount_coupon"</span><span class="p">:</span><span class="mi">30</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"discount_promotion"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"discount_coupon_and_promotions"</span><span class="p">:</span><span class="mi">30</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"subtotal_with_promotions_applied"</span><span class="p">:</span><span class="mi">150</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"subtotal_with_promotions_and_coupon_applied"</span><span class="p">:</span><span class="mi">120</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"subtotal"</span><span class="p">:</span><span class="mi">150</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"total"</span><span class="p">:</span><span class="mi">135</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"total_usd"</span><span class="p">:</span><span class="mi">0</span><span class="w">
+         </span><span class="p">},</span><span class="w">
+         </span><span class="nl">"lineItems"</span><span class="p">:[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+               </span><span class="nl">"id"</span><span class="p">:</span><span class="mi">451294379</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"name"</span><span class="p">:</span><span class="s2">"Example Product 1"</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"price"</span><span class="p">:</span><span class="s2">"50.50"</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"quantity"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"free_shipping"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"product_id"</span><span class="p">:</span><span class="mi">58979310</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"variant_id"</span><span class="p">:</span><span class="mi">175499404</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"thumbnail"</span><span class="p">:</span><span class="s2">"//d2qa76c3k7tf6c.cloudfront.net/stores/001/196/173/products/example-product-1.jpg"</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"variant_values"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"sku"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"properties"</span><span class="p">:[],</span><span class="w">
+               </span><span class="nl">"url"</span><span class="p">:</span><span class="s2">"https://examplestore.com/productos/example-product-1/?variant=175499404"</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"is_ahora_12_eligible"</span><span class="p">:</span><span class="kc">true</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+               </span><span class="nl">"id"</span><span class="p">:</span><span class="mi">451294230</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"name"</span><span class="p">:</span><span class="s2">"Example Product 2"</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"price"</span><span class="p">:</span><span class="s2">"99.50"</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"quantity"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"free_shipping"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"product_id"</span><span class="p">:</span><span class="mi">58979280</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"variant_id"</span><span class="p">:</span><span class="mi">175499176</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"thumbnail"</span><span class="p">:</span><span class="s2">"//d2qa76c3k7tf6c.cloudfront.net/stores/001/196/173/products/example-product-2.jpg"</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"variant_values"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"sku"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"properties"</span><span class="p">:[],</span><span class="w">
+               </span><span class="nl">"url"</span><span class="p">:</span><span class="s2">"https://examplestore.com/productos/example-product-2/?variant=175499176"</span><span class="p">,</span><span class="w">
+               </span><span class="nl">"is_ahora_12_eligible"</span><span class="p">:</span><span class="kc">true</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+         </span><span class="p">],</span><span class="w">
+         </span><span class="nl">"currency"</span><span class="p">:</span><span class="s2">"ARS"</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"currencyFormat"</span><span class="p">:{</span><span class="w">
+            </span><span class="nl">"short"</span><span class="p">:</span><span class="s2">"$%s"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"long"</span><span class="p">:</span><span class="s2">"$%s ARS"</span><span class="w">
+         </span><span class="p">},</span><span class="w">
+         </span><span class="nl">"lang"</span><span class="p">:</span><span class="s2">"es"</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"langCode"</span><span class="p">:</span><span class="s2">"es_AR"</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"coupon"</span><span class="p">:{</span><span class="w">
+            </span><span class="nl">"id"</span><span class="p">:</span><span class="mi">1566261</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"code"</span><span class="p">:</span><span class="s2">"DESC20"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"type"</span><span class="p">:</span><span class="s2">"percentage"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"value"</span><span class="p">:</span><span class="s2">"20.00"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"valid"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"used"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"max_uses"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"start_date"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"end_date"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"min_price"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"categories"</span><span class="p">:</span><span class="kc">null</span><span class="w">
+         </span><span class="p">},</span><span class="w">
+         </span><span class="nl">"shipping"</span><span class="p">:{</span><span class="w">
+            </span><span class="nl">"type"</span><span class="p">:</span><span class="s2">"ship"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"method"</span><span class="p">:</span><span class="s2">"correo-argentino"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"option"</span><span class="p">:</span><span class="mi">6111227</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"branch"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"disabled"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"raw_name"</span><span class="p">:</span><span class="s2">"Correo Argentino - Encomienda Clásica"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"suboption"</span><span class="p">:</span><span class="kc">null</span><span class="w">
+         </span><span class="p">},</span><span class="w">
+         </span><span class="nl">"status"</span><span class="p">:{</span><span class="w">
+            </span><span class="nl">"order"</span><span class="p">:</span><span class="s2">"open"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"order_cancellation_reason"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"fulfillment"</span><span class="p">:</span><span class="s2">"unpacked"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"payment"</span><span class="p">:</span><span class="s2">"pending"</span><span class="w">
+         </span><span class="p">},</span><span class="w">
+         </span><span class="nl">"completedAt"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"minimumValue"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"hasNonShippableProducts"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"hasShippableProducts"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"isAhora12Eligible"</span><span class="p">:</span><span class="kc">true</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"shippingAddress"</span><span class="p">:{</span><span class="w">
+         </span><span class="nl">"first_name"</span><span class="p">:</span><span class="s2">"John"</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"last_name"</span><span class="p">:</span><span class="s2">"Doe"</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"phone"</span><span class="p">:</span><span class="s2">"+54123456789"</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"address"</span><span class="p">:</span><span class="s2">"Example Street"</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"number"</span><span class="p">:</span><span class="s2">"1234"</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"floor"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"locality"</span><span class="p">:</span><span class="s2">"Valentín Alsina"</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"city"</span><span class="p">:</span><span class="s2">"Lanús"</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"state"</span><span class="p">:</span><span class="s2">"Buenos Aires"</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"zipcode"</span><span class="p">:</span><span class="s2">"1822"</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"country"</span><span class="p">:</span><span class="s2">"AR"</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"between_streets"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"reference"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"id_number"</span><span class="p">:</span><span class="s2">"11223344"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"billingAddress"</span><span class="p">:{</span><span class="w">
+         </span><span class="nl">"first_name"</span><span class="p">:</span><span class="s2">"John"</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"last_name"</span><span class="p">:</span><span class="s2">"Doe"</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"phone"</span><span class="p">:</span><span class="s2">"+54123456789"</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"address"</span><span class="p">:</span><span class="s2">"Example Street"</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"number"</span><span class="p">:</span><span class="s2">"1234"</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"floor"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"locality"</span><span class="p">:</span><span class="s2">"Valentín Alsina"</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"city"</span><span class="p">:</span><span class="s2">"Lanús"</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"state"</span><span class="p">:</span><span class="s2">"Buenos Aires"</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"zipcode"</span><span class="p">:</span><span class="s2">"1822"</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"country"</span><span class="p">:</span><span class="s2">"AR"</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"between_streets"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"reference"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"id_number"</span><span class="p">:</span><span class="s2">"11223344"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"contact"</span><span class="p">:{</span><span class="w">
+         </span><span class="nl">"email"</span><span class="p">:</span><span class="s2">"john.doe@example.com"</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"name"</span><span class="p">:</span><span class="s2">"John Doe"</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"phone"</span><span class="p">:</span><span class="s2">"+54123456789"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+   </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="paymentoptions">PaymentOptions</h3>
+
+<p>The second argument of the function passed as an argument to <code class="language-plaintext highlighter-rouge">LoadCheckoutPaymentContext</code> is <code class="language-plaintext highlighter-rouge">PaymentOptions</code>. It contains functions for each of the different possible integration types. Each of the functions take a configuration object as an argument and, in turn, will return a javascript instance of the <code class="language-plaintext highlighter-rouge">PaymentOption</code>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ExternalPayment()</code></td>
+      <td>Returns an instance of the PaymentOption for integration types that require redirecting the consumer to a different website.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ModalPayment()</code></td>
+      <td>Returns an instance of the PaymentOption for integration types that require opening a Modal in the store’s frontend.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">CustomPayment()</code></td>
+      <td>Used internally for the merchant’s custom payment methods.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Transparent</code></td>
+      <td>Object that contains functions to obtain instances for transparent integration types.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Note: ExternalPayment and ModalPayment won’t render any input fields on the frontend. The main difference between them is on their <code class="language-plaintext highlighter-rouge">onSubmit</code> <code class="language-plaintext highlighter-rouge">callback</code> parameters.</p>
+
+<h4 id="transparent-integration-type">Transparent Integration Type</h4>
+
+<p>The <code class="language-plaintext highlighter-rouge">PaymentOptions.Transparent</code> has one function per each of the payment methods for which we support transparent integration type. Each of these funcitons return an instance of the <code class="language-plaintext highlighter-rouge">PaymentOption</code> for their specific payment methods and, if added to the Checkout using <code class="language-plaintext highlighter-rouge">Checkout.addPaymentOption(paymentOptionInstance)</code> a form will be rendered with all the required input fields for that payment method.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">CardPayment()</code></td>
+      <td>For <code class="language-plaintext highlighter-rouge">credit_card</code> and <code class="language-plaintext highlighter-rouge">debit_card</code> payment methods.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">DebitPayment()</code></td>
+      <td>For <code class="language-plaintext highlighter-rouge">bank_debit</code> payment method (aka “online debit”).</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">BoletoPayment()</code></td>
+      <td>For payments with <code class="language-plaintext highlighter-rouge">boleto</code> payment method.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">TicketPayment()</code></td>
+      <td>For payments with <code class="language-plaintext highlighter-rouge">ticket</code> payment method.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">PixPayment()</code></td>
+      <td>For payments with <code class="language-plaintext highlighter-rouge">pix</code> payment method.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h5 id="cardpayment">CardPayment</h5>
+
+<p>These are the fields rendered and available on the <code class="language-plaintext highlighter-rouge">Checkout.data.form</code> object.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Required</th>
+      <th><code class="language-plaintext highlighter-rouge">fields</code> value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cardNumber</code></td>
+      <td>Card number.</td>
+      <td>Always</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cardHolderName</code></td>
+      <td>Card holder’s name.</td>
+      <td>Always</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cardExpiration</code></td>
+      <td>Card’s expiration date in <code class="language-plaintext highlighter-rouge">mm/yy</code> format.</td>
+      <td>Always</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cardCvv</code></td>
+      <td>Card’s verification code.</td>
+      <td>Always</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cardInstallments</code></td>
+      <td>Number of installments selected by the consumer.</td>
+      <td>Always</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cardHolderIdNumber</code></td>
+      <td>Card holder’s identification (CPF, DNI or equivalent).</td>
+      <td>Optional</td>
+      <td><code class="language-plaintext highlighter-rouge">card_holder_id_number</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cardHolderIdType</code></td>
+      <td>Card holder’s identification (CPF, DNI or equivalent).</td>
+      <td>Optional</td>
+      <td><code class="language-plaintext highlighter-rouge">card_holder_id_types</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cardHolderBirthDate</code></td>
+      <td>Card holder’s birthday in <code class="language-plaintext highlighter-rouge">dd/mm/yy</code> format.</td>
+      <td>Optional</td>
+      <td><code class="language-plaintext highlighter-rouge">card_holder_birth_date</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cardHolderPhone</code></td>
+      <td>Card holder’s phone number.</td>
+      <td>Optional</td>
+      <td><code class="language-plaintext highlighter-rouge">card_holder_phone</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">bankId</code></td>
+      <td>Card’s issuing bank.</td>
+      <td>Optional</td>
+      <td><code class="language-plaintext highlighter-rouge">bankList</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">cardBrand</code> is inserted after the user enters the first six credit card numbers</p>
+</blockquote>
+
+<h5 id="debitpayment">DebitPayment</h5>
+
+<p>These are the input fields rendered and available in the object <code class="language-plaintext highlighter-rouge">Checkout.data.form</code>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Required</th>
+      <th><code class="language-plaintext highlighter-rouge">fields</code> value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">bank</code></td>
+      <td>Bank to debit from.</td>
+      <td>Optional</td>
+      <td><code class="language-plaintext highlighter-rouge">bank_list</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">holderName</code></td>
+      <td>Account holder’s name.</td>
+      <td>Optional</td>
+      <td><code class="language-plaintext highlighter-rouge">debit_card_holder_name</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">holderIdNumber</code></td>
+      <td>Account holder’s identification (CPF, DNI, or equivalent).</td>
+      <td>Optional</td>
+      <td><code class="language-plaintext highlighter-rouge">debit_card_id_number</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5 id="boletopayment">BoletoPayment</h5>
+
+<p>These are the input fields rendered and available in the object <code class="language-plaintext highlighter-rouge">Checkout.data.form</code>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Required</th>
+      <th><code class="language-plaintext highlighter-rouge">fields</code> value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">holderName</code></td>
+      <td>Consumer’s name.</td>
+      <td>Optional</td>
+      <td><code class="language-plaintext highlighter-rouge">boleto_holder_name</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">holderIdNumber</code></td>
+      <td>Consumer’s identification (CPF, CNPJ or equivalent).</td>
+      <td>Optional</td>
+      <td><code class="language-plaintext highlighter-rouge">boleto_id_number</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5 id="ticketpayment">TicketPayment</h5>
+
+<p>These are the input fields rendered and available in the object <code class="language-plaintext highlighter-rouge">Checkout.data.form</code>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Required</th>
+      <th><code class="language-plaintext highlighter-rouge">fields</code> value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">brand</code></td>
+      <td>Brand name for selected cash list option</td>
+      <td>Always</td>
+      <td><code class="language-plaintext highlighter-rouge">efectivo_list</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5 id="pixpayment">PixPayment</h5>
+
+<p>These are the input fields rendered and available in the object <code class="language-plaintext highlighter-rouge">Checkout.data.form</code>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Required</th>
+      <th><code class="language-plaintext highlighter-rouge">fields</code> value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">holderName</code></td>
+      <td>Consumer’s name.</td>
+      <td>Optional</td>
+      <td><code class="language-plaintext highlighter-rouge">holder_name</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">holderIdNumber</code></td>
+      <td>Consumer’s identification (CPF).</td>
+      <td>Optional</td>
+      <td><code class="language-plaintext highlighter-rouge">holder_id_number</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="paymentoption-configuration-object-and-its-properties">PaymentOption Configuration Object and it’s properties</h4>
+
+<p>All <code class="language-plaintext highlighter-rouge">PaymentOptions</code> functions take a configuration object. The generic properties of the configuration object for all <code class="language-plaintext highlighter-rouge">PaymentOptions</code> are:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">id</code></td>
+      <td>Must match the <code class="language-plaintext highlighter-rouge">id</code> set in the Payment Provider’s <code class="language-plaintext highlighter-rouge">checkout_payment_options[i]</code>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">name</code></td>
+      <td>Payment option display name.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">fields</code></td>
+      <td>Object containing a propertires of extra input fields for transparent payment options and a boolean value to wither render it or not.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">scripts</code></td>
+      <td>List of external JavaScript files to be loaded before registering this method.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">onLoad</code></td>
+      <td>Function to be invoked after registering this method.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">onDataChange</code></td>
+      <td>Function to be invoked whenever there’s a change in <code class="language-plaintext highlighter-rouge">Checkout.data</code>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">onSubmit</code></td>
+      <td>Function to be invoked whenever the consumer clicks on “Finish checkout” and all mandatory fields are filled correctly.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h5 id="fields-property"><code class="language-plaintext highlighter-rouge">fields</code> property</h5>
+
+<p>For each of the transparent payment options, the following extra input fields can be rendered if specified in this property.</p>
+
+<h6 id="creditpayment">CreditPayment</h6>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">bankList</code></td>
+      <td>Banks list.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">issuerList</code></td>
+      <td>Banks list. <em>(AR only)</em></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">card_holder_id_types</code></td>
+      <td>Card holder identification type selector.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">card_holder_id_number</code></td>
+      <td>Card holder identification number.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">card_holder_birth_date</code></td>
+      <td>Card holder birth date.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">card_holder_phone</code></td>
+      <td>Card holder number.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h6 id="debitpayment-1">DebitPayment</h6>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">bank_list</code></td>
+      <td>Banks list.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h6 id="boletopayment-1">BoletoPayment</h6>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">boleto_holder_name</code></td>
+      <td>Payer name.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">boleto_id_number</code></td>
+      <td>Payer id number.</td>
+    </tr>
+  </tbody>
+</table>
+
+<blockquote>
+  <p>No including an input field on this object is enough to prevent it from rendering. It’s not necessary to set it as <code class="language-plaintext highlighter-rouge">false</code>.</p>
+</blockquote>
+
+<h6 id="for-all-payment-options">For all payment options</h6>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">billing_address</code></td>
+      <td>Billing information.</td>
+    </tr>
+  </tbody>
+</table>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">PixPayment</code> doesn’t render any input. The payment instructions are displayed after closing the order.</p>
+</blockquote>
+
+<h6 id="updating-the-fields-dinamically">Updating the fields dinamically</h6>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">Checkout</span><span class="p">.</span><span class="nx">updateFields</span><span class="p">({</span>
+	<span class="na">method</span><span class="p">:</span> <span class="dl">'</span><span class="s1">acme_transparent_card</span><span class="dl">'</span><span class="p">,</span>
+	<span class="na">value</span><span class="p">:</span> <span class="p">{</span>
+		<span class="na">bankId</span><span class="p">:</span> <span class="kc">true</span>
+	<span class="p">}</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h5 id="onsubmit">onSubmit</h5>
+
+<p>The handler function for the <code class="language-plaintext highlighter-rouge">onSubmit</code> event property receives a callback function argument which must be invoked immediately after finishing the necessary requests to initiate the payment process.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">callback</code> function must be invoked with an object containing the following properties.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">success</code></td>
+      <td>If true, the checkout process continues and the order is completed. Otherwise, a customizable error message is shown to the consumer.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">error_code</code></td>
+      <td><em>(Optional)</em> If <code class="language-plaintext highlighter-rouge">success</code> is false, the specified error code will be used to provide the user with all the necessary information to allow them to, either correct the problem, or at least understand what went wrong to know what the correct action course is. See <a href="https://github.com/TiendaNube/api-docs/blob/payments-api-docs/resources/transaction.md#Transaction-Failure-Codes">Transaction Failure Codes</a> and <a href="#Checkout-Runtime-Error-Codes">Checkout Runtime Error Codes</a>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">message</code></td>
+      <td><em>(Legacy)</em> If <code class="language-plaintext highlighter-rouge">success</code> is false, this message will be displayed to the consumer.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">redirect</code></td>
+      <td><em>(Optional)</em> External URL to which the consumer will be redirected to continue the payment process. <em>(Only for <code class="language-plaintext highlighter-rouge">ExternalPayment()</code>).</em></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5 id="sample-arguments">Sample Arguments</h5>
+
+<p>Here’s an example summarizing all the definitions above.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">LoadCheckoutPaymentContext</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">Checkout</span><span class="p">,</span> <span class="nx">PaymentOptions</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="kd">var</span> <span class="nx">Custom</span> <span class="o">=</span> <span class="nx">PaymentOptions</span><span class="p">.</span><span class="nx">Transparent</span><span class="p">.</span><span class="nx">CardPayment</span><span class="p">({</span>
+    <span class="na">id</span><span class="p">:</span> <span class="dl">'</span><span class="s1">acme_transparent_card</span><span class="dl">'</span><span class="p">,</span>
+
+    <span class="na">fields</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">card_holder_birth_date</span><span class="p">:</span> <span class="kc">true</span>
+    <span class="p">},</span>
+
+    <span class="na">onLoad</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="c1">// Do something after the script loads.</span>
+      <span class="c1">// Example: generate a token.</span>
+    <span class="p">},</span>
+
+    <span class="na">onDataChange</span><span class="p">:</span> <span class="nx">Checkout</span><span class="p">.</span><span class="nx">utils</span><span class="p">.</span><span class="nx">throttle</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="c1">// Do something when the input form data changes.</span>
+      <span class="c1">// Data changed is already available on `Checkout.data`.</span>
+      <span class="c1">// Example: update credit card installments when the order value changes.</span>
+    <span class="p">},</span> <span class="mi">700</span><span class="p">),</span>
+    
+    <span class="na">onSubmit</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+      <span class="c1">// Do something when user submits the payment.</span>
+      <span class="nx">callback</span><span class="p">({</span>
+          <span class="na">success</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="c1">// Or false.</span>
+      <span class="p">});</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+
+    <span class="nx">Checkout</span><span class="p">.</span><span class="nx">addPaymentOption</span><span class="p">(</span><span class="nx">Custom</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h4 id="installments">Installments</h4>
+
+<p>In order to offer installment’s options you must update the object <code class="language-plaintext highlighter-rouge">data.installments</code> by calling <code class="language-plaintext highlighter-rouge">setInstallments</code>. This will update the select input for the installments options on the card information form. For example:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">Checkout</span><span class="p">.</span><span class="nx">setInstallments</span><span class="p">({</span>
+    <span class="na">installments</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<p>Each element of the list must be an object with the following fields.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">quantity</code></td>
+      <td>Number of installments.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">installmentAmount</code></td>
+      <td>Value of a single installment.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">totalAmount</code></td>
+      <td>Total value of all installments.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cft</code></td>
+      <td>(optional) Total financial cost.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h5 id="example">Example</h5>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">Checkout</span><span class="p">.</span><span class="nx">setInstallments</span><span class="p">({</span>
+  <span class="na">installments</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="na">quantity</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="na">installmentAmount</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
+      <span class="na">totalAmount</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
+      <span class="na">cft</span><span class="p">:</span> <span class="dl">'</span><span class="s1">0,00%</span><span class="dl">'</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="na">quantity</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+      <span class="na">installmentAmount</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>
+      <span class="na">totalAmount</span><span class="p">:</span> <span class="mi">26</span><span class="p">,</span>
+      <span class="na">cft</span><span class="p">:</span> <span class="dl">'</span><span class="s1">199,26%</span><span class="dl">'</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="na">quantity</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+      <span class="na">installmentAmount</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+      <span class="na">totalAmount</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
+      <span class="na">cft</span><span class="p">:</span> <span class="dl">'</span><span class="s1">196,59%</span><span class="dl">'</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h2 id="appendix">Appendix</h2>
+
+<h3 id="checkout-runtime-error-codes">Checkout Runtime Error Codes</h3>
+
+<p>If for some reason the <code class="language-plaintext highlighter-rouge">onSubmit</code> event handler fails to execute the action expected by the payment option chosen by the user, together with a <code class="language-plaintext highlighter-rouge">success: false</code> callback parameter, a <code class="language-plaintext highlighter-rouge">error_code</code> must be specified in order to allow us to give the consumer clear information on what went wrong so the consumer understands what they need to do in order be able to fix the problem.</p>
+
+<p>All <a href="https://github.com/TiendaNube/api-docs/blob/master/resources/transaction.md#transaction-failure-codes">Transaction Failure Codes</a> are valid <code class="language-plaintext highlighter-rouge">error_codes</code>, plus the extra ones specified on the following list.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Failure Code</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">consumer_same_as_merchant</code></td>
+      <td>The redirection fails because the consumer account is the same as the merchant account and merchants cannot pay themselves.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">server_error</code></td>
+      <td>There is a problem accessing the server which prevents either the execution of the payment or the generation of the redirect url.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">server_error_timeout</code></td>
+      <td>Same as <code class="language-plaintext highlighter-rouge">server_error</code> but the problem is due to a timeout condition.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">unknown_error</code></td>
+      <td>An unknown error occurred while trying to process the payment.</td>
+    </tr>
+  </tbody>
+</table>
+
+:ET

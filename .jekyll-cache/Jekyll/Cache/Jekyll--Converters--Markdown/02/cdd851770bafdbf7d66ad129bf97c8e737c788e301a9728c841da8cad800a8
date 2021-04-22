@@ -1,0 +1,445 @@
+I"N�<h1 id="script">Script</h1>
+
+<p>The Script resource allows the app to register custom Javascript to be run in the store or in the checkout page. Also, if the user deletes your app, then he will not have to edit his theme to remove your JavaScript. When an app is uninstalled from a store, all of the scripts the app created are automatically removed along with it.</p>
+
+<p>You should have the following things into consideration:</p>
+
+<ul>
+  <li>
+    <p>Scripts <strong>must be served over HTTPS</strong>.</p>
+  </li>
+  <li>
+    <p>You cannot depend of any JavaScript available in the store’s theme. Not even jQuery.</p>
+  </li>
+  <li>
+    <p>Another applications may be installed and can include other JavaScript in addition to yours.</p>
+  </li>
+  <li>
+    <p>When we include your script in the store, we will send a <code class="language-plaintext highlighter-rouge">store</code> parameter with the store id (e.g. <code class="language-plaintext highlighter-rouge">&lt;script type="text/javascript" src="https://myapp.com/new.js?store=1234"&gt;&lt;/script&gt;</code>).</p>
+  </li>
+</ul>
+
+<p>Ideally, your javascript should be inside a closure to avoid any conflict:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="c1">// Your JavaScript</span>
+<span class="p">})();</span>
+</code></pre></div></div>
+
+<p>Use AJAX to load specific configurations for the store. Access your own defined URL with the store ID specified in that URL. Your app will serve those store settings in JSON format, which you can then use in your JavaScript file.</p>
+
+<p>If you are going to use jQuery, you should load it in your JS using <code class="language-plaintext highlighter-rouge">jQuery.noConflict</code> as some stores already have jQuery in their themes. You should not assume the store has a cutting-edge jQuery version.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">loadScript</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="nx">callback</span><span class="p">){</span>
+
+  <span class="cm">/* JavaScript that will load the jQuery library on Google's CDN.
+     We recommend this code: https://snipplr.com/view/18756/loadscript/.
+     Once the jQuery library is loaded, the callback function will be executed. */</span>
+
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">myAppJavaScript</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$</span><span class="p">){</span>
+  <span class="cm">/* Your app's JavaScript here.
+     $ in this scope references the jQuery object we'll use.
+     Don't use 'jQuery', or 'jQuery191', here. Use the dollar sign
+     that was passed as argument.*/</span>
+  <span class="nx">$</span><span class="p">(</span><span class="dl">'</span><span class="s1">body</span><span class="dl">'</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="dl">"</span><span class="s2">&lt;p&gt;I'm using jQuery version </span><span class="dl">"</span><span class="o">+</span><span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">jquery</span><span class="o">+</span><span class="dl">'</span><span class="s1">&lt;/p&gt;</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="c1">// For jQuery version 1.7</span>
+<span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">];</span>
+
+<span class="kd">var</span> <span class="nx">current</span> <span class="o">=</span> <span class="k">typeof</span> <span class="nx">jQuery</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">undefined</span><span class="dl">'</span> <span class="p">?</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="p">:</span> <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">jquery</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="dl">'</span><span class="s1">.</span><span class="dl">'</span><span class="p">).</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">item</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nx">current</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="nx">target</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">||</span> <span class="p">(</span><span class="nx">current</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="nx">target</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nx">current</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="nx">target</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span> <span class="p">{</span>
+  <span class="nx">loadScript</span><span class="p">(</span><span class="dl">'</span><span class="s1">//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="kd">var</span> <span class="nx">jQuery1101</span> <span class="o">=</span> <span class="nx">jQuery</span><span class="p">.</span><span class="nx">noConflict</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+    <span class="nx">myAppJavaScript</span><span class="p">(</span><span class="nx">jQuery1101</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+  <span class="nx">myAppJavaScript</span><span class="p">(</span><span class="nx">jQuery</span><span class="p">);</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<h2 id="variables">Variables</h2>
+
+<p>We make your life easier by providing a Javascript object (called <code class="language-plaintext highlighter-rouge">LS</code>) with some common variables.</p>
+
+<h3 id="store">Store</h3>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">LS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">store</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="na">id</span> <span class="p">:</span> <span class="cm">/* Store's id */</span><span class="p">,</span>
+        <span class="na">url</span> <span class="p">:</span> <span class="cm">/* Store's URL */</span>
+    <span class="p">},</span>
+    <span class="na">cart</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="na">subtotal</span> <span class="p">:</span> <span class="cm">/* Cart's subtotal in cents */</span><span class="p">,</span>
+        <span class="na">items</span> <span class="p">:</span> <span class="p">[</span>
+            <span class="cm">/* For every cart item we have */</span>
+            <span class="p">{</span>
+                <span class="na">id</span><span class="p">:</span> <span class="cm">/* Product Variant's id */</span><span class="p">,</span>
+                <span class="na">name</span><span class="p">:</span> <span class="cm">/* Product Variant's name */</span><span class="p">,</span>
+                <span class="na">unit_price</span><span class="p">:</span> <span class="cm">/* Product Variant's price in cents */</span><span class="p">,</span>
+                <span class="na">quantity</span><span class="p">:</span> <span class="cm">/* Quantity to be purchased */</span><span class="p">,</span>
+                <span class="na">requires_shipping</span><span class="p">:</span> <span class="cm">/* True if product requires physical shipping */</span>
+            <span class="p">}</span>
+        <span class="p">],</span>
+        <span class="na">has_shippable_products</span> <span class="p">:</span> <span class="cm">/* True if at least one product requires physical shipping */</span><span class="p">,</span>
+        <span class="na">has_non_shippable_products</span> <span class="p">:</span> <span class="cm">/* True if at least one product doesn`t require physical shipping */</span>
+    <span class="p">},</span>
+    <span class="na">lang</span> <span class="p">:</span> <span class="cm">/* Current language's code (e.g. pt_BR) */</span><span class="p">,</span>
+    <span class="na">currency</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="na">code</span><span class="p">:</span> <span class="cm">/* Current currency in ISO 4217 format */</span>
+        <span class="na">display_short</span><span class="p">:</span> <span class="cm">/* Currency format string when the currency is not specified.*/</span>
+        <span class="na">display_long</span><span class="p">:</span> <span class="cm">/* Currency format string when the currency is specified.*/</span>
+        <span class="na">cents_separator</span><span class="p">:</span> <span class="cm">/* Symbol used for separating cents */</span>
+        <span class="na">thousands_separator</span><span class="p">:</span> <span class="cm">/* Symbol used for separating thousands (could be blank) */</span>
+    <span class="p">},</span>
+    <span class="na">country</span> <span class="p">:</span> <span class="cm">/* Current currency in ISO 3166-1 format */</span><span class="p">,</span>
+    <span class="na">customer</span> <span class="p">:</span> <span class="cm">/* Current customer id or null if there is no logged-in customer */</span><span class="p">,</span>
+    <span class="na">theme</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="na">code</span><span class="p">:</span> <span class="cm">/* Current theme's code */</span><span class="p">,</span>
+        <span class="na">name</span><span class="p">:</span> <span class="cm">/* Current theme's name */</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<h4 id="product">Product</h4>
+
+<p>If we are on a Product page we add:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">LS</span><span class="p">.</span><span class="nx">product</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">id</span> <span class="p">:</span> <span class="cm">/* Product's id */</span><span class="p">,</span>
+    <span class="na">name</span> <span class="p">:</span> <span class="cm">/* Product's name */</span><span class="p">,</span>
+    <span class="na">tags</span> <span class="p">:</span> <span class="cm">/* Array of product's tags */</span><span class="p">,</span>
+    <span class="na">requires_shipping</span> <span class="p">:</span> <span class="cm">/* True if product requires physical shipping */</span>
+<span class="p">};</span>
+<span class="nx">LS</span><span class="p">.</span><span class="nx">variants</span> <span class="o">=</span> <span class="cm">/* JSON encoded representation of the product variants */</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h4 id="category">Category</h4>
+
+<p>If we are on a Category page we add:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">LS</span><span class="p">.</span><span class="nx">category</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">id</span> <span class="p">:</span> <span class="cm">/* Category's id */</span><span class="p">,</span>
+    <span class="na">name</span> <span class="p">:</span> <span class="cm">/* Category's name */</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<h3 id="checkout">Checkout</h3>
+
+<p>The checkout’s LS object has only some of the properties:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">LS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">store</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="na">id</span> <span class="p">:</span> <span class="cm">/* Store's id */</span><span class="p">,</span>
+        <span class="na">url</span> <span class="p">:</span> <span class="cm">/* Store's URL */</span>
+    <span class="p">},</span>
+    <span class="na">cart</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="na">subtotal</span> <span class="p">:</span> <span class="cm">/* Cart's subtotal in cents */</span><span class="p">,</span>
+        <span class="na">items</span> <span class="p">:</span> <span class="p">[</span>
+            <span class="cm">/* For every cart item we have */</span>
+            <span class="p">{</span>
+                <span class="na">id</span><span class="p">:</span> <span class="cm">/* Product Variant's id */</span><span class="p">,</span>
+                <span class="na">name</span><span class="p">:</span> <span class="cm">/* Product Variant's name */</span><span class="p">,</span>
+                <span class="na">unit_price</span><span class="p">:</span> <span class="cm">/* Product Variant's price in cents */</span><span class="p">,</span>
+                <span class="na">quantity</span><span class="p">:</span> <span class="cm">/* Quantity to be purchased */</span><span class="p">,</span>
+                          
+
+            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="na">customer</span> <span class="p">:</span> <span class="cm">/* Current customer id or null if there is no logged-in customer */</span><span class="p">,</span>
+    <span class="na">lang</span> <span class="p">:</span> <span class="cm">/* Current language's code (e.g. pt_BR) */</span><span class="p">,</span>
+    <span class="na">currency</span> <span class="p">:</span> <span class="cm">/* Current currency in ISO 4217 format */</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="thank-you-page">Thank you page</h4>
+
+<p>If we are on the thank you page we add:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">LS</span><span class="p">.</span><span class="nx">order</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">id</span> <span class="p">:</span> <span class="cm">/* Order's id */</span><span class="p">,</span>
+    <span class="na">number</span> <span class="p">:</span> <span class="cm">/* Order's number */</span><span class="p">,</span>
+    <span class="na">hash</span> <span class="p">:</span> <span class="cm">/* Order's hash */</span><span class="p">,</span>
+    <span class="na">created_at</span> <span class="p">:</span> <span class="cm">/* Order's creation date */</span><span class="p">,</span>
+    <span class="na">coupon</span> <span class="p">:</span> <span class="cm">/* Array of coupon codes that apply to this order */</span><span class="p">,</span>
+    <span class="na">discount</span> <span class="p">:</span> <span class="cm">/* Order's discount in cents */</span><span class="p">,</span>
+    <span class="na">total</span> <span class="p">:</span> <span class="cm">/* Order's total in cents */</span><span class="p">,</span>
+    <span class="na">total_in_usd</span> <span class="p">:</span> <span class="cm">/* Order's total in USD in cents */</span><span class="p">,</span>
+    <span class="na">gateway</span> <span class="p">:</span> <span class="cm">/* Payment Gateway's code */</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<h2 id="properties">Properties</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Explanation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>id</td>
+      <td>The unique numeric identifier for the Script</td>
+    </tr>
+    <tr>
+      <td>src</td>
+      <td>Specifies the location of the Script. <strong>Must be HTTPS</strong>.</td>
+    </tr>
+    <tr>
+      <td>event</td>
+      <td>DOM event which triggers the loading of the script. Valid values are <strong>onload</strong> (default)</td>
+    </tr>
+    <tr>
+      <td>where</td>
+      <td>A comma-separated list of places where the javascript will run. Valid values are <strong>store</strong> (default) or <strong>checkout</strong></td>
+    </tr>
+    <tr>
+      <td>created_at</td>
+      <td>Date when the Script was created in <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a></td>
+    </tr>
+    <tr>
+      <td>updated_at</td>
+      <td>Date when the Script was last updated in <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="endpoints">Endpoints</h2>
+
+<h3 id="get-scripts">GET /scripts</h3>
+
+<p>Receive a list of all Scripts.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Explanation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>since_id</td>
+      <td>Restrict results to after the specified ID</td>
+    </tr>
+    <tr>
+      <td>src</td>
+      <td>Show Scripts with a given URL</td>
+    </tr>
+    <tr>
+      <td>created_at_min</td>
+      <td>Show Scripts created after date (<a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a>)</td>
+    </tr>
+    <tr>
+      <td>created_at_max</td>
+      <td>Show Scripts created before date (<a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a>)</td>
+    </tr>
+    <tr>
+      <td>updated_at_min</td>
+      <td>Show Scripts last updated after date (<a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a>)</td>
+    </tr>
+    <tr>
+      <td>updated_at_max</td>
+      <td>Show Scripts last updated before date (<a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a>)</td>
+    </tr>
+    <tr>
+      <td>page</td>
+      <td>Page to show</td>
+    </tr>
+    <tr>
+      <td>per_page</td>
+      <td>Amount of results</td>
+    </tr>
+    <tr>
+      <td>fields</td>
+      <td>Comma-separated list of fields to include in the response</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="get-scripts-1">GET /scripts</h4>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-01-03T09:11:51-03:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"event"</span><span class="p">:</span><span class="w"> </span><span class="s2">"onload"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">101</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"src"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://myapp.com/foo.js"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-03-11T09:14:11-03:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"where"</span><span class="p">:</span><span class="w"> </span><span class="s2">"store,checkout"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-07T09:11:51-03:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"event"</span><span class="p">:</span><span class="w"> </span><span class="s2">"onload"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5123</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"src"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://myapp.com/bar.js"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-08T11:11:51-03:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"where"</span><span class="p">:</span><span class="w"> </span><span class="s2">"store"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-08T12:09:48-03:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"event"</span><span class="p">:</span><span class="w"> </span><span class="s2">"onload"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">6412</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"src"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://myapp.com/yet_another_script.js"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-08T11:11:53-03:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"where"</span><span class="p">:</span><span class="w"> </span><span class="s2">"checkout"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<h4 id="get-scriptssince_id1234">GET /scripts?since_id=1234</h4>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-07T09:11:51-03:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"event"</span><span class="p">:</span><span class="w"> </span><span class="s2">"onload"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5123</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"src"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://myapp.com/foo.js"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-08T11:11:51-03:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"where"</span><span class="p">:</span><span class="w"> </span><span class="s2">"store"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-08T12:09:48-03:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"event"</span><span class="p">:</span><span class="w"> </span><span class="s2">"onload"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">6412</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"src"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://myapp.com/bar.js"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-08T11:11:53-03:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"where"</span><span class="p">:</span><span class="w"> </span><span class="s2">"checkout"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="get-scriptsid">GET /scripts/{id}</h3>
+
+<p>Receive a single Script</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Explanation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>fields</td>
+      <td>Comma-separated list of fields to include in the response</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="get-scripts1234">GET /scripts/1234</h4>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-01-03T09:11:51-03:00"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"event"</span><span class="p">:</span><span class="w"> </span><span class="s2">"onload"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">101</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"src"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://myapp.com/foo.js"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-03-11T09:14:11-03:00"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"where"</span><span class="p">:</span><span class="w"> </span><span class="s2">"store,checkout"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="post-scripts">POST /scripts</h3>
+
+<p>Create a new Script.</p>
+
+<h4 id="post-scripts-1">POST /scripts</h4>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"invalid_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"foobar"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"where"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"invalid_where"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 422 Unprocessable Entity</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"event"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="s2">"can't be blank"</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"src"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="s2">"can't be blank"</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"where"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="s2">"is not included in the list"</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h4 id="post-scripts-2">POST /scripts</h4>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"src"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://myapp.com/new.js"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"event"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"onload"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"where"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"store"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 201 Created</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-06-01T15:12:15-03:00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"event"</span><span class="p">:</span><span class="w"> </span><span class="s2">"onload"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">8901</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"src"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://myapp.com/new.js"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-06-01T15:12:15-03:00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"where"</span><span class="p">:</span><span class="w"> </span><span class="s2">"store"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="put-scriptsid">PUT /scripts/{id}</h3>
+
+<p>Modify an existing Script</p>
+
+<h4 id="put-scripts5123">PUT /scripts/5123</h4>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-07T09:11:51-03:00"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"event"</span><span class="p">:</span><span class="w"> </span><span class="s2">"onload"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5123</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"src"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://myapp.com/another_bar.js"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-06-01T12:05:34-03:00"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"where"</span><span class="p">:</span><span class="w"> </span><span class="s2">"store"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-04-07T09:11:51-03:00"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"event"</span><span class="p">:</span><span class="w"> </span><span class="s2">"onload"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5123</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"src"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://myapp.com/another_bar.js"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-06-01T12:11:14-03:00"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"where"</span><span class="p">:</span><span class="w"> </span><span class="s2">"store"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="delete-scriptsid">DELETE /scripts/{id}</h3>
+
+<p>Remove a Script</p>
+
+<h4 id="delete-scripts5123">DELETE /scripts/5123</h4>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{}</span><span class="w">
+</span></code></pre></div></div>
+:ET

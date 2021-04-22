@@ -1,0 +1,120 @@
+I"<p>We provide authorization and user authentication by a restricted form of OAuth 2. In a glance:</p>
+<ul>
+  <li>The only grant type we support is the “authorization code” one.</li>
+  <li>Our access tokens don’t expire. They become invalid only after you get a new one, or if the user uninstalls your app.</li>
+  <li>Along with the access token we provide an <code class="language-plaintext highlighter-rouge">user_id</code>, which is the ID of the store. This is key: you need it for making requests to our API. It is also useful for authenticating app users on your website (see User authentication).</li>
+</ul>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>When creating an app, you have to select the scopes it needs and set a redirection URL.
+The scopes specify the resources for which the app is asking authorization of its users (see Scopes).
+The redirection URL is used as part of the authorization flow (see below).</p>
+
+<h2 id="authorization-flow">Authorization flow</h2>
+
+<p>The authorization flow is pretty standard, except for the first step:</p>
+
+<ol>
+  <li>The user, from his Tiendanube/Nuvemshop admin, clicks on a button to install your app. Or, alternatively, he goes to https://www.tiendanube.com/apps/(app_id)/authorize (if he is not logged in, he is prompted to do so).</li>
+  <li>He is redirected to a page where he has to authorize the scopes your app needs (if he has already done it, this step is skipped).</li>
+  <li>He is redirected to your app’s redirection URL with an authorization code, which expires in 30 seconds.</li>
+  <li>Using your app’s credentials and the authorization code, you can obtain an access token by making a POST request to https://www.tiendanube.com/apps/authorize/token. (Don’t forget to also send <code class="language-plaintext highlighter-rouge">grant_type=authorization_code</code>, see the example below).</li>
+</ol>
+
+<p>Note: Any of these URLs in the Tiendanube domain can be replaced for identical ones in the Tiendanube domain.</p>
+
+<h4 id="example">Example</h4>
+
+<p>Asume that your app has:</p>
+<ul>
+  <li>id = 123</li>
+  <li>redirection URL = https://www.example.com/</li>
+  <li>scopes = <code class="language-plaintext highlighter-rouge">read_orders</code>, <code class="language-plaintext highlighter-rouge">write_products</code></li>
+  <li>client_secret = abcdef</li>
+</ul>
+
+<ol>
+  <li>Store with ID 789 goes to https://www.tiendanube.com/apps/123/authorize?state=csrf-code</li>
+  <li>User accepts.</li>
+  <li>He gets redirected to https://www.example.com/?code=xyz&amp;state=csrf-code.</li>
+  <li>Then you do:</li>
+</ol>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl https://www.tiendanube.com/apps/authorize/token <span class="nt">--data</span> <span class="s1">'client_id=123&amp;client_secret=abcdef&amp;grant_type=authorization_code&amp;code=xyz'</span>
+</code></pre></div></div>
+
+<p>and receive:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+	</span><span class="nl">"access_token"</span><span class="p">:</span><span class="s2">"61181d08b7e328d256736hdcb671c3ce50b8af5"</span><span class="p">,</span><span class="w">
+	</span><span class="nl">"token_type"</span><span class="p">:</span><span class="s2">"bearer"</span><span class="p">,</span><span class="w">
+	</span><span class="nl">"scope"</span><span class="p">:</span><span class="s2">"read_orders,write_products"</span><span class="p">,</span><span class="w">
+	</span><span class="nl">"user_id"</span><span class="p">:</span><span class="s2">"789"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<blockquote>
+  <p>At some requests, you will get the response with a <code class="language-plaintext highlighter-rouge">store_id</code> field containing the data of <code class="language-plaintext highlighter-rouge">user_id</code></p>
+</blockquote>
+
+<h2 id="scopes">Scopes</h2>
+
+<p>Apps should only ask for the access scopes they need. If an app only needs to read products, it should only ask for the <code class="language-plaintext highlighter-rouge">read_products</code> scope.</p>
+
+<p><strong>If you ask for any write scope, the read scope is implied.</strong></p>
+
+<p>As <a href="https://github.com/TiendaNube/api-docs/blob/master/resources/webhook.md">Webhooks</a> rely on other resources, you will only be able to register webhooks for the resources you were granted permission to use.</p>
+
+<p>The available scopes for the API are:</p>
+
+<ul>
+  <li>read_content / write_content
+    <ul>
+      <li>Page</li>
+    </ul>
+  </li>
+  <li>read_products / write_products
+    <ul>
+      <li>Product</li>
+      <li>Product Variant</li>
+      <li>Product Image</li>
+      <li>Category</li>
+    </ul>
+  </li>
+  <li>read_customers / write_customers
+    <ul>
+      <li>Customer</li>
+    </ul>
+  </li>
+  <li>read_orders / write_orders
+    <ul>
+      <li>Order</li>
+    </ul>
+  </li>
+  <li>read_coupons / write_coupons
+    <ul>
+      <li>Coupon</li>
+    </ul>
+  </li>
+  <li>write_scripts
+    <ul>
+      <li>Script</li>
+    </ul>
+  </li>
+  <li>write_shipping
+    <ul>
+      <li>Shipping Carrier</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="user-authentication">User authentication</h2>
+
+<p>If you need your app’s users to be able to sign-in on your website, you can reuse the Authorization flow for this purpose:</p>
+<ul>
+  <li>The login button should be a link to https://www.tiendanube.com/apps/(app_id)/authorize.</li>
+  <li>You can sign-in the user having the ID you receive with the new access token.</li>
+  <li>In the link <a href="http://tools.ietf.org/html/rfc6749#section-10.12">you should</a> add a <code class="language-plaintext highlighter-rouge">state</code> parameter for CSRF protection (e.g. a hash of the session cookie), and check it after the redirection.</li>
+</ul>
+:ET

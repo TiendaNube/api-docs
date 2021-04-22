@@ -1,0 +1,513 @@
+I"‚À<h1 id="coupons">Coupons</h1>
+
+<p>A discount coupon is a way for a store to provide discounts for its customers. There are three type of coupons. Percentage, absolute and shipping. The percentage type indicates that the value is a percentage discount. The type absolute indicates that the value is an absolute amount of discount. And finally the type shipping indicates that the discount value is on the shipping.</p>
+
+<h2 id="properties">Properties</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Explanation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>id</td>
+      <td>The unique numeric identifier for the coupon.</td>
+    </tr>
+    <tr>
+      <td>code</td>
+      <td>String that identifies the coupon.</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>Type of the coupon. Can take the following values: percentage, absolute or shipping.</td>
+    </tr>
+    <tr>
+      <td>valid</td>
+      <td>Flag (true or false) that indicates if the coupon is valid or not.</td>
+    </tr>
+    <tr>
+      <td>start_date</td>
+      <td>Date from which the coupon is valid.</td>
+    </tr>
+    <tr>
+      <td>end_date</td>
+      <td>Date of overdue of the coupon.</td>
+    </tr>
+    <tr>
+      <td>deleted_at</td>
+      <td>Date when the coupon was deleted. The value is NULL if the coupon is still valid.</td>
+    </tr>
+    <tr>
+      <td>max_uses</td>
+      <td>Max number of times the coupon can be used.</td>
+    </tr>
+    <tr>
+      <td>value</td>
+      <td>Value of the discount</td>
+    </tr>
+    <tr>
+      <td>min_price</td>
+      <td>Indicates the minimun value of the bill for applying the discount</td>
+    </tr>
+    <tr>
+      <td>categories</td>
+      <td>List of <a href="https://github.com/tiendanube/api-docs/blob/master/resources/category.md">Category</a> objects representing the categories of the store where the discount applies.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="endpoints">Endpoints</h2>
+
+<h3 id="get-coupons">GET /coupons</h3>
+
+<p>Receive a list of all Coupon.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Explanation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>min_start_date</td>
+      <td>The minimum start_date to filter.</td>
+    </tr>
+    <tr>
+      <td>min_end_date</td>
+      <td>The minimum end_date to filter.</td>
+    </tr>
+    <tr>
+      <td>max_start_date</td>
+      <td>The maximum start_date to filter.</td>
+    </tr>
+    <tr>
+      <td>max_end_date</td>
+      <td>The maximum end_date to filter.</td>
+    </tr>
+    <tr>
+      <td>valid</td>
+      <td>Flag (true of false) for filtering valid coupons.</td>
+    </tr>
+    <tr>
+      <td>created_at_min</td>
+      <td>Show Products created after date (<a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a>)</td>
+    </tr>
+    <tr>
+      <td>created_at_max</td>
+      <td>Show Products created before date (<a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a>)</td>
+    </tr>
+    <tr>
+      <td>updated_at_min</td>
+      <td>Show Products last updated after date (<a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a>)</td>
+    </tr>
+    <tr>
+      <td>updated_at_max</td>
+      <td>Show Products last updated before date (<a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a>)</td>
+    </tr>
+    <tr>
+      <td>page</td>
+      <td>Page to show</td>
+    </tr>
+    <tr>
+      <td>per_page</td>
+      <td>Amount of results</td>
+    </tr>
+    <tr>
+      <td>fields</td>
+      <td>Comma-separated list of fields to include in the response</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="get-coupons-1">GET /coupons</h4>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">32965</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PR2"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"percentage"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"30.00"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"valid"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"used"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"max_uses"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"start_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-05-08"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"end_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-06-08"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"min_price"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"categories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">117023</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Oxido N</span><span class="se">\u</span><span class="s2">00edtrico (NO2)"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Oxido N</span><span class="se">\u</span><span class="s2">00edtrico (NO2)"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"handle"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"oxido-nitrico-no2"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"oxido-nitrico-no2"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"parent"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"subcategories"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+                </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-03-22T14:40:55+0000"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-05-28T20:07:05+0000"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">32966</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PR23"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"percentage"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"30.00"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"valid"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"used"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"max_uses"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"start_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-05-08"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"end_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-06-08"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"min_price"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"categories"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">32964</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PR4"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"percentage"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"30.00"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"valid"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"used"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"max_uses"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"start_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-06-07"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"end_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-06-08"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"min_price"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"categories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">117023</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Oxido N</span><span class="se">\u</span><span class="s2">00edtrico (NO2)"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Oxido N</span><span class="se">\u</span><span class="s2">00edtrico (NO2)"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"handle"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"oxido-nitrico-no2"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"oxido-nitrico-no2"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"parent"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"subcategories"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+                </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-03-22T14:40:55+0000"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-05-28T20:07:05+0000"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">32963</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PR5"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"percentage"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"30.00"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"valid"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"used"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"max_uses"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"start_date"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"end_date"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"min_price"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"categories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">105190</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Pantalones"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Pantalones"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"handle"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pantalones"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pantalones"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"parent"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"subcategories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="mi">119258</span><span class="w">
+                </span><span class="p">],</span><span class="w">
+                </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-02-19T17:34:36+0000"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-05-28T20:07:06+0000"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">105191</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Camisas"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Camisas"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"handle"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"camisas"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"camisas"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"parent"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"subcategories"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+                </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-02-19T17:34:37+0000"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-05-28T20:07:06+0000"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">117023</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Oxido N</span><span class="se">\u</span><span class="s2">00edtrico (NO2)"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Oxido N</span><span class="se">\u</span><span class="s2">00edtrico (NO2)"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"handle"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"oxido-nitrico-no2"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"oxido-nitrico-no2"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"parent"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"subcategories"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+                </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-03-22T14:40:55+0000"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-05-28T20:07:05+0000"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<h4 id="get-couponsvalidtrue">GET /coupons?valid=true</h4>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">32965</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PR2"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"percentage"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"30.00"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"valid"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"used"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"max_uses"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"start_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-05-08"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"end_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-06-08"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"min_price"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"categories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">117023</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Oxido N</span><span class="se">\u</span><span class="s2">00edtrico (NO2)"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Oxido N</span><span class="se">\u</span><span class="s2">00edtrico (NO2)"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"handle"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"oxido-nitrico-no2"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"oxido-nitrico-no2"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"parent"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"subcategories"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+                </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-03-22T14:40:55+0000"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-05-28T20:07:05+0000"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">32966</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PR23"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"percentage"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"30.00"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"valid"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"used"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"max_uses"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"start_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-05-08"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"end_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-06-08"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"min_price"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"categories"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">32964</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PR4"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"percentage"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"30.00"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"valid"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"used"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"max_uses"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"start_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-06-07"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"end_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-06-08"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"min_price"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"categories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">117023</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Oxido N</span><span class="se">\u</span><span class="s2">00edtrico (NO2)"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Oxido N</span><span class="se">\u</span><span class="s2">00edtrico (NO2)"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"handle"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"oxido-nitrico-no2"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"oxido-nitrico-no2"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"parent"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"subcategories"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+                </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-03-22T14:40:55+0000"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-05-28T20:07:05+0000"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="get-couponsid">GET /coupons/{id}</h3>
+
+<p>Receive a single Coupon</p>
+
+<h4 id="get-coupons32964">GET /coupons/32964</h4>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">32964</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PR4"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"percentage"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"30.00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"valid"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"used"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"max_uses"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"start_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-06-07"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"end_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-06-08"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"min_price"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"categories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">117023</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Oxido N</span><span class="se">\u</span><span class="s2">00edtrico (NO2)"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Oxido N</span><span class="se">\u</span><span class="s2">00edtrico (NO2)"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="nl">"handle"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"oxido-nitrico-no2"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"oxido-nitrico-no2"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="nl">"parent"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"subcategories"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+            </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-03-22T14:40:55+0000"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-05-28T20:07:05+0000"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="post-coupons">POST /coupons</h3>
+
+<p>Create a new Coupon</p>
+
+<h4 id="post-coupons-1">POST /coupons</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Explanation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>code</td>
+      <td>The code is required. Must be unique and can contain only alfanumeric characters</td>
+    </tr>
+    <tr>
+      <td>value</td>
+      <td>The value is mandatory if the type is percentage or absolute</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PRUEBA"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"percentage"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"30.00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"max_uses"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"min_price"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"categories"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"start_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-05-08"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"end_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-06-08"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 201 Created</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">32967</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PRUEBA"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"percentage"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"30.00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"valid"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"used"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"max_uses"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"start_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-05-08"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"end_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-06-08"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"min_price"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"categories"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="put-couponsid">PUT /coupons/{id}</h3>
+
+<p>Modify an existing coupon</p>
+
+<h4 id="put-coupons32967">PUT /coupons/32967</h4>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"OTRAPRUEBA"</span><span class="p">,</span><span class="w"> 
+    </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"absolute"</span><span class="p">,</span><span class="w"> 
+    </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">32967</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"OTRAPRUEBA"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"absolute"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"valid"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"used"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"max_uses"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"start_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-05-08"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"end_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-06-08"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"min_price"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"categories"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="delete-couponsid">DELETE /coupons/{id}</h3>
+
+<p>Delete an existing coupon</p>
+
+<h4 id="delete-coupons32967">DELETE /coupons/32967</h4>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP/1.1 200 OK</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+:ET

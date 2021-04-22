@@ -1,0 +1,33 @@
+# Links
+apps:
+  metafields: /resources/metafields
+authentication:
+  main: resources/authentication
+checkout:
+  main: resources/checkout
+customer:
+  main: /:Qcustomer
+discounts:
+  main: resources/discounts
+order:
+  main: /resources/order
+  coupon: /resources/order/coupon
+  draft: /resources/order/draft-order
+product:
+  main: /resources/product
+  image: /resources/product/image
+  category: /resources/product/category
+  variant: /resources/product/variant
+payment:
+  provider: resources/payment/provider
+script:
+  main: resources/script
+shipping:
+  main: /resources/shipping
+  carrier: /resources/shipping/carrier
+store:
+  main: /resources/store
+transaction:
+  main: resources/payment/transaction
+webhook:
+  main: /resources/webhook

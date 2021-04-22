@@ -1,0 +1,13 @@
+name:
+  ar: Tiendanube
+  br: Nuvemshop
+  mixed: Tiendanube/Nuvemshop
+url:
+  main: https://www.tiendanube.com
+  short:
+    ar: tiendanube.com
+    br: nuvemshop.com.br
+email: mailto:api@tiendanube.com
+partners:
+  ar: http://www.tiendanube.com/partners
+  br: http://www.nuvemshop.com.br/parceiros

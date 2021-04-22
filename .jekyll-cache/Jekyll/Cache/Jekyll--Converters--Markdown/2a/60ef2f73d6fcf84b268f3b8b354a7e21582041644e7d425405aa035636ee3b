@@ -1,0 +1,253 @@
+I"qN<h1 id="tiendanubenuvemshop-api">Tiendanube/Nuvemshop API</h1>
+
+<p>This is a REST-style API that uses JSON for serialization and OAuth 2 for authentication.</p>
+
+<h2 id="where-do-i-start">Where do I start?</h2>
+
+<p>Want to get started with API integration? Here’s a quick check list:</p>
+
+<ol>
+  <li>Register as a partner in <a href="http://www.tiendanube.com/partners">Tiendanube</a> or <a href="http://www.nuvemshop.com.br/parceiros">Nuvemshop</a>.</li>
+  <li>Once inside your partner’s admin panel, go to the “Apps” section and create your app.</li>
+  <li>Read up on <a href="#authentication">how to authenticate</a> your app with us.</li>
+  <li>Read the API docs to understand what you can do with your app.</li>
+</ol>
+
+<h2 id="making-a-request">Making a request</h2>
+
+<p>All URLs start with <code class="language-plaintext highlighter-rouge">https://api.tiendanube.com/v1/{store_id}</code> or <code class="language-plaintext highlighter-rouge">https://api.nuvemshop.com.br/v1/{store_id}</code>. <strong>SSL only</strong>. The path is prefixed with the store id and the API version. If we change the API in backward-incompatible ways, we’ll bump the version marker and maintain stable support for the old URLs.</p>
+
+<p>So if you want to access the store with id 123456 via the API the url will be <code class="language-plaintext highlighter-rouge">https://api.tiendanube.com/v1/123456</code> or <code class="language-plaintext highlighter-rouge">https://api.nuvemshop.com.br/v1/123456</code>.</p>
+
+<p>To make a request for all the store’s products you would do the following in curl:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-H</span> <span class="s1">'Authentication: bearer ACCESS_TOKEN '</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s1">'User-Agent: MyApp (name@email.com)'</span> <span class="se">\</span>
+  https://api.tiendanube.com/v1/123456/products
+</code></pre></div></div>
+
+<p>where <code class="language-plaintext highlighter-rouge">ACCESS_TOKEN</code> is the store’s access token for your app (see Authentication).</p>
+
+<p>To create something, you have to include the <code class="language-plaintext highlighter-rouge">Content-Type</code> header and the JSON data:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-H</span> <span class="s1">'Authentication: bearer ACCESS_TOKEN '</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s1">'User-Agent: MyApp (name@email.com)'</span> <span class="se">\</span>
+  <span class="nt">-d</span> <span class="s1">'{ "name": "My new product" }'</span> <span class="se">\</span>
+  https://api.tiendanube.com/v1/123456/products
+</code></pre></div></div>
+
+<h2 id="authentication">Authentication</h2>
+
+<p>We follow the OAuth 2 framework for letting users authorize your application to use Tiendanube/Nuvemshop on their behalf. Quite briefly, when a user installs it you can obtain an access token (a secret string denoting your rights over his store), which you have to include in the header of every request (as shown in the above example).</p>
+
+<p>Read the <a href="/tiendanube.api.docs/resources/authentication">authentication guide</a> to get started.</p>
+
+<h2 id="identify-your-app">Identify your app</h2>
+
+<p>In every API request, you must include a <code class="language-plaintext highlighter-rouge">User-Agent</code> header with the name of your application and a link to it or your email address so we can get in touch with you. Here’s a couple of examples:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>User-Agent: Super app (http://superapp.com/contact)
+or
+User-Agent: Awesome app (awesome@app.com)
+</code></pre></div></div>
+
+<p>If you don’t supply this header, you will get a <code class="language-plaintext highlighter-rouge">400 Bad Request</code> response.</p>
+
+<h2 id="just-json">Just JSON</h2>
+
+<p>All data is sent and received as JSON. Our format is to have no root element and we use snake_case to describe attribute keys. This means that you have to send <code class="language-plaintext highlighter-rouge">Content-Type: application/json; charset=utf-8</code> when POSTing or PUTing data into Tiendanube/Nuvemshop.</p>
+
+<p>You’ll receive a <code class="language-plaintext highlighter-rouge">415 Unsupported Media Type</code> response code if you leave out the <code class="language-plaintext highlighter-rouge">Content-Type</code> header.</p>
+
+<h2 id="client-errors">Client errors</h2>
+
+<p>These are the possible types of client errors on API calls that receive request bodies:</p>
+
+<ul>
+  <li>Sending invalid JSON will result in a <code class="language-plaintext highlighter-rouge">400 Bad Request</code> response.</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>HTTP/1.1 400 Bad Request
+Content-Length: 34
+
+{"error": "Problems parsing JSON"}
+</code></pre></div></div>
+
+<ul>
+  <li>Sending invalid fields will result in a <code class="language-plaintext highlighter-rouge">422 Unprocessable Entity</code> response.</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>HTTP/1.1 422 Unprocessable Entity
+Content-Length: 47
+
+{
+  "src": [
+      "can't be blank"
+    ]
+}
+</code></pre></div></div>
+
+<h2 id="server-errors">Server errors</h2>
+
+<p>If Tiendanube/Nuvemshop is having trouble, you might see a 5xx error. <code class="language-plaintext highlighter-rouge">500</code> means that the app is entirely down, but you might also see <code class="language-plaintext highlighter-rouge">502 Bad Gateway</code>, <code class="language-plaintext highlighter-rouge">503 Service Unavailable</code>, or <code class="language-plaintext highlighter-rouge">504 Gateway Timeout</code>. It’s your responsibility in all of these cases to retry your request later.</p>
+
+<h2 id="rate-limiting">Rate limiting</h2>
+
+<p>In order to control the incoming traffic from the API, you can perform a limited number of requests in a given period of time. Currently, the approach used to limit the API usage is based on a <a href="https://en.wikipedia.org/wiki/Leaky_bucket">Leaky Bucket algorithm</a> implementation, where the default bucket size is of 40 requests with a leaky rate of 2 requests per second, which means that you can perform up to 2 requests per second, with bursts of 40 requests, without getting a <a href="http://tools.ietf.org/html/draft-nottingham-http-new-status-02#section-4">429 Too Many Requests</a> error. We use the following headers to provide information about the limit usage:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">X-Rate-Limit-Limit</code> : Total requests that can be done in a given period, in the case, the bucket size.</li>
+  <li><code class="language-plaintext highlighter-rouge">X-Rate-Limit-Remaining</code> : Remaining requests to completely fill the bucket.</li>
+  <li><code class="language-plaintext highlighter-rouge">X-Rate-Limit-Reset</code> : Remaining milliseconds to completely empty the bucket.</li>
+</ul>
+
+<h2 id="pagination">Pagination</h2>
+
+<p>Requests that return multiple items will be paginated to 30 items by default. You can specify further pages with the <code class="language-plaintext highlighter-rouge">page</code> parameter. You can also set a custom page size up to 200 with the <code class="language-plaintext highlighter-rouge">per_page</code> parameter.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-H</span> <span class="s1">'Authentication: bearer ACCESS_TOKEN '</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s1">'User-Agent: MyApp (name@email.com)'</span> <span class="se">\</span>
+  https://api.tiendanube.com/v1/123456/products?page<span class="o">=</span>2&amp;per_page<span class="o">=</span>100
+</code></pre></div></div>
+
+<p>Note that page numbering is 1-based and that ommiting the <code class="language-plaintext highlighter-rouge">page</code> parameter will return the first page.</p>
+
+<p>To check the total count of the results you can use the <code class="language-plaintext highlighter-rouge">X-Total-Count</code> header:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>X-Total-Count: 156
+</code></pre></div></div>
+
+<p>To check the next and previous links for pagination you can use the <code class="language-plaintext highlighter-rouge">Link</code> header:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Link: &lt;https://api.tiendanube.com/v1/123456/products?page=3&amp;per_page=100&gt;; rel="next",
+  &lt;https://api.tiendanube.com/v1/123456/products?page=50&amp;per_page=100&gt;; rel="last"
+</code></pre></div></div>
+
+<p>The possible <code class="language-plaintext highlighter-rouge">rel</code> values are:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">next</code> : Shows the URL of the immediate next page of results.</li>
+  <li><code class="language-plaintext highlighter-rouge">last</code> : Shows the URL of the last page of results.</li>
+  <li><code class="language-plaintext highlighter-rouge">first</code> : Shows the URL of the first page of results.</li>
+  <li><code class="language-plaintext highlighter-rouge">prev</code> : Shows the URL of the immediate previous page of results.</li>
+</ul>
+
+<p>You <strong>should</strong> use the <code class="language-plaintext highlighter-rouge">Link</code> URLs instead of building your own.</p>
+
+<h2 id="http-verbs">HTTP Verbs</h2>
+
+<p>Where possible, API v1 strives to use appropriate HTTP verbs for each action.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">HEAD</code> : Can be issued against any resource to get just the HTTP header info.</li>
+  <li><code class="language-plaintext highlighter-rouge">GET</code> : Used for retrieving resources.</li>
+  <li><code class="language-plaintext highlighter-rouge">POST</code> : Used for creating resources.</li>
+  <li><code class="language-plaintext highlighter-rouge">PUT</code> :  Used for replacing resources or collections. For PUT requests with no body attribute, be sure to set the Content-Length header to zero.</li>
+  <li><code class="language-plaintext highlighter-rouge">DELETE</code> : Used for deleting resources.</li>
+</ul>
+
+<h2 id="languages-and-internationalization">Languages and Internationalization</h2>
+<p>Stores can potentially have multiple languages. This means that some properties of the Product and Category endpoints will be objects detailing the value for each language.</p>
+
+<p>For example,</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-H</span> <span class="s1">'Authentication: bearer ACCESS_TOKEN '</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s1">'User-Agent: MyApp (name@email.com)'</span> <span class="se">\</span>
+  <span class="nt">-D</span> - <span class="se">\</span>
+  https://api.tiendanube.com/v1/123456/categories/1234
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>HTTP/1.1 200 OK
+Date: Thu, 05 Sep 2013 18:18:22 GMT
+Content-Type: application/json; charset=UTF-8
+Content-Length: 376
+X-Main-Language: es
+</code></pre></div></div>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1234</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Nombre de la Categoría"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"pt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Nome da Categoria"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"pt"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"handle"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nombre-de-la-categoria"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"pt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nome-da-categoria"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"parent"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"subcategories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-09-05T17:59:19+0000"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-09-05T17:59:19+0000"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The properties affected by internationalization will always be an object, even if there is only one language active. If you only care about the main language, you can obtain its code by reading the <code class="language-plaintext highlighter-rouge">X-Main-Language</code> header.</p>
+
+<p>When POSTing or PUTing data you can provide an object with a value for each language:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-H</span> <span class="s1">'Authentication: bearer ACCESS_TOKEN '</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s1">'User-Agent: MyApp (name@email.com)'</span> <span class="se">\</span>
+  <span class="nt">-d</span> <span class="s1">'{ "name": {"es": "Ejemplo", "pt": "Exemplo"} }'</span> <span class="se">\</span>
+  https://api.tiendanube.com/v1/123456/products
+</code></pre></div></div>
+
+<p>Or you can simply provide a string value, which will be applied to all languages:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-H</span> <span class="s1">'Authentication: bearer ACCESS_TOKEN '</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s1">'User-Agent: MyApp (name@email.com)'</span> <span class="se">\</span>
+  <span class="nt">-d</span> <span class="s1">'{ "name": "Example" }'</span> <span class="se">\</span>
+  https://api.tiendanube.com/v1/123456/products
+</code></pre></div></div>
+
+<h2 id="front-end-integration">Front-end integration</h2>
+
+<p>When using <a href="/tiendanube.api.docs/resources/script">scripts</a> to integrate your app with the storefront, you may want to bind yourself to certain events or access related objects.</p>
+
+<p>While support for this is still being improved, there is one single event you may bind yourself to: <code class="language-plaintext highlighter-rouge">LS.registerOnChangeVariant(callback)</code> where <code class="language-plaintext highlighter-rouge">callback</code> is a function that receives a single argument, a <code class="language-plaintext highlighter-rouge">variant</code>, that contains information about the chosen product variant. In particular, <code class="language-plaintext highlighter-rouge">variant.element</code> contains a string detailing a jQuery selector that you may use in order to obtain a container for the chosen variant’s form; this is important when working with themes that have a “quick shop” feature, such as LinkedMan or LinkedWoman, as there may be more than one product form present in a page.</p>
+
+<h2 id="suspension-of-api-access-due-to-lack-of-payment">Suspension of API access due to lack of payment</h2>
+
+<p>Being a monthly subscription service, it’s possible that a store will not renew its service. In this case, the store will go offline and the API will be inaccessible. The API will also be inaccessible if the app has a recurring price and it’s not paid in time.</p>
+
+<p>In either case, all API calls will return a <code class="language-plaintext highlighter-rouge">402 Payment Required</code> response, <a href="/tiendanube.api.docs/resources/script">Scripts</a> will not be included and <a href="/tiendanube.api.docs/resources/webhook">Webhooks</a> will not be called. Please make sure you handle this error code to notify the user that he needs to resume his payment instead of displaying a generic server error.</p>
+
+<p>Once the required payment is made, the API becomes accessible again.</p>
+
+<p>If your app needs to know when access to the API is suspended or resumed (because you may have missed a webhook and want to do a full resync, for example), you can register to the <code class="language-plaintext highlighter-rouge">app/suspended</code> and <code class="language-plaintext highlighter-rouge">app/resumed</code> events using a Webhook.</p>
+
+<h2 id="api-resources">API resources</h2>
+
+<ul>
+  <li><a href="/tiendanube.api.docs/pages/store">Store</a></li>
+  <li><a href="/tiendanube.api.docs/pages/product">Product</a></li>
+  <li><a href="/tiendanube.api.docs/pages/product/variant">Product Variant</a></li>
+  <li><a href="/tiendanube.api.docs/pages/product/image">Product Image</a></li>
+  <li><a href="/tiendanube.api.docs/pages/product/category">Category</a></li>
+  <li><a href="/tiendanube.api.docs/pages/order">Order</a></li>
+  <li><a href="/tiendanube.api.docs/pages/customer">Customer</a></li>
+  <li><a href="/tiendanube.api.docs/pages/script">Script</a></li>
+  <li><a href="/tiendanube.api.docs/pages/webhook">Webhook</a></li>
+  <li><a href="/tiendanube.api.docs/pages/order/coupon">Coupons</a></li>
+  <li><a href="/tiendanube.api.docs/pages/metafields">Metafields</a></li>
+  <li><a href="/tiendanube.api.docs/pages/shipping/carrier">Shipping Carrier</a></li>
+  <li><a href="/tiendanube.api.docs/pages/payment/provider">Payment Provider</a></li>
+  <li><a href="/tiendanube.api.docs/pages/payment/transaction">Transaction</a></li>
+  <li><a href="/tiendanube.api.docs/pages/order/draft-order">Draft Order</a></li>
+  <li><a href="/tiendanube.api.docs/pages/discounts">Discount</a></li>
+</ul>
+
+<h2 id="help-us-make-it-better">Help us make it better</h2>
+
+<p>Please tell us how we can make the API better. If you have a specific feature request or if you found a bug, please use GitHub issues. Feel free to fork these docs and send a pull request with improvements.</p>
+
+<p>To talk with us about the API, feel free to write to <a href="mailto:api@tiendanube.com">api@tiendanube.com</a>.</p>
+:ET
