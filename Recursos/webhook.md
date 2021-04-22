@@ -107,6 +107,8 @@ A webhook notification expects a 200 status code in response (40 seconds timeout
 Required Webhooks
 ---------
 
+In order for our company to comply with data protection laws (example LGPD in Brazil), we provide Webhooks that facilitate communication between consumers, merchants and integrated applications, to trigger notices of removal or update of shared data, when a request is received for us.
+
 * store/redact - Requests deletion of store data.
 * customers/redact - Requests deletion of customer data.
 * customers/data_request - Requests to view stored customer data.
