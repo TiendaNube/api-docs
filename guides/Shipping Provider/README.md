@@ -387,6 +387,6 @@ You can see all the states that we support in the documentation. In order to upd
 
 <br><br>
 
-![](https://github.com/TiendaNube/api-docs/blob/master/guides/Shipping%20Provider/images/Gesta%CC%83o%20de%20envi%CC%81os-Gesta%CC%83o%20de%20envios.png)
+![](https://github.com/TiendaNube/api-docs/blob/master/guides/Shipping%20Provider/images/shipping-managent.png)
 > Notification, order processing, and shipment status update
 
