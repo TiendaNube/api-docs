@@ -962,7 +962,7 @@ The following list contains all the Transaction failures codes currently support
 | Failure Code                     | Description                                     |
 | -------------------------------- | ----------------------------------------------- |
 | `shipping_city_invalid`          | The shipping city is invalid.                   |
-| `shipping_county_invalid`        | The shipping country is invalid.                |
+| `shipping_country_invalid`       | The shipping country is invalid.                |
 | `shipping_district_invalid`      | The shipping district is invalid.               |
 | `shipping_email_invalid`         | The shipping recipient email is invalid.        |
 | `shipping_firstname_invalid`     | The shipping recipient firstname is invalid.    |
