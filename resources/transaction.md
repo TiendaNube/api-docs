@@ -780,7 +780,7 @@ Get a specific Transaction for a given order.
 </details>
 
 <details>
-  <summary><b>Example Nº 5: Create a failed credit card transaction</b></summary>
+  <summary><b>Example Nº 5: Create a failed debit card transaction</b></summary>
 
 
 
