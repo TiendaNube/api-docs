@@ -1,0 +1,275 @@
+openapi: '3.0.0'
+
+tags:
+  - name: discounts
+  - name: promotions
+
+servers: []
+
+info:
+  version: '1.0'
+  title: Discount Applications API
+  description: 'Manage the creation of promotions and discounts'
+
+components:
+  schemas:
+    promotionI18n:
+      type: object
+      properties:
+        lang:
+          type: string
+          description: language identifier
+          example: es_AR
+        name:
+          type: string
+          description: Promotion name
+          example: 50% off in the second unit
+        description:
+          type: string
+          description: Describe the promotion to the consumer
+          example: Taking two pay 50 percent on the second unit
+        disclaimer:
+          type: string
+          description: Describe the terms and conditions of the promotion
+          example: Deal only valid for Buenos Aires city
+      required:
+        - lang
+        - name
+  responses:
+    forbiddenError:
+      description: The __store__/__app__ provided does not belong to promotion
+      content:
+        application/json:
+          schema:
+            properties:
+              error:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 403
+                  code:
+                    type: string
+                    example: 'ForbiddenException'
+                  detail:
+                    type: string
+                    example: 'Forbidden resource'
+
+paths:
+  /discounts:
+    put:
+      summary: Create a discount
+      description: Register a discount for the current cart
+      tags:
+        - discounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                promotion_id:
+                  type: string
+                  description: Promotion identifier
+                  example: 5d7a23c7-7abe-4207-b175-33aa1d866a2a
+                cart_id:
+                  type: string
+                  description: Cart identifier
+                  example: 12345
+                line_items:
+                  type: array
+                  items:
+                    type: string
+                    description: Products to apply the promotion. Is evaluated only if the allocation type of the promotion is "line_item"
+                    example: 67890
+              required:
+                - cart_id
+                - promotion_id
+      responses:
+        '200':
+          description: The discount has been created or the new line items have been associated
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: 1234567890
+        '400':
+          description: Unable to process the request sent
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: number
+                        example: 400
+                      code:
+                        type: string
+                        example: 'BadRequestException'
+                      detail:
+                        type: array
+                        items:
+                          type: string
+                          example: 'promotion_id must be a string'
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+        '422':
+          description: Unable to process the contained instructions
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: number
+                        example: 422
+                      code:
+                        type: string
+                        example: 'UnprocessableEntityException'
+                      detail:
+                        type: string
+                        example: 'The identifier of the promotion provided does not exist'
+  /discounts/carts/{cart_id}/promotions/{promotion_id}:
+    delete:
+      summary: Remove a discount associated with a cart
+      description: Removes a cart's discount for all line items with the specified promotion_id
+      tags:
+        - discounts
+      parameters:
+        - in: path
+          name: cart_id
+          schema:
+            type: string
+          required: true
+          description: Cart identifier
+        - in: path
+          name: promotion_id
+          schema:
+            type: string
+          required: true
+          description: Promotion identifier
+      responses:
+        '204':
+          description: The discount has been removed
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+
+  /discounts/carts/{cart_id}/promotions/{promotion_id}/line-items/{line_item}:
+    delete:
+      summary: Remove a discount associated with a cart from a specific line item
+      description: Removes a cart's discount for the specified line items and promotion
+      tags:
+        - discounts
+      parameters:
+        - in: path
+          name: cart_id
+          schema:
+            type: string
+          required: true
+          description: Cart identifier
+        - in: path
+          name: promotion_id
+          schema:
+            type: string
+          required: true
+          description: Promotion Identifier
+        - in: path
+          name: line_item
+          schema:
+            type: string
+          required: true
+          description: Product Identification
+      responses:
+        '204':
+          description: The line item has been removed from the discount
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+
+  /promotions:
+    post:
+      summary: Create a promotion
+      description: Register a promotion for the current store
+      tags:
+        - promotions
+      operationId: create-promotion
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+                  description: Promotion Name
+                  example: 50% off in the second unit
+                description:
+                  type: string
+                  description: Describe the promotion to the consumer
+                  example: Taking two pay 50 percent on the second unit
+                disclaimer:
+                  type: string
+                  description: Describe the terms and conditions of the promotion
+                  example: Deal only valid for Buenos Aires city
+                allocation_type:
+                  type: string
+                  enum: [cross_item, line_item, shipping_item]
+                  description: Type of concept in which the promotion will be applied
+                  example: line_item
+                discount_type:
+                  type: string
+                  enum: [fixed, percentage]
+                  description: Method used to calculate the discount
+                  example: fixed
+                discount_amount:
+                  type: number
+                  description: Discount modifier
+                  example: 1000
+                translations:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/promotionI18n'
+              required:
+                - name
+                - allocation_type
+                - discount_type
+                - discount_amount
+      responses:
+        '201':
+          description: The promotion has been created
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: e855b201-be35-496c-8aed-28c6f1de840d
+        '400':
+          description: Unable to process the request sent
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: number
+                        example: 400
+                      code:
+                        type: string
+                        example: 'BadRequestException'
+                      detail:
+                        type: array
+                        items:
+                          type: string
+                          example: 'name must be a string'

@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#157878">
+  <link rel="stylesheet" href="/tiendanube.api.docs/css/normalize.css">
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="/tiendanube.api.docs/css/fonts.css">
+  <link rel="stylesheet" href="/tiendanube.api.docs/css/cayman.css">
+</head>
+
+
+  <body>
+    <section class="page-header">
+  <span class="project-name">Tiendanube/Nuvemshop</span>
+  <span class="project-tagline">Developers Documentation</span>
+</section>
+
+
+    <section class="main-content">
+      
+      <h1 id="payment-provider-app-development-guide">Payment Provider App Development Guide</h1>
+
+<h3 id="glossary">Glossary</h3>
+
+<h4 id="payment-provider">Payment Provider</h4>
+<p>Actually, short for <em>Payment Service Provider</em>, is any entity that provides all the necessary resources to allow a buyer to pay a merchant for purchased goods or hired services. These resources include information for the potential buyer about the available payment methods, installments, promotions, discounts, etc., as well as the technological resources to execute a payment.</p>
+
+<h4 id="payment-method-type">Payment Method Type</h4>
+<p>The resource that allows a transfer of money from the consumer to the merchant. It can be any of, but not limited to:</p>
+<ul>
+  <li>Credit card</li>
+  <li>Debit card</li>
+  <li>Bank debit (<em>aka “online debit”</em>)</li>
+  <li>Boleto (<em>Brasil only</em>)</li>
+  <li>PIX (<em>Brasil only</em>)</li>
+  <li>Ticket (<em>aka “offline payment” or “payment voucher”</em>)</li>
+  <li>Wire transfer (<em>between two bank accounts via traditional transfer</em>)</li>
+  <li>Wallet (<em>i.e. customer’s account credit</em>)</li>
+  <li>Cash</li>
+  <li>Others</li>
+</ul>
+
+<h4 id="payment-method-id-formerly-known-as-plain-payment-method">Payment Method ID <em>(formerly known as plain Payment Method)</em></h4>
+<p>For instance, if the Payment Method Type is <em>credit card</em>, then an example of Payment Method ID would be Visa, Mastecard or American Express. Some Payment Method Types, for example PIX, only have one Payment Method ID which happens to be PIX. Even though it’s redundant, it leaves space to future variations.</p>
+
+<h4 id="payment-option">Payment Option</h4>
+<p>The Payment Method is the resource that allows the transfer of money from the consumer to the merchant, while the Payment Option is how the Payment Method is used to execute the Transaction. In the physical world, if the selected Payment Method is <em>credit card</em>, then the payment could be executed using a card reader, or using an app that reads a QR code and has the credit card’s information, etc.</p>
+
+<p>A Payment Option has three main properties:</p>
+<ul>
+  <li>The Payment Provider that will execute the Trasnsaction.</li>
+  <li>One or more supported Payment Method Types.</li>
+  <li>An Integration Type.</li>
+</ul>
+
+<h4 id="integration-type">Integration Type</h4>
+<p>In terms of user experience, there might be different ways to integrate a Payment Option into a store. Some of them are:</p>
+<ul>
+  <li><em><strong>Transparent:</strong></em> All the process takes place in the store’s website and all the relevant payment information are filled in a form rendered by the store, creating a seamless experience for the buyer.</li>
+  <li><em><strong>External:</strong></em> At some point, the buyer is redirected to a website or app under the Payment Provider’s domain where the buyer completes the payment process.</li>
+  <li><em><strong>Modal:</strong></em> When the user submits our checkout, a modal rendered by the Payment Provider is displayed and the user finishes the payment process on it.</li>
+</ul>
+
+<h4 id="payment-app">Payment App</h4>
+<p>The development of a Tiendanube/Nuvemshop Payment App, technologically speaking, more often than not, includes implementing our auth flow,  REST APIs and webhooks, as well as the Payment Provider’s authentication flow, back-end-to-back-end APIs and webhook/notifications.</p>
+
+<p>Also, a Payment App includes a JavaScript implementation of our platform’s checkout event handlers. This event handlers usually make requests to the App’s back-end, which in turn makes requests to the Payment Provider’s APIs.</p>
+
+<p><img src="./images/PaymentProvider-PaymentAppConcept.png" alt="App Installation and Payment Provider Creation Sequence" /></p>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>This document provides an explanation of what a Payment App is and will guide you through its development process.</p>
+
+<p>In very few words, the steps to develop and deploy an App at our platform are:</p>
+
+<ol>
+  <li>The developer creates a partner account at the Nuvemshop Partner portal.</li>
+  <li>The developer creates a Payment App at the Partner portal.</li>
+  <li>The developer sets up a scalable back-end on their own infrastructure where the App will run.</li>
+  <li>The developer implements Nuvemshop’s authorization flow.</li>
+  <li>The developer implements Nuvemshop’s REST APIs, including the Payment Provider and the Transaction resources.</li>
+  <li>The developer implements their front-end scripts according to Nuvemshop’s JavaScript interface specifications, hosts the file in a public CDN and provides a link to the file through our API.</li>
+  <li>The app is audited by Nuvemshop to test the implementation, scalability, stability and other important quality factors.</li>
+  <li>The App is released by Nuvemshop.</li>
+</ol>
+
+<h2 id="step-1-partner-account-and-app-creation">Step 1: Partner Account and App Creation</h2>
+
+<p>To interact with our APIs, you must create an App. An App represents a partner’s product in our platform. Each App has a set of credentials required to authenticate against our platform and be granted access to our APIs on behalf of the merchant, depending on the scopes enabled on the App’s settings.</p>
+
+<p>The steps to create a Payment App are as follows:</p>
+
+<ol>
+  <li>If your company doesn’t already have a Partner0s account, it can be created at our <a href="https://partners.tiendanube.com/">Partner Portal for Spanish LATAM</a> or at our <a href="https://partners.nuvemshop.com.br/">Partner Portal for Brasil</a>.</li>
+  <li>At the Partner portal, create anAapp and make sure all the fields are completed with valid and real data (<em>Note: fake data can be set while the app is in development mode</em>).</li>
+  <li>Take special care on the “redirect URI” which is a key part of the App installation process. You can modify it in the future, if necessary.</li>
+  <li>You might want to include a good description of the payment services you offer, since our platform may bring new clients to your business.</li>
+  <li>Make sure to choose the “Payments” category.</li>
+  <li>Since you are creating a Payment App, make sure the App has the following scopes enabled on its configuration:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">read_payments</code></li>
+      <li><code class="language-plaintext highlighter-rouge">write_payments</code></li>
+      <li><code class="language-plaintext highlighter-rouge">read_orders</code></li>
+      <li><code class="language-plaintext highlighter-rouge">write_orders</code></li>
+    </ul>
+  </li>
+</ol>
+
+<blockquote>
+  <p><strong>Important Note:</strong> Our Payments API is not enabled by default to all partner accounts and stores. Please, contact our Platform Development team to enable our Payments API on your partner account and its demo stores.</p>
+</blockquote>
+
+<h2 id="step-2-app-installation-and-payment-provider-creation-flow">Step 2: App Installation and Payment Provider Creation Flow</h2>
+
+<p>A store can have <code class="language-plaintext highlighter-rouge">n</code> number of Payment Providers, and every store has their own Payment Providers with their own IDs and these are unrelated to the Payment Providers created by the same App on other stores. This means that each time a merchant installs your App, it must follow the Payment Provider creation flow for that App.</p>
+
+<p>A Payment Provider object contain all the configuration to display payment methods, calculate prices, discounts, installments, among others, on the storefront and it also contains properties required for the checkout process.</p>
+
+<p>The App installation flow is a standard OAuth 2 flow. The details on the App installation flow can be found <a href="../../resources/authentication.md">here</a> and the details on creating a Payment Provider can be found in our <a href="../../resources/payment_provider.md">Payment Provider API Documentation</a>.</p>
+
+<p>During this flow, the App is expected to create the Payment Provider on the merchant’s store.</p>
+
+<p>The following sequence helps to illustrate the process concept:</p>
+<ul>
+  <li><em>Front</em>: The web browser.</li>
+  <li><em>Nuvemshop IdP</em>: Nuvemshop’s Identity Provider.</li>
+  <li><em>Nuvemshop API</em>: Self described.</li>
+  <li><em>Payment App</em>: Any host on the Payment Provider side.</li>
+</ul>
+
+<p><img src="./mmd/PaymentProvider-InstallationAndCreation.mmd.jpg" alt="App Installation and Payment Provider Creation Sequence" /></p>
+
+<p>Here’s a less abstract example:</p>
+<ul>
+  <li><em>Front</em>: The web browser.</li>
+  <li><em>Nuvemshop IdP</em>: Nuvemshop’s Identity Provider.</li>
+  <li><em>Nuvemshop API</em>: Self described.</li>
+  <li><em>App’s Backend</em>: Place where both APIs, the one from Nuvemshop and the Payment Provider’s one, live together.</li>
+  <li><em>Payment Provider API</em>: The original Payment Provider API.</li>
+</ul>
+
+<p><img src="./mmd/PaymentProvider-InstallationAndCreation-Implementation.jpg" alt="App Installation and Payment Provider Creation Sequence" /></p>
+
+<h4 id="intalling-an-app">Intalling an App</h4>
+
+<h5 id="1-get-the-authorization-code">(1) Get the Authorization Code</h5>
+
+<p>Use the following URL to start the App installation flow in a store:</p>
+
+<p><code class="language-plaintext highlighter-rouge">https://&lt;STORE_DOMAIN&gt;.com/admin/apps/&lt;APP_ID&gt;/authorize</code></p>
+
+<blockquote>
+  <p><em>Note:</em> Using placeholders for <code class="language-plaintext highlighter-rouge">store_domain</code> and <code class="language-plaintext highlighter-rouge">app_id</code>.</p>
+</blockquote>
+
+<p>After accepting the application permissions, the merchant will be redirected to the <code class="language-plaintext highlighter-rouge">redirect URI</code> configured for the App, with the <code class="language-plaintext highlighter-rouge">authorization code</code> attached as a query string.</p>
+
+<h5 id="2-get-the-access-token">(2) Get the Access Token</h5>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">--location</span> <span class="nt">--request</span> POST <span class="s1">'https://www.tiendanube.com/apps/authorize/token'</span> <span class="se">\</span>
+<span class="nt">--header</span> <span class="s1">'Content-Type: application/x-www-form-urlencoded'</span> <span class="se">\</span>
+<span class="nt">--data-urlencode</span> <span class="s1">'client_id=&lt;CLIENT_ID&gt;'</span> <span class="se">\</span>
+<span class="nt">--data-urlencode</span> <span class="s1">'client_secret=&lt;CLIENT_SECRET&gt;'' \
+--data-urlencode '</span><span class="nv">grant_type</span><span class="o">=</span>authorization_code<span class="s1">' \
+--data-urlencode '</span><span class="nv">code</span><span class="o">=</span>&lt;AUTHORIZATION_CODE&gt;<span class="s1">'
+</span></code></pre></div></div>
+
+<blockquote>
+  <p><em>Note 1:</em> Using placeholders for <code class="language-plaintext highlighter-rouge">client_id</code>, <code class="language-plaintext highlighter-rouge">client_secret</code> and <code class="language-plaintext highlighter-rouge">authorization_code</code>.</p>
+</blockquote>
+
+<blockquote>
+  <p><em>Note 2:</em> <code class="language-plaintext highlighter-rouge">client_id</code> and <code class="language-plaintext highlighter-rouge">app_id</code> represent the same value.</p>
+</blockquote>
+
+<h3 id="payment-provider-configuration">Payment Provider Configuration</h3>
+
+<p>You can find the list of Payment Provider object properties and their description in our <a href="../../resources/payment_provider.md">Payment Provider API Documentation</a>. All of the Payment Provider properties must have valid and real values (<em>Note: fake data can be set while the app is in development mode</em>).</p>
+
+<p><em>Quick example:</em></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">--location</span> <span class="nt">--request</span> POST <span class="s1">'https://api.tiendanube.com/v1/&lt;STORE_ID&gt;/payment_providers'</span> <span class="se">\</span>
+<span class="nt">--header</span> <span class="s1">'Authentication: bearer &lt;ACCESS_TOKEN&gt;'</span> <span class="se">\</span>
+<span class="nt">--header</span> <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
+<span class="nt">--data-raw</span> <span class="s1">'{
+	"name": "Acme Payments",
+	"description": "This is a brief description about the Acme Payments app.",
+	
+	// Other Payment Provider properties.
+}'</span>
+</code></pre></div></div>
+
+<p><em>See a full example <a href="[../../resources/payment_provider.md#post-payment_providers">here</a>.</em></p>
+
+<p>We strongly suggest taking a close look at each of the Payment Provider’s object properties to identify which ones may involve special handling and which ones may depend on the merchant’s account configuration on the Payment Provide’s site. Here’s a quick overview of some of the ones we think need extra attention:</p>
+
+<h4 id="checkout-configuration">Checkout Configuration</h4>
+
+<p>Most of our APIs are based on REST interfaces. However, our Checkout API are based on both, REST and JavaScript interfaces. For the Checkout API, the configuration is made through our REST API but the front-end interactions are handled by the JavaScript interface. This allows the app developer to implement their own JavaScript SDKs on our checkout’s front-end without any intervention from our development team.</p>
+
+<p>The Payment Provider has two checkout related properties:</p>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">checkout_payment_options</code>: List of Payment Options (such as <code class="language-plaintext highlighter-rouge">transparent</code>, <code class="language-plaintext highlighter-rouge">external</code> and <code class="language-plaintext highlighter-rouge">modal</code>), and their properties which include some like <code class="language-plaintext highlighter-rouge">name</code>, <code class="language-plaintext highlighter-rouge">logo_url</code> and <code class="language-plaintext highlighter-rouge">supported_payment_method_types</code>, among others.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">checkout_js_url</code>: The handlers for each checkout payment option (such as <code class="language-plaintext highlighter-rouge">onLoad</code>, <code class="language-plaintext highlighter-rouge">onSubmit</code>, etc.) are implemented through our JavaScript API. This property contains a HTTPS URL pointing to the file with these implementations so our checkout can run them on the front-end. This URL will be requested from the front-end, which means that the JS file must be hosted on a CDN capable of handling high traffic.</p>
+  </li>
+</ul>
+
+<p><strong><em>Note:</em></strong> The documentation of our Checkout API can be found <a href="../../resources/checkout.md">here</a>. Find more details about how to implement your own SDKs on the checkout JS file on the next section.</p>
+
+<h4 id="supported-currencies">Supported Currencies</h4>
+
+<p>This property contains a list of supported currencies in <a href="https://www.currency-iso.org/en/home/tables/table-a1.html">ISO 4217</a> format.</p>
+
+<p>The content of this field usually depends on settings on the merchant’s App account. It is important to set valid and real values on this field making sure it reflects the merchants settings to avoid any unexpected behaviour.</p>
+
+<p>Nuvemshop will use this value as a reference to show (<em>allow</em>) or hide (<em>deny</em>) the Payment Provider to buyers based on several business rules. Incorrect supplied values may result in incorrect and/or unsupported transactions being executed.</p>
+
+<h4 id="storefront-scripts">Storefront Scripts</h4>
+
+<p>Note that our front-end has two main components: <em>Storefront</em> and <em>Checkout</em>.</p>
+
+<p>In case any front-end JS script unrelated to the checkout process like, for example, a fraud prevention script such as a digital footprint, needed to be added to the merchant website’s storefront, our API has a resource for that purpose. Details on how to implement it can be found following <a href="../../resources/script.md">this link</a>.</p>
+
+<p>Any request to the Script API should be sent during the App’s installation process. Your App will need an extra scope to access this resource: <code class="language-plaintext highlighter-rouge">write_scripts</code>. You must enable it at the App’s configuration form on the Partner portal.</p>
+
+<h2 id="step-3-implementing-the-checkout-flow">Step 3: Implementing the Checkout Flow</h2>
+
+<p>Nuvemshop provides all the necessary REST and JavaScript APIs to allow 3rd Party developers to take care of the whole implementation in a completely autonomous way, without intervention from our development team at all.</p>
+
+<p>To illustrate the “Payment App” concept, let’s say we have a Payment Provider called “Acme Payments”. Here’s a classic implementation diagram:</p>
+
+<p><img src="./images/PaymentProvider-ClassicImplementation.png" alt="Classic Implementation Diagram" /></p>
+
+<p>And here’s the Nuvemshop App implementation diagram:</p>
+
+<p><img src="./images/PaymentProvider-AppImplementation.png" alt="App Implementation Diagram" /></p>
+
+<h3 id="available-checkout-payment-options">Available Checkout Payment Options</h3>
+
+<p>Currently, there are three main Checkout Payment Options. Below are quick descriptions of these to give some context and to align the reader with these concepts:</p>
+
+<h4 id="external-payment-option">External Payment Option</h4>
+
+<p>Pretty much a standard redirect payment flow:</p>
+
+<ol>
+  <li>The merchant’s website sends the order data to the Payment Provider.</li>
+  <li>The Payment Provider proccess the order, creates a <em>payment preference</em> and returns a redirect URL.</li>
+  <li>The buyer is redirected to the Payment Provider’s website.</li>
+  <li>The buyer follows the checkout flow.
+    <ul>
+      <li>If the buyer has an account on the Payment Provider and <em>wallet</em> features are supported, this flow has a very smooth UX.</li>
+    </ul>
+  </li>
+  <li>The buyer is redirected back to the merchant’s website and lands on a success, failure or cancel page.</li>
+</ol>
+
+<h4 id="transparent-payment-option">Transparent Payment Option</h4>
+
+<p>This approach keeps the buyer at the merchant’s website during all the checkout process:</p>
+
+<ol>
+  <li>The form for each supported payment method is rendered on the merchant’s website.</li>
+  <li>The order data together with the selected payment method information is sent to the Payment Provider.
+    <ul>
+      <li>The credit or debit card sensible information never goes in a readable way to the App’s back-end, but under a security strategy such as tokenization, encryption, etc., so that the Payment Provider will be the only able to read it’s content.</li>
+    </ul>
+  </li>
+</ol>
+
+<p>This option gives the buyer a more store-branded experience which improves the user experience quality.</p>
+
+<h4 id="modal-payment-option">Modal Payment Option</h4>
+<p>Some Payment Providers offer SDKs which render a lightbox or modal with an embedded <em>iframe</em> containing the Payment Provider’s checkout UI on the merchant’s website, giving the buyer a more transparent-like experience. In this case, though the buyer never really leaves the merchant’s website, the checkout flow is run under the Payment Provider’s domain.</p>
+
+<p>This option allows the App to take full control of the front-end and render all the necessary elements to start the payment process.</p>
+
+<blockquote>
+  <p><strong>Note:</strong> This implementation requires a rigorous internal certification process.</p>
+</blockquote>
+
+<h3 id="checkout-payment-options-implementation-checkout-js-api">Checkout Payment Options Implementation (Checkout JS API)</h3>
+
+<p>As explained before, the developer is in charge of the JavaScript and REST implementations. The developer’s JS implementation must follow our JS API specifications in order to properly integrate with our checkout. The file containing the app’s JS implementation must be hosted on a CDN which must be able to handle potentially high traffic concurrency with, of course, a secure URL.</p>
+
+<p>The App’s checkout payment options script location must be indicated in the <code class="language-plaintext highlighter-rouge">checkout_js_url</code> property of the <a href="../../resources/payment_provider.md">Payment Provider</a> object, which our checkout will fetch when needed.</p>
+
+<p><a href="../../resources/checkout.md">In this link</a> you can find very detailed information on how the Checkout JS API is implemented.</p>
+
+<h4 id="adding-a-checkout-payment-option">Adding a Checkout Payment Option</h4>
+
+<p>As explained previously on the <em>Checkout Configuration</em> section, Checkout Payment Options have two interfaces: the REST interface for Payment Provider’s configuration and the JavaScript interface for front-end event handling.</p>
+
+<p>Our front-end provides a context through the <code class="language-plaintext highlighter-rouge">LoadCheckoutPaymentContext()</code> global function. This function takes another function as parameter which in turn takes two arguments, a <code class="language-plaintext highlighter-rouge">Checkout</code> object and an object of the <code class="language-plaintext highlighter-rouge">PaymentOption</code> family.</p>
+
+<p>Therefore, your JavaScript file should look like this:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// acme.js</span>
+<span class="nx">LoadCheckoutPaymentContext</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">Checkout</span><span class="p">,</span> <span class="nx">PaymentOptions</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Your code here.</span>
+<span class="p">});</span>
+</code></pre></div></div>
+<p>To add a payment option, the method <code class="language-plaintext highlighter-rouge">Checkout.addPaymentOption()</code> must be called passing an instance of one of the available <code class="language-plaintext highlighter-rouge">PaymentOptions</code> objects. This instance must be created with all the necessary event handlers and an <code class="language-plaintext highlighter-rouge">id</code> property with the same value as the one configured in the associated checkout payment option at the <a href="../../resources/payment_provider.md">Payment Provider</a> object.</p>
+
+<p><em>A full description of the available PaymentOptions can be found <a href="../../resources/checkout.md#paymentoptions">here</a>.</em></p>
+
+<h5 id="transparent-card-implementation-example">Transparent Card Implementation Example</h5>
+
+<p>Let’s assume we’ve created a payment app called “Acme Payments” and now we want to implement a Transparent Card Option so the user can pay with a credit or debit card inside the store checkout. So, we have to create an instance of <code class="language-plaintext highlighter-rouge">PaymentOptions.Transparent.CardPayment</code> and add it to the Checkout by using the <code class="language-plaintext highlighter-rouge">Checkout.addPaymentOption()</code> method:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// acme.js</span>
+<span class="nx">LoadCheckoutPaymentContext</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">Checkout</span><span class="p">,</span> <span class="nx">PaymentOptions</span><span class="p">)</span> <span class="p">{</span>
+  
+  <span class="c1">// We create an instance of the transparent card payment option.</span>
+  
+  <span class="kd">var</span> <span class="nx">AcmeTransparentCardPaymentOption</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">PaymentOptions</span><span class="p">.</span><span class="nx">Transparent</span><span class="p">.</span><span class="nx">CardPayment</span><span class="p">({</span>
+    <span class="na">id</span><span class="p">:</span> <span class="dl">"</span><span class="s2">acme_transparent_card</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// Same `id` as in the REST API checkout payment option.</span>
+    
+    <span class="c1">// We indicate which extra fields we want to render in the form.</span>
+    <span class="na">fields</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">card_holder_id_number</span><span class="p">:</span> <span class="kc">true</span>
+    <span class="p">},</span>
+    
+    <span class="c1">// `onLoad` handler is common to all `PaymentOtpions`. </span>
+    <span class="na">onLoad</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="c1">// Do something after the script loads.</span>
+    <span class="p">},</span>
+    
+    <span class="c1">// `onDataChange` handler is specific to `Transparent.CardPayment` option.</span>
+    <span class="na">onDataChange</span><span class="p">:</span> <span class="nx">Checkout</span><span class="p">.</span><span class="nx">utils</span><span class="p">.</span><span class="nx">throttle</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="c1">// It can be used to, for example, read the card data, perform validations, refresh the installments data, etc.</span>
+    <span class="p">},</span> <span class="mi">700</span><span class="p">),</span>
+    
+    <span class="c1">// `onSubmit` handler is common to all `PaymentOtpions`. </span>
+    <span class="na">onSubmit</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="c1">// Do something when user submits the payment.</span>
+    <span class="p">},</span>
+    
+    <span class="c1">// More handlers...</span>
+  <span class="p">});</span>
+  
+  <span class="c1">// Finally, we add the Payment Option to the Checkout object so it can be render according to the configuration set on the Payment Provider.</span>
+  
+  <span class="nx">Checkout</span><span class="p">.</span><span class="nx">addPaymentOption</span><span class="p">(</span><span class="nx">AcmeTransparentCardPaymentOption</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">PaymentOptions.Transparent.CardPayment</code> takes care of rendering the card form and any information which may be relevant to the user, such as the available card brands and banks, and the installments data.</p>
+
+<p>The  <code class="language-plaintext highlighter-rouge">fields</code> porperty lets you select which optional input fields must be rendered on the card form. More information and a list of the available <em>fields</em> for this payment option can be found <a href="../../resources/checkout.md#cardpayment">here</a>.</p>
+
+<p>The handler <code class="language-plaintext highlighter-rouge">onDataChange</code> will be invoked every time the checkout data is modified. This handler should implement  business rules to validate the card’s information and to update the installments data that is displayed to the buyer.</p>
+
+<h5 id="external-payment-implementation-example">External Payment Implementation Example</h5>
+<p>Let’s assume we’ve created a payment app called “Acme Payments” and now we want to implement an External Payment Option so the user can paid from Acme’s website. So, we have to create an instance of <code class="language-plaintext highlighter-rouge">PaymentOptions.ExternalPayment</code> and add it to the Checkout by using the <code class="language-plaintext highlighter-rouge">Checkout.addPaymentOption()</code> method:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// acme.js</span>
+<span class="nx">LoadCheckoutPaymentContext</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">Checkout</span><span class="p">,</span> <span class="nx">PaymentOptions</span><span class="p">)</span> <span class="p">{</span>
+  
+  <span class="c1">// We create an instance of the external payment option.</span>
+  
+  <span class="kd">var</span> <span class="nx">AcmeExternalPaymentOption</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">PaymentOptions</span><span class="p">.</span><span class="nx">ExternalPayment</span><span class="p">({</span>
+    <span class="na">id</span><span class="p">:</span> <span class="dl">'</span><span class="s1">acme_external</span><span class="dl">'</span><span class="p">,</span> <span class="c1">// Same `id` as in the REST API checkout payment option.</span>
+    
+    <span class="c1">// Define all necessary handlers here.</span>
+  <span class="p">});</span>
+  
+  <span class="nx">Checkout</span><span class="p">.</span><span class="nx">addPaymentOption</span><span class="p">(</span><span class="nx">AcmeExternalPaymentOption</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h4 id="available-information-about-the-ongoing-sale">Available Information about the Ongoing Sale</h4>
+<p>The <em>Checkout</em> object provides the app with access to all the data related to the ongoing sale. We’ve got the following data groups:</p>
+
+<ul>
+  <li>Cart Information: <code class="language-plaintext highlighter-rouge">Checkout.getData('order.cart')</code>.</li>
+  <li>Total cart price: <code class="language-plaintext highlighter-rouge">Checkout.getData('totalPrice')</code> (also indicated by <code class="language-plaintext highlighter-rouge">Checkout.getData('order.cart.prices.total')</code>).</li>
+  <li>ID of the store to which the cart belongs: <code class="language-plaintext highlighter-rouge">Checkout.getData('storeId')</code>.</li>
+  <li>Customer Contact Information: <code class="language-plaintext highlighter-rouge">Checkout.getData('order.contact')</code>.</li>
+  <li>Billing Information: <code class="language-plaintext highlighter-rouge">Checkout.getData('order.billingAddress')</code>.</li>
+  <li>Shipping Information: <code class="language-plaintext highlighter-rouge">Checkout.getData('order.shippingAddress')</code>.</li>
+  <li>Shipping Method Information: <code class="language-plaintext highlighter-rouge">Checkout.getData('order.cart.shipping')</code>.</li>
+  <li>Payment Method Information: <code class="language-plaintext highlighter-rouge">Checkout.getData('form')</code>.</li>
+</ul>
+
+<h4 id="form-data">Form Data</h4>
+
+<p>Some SDKs have mechanisms to render forms using field names as required. To protect the UI and provide the user with a clean and smooth user experience, all forms are rendered by our own code following our standards with custom field names, as explained above.</p>
+
+<p>The object <code class="language-plaintext highlighter-rouge">Checkout.getData('form')</code> provides access to all the form fields. The payment method implementation must map each of the provided fields to the Payment Provider specific ones. In cases where a form with specific attributes needs to be submitted, we recommend using workarounds such as dynamically creating a hidden HTML form and submitting it using JavaScript.</p>
+
+<p>Take into account that it is possible to request the consumer with more payment method information by rendering the optional fields on the form, depending on the selected payment method.</p>
+
+<p>The available <em>fields</em> are:</p>
+<ul>
+  <li><a href="../../resources/checkout.md#cardpayment">Card Payment</a></li>
+  <li><a href="../../resources/checkout.md#debitpayment">Debit Payment</a></li>
+  <li><a href="../../resources/checkout.md#boletopayment">Boleto Payment</a></li>
+  <li><a href="../../resources/checkout.md#ticketpayment">Ticket Payment</a></li>
+  <li><a href="../../resources/checkout.md#pixpayment">PIX Payment</a></li>
+</ul>
+
+<p>Details on how to render the optional ones can be found <a href="../../resources/checkout.md#fields-property">here</a>.</p>
+
+<h4 id="adding-multiple-payment-options">Adding Multiple Payment Options</h4>
+<p>Any number of payment options can be added to the checkout, combining external and transparent options as prefered. Nuvemshop’s checkout may filter and hide some of them due to UX business rules being applied in order to improve the conversion rate.</p>
+
+<p>For example, if “Acme Payments” wants to add three different payment options, one for their own <em>external checkout</em>, one for <em>transparent card</em> and another one for <em>transparent boleto</em>, the Payment Provider must specify the following <code class="language-plaintext highlighter-rouge">checkout_payment_options</code>:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Acme Payments"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"checkout_js_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://cdn.acme.com/js/acme.js"</span><span class="p">,</span><span class="w">
+    
+  </span><span class="err">//</span><span class="w"> </span><span class="err">Most</span><span class="w"> </span><span class="err">of</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">Payment</span><span class="w"> </span><span class="err">Provider</span><span class="w"> </span><span class="err">properties</span><span class="w"> </span><span class="err">are</span><span class="w"> </span><span class="err">being</span><span class="w"> </span><span class="err">omitted</span><span class="w"> </span><span class="err">for</span><span class="w"> </span><span class="err">better</span><span class="w"> </span><span class="err">readability.</span><span class="w">
+    
+  </span><span class="nl">"checkout_payment_options"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"acme_external"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"logo_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"supported_billing_countries"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"BR"</span><span class="w">
+      </span><span class="p">],</span><span class="w">
+      </span><span class="nl">"supported_payment_method_types"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"credit_card"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"debit_card"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"boleto"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"pix"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"wire_transfer"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"wallet"</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"acme_transparent_card"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"logo_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"supported_billing_countries"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"BR"</span><span class="w">
+      </span><span class="p">],</span><span class="w">
+      </span><span class="nl">"supported_payment_method_types"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"credit_card"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"debit_card"</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"acme_transparent_boleto"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"logo_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"supported_billing_countries"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"BR"</span><span class="w">
+      </span><span class="p">],</span><span class="w">
+      </span><span class="nl">"supported_payment_method_types"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"boleto"</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Then, the JavaScript implementation must have an instance for each <em>checkout payment option</em> defined in the Payment Provider configuration:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">LoadCheckoutPaymentContext</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">Checkout</span><span class="p">,</span> <span class="nx">PaymentOptions</span><span class="p">)</span> <span class="p">{</span>
+  
+  <span class="kd">let</span> <span class="nx">AcmeExternalPaymentOption</span> <span class="o">=</span> <span class="nx">PaymentOptions</span><span class="p">.</span><span class="nx">ExternalPayment</span><span class="p">({</span>
+    <span class="na">id</span><span class="p">:</span> <span class="dl">'</span><span class="s1">acme_external</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">fields</span><span class="p">:</span> <span class="p">{...},</span>
+    <span class="na">scripts</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://...</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">onLoad</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){...},</span>
+    <span class="na">onSubmit</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">callback</span><span class="p">){...}</span>
+  <span class="p">});</span>
+
+
+  <span class="kd">let</span> <span class="nx">AcmeTransparentCardPaymentOption</span> <span class="o">=</span> <span class="nx">PaymentOptions</span><span class="p">.</span><span class="nx">Transparent</span><span class="p">.</span><span class="nx">CardPayment</span><span class="p">({</span>
+    <span class="na">id</span><span class="p">:</span> <span class="dl">'</span><span class="s1">acme_transparent_card</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">fields</span><span class="p">:</span> <span class="p">{...},</span>
+    <span class="na">scripts</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://...</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">onLoad</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){...},</span>
+    <span class="na">onDataChange</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){...},</span>
+    <span class="na">onSubmit</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">callback</span><span class="p">){...}</span>
+  <span class="p">});</span>
+
+  <span class="kd">let</span> <span class="nx">AcmeBoletoPaymentOption</span> <span class="o">=</span> <span class="nx">PaymentOptions</span><span class="p">.</span><span class="nx">Transparent</span><span class="p">.</span><span class="nx">BoletoPayment</span><span class="p">({</span>
+    <span class="na">id</span><span class="p">:</span> <span class="dl">'</span><span class="s1">acme_transparent_boleto</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">fields</span><span class="p">:</span> <span class="p">{...},</span>
+    <span class="na">scripts</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://...</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">onLoad</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){...},</span>
+    <span class="na">onSubmit</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">callback</span><span class="p">){...}</span>
+  <span class="p">});</span>
+
+  <span class="nx">Checkout</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">AcmeExternalPaymentOption</span><span class="p">);</span>
+  <span class="nx">Checkout</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">AcmeTransparentCardPaymentOption</span><span class="p">);</span>
+  <span class="nx">Checkout</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">AcmeBoletoPaymentOption</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>The script can have any number of checkout payment option instances, however, only those specified on the Payment Provider will be loaded. This allows the developer to have one static JavaScript file with logic for all configurations and then manage the available payment options for each store by adding them or not to the Payment Provider object.</p>
+
+<h2 id="step-4-transactions-implementation">Step 4: Transactions Implementation</h2>
+
+<p>Payment apps work with orders. However, we don’t provide any endpoint to directly change an order’s payment status. That’s where Transactions come in.</p>
+
+<p>A Nuvemshop order can have many Transactions. A Transaction represents a single intention of moving money. If, for any reason (e.g. “insufficient funds”) a Transaction failed, the next buyer’s attempt to pay for the order would be a new Transaction. Likewise, an order paid with two credit cards would have one Transaction per credit card since two movements of money are being performed.</p>
+
+<p>An order will automatically calculate its current payment status by checking all of its related Transactions and applying some business rules.</p>
+
+<p><em>The full Transaction resource specification can be found <a href="../../resources/transaction.md#transaction">here</a>.</em></p>
+
+<h3 id="creating-a-transaction">Creating a Transaction</h3>
+<p>The App’s back-end must <code class="language-plaintext highlighter-rouge">POST</code> a Transaction to our platform as soon a one is created on the Payment Provider’s side.</p>
+
+<p>A Transaction not only helps to calculate an order payment status but also provides detailed information about the payment process so that the merchant can have full autonomy when handling orders and dealing with payment issues. Also, this information is always important to help the merchant with feature business decisions.</p>
+
+<p>As a reference, here are two examples of the implementation of the <code class="language-plaintext highlighter-rouge">POST</code> Transaction request.</p>
+
+<p><em>Example with transparent payment option:</em></p>
+
+<p><img src="./mmd/PaymentProvider-TransparentPaymentOption.mmd.png" alt="Transparent Payment Option Sequence" /></p>
+
+<p><em>Example with external payment option:</em></p>
+
+<p><img src="./mmd/PaymentProvider-RedirectPaymentOption.mmd.png" alt="Redirect Payment Option Sequence" /></p>
+
+<h3 id="transaction-properties">Transaction Properties</h3>
+
+<p>To ensure the best visibility on payments to both buyers and merchants,, it’s very important to provide as much information as possible about each Transaction.</p>
+
+<p>The <a href="../../resources/transaction.md#transaction-info">TransactionInfo</a> object should be completed with all the information required for each payment method.</p>
+
+<h3 id="updating-a-transaction">Updating a Transaction</h3>
+
+<p>Nuvemshop’s Transaction API is designed to reflect transactions that already exist and events related to those transactions that have already happened. Our Transaction API will automatically calculate the Transactions <code class="language-plaintext highlighter-rouge">status</code> on every <a href="../../resources/transaction.md#transaction-events">TransactionEvent</a> reported by the Payment Provider using the <a href="../../resources/transaction.md#transaction-eventspost-ordersorder_idtransactionstransaction_idevents">TransactionEvent endpoint</a>.</p>
+
+<h3 id="transaction-event-workflows">Transaction Event workflows</h3>
+<p>The possible <code class="language-plaintext highlighter-rouge">TransactionEvents</code> a Transaction can receive depend on the possible workflows for each Payment Method Type.</p>
+
+<p>The payment methods <code class="language-plaintext highlighter-rouge">boleto</code>, <code class="language-plaintext highlighter-rouge">ticket</code>, <code class="language-plaintext highlighter-rouge">bank_debit</code>, <code class="language-plaintext highlighter-rouge">debit_card</code>, <code class="language-plaintext highlighter-rouge">wallet</code>, <code class="language-plaintext highlighter-rouge">wire_transfer</code>, <code class="language-plaintext highlighter-rouge">cash</code> and <code class="language-plaintext highlighter-rouge">pix</code>, all share the same events workflow.</p>
+
+<p>On the other hand, <code class="language-plaintext highlighter-rouge">credit_card</code> has its own workflow to support all the transaction events specific to this payment method type.</p>
+
+<h2 id="order-management-refunds-and-chargebacks">Order Management: Refunds and Chargebacks</h2>
+<p>Currently, customers can’t cancel orders from their purchase tracking page. In case they want to cancel a purchase, they will need to contact the seller.</p>
+
+<h4 id="refunds">Refunds</h4>
+
+<p>Merchants will be able to refund orders in two ways: from the store’s dashboard or from the payment provider’s dashboard.</p>
+
+<p>If your App supports Transaction refunds, then you must specify a <em>refund URL</em> within the Transaction data every time you create one. In this way, when merchants want to cancel an order from the store’s dashboard, they will have the possibility of returning the money to the consumer. If this is so, Nuvemshop will notify your App of the refund intention through the <em>refund URL</em> specified for the Transaction related to the order. For more details on the implementation of the refund URL, visit the following <a href="../../resources/transaction.md#Refund-URL">link</a>.</p>
+
+<p>Likewise, if your App supports it, merchants could also perform Transaction refunds from the Payment Provider dashboard.</p>
+
+<p>Either way, once a Transaction is refunded, then a <code class="language-plaintext highlighter-rouge">TransactionEvent</code> of type <code class="language-plaintext highlighter-rouge">refund</code> must be posted for the corresponding Nuvemshop’s Transaction.</p>
+
+<h4 id="chargebacks">Chargebacks</h4>
+
+<p>Chargebacks are not supported at the moment, but we’re looking forward to support them soon.</p>
+
+<h2 id="infrastructure">Infrastructure</h2>
+<p>It is important to take into account that Nuvemshop is a platform with 70K+ stores. This means the App’s back-end will need to be able to handle high-traffic loads. All the necessary scaling, performance monitoring and alert triggering architecture must be implemented.</p>
+
+<p>Special dates like Black Friday, Cyber Monday and Hot Sale should be handled with care. Your App should be able to sustain heavy loads with multiple very high traffic peaks.</p>
+
+<h2 id="app-metadata">App Metadata</h2>
+<p>The payments configuration dashboard of a store displays the available Payment Apps for that store so that the merchant can directly install them from there, instead of having to visit the App Store. Our Partner panel currently does not support to configure specific parameters of a <em>payment</em> application category, such as information about transaction costs (<em>rates</em>), supported payment methods, etc. However, our support team will gladly set up that information for you.</p>
+
+<p>The Payment App metadata information is country specific, so, if your App will be published in several countries, you’ll need to provide a JSON for each country.</p>
+
+<p><strong><em>Note:</em></strong> All fields in the metadata object are <em>optional</em>. However, it is required to provide the merchant with a way to check the App’s rate information. Therefore, one of the <code class="language-plaintext highlighter-rouge">rates_url</code> or <code class="language-plaintext highlighter-rouge">rates</code> fields must be specified so that the App can be available to stores.</p>
+
+<p><em>Here is an example of what a JSON would look like for the metadata of a Payment App:</em></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"type"</span><span class="p">:</span><span class="s2">"aggregator"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Acme Payments"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"logo_urls"</span><span class="p">:{</span><span class="w">
+       </span><span class="nl">"400x120"</span><span class="p">:</span><span class="s2">"https://cdn.acme.com/logos/400x120.png"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"This is a brief description about the Acme Payments app."</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"installation_description"</span><span class="p">:</span><span class="s2">"This is a brief description of the installation process for the Acme Payments app."</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"rates_url"</span><span class="p">:</span><span class="s2">"https://acme.com/rates"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"register_url"</span><span class="p">:</span><span class="s2">"https://acme.com/register"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"support_phone"</span><span class="p">:</span><span class="s2">"+54123456789"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"supported_payment_method_types"</span><span class="p">:[</span><span class="w">
+       </span><span class="s2">"credit_card"</span><span class="p">,</span><span class="w">
+       </span><span class="s2">"wallet"</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"features"</span><span class="p">:[</span><span class="w">
+       </span><span class="s2">"gateway"</span><span class="p">,</span><span class="w">
+       </span><span class="s2">"special_rates"</span><span class="p">,</span><span class="w">
+       </span><span class="s2">"transparent_checkout"</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"rates"</span><span class="p">:[</span><span class="w">
+       </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"payment_method_type"</span><span class="p">:</span><span class="s2">"credit_card"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"rates_definition"</span><span class="p">:[</span><span class="w">
+             </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"percent_fee"</span><span class="p">:</span><span class="s2">"2.15"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"flat_fee"</span><span class="p">:{</span><span class="w">
+                   </span><span class="nl">"currency"</span><span class="p">:</span><span class="s2">"ARS"</span><span class="p">,</span><span class="w">
+                   </span><span class="nl">"value"</span><span class="p">:</span><span class="s2">"1.00"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"plus_tax"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"days_to_withdraw_money"</span><span class="p">:</span><span class="mi">14</span><span class="w">
+             </span><span class="p">}</span><span class="w">
+          </span><span class="p">]</span><span class="w">
+       </span><span class="p">},</span><span class="w">
+       </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"payment_method_type"</span><span class="p">:</span><span class="s2">"wallet"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"rates_definition"</span><span class="p">:[</span><span class="w">
+             </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"percent_fee"</span><span class="p">:</span><span class="s2">"1.5"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"flat_fee"</span><span class="p">:{</span><span class="w">
+                   </span><span class="nl">"currency"</span><span class="p">:</span><span class="s2">"ARS"</span><span class="p">,</span><span class="w">
+                   </span><span class="nl">"value"</span><span class="p">:</span><span class="s2">"1.00"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"plus_tax"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"days_to_withdraw_money"</span><span class="p">:</span><span class="mi">7</span><span class="w">
+             </span><span class="p">}</span><span class="w">
+          </span><span class="p">]</span><span class="w">
+       </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+ </span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+
+
+    </section>
+	<footer class="site-footer">
+	<div class="footer-content">
+		<span class="small-logo">
+			<symbol id="svg_logo_nube_light"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 599.7 100.7"><path d="M89.1,0L89.1,0C75.9,0,63.5,5.1,54.2,14.2c-4.7-2-9.9-3.1-15.2-3.1C17.6,11.1,0.1,28.5,0.1,50	S17.5,88.9,39,88.9c5.2,0,10.4-1.1,15.1-3.1c9,8.8,21.3,14.2,34.8,14.2c27.6,0,50-22.4,50-50C139,22.5,116.6,0,89.1,0L89.1,0z M89,88.9c-21.4,0-38.9-17.4-38.9-38.9H39c0,9.8,2.8,19,7.7,26.7c-2.5,0.7-5.1,1.1-7.7,1.1c-15.3,0-27.8-12.5-27.8-27.8	S23.7,22.2,39,22.2c6.1,0,11.8,1.9,16.7,5.6c7.1,5.3,11.1,13.4,11.1,22.2H78c0-11.6-5-22.4-13.9-29.8c7-5.8,15.8-9.1,25-9.1	c21.4,0,38.9,17.5,38.9,38.9C127.9,71.4,110.5,88.9,89,88.9z M167.2,77.9V42.3h-7.5v-8.9h7.5V20.2h10.5v13.2h7.5v8.9h-7.5v35.6	H167.2z M196.1,26.9c-3.5,0-6.4-2.9-6.4-6.4c0-3.6,2.9-6.5,6.4-6.5c3.7,0,6.5,3,6.5,6.5S199.9,26.9,196.1,26.9z M191,77.9V33.4h10.5	v44.5H191z M250.8,67.4c-3.7,7-10.6,11.5-20.1,11.5c-13.5,0-23.1-9.6-23.1-23.3c0-13.3,9.8-23.3,22.6-23.3c13,0,22.1,10,22.1,23.3	c0,0.8,0,1.9-0.1,3.2H218c0.5,6.4,6.2,11.3,12.8,11.3c5.8,0,8.8-2.8,11.3-6.7L250.8,67.4z M241.9,51.2c-0.7-5.9-5.4-10.3-11.9-10.3	c-6.3,0-11.2,5.2-11.9,10.3H241.9z M268.5,77.9H258V33.4h10.5v5.9c2.8-4.3,7.4-7,13.6-7c10.9,0,17.2,7.2,17.2,18.8v26.8h-10.5V53.1	c0-6.9-3.4-11.1-9.9-11.1c-6.3,0-10.4,4.8-10.4,12.4V77.9L268.5,77.9z M341.6,77.9v-6.4c-3.3,4.6-8.9,7.4-15.1,7.4	c-12.3,0-21.7-10-21.7-23.3c0-13.1,9.4-23.3,21.7-23.3c6.2,0,11.8,2.5,15.1,7.2V16.7H352v61.2H341.6z M328.7,69.4	c7.5,0,13.3-6.2,13.3-13.8s-5.8-13.8-13.3-13.8s-13.3,6.2-13.3,13.8S321.2,69.4,328.7,69.4z M374,51.6l12.1-1.5v-1.9	c0-4.4-3.1-7.3-7.9-7.3c-4.5,0-7.4,2.3-8.8,6.7l-9.6-2.5c2.2-8,9.3-12.9,18.4-12.9c11.6,0,18.1,6.1,18.1,16.6v28.9h-9.8l-0.1-5.4	c-3,4.3-8.1,6.5-13.9,6.5c-8.4,0-14.3-5.4-14.3-12.9C358.2,58,363.5,53.2,374,51.6z M375,70.5c6.5,0,11.2-4.2,11.2-10.1v-2.5	l-10.1,1.4c-5,0.6-7.4,2.9-7.4,6.1C368.7,68.6,371.3,70.5,375,70.5z M415.3,77.9h-10.5V33.4h10.5v5.9c2.8-4.3,7.4-7,13.6-7	c10.9,0,17.2,7.2,17.2,18.8v26.8h-10.5V53.1c0-6.9-3.4-11.1-9.9-11.1c-6.3,0-10.4,4.8-10.4,12.4V77.9L415.3,77.9z M453.7,58.7V33.4	h10.5v24.7c0,7,3.4,11.2,9.3,11.2c5.8,0,9.3-4.2,9.3-11.2V33.4h10.5v25.3c0,12.8-7.4,20.2-19.8,20.2C461.2,79,453.7,71.5,453.7,58.7	z M501.7,77.9V16.7h10.4v23.1c3.3-4.6,8.9-7.4,15.1-7.4c12.3,0,21.7,10,21.7,23.3c0,13.1-9.4,23.3-21.7,23.3	c-6.2,0-11.8-2.5-15.1-7.2v6.1H501.7L501.7,77.9z M525.1,41.8c-7.5,0-13.3,6.2-13.3,13.8s5.8,13.8,13.3,13.8s13.3-6.2,13.3-13.8	S532.6,41.8,525.1,41.8L525.1,41.8z M595.7,67.4c-3.7,7-10.6,11.5-20.1,11.5c-13.5,0-23.1-9.6-23.1-23.3c0-13.3,9.8-23.3,22.6-23.3	c13,0,22.1,10,22.1,23.3c0,0.8,0,1.9-0.1,3.2h-34.2c0.5,6.4,6.2,11.3,12.8,11.3c5.8,0,8.8-2.8,11.3-6.7L595.7,67.4L595.7,67.4z M586.8,51.2c-0.7-5.9-5.4-10.3-11.9-10.3c-6.3,0-11.2,5.2-11.9,10.3H586.8z" fill="#fff"></path></svg></symbol>
+		</span>
+	  <p class="copyright">
+		  <span>2011 - 2021 © Tiendanube/Nuvemshop</span>
+		<span>Todos los derechos reservados.</span>
+        <span>
+            <a href="https://www.tiendanube.com/que-es-tienda-nube/terminos-de-uso" title="">Términos y condiciones</a>.
+            <a href="https://www.tiendanube.com/politicas-de-privacidad" title="">Políticas de privacidad</a>.
+            <a href="https://www.tiendanube.com/politica-de-calidad" title="">Política de calidad</a>.
+        </span>
+	  </p>
+	</div>
+</footer>
+
+  </body>
+</html>
