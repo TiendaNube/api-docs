@@ -132,7 +132,7 @@ Requesting a Payment App for its `approved/captured` transaction to be refunded.
 | `type`           | String | One of the available [Transaction Event Types](#Transaction-Event-Types). |
 | `status`         | Object | One of the available [Transaction Event Status](#Transaction-Event-Status). |
 | `info`           | Object | Object containing specific info related to this Transaction Event. See [Transaction Event Info](#Transaction-Event-Info). |
-| `failure_code`   | String | If the Transaction Event failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
+| `failure_code`   | String | [Required for Transaction Event Status `failure`] If the Transaction Event failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
 | `happened_at`    | Date   | ISO 8601 date for the date the Transaction Event was processed. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
 | `expires_at`     | Date   | [Optional] ISO 8601 date for date the Transaction Event expires. It will be used to indicate to the merchant the deadline to accept or cancel a transaction under review. |
 | `created_at`     | Date   | [Read-only] ISO 8601 date for the date the Transaction Event was created in our platform. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
@@ -366,8 +366,6 @@ Get a specific Transaction for a given order.
 
 
 
-
-
 #### POST /orders/12345/transactions
 
 ##### Request
@@ -476,8 +474,6 @@ Get a specific Transaction for a given order.
 
 <details>
   <summary><b>Example Nº 2: Create a boleto transaction that starts pending and then is paid by the buyer</b></summary>
-
-
 
 
 
@@ -602,8 +598,6 @@ Get a specific Transaction for a given order.
 
 
 
-
-
 #### GET /orders/56789/transactions/21781944-a977-4b0d-93dc-908ddb87d778
 
 ##### Request
@@ -710,8 +704,6 @@ Get a specific Transaction for a given order.
 
 
 
-
-
 #### POST /orders/24680/transactions
 
 ##### Request
@@ -782,6 +774,85 @@ Get a specific Transaction for a given order.
             "expires_at": null
         }
     ]
+}
+```
+
+</details>
+
+<details>
+  <summary><b>Example Nº 5: Create a failed debit card transaction</b></summary>
+
+
+
+
+#### POST /orders/24680/transactions
+
+##### Request
+
+```json
+{
+  "payment_provider_id": "eeac118e-5534-40ba-b539-443449bc67a3",
+  "payment_method": {
+    "type": "debit_card",
+    "id": "visa_debit"
+  },
+  "info": {
+    "external_id": "1234",
+    "external_url": "https://mypayments.com/account/transactions/1234"
+  },
+  "first_event": {
+    "amount": {
+      "value": "132.95",
+      "currency": "BRL"
+    },
+    "type": "sale",
+    "status": "failure",
+    "failure_code": "card_cvv_invalid",
+    "happened_at": "2021-04-22T12:30:15.000Z"
+  }
+}
+```
+
+##### Response
+
+`201 Created`
+
+```json
+{
+   "id":"96d9256b-6935-41bd-b820-48a33595de1d",
+   "payment_provider_id":"eeac118e-5534-40ba-b539-443449bc67a3",
+   "captured_amount":null,
+   "refunded_amount":null,
+   "authorized_amount":null,
+   "voided_amount":null,
+   "payment_method":{
+      "type":"debit_card",
+      "id": "visa_debit"
+   },
+   "status":"failed",
+   "info":{
+      "refund_url":null,
+     "external_id": "1234",
+     "external_url": "https://mypayments.com/account/transactions/1234",
+      "ip":null
+   },
+   "failure_code":"card_cvv_invalid",
+   "created_at":"2021-04-22 14:56:00",
+   "events":[
+      {
+         "transaction_id":"96d9256b-6935-41bd-b820-48a33595de1d",
+         "type":"sale",
+         "status":"failure",
+         "failure_code":"card_cvv_invalid",
+         "created_at":"2021-04-22T14:56:00.910Z",
+         "happened_at":"2021-04-22T12:30:15Z",
+         "expires_at":null,
+         "amount":{
+           "value": "132.95",
+           "currency": "BRL"
+         }
+      }
+   ]
 }
 ```
 
@@ -871,6 +942,7 @@ The following list contains all the Transaction failures codes currently support
 | `card_rejected_insufficient_funds`   | Card rejected for insufficient funds.                        |
 | `card_rejected_invalid_installments` | Card rejected for not supporting the specified installments. |
 | `card_rejected_max_attemps`          | Card rejected for exceeding the number of attempts.          |
+| `card_token_invalid`                 | The card token is invalid.                                   |
 
 #### Ticket
 
@@ -890,6 +962,7 @@ The following list contains all the Transaction failures codes currently support
 | Failure Code                     | Description                                     |
 | -------------------------------- | ----------------------------------------------- |
 | `shipping_city_invalid`          | The shipping city is invalid.                   |
+| `shipping_country_invalid`       | The shipping country is invalid.                |
 | `shipping_district_invalid`      | The shipping district is invalid.               |
 | `shipping_email_invalid`         | The shipping recipient email is invalid.        |
 | `shipping_firstname_invalid`     | The shipping recipient firstname is invalid.    |
