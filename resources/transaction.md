@@ -833,7 +833,7 @@ Get a specific Transaction for a given order.
    "info":{
       "refund_url":null,
      "external_id": "1234",
-     "external_url": "https://mypayments.com/account/transactions/1234"
+     "external_url": "https://mypayments.com/account/transactions/1234",
       "ip":null
    },
    "failure_code":"card_cvv_invalid",
