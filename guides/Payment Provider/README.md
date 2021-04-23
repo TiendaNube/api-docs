@@ -69,9 +69,7 @@ The steps to create a Payment App are as follows:
 4.  You might want to include a good description of the payment services you offer, since our platform may bring new clients to your business.
 5.  Make sure to choose the “Payments” category.
 6.  Since you are creating a Payment App, make sure the App has the following scopes enabled on its configuration:
-    - `read_payments`
     - `write_payments`
-    - `read_orders`
     - `write_orders`
 
 > **Important Note:** Our Payments API is not enabled by default to all partner accounts and stores. Please, contact our Platform Development team to enable our Payments API on your partner account and its demo stores.
