@@ -1,7 +1,7 @@
 # Setup
 title:        Tiendanube/Nuvemshop
 tagline:      Developers Documentation
-baseurl:      "/tiendanube.api.docs"
+baseurl:      "/api-docs"
 locale:       "en"
 
 markdown: kramdown
