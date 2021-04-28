@@ -104,6 +104,62 @@ No additional parameter is sent along with this event. To get the list of domain
 
 A webhook notification expects a 200 status code in response (40 seconds timeout). If this does not happen (it gets another response code or no response at all) we will try to deliver the notification up to 17 times (a success response code will stop next notifications) along the next two days in incremental lapses of time. After this, the notification is lost.
 
+Required Webhooks
+---------
+
+In order for our company to comply with data protection laws (example LGPD in Brazil), we provide Webhooks that facilitate communication between consumers, merchants and integrated applications, to trigger notices of removal or update of shared data, when a request is received for us.
+
+* store/redact - Requests deletion of store data.
+* customers/redact - Requests deletion of customer data.
+* customers/data_request - Requests to view stored customer data.
+
+These webhooks help you manage the user data that an application uses. You must enter the addresses on the application's configuration page in the Partner's admin.
+
+### store/redact
+Request to delete store information. 48 hours after a store uninstalls your app, Nuvemshop|Tiendanube sends this webhook with the store ID so that you can delete the shopkeeper's information from your database.
+Payload:
+
+```javascript
+{
+   store_id: 123
+}
+```
+### customers/redact
+Request to erase consumer information. If the consumer did not place an order at the store 6 months ago, the webhook will be sent after 5 days. If the customer has placed an order in the last 6 months, the deleted order will be held until 6 months have passed.
+Payload: 
+
+```javascript
+{
+store_id: 123,
+customer: {
+	id: 1,
+	email: email@email.com
+	phone: +55...,
+	identification: ... 
+},
+orders_to_redact: [213, 3415, 21515]
+}
+```
+### customers/data_request
+Request for customer information. It is the application's responsibility to send the information directly to the merchant.
+Payload: 
+
+```javascript
+
+{
+store_id: 123,
+customer: {
+	id: 1,
+	email: email@email.com
+	phone: +55...,
+	identification: ...
+},                                                                                                                                                                                                                                    
+orders_requested: [213, 3415, 21515],
+data_request: {
+	id: 456,
+}
+}
+```
 Endpoints
 ---------
 
