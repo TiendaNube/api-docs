@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#157878">
+  <link rel="stylesheet" href="/tiendanube.api.docs/css/normalize.css">
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="/tiendanube.api.docs/css/fonts.css">
+  <link rel="stylesheet" href="/tiendanube.api.docs/css/cayman.css">
+</head>
+
+
+  <body>
+    <section class="page-header">
+  <span class="project-name">Tiendanube/Nuvemshop</span>
+  <span class="project-tagline">Developers Documentation</span>
+</section>
+
+
+    <section class="main-content">
+      
+      <h1 id="discount-api">Discount API:</h1>
+<p><small>Create, manage and apply discount rules.</small></p>
+
+<p>The Discount API is a set of tools that allows the development of a wide range of promotional rules.</p>
+
+<p>Before we start working, we need to clarify some basic concepts that we will be using from now on.</p>
+
+<h2 id="definitions">Definitions</h2>
+<h3 id="promotions-and-discounts">Promotions and discounts</h3>
+
+<p>A promotion is a set of properties and business rules that can be applied to a user's cart. An example could be <em><strong>3x2 in black t-shirts</strong></em>.</p>
+
+<p>This promotion has a name or description, and at the same time, is an expression of business logic which implies that for every three products in the cart, one of these will be free, as long as belongs to a specific set of products. In this case, Black T-shirts.</p>
+
+<p>Even if the promotion describes a business logic, it doesn't indicate the result of that promotion in a specific cart. In other words, we don't know how much money will be discounted.</p>
+
+<p>The subtotal of that cart will be 3 x 100 BRL = 300 BRL.</p>
+
+<p>The promotion makes one of these products free, which means a <strong>discount</strong> of 100 BRL on the subtotal. Then, the total of the cart is 200 BRL.</p>
+
+<p>In a nutshell, a discount is a promotion applied to a specific cart.</p>
+
+<p><strong>PROMOTION</strong> : Set of properties and business rules that describes a behavior.<br />
+<strong>DISCOUNT</strong> : The net value that will be extracted from the cart total because a promotion was applied.</p>
+
+<h3 id="executors">Executors</h3>
+
+<p>An Executor refers to a function registered by the application to be performed once an event occurs.</p>
+
+<h3 id="tier">Tier</h3>
+
+<p>We will call Tier to a specific group of promotions. These tiers will be executed in order and will apply depending on one of each other.</p>
+
+<p>We have three tiers: Line Item, Cross Item and Shipping Line.</p>
+
+<p><img src="./images/promotion_tiers.png" alt="" /></p>
+
+<h2 id="how-it-works">How it works</h2>
+
+<p>Each application that wants to work with promotions, should interact with two main services provided by Tiendanube, the Discount Javascript API, and the Tiendanube API.</p>
+
+<p>The applications can validate their business rules using executors, and these need to be subscribed using the Discount Javascript API to be orchestrated.</p>
+
+<p>On the other side, the Tiendanube API will allow the applications to manage promotions and register discounts through an authenticated REST API.</p>
+
+<p>Likewise, each application must have a way to get the executor's requests and interact with the Tiendanube API.</p>
+
+<h2 id="accountabilities">Accountabilities</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Accountability</th>
+      <th>Tiendanube</th>
+      <th>APP</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>To ease the creation and storage of the promotion's business logic</td>
+      <td> </td>
+      <td><strong>X</strong></td>
+    </tr>
+    <tr>
+      <td>Verify that the promotion's rules comply</td>
+      <td> </td>
+      <td><strong>X</strong></td>
+    </tr>
+    <tr>
+      <td>Request the discount application to a cart</td>
+      <td> </td>
+      <td><strong>X</strong></td>
+    </tr>
+    <tr>
+      <td>Provide acknowledgment that a discount was applied</td>
+      <td> </td>
+      <td><strong>X</strong></td>
+    </tr>
+    <tr>
+      <td>Add a discount to a cart</td>
+      <td><strong>X</strong></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Show the available discount into the cart</td>
+      <td><strong>X</strong></td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="where-do-i-start">Where do I start?</h2>
+
+<p>Before you start to create your app, you need to follow the points described below:</p>
+
+<ol>
+  <li>Register as a partner in <a href="http://www.tiendanube.com/partners">Tiendanube</a> or <a href="{site.data.institutional.partners.br}}">Nuvemshop</a>.</li>
+  <li>Once inside your partner's admin panel, go to the "Apps" section and create your app.</li>
+  <li>Read up on <a href="/tiendanube.api.docs/resources/authentication">how to authenticate</a> your app with us.</li>
+  <li>Read the API docs to understand what you can do with your app.</li>
+</ol>
+
+<h2 id="integration">Integration</h2>
+
+<h3 id="create-promotions">Create promotions</h3>
+
+<p><img src="./images/c4_register_a_discount_context.png" alt="" /></p>
+
+<p>Each application is responsible for the creation and storage of all their business logic. Nevertheless, Tiendanube/Nuvemshop needs to identify each promotion, which should be doing it through the API.</p>
+
+<p>This operation will return an ID to the combination of the promotions and the current store.</p>
+
+<p>You should take into consideration some values can't be updated after the creation. For more information about the API, please refer to <a href="/tiendanube.api.docs/resources/discounts/api">Discount API Docs</a>.</p>
+
+<h3 id="apply-a-discount">Apply a discount</h3>
+
+<p><img src="./images/c4_apply_a_discount_context.png" alt="" /></p>
+
+<p>Any modification on the cart state will be evaluated and informed to each partner which is registered to a promotion tier through the Discount Application JS API.</p>
+
+<p>Each partner should evaluate the current cart and decide if a promotion should be applied (or removed), and do the corresponding request to do this.</p>
+
+<p>For more information about the API requests used to create or remove a discount, please refer to <a href="/tiendanube.api.docs/resources/discounts/api">Discount API Docs</a>.</p>
+
+<h2 id="front-end-integration">Front-End Integration</h2>
+
+<p>Inside the execution context, in the global scope, the application will have available an instance of the discountService. This can be used to subscribe to executors. Through this, Tiendanube will be capable of orchestrating all the application executors for each available event.</p>
+
+<h3 id="subscribing-executors">Subscribing Executors</h3>
+
+<p>Different events are available to listen up and take actions based on it, and even though a custom listener can be used, in this context, the method <strong>discountService.subscribe(fn)</strong> should be used.</p>
+
+<p>Fn is representing an async function. This one is responsible for the execution of any needed logic to evaluate the business rules.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">const</span> <span class="nx">tierName</span> <span class="o">=</span> <span class="nx">tierNameProvider</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">LINE_ITEM</span><span class="dl">'</span><span class="p">),</span>
+
+<span class="nx">discountService</span><span class="p">.</span><span class="nx">suscribe</span><span class="p">(</span><span class="nx">tierName</span><span class="p">,</span> <span class="k">async</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="k">await</span> <span class="nx">fetch</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://rules.my-discount-app.com</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+      <span class="na">method</span><span class="p">:</span> <span class="dl">'</span><span class="s1">POST</span><span class="dl">'</span><span class="p">,</span>
+      <span class="na">body</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">detail</span><span class="p">)</span>
+   <span class="p">})</span>
+   <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">response</span> <span class="o">=&gt;</span> <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">());</span>
+<span class="p">});</span>
+
+</code></pre></div></div>
+
+<p>This example presents some points to consider.</p>
+
+<ul>
+  <li>The tier name is retrieved using the global instance of <strong>tierNameProvider</strong>.</li>
+  <li>The executor will get the information needed as a data object as a parameter.</li>
+  <li>The body MUST contain the property <strong>acknowledge,</strong> which will be used to determine if partner does some modification to the cart (add or remove a discount)</li>
+</ul>
+
+<h3 id="data-objects">Data Objects</h3>
+
+<p>At the time that the executor is called, a data object will be sent as a parameter. This object will contain the information of the current cart.</p>
+
+<p>For more information about the structures please refers <a href="/tiendanube.api.docs/resources/discounts/data-objects">here</a></p>
+
+<h2 id="discount-application-flow">Discount application flow</h2>
+
+<p><img src="./images/discount_request_flow.png" alt="" /></p>
+
+<h2 id="resources">Resources</h2>
+
+<ul>
+  <li><a href="/tiendanube.api.docs/resources/discounts/api">Api Specification</a></li>
+  <li><a href="/tiendanube.api.docs/resources/discounts/api/openapi.yml">Openapi.yml</a></li>
+</ul>
+
+<h2 id="frequently-asked-questions">Frequently Asked Questions</h2>
+
+<h3 id="what-should-my-executor-return">What should my executor return?</h3>
+
+<p>Once the executor was performed, the discountService will evaluate the property <strong>acknowledge</strong>. This property informs that the application made a successful Intent and the result should be verified.</p>
+
+<h3 id="what-happens-if-my-discount-is-no-longer-valid">What happens if my discount is no longer valid?</h3>
+
+<p>If a promotional rule was valid in the past but is no longer applicable, the discount must be removed through the API by the partner.</p>
+
+
+    </section>
+	<footer class="site-footer">
+	<div class="footer-content">
+		<span class="small-logo">
+			<symbol id="svg_logo_nube_light"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 599.7 100.7"><path d="M89.1,0L89.1,0C75.9,0,63.5,5.1,54.2,14.2c-4.7-2-9.9-3.1-15.2-3.1C17.6,11.1,0.1,28.5,0.1,50	S17.5,88.9,39,88.9c5.2,0,10.4-1.1,15.1-3.1c9,8.8,21.3,14.2,34.8,14.2c27.6,0,50-22.4,50-50C139,22.5,116.6,0,89.1,0L89.1,0z M89,88.9c-21.4,0-38.9-17.4-38.9-38.9H39c0,9.8,2.8,19,7.7,26.7c-2.5,0.7-5.1,1.1-7.7,1.1c-15.3,0-27.8-12.5-27.8-27.8	S23.7,22.2,39,22.2c6.1,0,11.8,1.9,16.7,5.6c7.1,5.3,11.1,13.4,11.1,22.2H78c0-11.6-5-22.4-13.9-29.8c7-5.8,15.8-9.1,25-9.1	c21.4,0,38.9,17.5,38.9,38.9C127.9,71.4,110.5,88.9,89,88.9z M167.2,77.9V42.3h-7.5v-8.9h7.5V20.2h10.5v13.2h7.5v8.9h-7.5v35.6	H167.2z M196.1,26.9c-3.5,0-6.4-2.9-6.4-6.4c0-3.6,2.9-6.5,6.4-6.5c3.7,0,6.5,3,6.5,6.5S199.9,26.9,196.1,26.9z M191,77.9V33.4h10.5	v44.5H191z M250.8,67.4c-3.7,7-10.6,11.5-20.1,11.5c-13.5,0-23.1-9.6-23.1-23.3c0-13.3,9.8-23.3,22.6-23.3c13,0,22.1,10,22.1,23.3	c0,0.8,0,1.9-0.1,3.2H218c0.5,6.4,6.2,11.3,12.8,11.3c5.8,0,8.8-2.8,11.3-6.7L250.8,67.4z M241.9,51.2c-0.7-5.9-5.4-10.3-11.9-10.3	c-6.3,0-11.2,5.2-11.9,10.3H241.9z M268.5,77.9H258V33.4h10.5v5.9c2.8-4.3,7.4-7,13.6-7c10.9,0,17.2,7.2,17.2,18.8v26.8h-10.5V53.1	c0-6.9-3.4-11.1-9.9-11.1c-6.3,0-10.4,4.8-10.4,12.4V77.9L268.5,77.9z M341.6,77.9v-6.4c-3.3,4.6-8.9,7.4-15.1,7.4	c-12.3,0-21.7-10-21.7-23.3c0-13.1,9.4-23.3,21.7-23.3c6.2,0,11.8,2.5,15.1,7.2V16.7H352v61.2H341.6z M328.7,69.4	c7.5,0,13.3-6.2,13.3-13.8s-5.8-13.8-13.3-13.8s-13.3,6.2-13.3,13.8S321.2,69.4,328.7,69.4z M374,51.6l12.1-1.5v-1.9	c0-4.4-3.1-7.3-7.9-7.3c-4.5,0-7.4,2.3-8.8,6.7l-9.6-2.5c2.2-8,9.3-12.9,18.4-12.9c11.6,0,18.1,6.1,18.1,16.6v28.9h-9.8l-0.1-5.4	c-3,4.3-8.1,6.5-13.9,6.5c-8.4,0-14.3-5.4-14.3-12.9C358.2,58,363.5,53.2,374,51.6z M375,70.5c6.5,0,11.2-4.2,11.2-10.1v-2.5	l-10.1,1.4c-5,0.6-7.4,2.9-7.4,6.1C368.7,68.6,371.3,70.5,375,70.5z M415.3,77.9h-10.5V33.4h10.5v5.9c2.8-4.3,7.4-7,13.6-7	c10.9,0,17.2,7.2,17.2,18.8v26.8h-10.5V53.1c0-6.9-3.4-11.1-9.9-11.1c-6.3,0-10.4,4.8-10.4,12.4V77.9L415.3,77.9z M453.7,58.7V33.4	h10.5v24.7c0,7,3.4,11.2,9.3,11.2c5.8,0,9.3-4.2,9.3-11.2V33.4h10.5v25.3c0,12.8-7.4,20.2-19.8,20.2C461.2,79,453.7,71.5,453.7,58.7	z M501.7,77.9V16.7h10.4v23.1c3.3-4.6,8.9-7.4,15.1-7.4c12.3,0,21.7,10,21.7,23.3c0,13.1-9.4,23.3-21.7,23.3	c-6.2,0-11.8-2.5-15.1-7.2v6.1H501.7L501.7,77.9z M525.1,41.8c-7.5,0-13.3,6.2-13.3,13.8s5.8,13.8,13.3,13.8s13.3-6.2,13.3-13.8	S532.6,41.8,525.1,41.8L525.1,41.8z M595.7,67.4c-3.7,7-10.6,11.5-20.1,11.5c-13.5,0-23.1-9.6-23.1-23.3c0-13.3,9.8-23.3,22.6-23.3	c13,0,22.1,10,22.1,23.3c0,0.8,0,1.9-0.1,3.2h-34.2c0.5,6.4,6.2,11.3,12.8,11.3c5.8,0,8.8-2.8,11.3-6.7L595.7,67.4L595.7,67.4z M586.8,51.2c-0.7-5.9-5.4-10.3-11.9-10.3c-6.3,0-11.2,5.2-11.9,10.3H586.8z" fill="#fff"></path></svg></symbol>
+		</span>
+	  <p class="copyright">
+		  <span>2011 - 2021 © Tiendanube/Nuvemshop</span>
+		<span>Todos los derechos reservados.</span>
+        <span>
+            <a href="https://www.tiendanube.com/que-es-tienda-nube/terminos-de-uso" title="">Términos y condiciones</a>.
+            <a href="https://www.tiendanube.com/politicas-de-privacidad" title="">Políticas de privacidad</a>.
+            <a href="https://www.tiendanube.com/politica-de-calidad" title="">Política de calidad</a>.
+        </span>
+	  </p>
+	</div>
+</footer>
+
+  </body>
+</html>

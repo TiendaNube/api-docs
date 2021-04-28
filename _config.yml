@@ -1,0 +1,15 @@
+# Setup
+title:        Tiendanube/Nuvemshop
+tagline:      Developers Documentation
+baseurl:      "/api-docs"
+locale:       "en"
+
+markdown: kramdown
+
+defaults:
+  - scope:
+      path: "assets/images"
+    values:
+      image: true
+
+

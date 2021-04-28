@@ -1,0 +1,2820 @@
+{
+   "info":{
+      "_postman_id":"1b509dd4-7d32-4ee2-8499-a5e84dde3ebd",
+      "name":"Public Api TiendaNube",
+      "description":"This collection represents all examples of tiendanube's / nuvemshop's public API.",
+      "schema":"https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+   },
+   "item":[
+      {
+         "name":"Installation",
+         "item":[
+            {
+               "name":"Authorization, StoreID and AccessToken",
+               "request":{
+                  "method":"POST",
+                  "header":[
+                     
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{\n    \"client_id\": \"0000\",\n    \"client_secret\": \"xxxxxxxx\",\n    \"grant_type\": \"authorization_code\",\n    \"code\": \"xxxxxxxxx\"\n}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://www.nuvemshop.com.br/apps/authorize/token",
+                     "protocol":"https",
+                     "host":[
+                        "www",
+                        "nuvemshop",
+                        "com",
+                        "br"
+                     ],
+                     "path":[
+                        "apps",
+                        "authorize",
+                        "token"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            }
+         ]
+      },
+      {
+         "name":"Categories",
+         "item":[
+            {
+               "name":"GET Categories",
+               "request":{
+                  "method":"GET",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/categories?fields",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "categories"
+                     ],
+                     "query":[
+                        {
+                           "key":"fields",
+                           "value":null
+                        }
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Create a new  Category",
+               "request":{
+                  "method":"POST",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{\n    \"name\": {\n      \"en\": \"Gen I\",\n      \"es\": \"Gen I\",\n      \"pt\": \"Gen I\"\n    },\n    \"parent\": 4397543\n}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/categories",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "categories"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Update  Category",
+               "request":{
+                  "method":"PUT",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{\n    \"name\": {\n      \"en\": \"Gen I\",\n      \"es\": \"Gen I\",\n      \"pt\": \"Gen I\"\n    },\n    \"parent\": null    \n}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/categories/{{category_id}}",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "categories",
+                        "{{category_id}}"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Remove  Category",
+               "request":{
+                  "method":"DELETE",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/categories/{{category_id}}",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "categories",
+                        "{{category_id}}"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            }
+         ],
+         "description":"A Category lets the store owner group his/her products to make the store easier to browse.\n\nA Category lets the store owner group his/her products to make the store easier to browse.\n\nProperties\n----------\n\n| Property       | Explanation                                                                                      |\n| -------------- | ------------------------------------------------------------------------------------------------ |\n| id             | The unique numeric identifier for the Category                                                   |\n| name           | List of the names of the Category, in every language supported by the store                      |\n| descripton     | List of the descriptions of the Category, as HTML, in every language supported by the store      |\n| handle         | List of the url-friendly strings generated from the Category's names, in every language supported by the store |\n| parent         | Id of the Category's parent. *null* if it has no parent                                          |\n| subcategories  | The ids of the Category's first level subcategories                                              |\n| created_at     | Date when the Category was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)   | \n| updated_at     | Date when the Category was last updated in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)|\n"
+      },
+      {
+         "name":"Coupons",
+         "item":[
+            {
+               "name":"Get Coupons",
+               "request":{
+                  "method":"GET",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/coupons?fields&valid=true",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "coupons"
+                     ],
+                     "query":[
+                        {
+                           "key":"fields",
+                           "value":null
+                        },
+                        {
+                           "key":"valid",
+                           "value":"true"
+                        }
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Create a new Coupon",
+               "request":{
+                  "method":"POST",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{\n    \"code\": \"COUPON_TEST\",\n    \"type\": \"percentage\",\n    \"value\": \"30.00\",\n    \"max_uses\": 100,\n    \"min_price\": 10,\n    \"categories\": null,\n    \"start_date\": \"2021-05-08\",\n    \"end_date\": \"2021-06-08\"\n}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/coupons",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "coupons"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Modify Coupon",
+               "request":{
+                  "method":"PUT",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{\n    \"code\": \"COUPON_TEST1\", \n    \"type\": \"absolute\", \n    \"value\": 50\n}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/coupons/{{coupon_id}}",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "coupons",
+                        "{{coupon_id}}"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Remove Coupon",
+               "request":{
+                  "method":"DELETE",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/coupons/{{coupon_id}}",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "coupons",
+                        "{{coupon_id}}"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            }
+         ],
+         "description":"Coupons\n========\n\nA discount coupon is a way for a store to provide discounts for its customers. There are three type of coupons. Percentage, absolute and shipping. The percentage type indicates that the value is a percentage discount. The type absolute indicates that the value is an absolute amount of discount. And finally the type shipping indicates that the discount value is on the shipping.\n\nProperties\n----------\n\n| Property             | Explanation                                                                                  |\n| -------------------- | -------------------------------------------------------------------------------------------- |\n| id                   | The unique numeric identifier for the coupon.                                                |\n| code                 | String that identifies the coupon.                                                           |\n| type                 | Type of the coupon. Can take the following values: percentage, absolute or shipping.         |\n| valid                | Flag (true or false) that indicates if the coupon is valid or not.                           |\n| start_date           | Date from which the coupon is valid.                                                         |\n| end_date             | Date of overdue of the coupon.                                                               |\n| deleted_at           | Date when the coupon was deleted. The value is NULL if the coupon is still valid.            |\n| max_uses             | Max number of times the coupon can be used.                                                  |\n| value                | Value of the discount                                                                        |\n| min_price            | Indicates the minimun value of the bill for applying the discount                            |\n| categories           | List of [Category](https://github.com/tiendanube/api-docs/blob/master/resources/category.md) objects representing the categories of the store where the discount applies. |\n"
+      },
+      {
+         "name":"Customer",
+         "item":[
+            {
+               "name":"Get Customer",
+               "request":{
+                  "method":"GET",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/customers?fields",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "customers"
+                     ],
+                     "query":[
+                        {
+                           "key":"fields",
+                           "value":null
+                        }
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Create a new Customer",
+               "request":{
+                  "method":"POST",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{\n    \"name\": \"First Last\",\n    \"email\": \"first.last@example.com\",\n    \"addresses\": [\n      {\n        \"address\": \"My Street\",\n        \"city\": \"My City\",\n        \"country\": \"BR\",\n        \"locality\": \"Morumbi\",\n        \"number\": \"123\",\n        \"phone\": \"11 1234-5678\",\n        \"province\": \"São Paulo\",\n        \"zipcode\": \"05653-071\"\n      }\n    ],\n    \"send_email_invite\": true,\n    \"password\": \"mysupersecretpassword\"\n}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/customers",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "customers"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Modify Customer",
+               "request":{
+                  "method":"PUT",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{\n    \"name\": \"First Last 2\",\n    \"email\": \"first.last@mail.com\"\n}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/customers/{{customer_id}}",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "customers",
+                        "{{customer_id}}"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Remove Customer",
+               "request":{
+                  "method":"DELETE",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/customers/{{customer_id}}",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "customers",
+                        "{{customer_id}}"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            }
+         ],
+         "description":"Customer\n========\n\nA Customer of the store. Customer accounts store contact information for the customer, saving logged-in customers the trouble of having to provide it at every checkout.\n\nProperties\n----------\n\n| Property             | Explanation                                                                                  |\n| -------------------- | -------------------------------------------------------------------------------------------- |\n| id                   | The unique numeric identifier for the Customer                                               |\n| name                 | Name of the Customer                                                                         |\n| email                | E-mail of the Customer                                                                       |\n| phone                | Phone number of the customer (not necessarily the same as the address's phone)               |\n| identification       | Customer's identification (in Brazil for example, it would be the CPF/CNPJ)                  |\n| note                 | Store owner's notes about the customer                                                       |\n| default_address      | Default shipping address of the Customer                                                     |\n| addresses            | List of shipping addresses for the Customer                                                  |\n| billing_address      | Billing address of the Customer                                                              |\n| billing_number       | Billing number of the Customer                                                               |\n| billing_floor        | Billing floor of the Customer                                                                |\n| billing_locality     | Billing locality of the Customer                                                             |\n| billing_zipcode      | Billing zipcode of the Customer                                                              |\n| billing_city         | Billing city of the Customer                                                                 |\n| billing_province     | Billing province of the Customer                                                             |\n| billing_country      | Billing country code of the Customer                                                         |\n| extra                | A JSON object containing custom information. Can be set via the API or through custom form fields of name \"extra[key]\" on the Customer's register form in the storefront. |\n| total_spent          | The total amount of money that the Customer has spent at the store                           |\n| total_spent_currency | The total spent's currency in [ISO 4217 format](http://en.wikipedia.org/wiki/ISO_4217)       |\n| last_order_id        | The id of the Customer's last Order                                                          |\n| active               | \"true\" if the Customer activated his account. \"false\" if he/she hasn't                       |\n| created_at           | Date when the Customer was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)     | \n| updated_at           | Date when the Customer was last updated in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)|"
+      },
+      {
+         "name":"Products",
+         "item":[
+            {
+               "name":"Get Products",
+               "request":{
+                  "method":"GET",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/products?fields",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "products"
+                     ],
+                     "query":[
+                        {
+                           "key":"fields",
+                           "value":null
+                        }
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Create a new  Product",
+               "request":{
+                  "method":"POST",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{\n    \"images\": [\n      {\n        \"src\": \"http://images1.wikia.nocookie.net/__cb20101106022321/pokemon/images/f/f1/UltraBallArt.png\"\n      }\n    ],\n    \"name\": {\n      \"en\": \"Ultra Ball\",\n      \"es\": \"Ultra Ball\",\n      \"pt\": \"Ultra Ball\"\n    },\n    \"variants\": [\n        {\n            \"price\": \"10.00\",\n            \"stock_management\": true,\n            \"stock\": 12,\n            \"weight\": \"2.00\"\n        }\n    ]\n}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/products",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "products"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Modify  Product",
+               "request":{
+                  "method":"PUT",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{    \n    \"name\": {\n      \"en\": \"Ultra Ball EN\",\n      \"es\": \"Ultra Ball ES\",\n      \"pt\": \"Ultra Ball PT\"\n    }\n}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/products/{{product_id}}",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "products",
+                        "{{product_id}}"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Remove  Product",
+               "request":{
+                  "method":"DELETE",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/products/{{product_id}}",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "products",
+                        "{{product_id}}"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Get products images",
+               "request":{
+                  "method":"GET",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/products/{{product_id}}/images?fields",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "products",
+                        "{{product_id}}",
+                        "images"
+                     ],
+                     "query":[
+                        {
+                           "key":"fields",
+                           "value":null
+                        }
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Create a new Product Image",
+               "request":{
+                  "method":"POST",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{\n    \"src\": \"https://picsum.photos/200\"\n}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/products/{{product_id}}/images",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "products",
+                        "{{product_id}}",
+                        "images"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Modify Product Image",
+               "request":{
+                  "method":"PUT",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{\n    \"src\": \"https://picsum.photos/600\"    \n}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/products/{{product_id}}/images/{{image_id}}",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "products",
+                        "{{product_id}}",
+                        "images",
+                        "{{image_id}}"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Remove  Product Image",
+               "request":{
+                  "method":"DELETE",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/products/{{product_id}}/images/{{image_id}}",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "products",
+                        "{{product_id}}",
+                        "images",
+                        "{{image_id}}"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Get products variatns",
+               "request":{
+                  "method":"GET",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/products/{{product_id}}/variants",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "products",
+                        "{{product_id}}",
+                        "variants"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Create a new product variant",
+               "request":{
+                  "method":"POST",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{\n    \"values\": [\n        {\n            \"pt\": \"X-Large\"\n        }\n    ],\n    \"price\": \"19.00\"\n}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/products/{{product_id}}/variants",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "products",
+                        "{{product_id}}",
+                        "variants"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Modify product variant",
+               "request":{
+                  "method":"PUT",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{    \n    \"price\": \"19.99\"\n}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/products/{{product_id}}/variants/{{variant_id}}",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "products",
+                        "{{product_id}}",
+                        "variants",
+                        "{{variant_id}}"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Modify product variant Collection",
+               "request":{
+                  "method":"PATCH",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"[\n    {\n        \"id\": 263775505,\n        \"values\": [\n            {\n                \"en\": \"Large\"\n            }\n        ],\n        \"price\": \"19.00\"\n    },\n    {\n        \"id\": 263775506,\n        \"values\": [\n            {\n                \"en\": \"X-Large\"\n            }\n        ],\n        \"price\": \"21.00\"\n    }\n]",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/products/{{product_id}}/variants/{{variant_id}}",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "products",
+                        "{{product_id}}",
+                        "variants",
+                        "{{variant_id}}"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Remove  Product variant",
+               "request":{
+                  "method":"DELETE",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/products/{{product_id}}/variants/{{variant_id}}",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "products",
+                        "{{product_id}}",
+                        "variants",
+                        "{{variant_id}}"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            }
+         ],
+         "description":"Product\n======\n\nA Product is an item for sale in a Tiendanube/Nuvemshop's store. It can be either a good or a service.\n\nProperties\n----------\n\n| Property       | Explanation                                                                                       |\n| -------------- | ------------------------------------------------------------------------------------------------- |\n| id             | The unique numeric identifier for the Product                                                     |\n| name           | List of the names of the Product, in every language supported by the store                        |\n| description    | List of the descriptions of the Product, as HTML, in every language supported by the store        |\n| handle         | List of the url-friendly strings generated from the Product's names, in every language supported by the store |\n| variants       | List of [Product Variant](https://github.com/tiendanube/api-docs/blob/master/resources/product_variant.md) objects representing the different version of the Product |\n| images         | List of [Product Image](https://github.com/tiendanube/api-docs/blob/master/resources/product_image.md) objects representing the Product's images                 |\n| categories     | List of [Category](https://github.com/tiendanube/api-docs/blob/master/resources/category.md) objects representing the Product's categories             |\n| brand          | The Product's brand                                                                               |\n| published      | *true* if the Product is published in the store. *false* otherwise                                |\n| free_shipping  | *true* if the Product is elegible for free shipping. *false* otherwise                            |\n| seo_title      | The SEO friendly title for the Product. Up to 70 characters                                       |\n| seo_description| The SEO friendly description for the Product. Up to 320 characters                                |\n| attributes     | List of the names of the attributes whose values define the variants. E.g.: Color, Size, etc      |\n| tags           | String with all the Product's tags, separated by commas                                           |\n| created_at     | Date when the Product was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)     | \n| updated_at     | Date when the Product was last updated in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)|\n| requires_shipping | *true* if the Product is physical. *false* if it is digital |"
+      },
+      {
+         "name":"Scripts",
+         "item":[
+            {
+               "name":"Get Scripts",
+               "request":{
+                  "method":"GET",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/scripts?fields",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "scripts"
+                     ],
+                     "query":[
+                        {
+                           "key":"fields",
+                           "value":null
+                        }
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Create a new Script",
+               "request":{
+                  "method":"POST",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{\n    \"src\": \"https://myapp.com/new.js\",\n    \"event\" : \"onload\",\n    \"where\" : \"store\"\n}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/scripts",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "scripts"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Modify Script",
+               "request":{
+                  "method":"PUT",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{\n    \"src\": \"https://myapp.com/new2.js\",\n    \"event\" : \"onload\",\n    \"where\" : \"store\"\n}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/scripts/{{script_id}}",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "scripts",
+                        "{{script_id}}"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Remove Script",
+               "request":{
+                  "method":"DELETE",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/scripts/{{script_id}}",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "scripts",
+                        "{{script_id}}"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            }
+         ],
+         "description":"Script\n======\n\nThe Script resource allows the app to register custom Javascript to be run in the store or in the checkout page. Also, if the user deletes your app, then he will not have to edit his theme to remove your JavaScript. When an app is uninstalled from a store, all of the scripts the app created are automatically removed along with it.\n\nYou should have the following things into consideration:\n\n* Scripts **must be served over HTTPS**.\n\n* You cannot depend of any JavaScript available in the store's theme. Not even jQuery.\n\n* Another applications may be installed and can include other JavaScript in addition to yours.\n\n* When we include your script in the store, we will send a `store` parameter with the store id (e.g. `<script type=\"text/javascript\" src=\"https://myapp.com/new.js?store=1234\"></script>`). \n\n\nProperties\n----------\n\n| Property       | Explanation                                                                                       |\n| -------------- | ------------------------------------------------------------------------------------------------- |\n| id             | The unique numeric identifier for the Script                                                      |\n| src            | Specifies the location of the Script. **Must be HTTPS**.                                          |\n| event          | DOM event which triggers the loading of the script. Valid values are **onload** (default)         |\n| where          | A comma-separated list of places where the javascript will run. Valid values are **store** (default) or **checkout** |\n| created_at     | Date when the Script was created in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601)     | \n| updated_at     | Date when the Script was last updated in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601)|"
+      },
+      {
+         "name":"Webhooks",
+         "item":[
+            {
+               "name":"Get Webhooks",
+               "request":{
+                  "method":"GET",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/webhooks?fields",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "webhooks"
+                     ],
+                     "query":[
+                        {
+                           "key":"fields",
+                           "value":null
+                        }
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Create a new Webhook",
+               "request":{
+                  "method":"POST",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "type":"text",
+                        "value":"bearer {{app_token}}"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "type":"text",
+                        "value":"MyApp test@tiendanube.com.com"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{\n  \"event\": \"product/created\",\n  \"url\": \"https://myapp.com/product_created_hook\"\n}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/webhooks?fields",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "webhooks"
+                     ],
+                     "query":[
+                        {
+                           "key":"fields",
+                           "value":null
+                        }
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Modify Webhook",
+               "request":{
+                  "method":"PUT",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "type":"text",
+                        "value":"bearer {{app_token}}"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "type":"text",
+                        "value":"MyApp test@tiendanube.com.com"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{\n  \"event\": \"product/created\",\n  \"url\": \"https://myapp.com/product_created_hook\"\n}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/webhooks/{{webhook_id}}",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "webhooks",
+                        "{{webhook_id}}"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Remove Webhook",
+               "request":{
+                  "method":"DELETE",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "type":"text",
+                        "value":"bearer {{app_token}}"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "type":"text",
+                        "value":"MyApp test@tiendanube.com.com"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/webhooks/{{webhook_id}}",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "webhooks",
+                        "{{webhook_id}}"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            }
+         ],
+         "description":"Webhook\n=======\n\nA Webhook is a tool that allows you to receive a notification for a certain event. It allows you to register an *https* URL which will receive the event data, stored in JSON. Webhooks can be registered for the following events:\n\n| Category       | Events                                                                                           |\n| -------------- | ------------------------------------------------------------------------------------------------ |\n| App            | uninstalled/suspended/resumed                                                                    |\n| Category       | created/updated/deleted                                                                          |\n| Order          | created/updated/paid/packed/fulfilled/cancelled                                                  |\n| Product        | created/updated/deleted                                                                          |\n| Domain         | updated                                                                                          |\n| Theme          | updated                                                                                          |\n\nProperties\n----------\n\n| Property       | Explanation                                                                                      |\n| -------------- | ------------------------------------------------------------------------------------------------ |\n| id             | The unique numeric identifier for the Webhook                                                    |\n| url            | The URL where the webhook should send the POST request when the event occurs. **Must be HTTPS**. |\n| event          | The event that will trigger the webhook                                                          |\n| created_at     | Date when the Webhook was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)    | \n| updated_at     | Date when the Webhook was last updated in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)|"
+      },
+      {
+         "name":"Shipping Carriers",
+         "item":[
+            {
+               "name":"GET Shipping Carriers",
+               "request":{
+                  "method":"GET",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/shipping_carriers",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "shipping_carriers"
+                     ],
+                     "query":[
+                        {
+                           "key":"XDEBUG_SESSION_START",
+                           "value":"PHPSTORM",
+                           "disabled":true
+                        }
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Create a new  Shipping Carrier",
+               "request":{
+                  "method":"POST",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{\n\t\"name\": \"myapp_carrier_1\",\n\t\"callback_url\": \"https://myapp.com/rates1\",\n\t\"types\": \"ship,pickup\",\n\t\"status\": true\n}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/shipping_carriers",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "shipping_carriers"
+                     ],
+                     "query":[
+                        {
+                           "key":"XDEBUG_SESSION_START",
+                           "value":"PHPSTORM",
+                           "disabled":true
+                        }
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Modify Shipping Carrier",
+               "request":{
+                  "method":"PUT",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{\n\t\"name\": \"myapp_another_carrier_1\",\n\t\"callback_url\": \"https://myapp.com/rates1\",\n\t\"types\": \"ship,pickup\",\n\t\"status\": true\n}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/shipping_carriers/{{carrier_id}}",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "shipping_carriers",
+                        "{{carrier_id}}"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Remove Shipping Carrier",
+               "request":{
+                  "method":"DELETE",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/shipping_carriers/{{carrier_id}}",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "shipping_carriers",
+                        "{{carrier_id}}"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Get Shipping Carrier Options",
+               "protocolProfileBehavior":{
+                  "disableBodyPruning":true
+               },
+               "request":{
+                  "method":"GET",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{\n    \"name\": \"Shipping Carrier Ship Option 4\",\n    \"code\": \"ship-code-4\",\n    \"active\": true,\n    \"additional_days\": 0,\n    \"additional_cost\": 0,\n    \"allow_free_shipping\": false\n}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/shipping_carriers/{{carrier_id}}/options?fields",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "shipping_carriers",
+                        "{{carrier_id}}",
+                        "options"
+                     ],
+                     "query":[
+                        {
+                           "key":"fields",
+                           "value":null
+                        }
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Create a new  Shipping Carrier Option",
+               "request":{
+                  "method":"POST",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{\n    \"name\": \"Shipping Carrier Ship Option 4\",\n    \"code\": \"ship-code-4\",\n    \"active\": true,\n    \"additional_days\": 1,\n    \"additional_cost\": 0,\n    \"allow_free_shipping\": false\n}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/shipping_carriers/{{carrier_id}}/options",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "shipping_carriers",
+                        "{{carrier_id}}",
+                        "options"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Modify Shipping Carrier Option",
+               "request":{
+                  "method":"PUT",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "type":"text",
+                        "value":"bearer {{app_token}}"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "type":"text",
+                        "value":"MyApp test@tiendanube.com.com"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{\n    \"name\": \"Shipping Carrier Ship Option 4\",\n    \"code\": \"ship-code-005\",\n    \"active\": true,\n    \"additional_days\": 1,\n    \"additional_cost\": 0,\n    \"allow_free_shipping\": false\n}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/shipping_carriers/{{carrier_id}}/options/{{carrier_option_id}}",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "shipping_carriers",
+                        "{{carrier_id}}",
+                        "options",
+                        "{{carrier_option_id}}"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Remove Shipping Carrier Option",
+               "request":{
+                  "method":"DELETE",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "type":"text",
+                        "value":"bearer {{app_token}}"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "type":"text",
+                        "value":"MyApp test@tiendanube.com.com"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/shipping_carriers/{{carrier_id}}/options/{{carrier_option_id}}",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "shipping_carriers",
+                        "{{carrier_id}}",
+                        "options",
+                        "{{carrier_option_id}}"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            }
+         ],
+         "description":"Shipping Carrier\n===============\n\nA shipping carrier (or shipping company) service provides real-time shipping rates for merchants.\n\nUsing these endpoints, you can add a shipping carrier to a store and provide shipping rates at checkout.\n\nShipping Carrier Properties\n---------------------------\n\n| Property           | Explanation                                                                                                                   |\n| ------------------ | ----------------------------------------------------------------------------------------------------------------------------- |\n| id                 | The unique numeric identifier for the Shipping Carrier.                                                                       |\n| name               | The name of the Shipping Carrier as seen by both merchants and buyers.                                                        |\n| callback_url       | The URL endpoint that we need to retrieve shipping rates. **Must be HTTPS.**                                                  |\n| types              | The supported shipping types, can be one or both _ship_ or _pickup_.                                                          |\n| active             | Whether this Shipping Carrier is active.                                                                                      |\n| created_at         | Date when the Shipping Carrier was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601).                       | \n| updated_at         | Date when the Shipping Carrier was last updated in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601).                  |\n\nShipping Carrier Options\n------------------------\n\nAlmost every shipping carrier has multiple options to offer to the consumers, like standard and express shipping options. These options may provide some configurable values to the merchants through the store's admin, like additional costs and days, and also free shipping availability options.\n\nShipping Carrier Options Properties\n-----------------------------------\n\n| Property | Explanation |\n|----------|-------------|\n| id | The unique numeric identifier for the Shipping Carrier Option. |\n| code | A unique code associated with the Shipping Carrier Option. |\n| name | The name of the Shipping Carrier Option as seen by both merchants and buyers. |\n| additional_days | The additional days configurable value that will be added to the option's estimated delivery time. |\n| additional_cost | The additional cost configurable value that will be added to the option's consumer price. |\n| allow_free_shipping | The configurable free shipping eligible parameter that specifies that an option allows free shipping. |\n| active | Whether this Shipping Carrier Option is active. |\n| created_at | Date when the Shipping Carrier Option was created in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601). |\n| updated_at | Date when the Shipping Carrier Option was last updated in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601). |",
+         "event":[
+            {
+               "listen":"prerequest",
+               "script":{
+                  "type":"text/javascript",
+                  "exec":[
+                     ""
+                  ]
+               }
+            },
+            {
+               "listen":"test",
+               "script":{
+                  "type":"text/javascript",
+                  "exec":[
+                     ""
+                  ]
+               }
+            }
+         ]
+      },
+      {
+         "name":"Metafields",
+         "item":[
+            {
+               "name":"Get metafields",
+               "request":{
+                  "method":"GET",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/metafields/{{owner_resource}}",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "metafields",
+                        "{{owner_resource}}"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Create a new  metafield",
+               "request":{
+                  "method":"POST",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "type":"text",
+                        "value":"bearer {{app_token}}"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "type":"text",
+                        "value":"MyApp test@tiendanube.com.com"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{\n    \"key\": \"key\",\n    \"value\": \"value\",\n    \"namespace\": \"namespace\",\n    \"description\": \"description\",\n    \"owner_id\": \"2857023\",\n    \"owner_resource\": \"Product\"\n}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/metafields",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "metafields"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Modify metafield",
+               "request":{
+                  "method":"PUT",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "type":"text",
+                        "value":"bearer {{app_token}}"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "type":"text",
+                        "value":"MyApp test@tiendanube.com.com"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{\n    \"key\": \"key\",\n    \"value\": \"value\",\n    \"namespace\": \"namespace\",\n    \"owner_resource\": \"Product\"\n}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/metafields/{{metafield_id}}",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "metafields",
+                        "{{metafield_id}}"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Remove metafield",
+               "request":{
+                  "method":"DELETE",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "type":"text",
+                        "value":"bearer {{app_token}}"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "type":"text",
+                        "value":"MyApp test@tiendanube.com.com"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/metafields/{{metafield_id}}",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "metafields",
+                        "{{metafield_id}}"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            }
+         ],
+         "description":"Metafields\n========\n\nThe metafields are Namespaced Key - Value store for Apps.\n\nThe metafields can only be associated with the following entities: \n\n* Product\n* Product_Variant\n* Category\n* Page\n* Order\n* Customer\n\nTo do that you need to set the owner_resource to one of the above, an example would be owner_resource='Product'.\n\nAn use example would be use it in an app for Bookstores that require associate a book (product) with it's author and genre to provide an advanced search of books by this fields.\n\n\nProperties\n----------\n\n| Property             | Explanation                                                                                  |\n| -------------------- | -------------------------------------------------------------------------------------------- |\n| id                   | The unique numeric identifier for the metafield.                                                |\n| namespace                 | The namespace where the metafield makes sense. It can be any string that starts with a letter followed only by: a-z A-Z 0-9 or _.         |\n| key                 | String that identifies the metafield in some namespace. It can be any string that starts with a letter followed only by: a-z A-Z 0-9 or _.                                                           |\n| description                | String explaining the metafield's meaning (optional).                           |\n| value           | Metafield's value (string).                                                         |\n| owner_resource             | Type of entity to which is associated the metafield.                                                               |\n| owner_id             | Entity id to which is associated the metaField.                                                               |\n| created_at     | Date when the Metafield was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)     | \n| updated_at     | Date when the Metafield was last updated in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)|\n"
+      },
+      {
+         "name":"Store",
+         "item":[
+            {
+               "name":"Get Store",
+               "request":{
+                  "method":"GET",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/store?fields",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "store"
+                     ],
+                     "query":[
+                        {
+                           "key":"fields",
+                           "value":null
+                        }
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            }
+         ],
+         "description":"Store\n======\n\nThe Store resource contains general settings and information about a Tiendanube/Nuvemshop's store.\n\nProperties\n----------\n\n| Property          | Explanation                                                                                   |\n| ----------------- | --------------------------------------------------------------------------------------------- |\n| id                | The unique numeric identifier for the Store                                                   |\n| name              | List of the names of the Store, in every language supported by the store                      |\n| description       | List of the descriptions of the Store, in every language supported by the store               |\n| type              | Store type. Examples are \"clothing\", \"sports\", \"electronic\"                                   |\n| email             | Store owner's e-mail                                                                          |\n| logo              | Store logo URL, starting with // (or null if it has no logo)                                  |\n| contact_email     | Store's contact e-mail                                                                        |\n| facebook          | Store's Facebook URL                                                                          |\n| twitter           | Store's Twitter URL                                                                           |\n| google_plus       | Store's G+ URL                                                                                |\n| instagram         | Store's Instagram URL                                                                         |\n| pinterest         | Store's Pinterest URL                                                                         |\n| blog              | Store's blog URL                                                                              |\n| address           | Store's address                                                                               |\n| phone             | Store's phone                                                                                 |\n| business_id       | Business identifier (different for each country) of the company who owns the store            |\n| business_name     | Business name of the company who owns the store                                               |\n| business_address  | Business address of the company who owns the store                                            |\n| customer_accounts | \"optional\" if the customer is allowed to checkout as guest. \"mandatory\" if not.               |\n| plan_name         | Name of the Tiendanube/Nuvemshop's plan the store is on                                     |\n| country           | Store's country in [ISO 3166-1 format](http://en.wikipedia.org/wiki/ISO_3166-1)               |\n| languages         | Store available languages with its currency and whether or not is active                      |\n| domains           | List of store's domains                                                                       |\n| original_domain   | Original `tiendanube.com` or `nuvemshop.com.br` domain for the Store                          |\n| current_theme\t    | Store's current theme                          \t\t\t\t\t\t    |\n| main_language     | Store's main language                                                                         |\n| main_currency     | Store's main currency in [ISO 4217 format](http://en.wikipedia.org/wiki/ISO_4217)             |\n| admin_language    | Store's admin language                                                                        |\n| created_at        | Date when the Store was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)   | "
+      },
+      {
+         "name":"Orders",
+         "item":[
+            {
+               "name":"Get orders",
+               "request":{
+                  "method":"GET",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/orders?fields",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "orders"
+                     ],
+                     "query":[
+                        {
+                           "key":"fields",
+                           "value":null
+                        }
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Create a new order",
+               "request":{
+                  "method":"POST",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "type":"text",
+                        "value":"bearer {{app_token}}"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "type":"text",
+                        "value":"MyApp test@tiendanube.com.com"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{\n   \"currency\": \"BRL\",\n   \"language\": \"pt\",\n   \"status\": \"open\",\n   \"gateway\": \"offline\",\n   \"payment_status\": \"paid\",\n   \"products\": [\n            {\n                \"id\": 283325716,\n                \"depth\": \"0.00\",\n                \"height\": \"0.00\",\n                \"name\": \"Kit Adesivos descolados Nuvem Shop\",\n                \"price\": \"3.50\",\n                \"product_id\": 42777760,\n                \"image\": {\n                    \"id\": 74284099,\n                    \"product_id\": 42777760,\n                    \"src\": \"https://d26lpennugtm8s.cloudfront.net/stores/001/071/927/products/31-8c24623289ba0f423915725474027195-1024-1024.jpeg\",\n                    \"position\": 1,\n                    \"alt\": [],\n                    \"created_at\": \"2019-10-31T18:17:29+0000\",\n                    \"updated_at\": \"2019-10-31T18:43:35+0000\"\n                },\n                \"quantity\": \"3\",\n                \"free_shipping\": false,\n                \"weight\": \"0.00\",\n                \"width\": \"0.00\",\n                \"variant_id\": \"110727531\",\n                \"variant_values\": [],\n                \"properties\": [],\n                \"sku\": null,\n                \"barcode\": null\n            }\n   ],\n   \"inventory_behaviour\" : \"bypass\",\n   \"customer\": {\n       \"email\": \"john.doe@example.com\",\n       \"name\": \"John Doe\",\n       \"phone\": \"+55 11 99999-9999\",\n       \"document\": \"12345678901\"\n   },\n   \"note\": null,\n   \"billing_address\": {\n       \"first_name\": \"John\",\n       \"last_name\": \"Doe\",\n       \"address\": \"Evergreen Terrace\",\n       \"number\": \"742\",\n       \"floor\": null,\n       \"locality\": null,\n       \"city\": \"Springfield\",\n       \"province\": \"Oregon\",\n       \"zipcode\": \"97475\",\n       \"country\": \"US\",\n       \"phone\": \"5551230413\"\n   },\n   \"shipping_address\": {\n       \"first_name\": \"John\",\n       \"last_name\": \"Doe\",\n       \"address\": \"Evergreen Terrace\",\n       \"number\": \"742\",\n       \"floor\": null,\n       \"locality\": null,\n       \"city\": \"Springfield\",\n       \"province\": \"Oregon\",\n       \"zipcode\": \"97475\",\n       \"country\": \"US\",\n       \"phone\": \"5551230413\"\n   },\n   \"shipping_pickup_type\": \"ship\",\n   \"shipping\": \"correios\",\n   \"shipping_option\": \"Correios - PAC\",\n   \"shipping_tracking_number\": null,\n   \"shipping_cost_customer\": 20.00,\n   \"shipping_cost_owner\": 20.00,\n   \"send_confirmation_email\" : false,\n   \"send_fulfillment_email\" : false\n}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/orders",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "orders"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Modify order",
+               "request":{
+                  "method":"PUT",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "type":"text",
+                        "value":"bearer {{app_token}}"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "type":"text",
+                        "value":"MyApp test@tiendanube.com.com"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{\n    \"owner_note\": \"Need to gift wrap this order\"    \n}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/orders/{{order_id}}",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "orders",
+                        "{{order_id}}"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Close Order",
+               "request":{
+                  "method":"POST",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "type":"text",
+                        "value":"bearer {{app_token}}"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "type":"text",
+                        "value":"MyApp test@tiendanube.com.com"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/orders/{{order_id}}/close",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "orders",
+                        "{{order_id}}",
+                        "close"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Re-Open Order",
+               "request":{
+                  "method":"POST",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "type":"text",
+                        "value":"bearer {{app_token}}"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "type":"text",
+                        "value":"MyApp test@tiendanube.com.com"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/orders/{{order_id}}/open",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "orders",
+                        "{{order_id}}",
+                        "open"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Pack Order",
+               "request":{
+                  "method":"POST",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "type":"text",
+                        "value":"bearer {{app_token}}"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "type":"text",
+                        "value":"MyApp test@tiendanube.com.com"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/orders/{{order_id}}/pack",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "orders",
+                        "{{order_id}}",
+                        "pack"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Fulfill Order",
+               "request":{
+                  "method":"POST",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "type":"text",
+                        "value":"bearer {{app_token}}"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "type":"text",
+                        "value":"MyApp test@tiendanube.com.com"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{\n    \"shipping_tracking_number\": \"ABC1234\",\n    \"shipping_tracking_url\": \"https://shipping.com/tracking/ABC1234\",\n    \"notify_customer\": true\n}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/orders/{{order_id}}/fulfill",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "orders",
+                        "{{order_id}}",
+                        "fulfill"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Cancel Order",
+               "request":{
+                  "method":"POST",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "type":"text",
+                        "value":"bearer {{app_token}}"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "type":"text",
+                        "value":"MyApp test@tiendanube.com.com"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{\n    \"reason\": \"Requested by custoemr\",\n    \"email\": false,\n    \"restock\": true\n}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/orders/{{order_id}}/cancel",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "orders",
+                        "{{order_id}}",
+                        "cancel"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            }
+         ],
+         "description":"Order\n=====\n\nAn order is created when a customer completes the checkout process. Orders also can be created through the API.\nProperties\n----------\n\n| Property                   | Explanation                                                                                                                                                                 |\n| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |\n| id                         | The unique numeric identifier for the Order. It's different from `number`                                                                                                   |\n| token                      | Specifies the location of the Order                                                                                                                                         |\n| number                     | Unique numberc identifier for an Order used by the shop owner and customers. It's sequential and starts at 100                                                              |\n| customer                   | [Customer](https://github.com/tiendanube/api-docs/blob/master/resources/customer.md) that purchased this Order. Only given if the 'read_customers' scope is set for the app |\n| products                   | List of the products purchased by the `customer`. Contents are explained below and values hold are the ones corresponding to the time the products were purchased           |\n| note                       | Customer's note about the order                                                                                                                                             |\n| owner_note                 | Store owner's note about the order                                                                                                                                          |\n| coupon                     | List of coupons applied to the order                                                                                                                                        |\n| discount                   | Total value of the discount applied to the price of the order                                                                                                               |\n| subtotal                   | Price of the order before shipping                                                                                                                                          |\n| total                      | Total price of the order including shipping and discounts                                                                                                                   |\n| total_usd                  | Total price of the order in US dollars                                                                                                                                      |\n| currency                   | The total spent's currency in [ISO 4217 format](http://en.wikipedia.org/wiki/ISO_4217)                                                                                      |\n| language                   | Order's language used by the customer during the checkout process                                                                                                           |\n| gateway                    | The payment gateway used                                                                                                                                                    |\n| shipping                   | The shipping method used                                                                                                                                                    |\n| shipping_pickup_type       | \"ship\" if the order is going to be shipped; \"pickup\" if it's going to be picked up from a store branch                                                                      |\n| shipping_store_branch_name | If order is going to be picked up, shows the store branch name                                                                                                              |\n| shipping_address           | The customer's shipping address where the order will be shipped                                                                                                             |\n| shipping_tracking_number   | The shipping tracking number for the order. This may be null if not available                                                                                               |\n| shipping_min_days          | The minimum number of weekdays needed for the order to be delivered                                                                                                         |\n| shipping_max_days          | The maximum number of weekdays needed for the order to be delivered                                                                                                         |\n| shipping_cost_owner        | The shipping cost the store owner has to pay to the shipping company.                                                                                                       |\n| shipping_cost_customer     | The shipping cost the customer has to pay to the store owner.                                                                                                               |\n| shipping_option            | The shipping option chosen by the customer during the checkout process. |\n| shipping_option_code       | The shipping option code selected by the consumers. |\n| shipping_option_reference  | The shipping option reference provided by a custom shipping carrier during the checkout process. |\n| shipping_pickup_details    | The shipping pickup details (address and/or business hours) of the selected pickup point. |\n| shipping_tracking_url      | The shipping tracking URL where the customer can check for the shipment status. |\n| billing_address            | Billing address for the order                                                                                                                                               |\n| billing_number             | Billing number for the order                                                                                                                                                |\n| billing_floor              | Billing floor for the order                                                                                                                                                 |\n| billing_locality           | Billing locality for the order                                                                                                                                              |\n| billing_zipcode            | Billing zipcode for the order                                                                                                                                               |\n| billing_city               | Billing city for the order                                                                                                                                                  |\n| billing_province           | Billing province for the order                                                                                                                                              |\n| billing_country            | Billing country code for the order                                                                                                                                          |\n| extra                      | A JSON object containing custom information. Can be set via the API or through custom form fields of name \"extra[key]\" on the cart's checkout form in the storefront       |\n| storefront                 | Origin of the order. Possible values are \"store\" (order created in the storefront), \"meli\" (order imported from Mercado Libre), \"api\" (order created via API) or \"form\" (order created in the admin panel with the draft orders feature)    |                                        \n| weight                     | Order's total weight, in kilograms                                                                                                                                          |\n| status                     | Order's status. Possible values are \"open\", \"closed\" or \"cancelled\"                                                                                                         |\n| payment_status             | Order's payment status. Possible values are \"authorized\", \"pending\", \"paid\", \"abandoned\", \"refunded\" or \"voided\"                                                            |\n| shipping_status            | Order's shipping status. Possible values are \"unpacked\", \"fulfilled\" (means \"shipped\") or \"unfulfilled\" (means \"unshipped\")                                                                                                       |\n| next_action                | Next available operation in the orders flow                                                                                                                                 |\n| shipped_at                 | Date when the Order was shipped in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601)                                                                                 |\n| cancel_reason              | Reason why the store owner cancelled an Order. Possible values are \"customer\", \"fraud\", \"inventory\" or \"other\"                                                              |\n| created_at                 | Date when the Order was created in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601)                                                                                 | \n| updated_at                 | Date when the Order was last updated in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601)      "
+      },
+      {
+         "name":"Draft Orders",
+         "item":[
+            {
+               "name":"Get draft orders",
+               "request":{
+                  "method":"GET",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "type":"text",
+                        "value":"bearer {{app_token}}"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "type":"text",
+                        "value":"MyApp test@tiendanube.com.com"
+                     }
+                  ],
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/draft-orders",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "draft-orders"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Create a new draft order",
+               "request":{
+                  "method":"POST",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "type":"text",
+                        "value":"bearer {{app_token}}"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "type":"text",
+                        "value":"MyApp test@tiendanube.com.com"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{      \n   \"products\": [\n        {                \n            \"quantity\": 3,\n            \"variant_id\": 110727531                \n        }\n   ],\n    \"contact_email\": \"john.doe@example.com\",\n    \"contact_name\": \"John\",\n    \"contact_lastname\": \"Doe\",\n    \"contact_phone\": \"+55 11 99999-9999\",   \n    \"payment_status\" : \"unpaid\"    \n}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/draft_orders",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "draft_orders"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Confirm draft order",
+               "request":{
+                  "method":"POST",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "type":"text",
+                        "value":"bearer {{app_token}}"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "type":"text",
+                        "value":"MyApp test@tiendanube.com.com"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/draft_orders/{{draft_order_id}}/confirm",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "draft_orders",
+                        "{{draft_order_id}}",
+                        "confirm"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Delete draft order",
+               "request":{
+                  "method":"DELETE",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "type":"text",
+                        "value":"bearer {{app_token}}"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "type":"text",
+                        "value":"MyApp test@tiendanube.com.com"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/draft_orders/{{draft_order_id}}",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "draft_orders",
+                        "{{draft_order_id}}"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            }
+         ],
+         "description":"Draft Order\n=====\n\nA draft order enables create orders through outside channels.\nProperties\n----------\n\n| Property                   | Explanation                                                                                                                                                                                                                                  |\n| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |\n| id                         | The unique numeric identifier for the draft order.                                                                                                                                                                                           |\n| token                      | Specifies the location of the draft order.                                                                                                                                                                                                   |\n| store_id                   | The unique numeric identifier for the Store.                                                                                                                                                                                                 |\n| abandoned_checkout_url     | Checkout url for the abandoned cart. Only when creating a draft order.                                                                                                                                                                       |\n| shipping_min_days          | The minimum number of weekdays needed for the order to be delivered.                                                                                                                                                                         |\n| shipping_max_days          | The maximum number of weekdays needed for the order to be delivered.                                                                                                                                                                         |\n| billing_name               | Billing customer name for the draft order.                                                                                                                                                                                                   |\n| billing_phone              | Billing phone for the draft order.                                                                                                                                                                                                           |\n| billing_address            | Billing address for the draft order.                                                                                                                                                                                                         |\n| billing_number             | Billing number for the draft order.                                                                                                                                                                                                          |\n| billing_floor              | Billing floor for the draft order.                                                                                                                                                                                                           |\n| billing_locality           | Billing locality for the draft order.                                                                                                                                                                                                        |\n| billing_city               | Billing city for the draft order.                                                                                                                                                                                                            |\n| billing_province           | Billing province for the draft order.                                                                                                                                                                                                        |\n| billing_country            | Billing country code for the draft order.                                                                                                                                                                                                    |\n| shipping_cost_owner        | The shipping cost the store owner has to pay to the shipping company.                                                                                                                                                                        |\n| shipping_cost_customer     | The shipping cost the customer has to pay to the store owner.                                                                                                                                                                                |\n| coupon                     | List of coupons applied to the draft order.                                                                                                                                                                                                  |\n| promotional_discount       | [Promotional Discount](#Promotional-Discount) applied to the draft order.                                                                                                                                                                     |\n| subtotal                   | Price of the order before shipping.                                                                                                                                                                                                          |\n| discount                   | Total value of the discount applied to the price of the draft order.                                                                                                                                                                         |\n| discount_coupon            | Total value of the coupon discount applied to the price of the draft order.                                                                                                                                                                  |\n| discount_gateway           | Total value of the gateway discount applied to the price of the draft order.                                                                                                                                                                 |\n| total                      | Total price of the draft order including shipping and discounts.                                                                                                                                                                             |\n| total_usd                  | Total price of the order in US dollars.                                                                                                                                                                                                      |\n| checkout_enabled           | Indicates if checkout is enabled for draft order.                                                                                                                                                                                            |\n| weight                     | Draft order's total weight, in kilograms.                                                                                                                                                                                                    |\n| currency                   | The total spent's currency in [ISO 4217 format](http://en.wikipedia.org/wiki/ISO_4217).                                                                                                                                                      |\n| language                   | Draft Order's language used by the customer.                                                                                                                                                                                                 |\n| gateway                    | Payment gateway code. It is set as not provided.                                                                                                                                                                                             |\n| gateway_id                 | The unique numeric identifier for the gateway.                                                                                                                                                                                               |\n| shipping                   | The shipping method used.                                                                                                                                                                                                                    |\n| shipping_option            | The shipping option chosen by the customer.                                                                                                                                                                                                  |\n| shipping_option_code       | The shipping option code selected by the consumers.                                                                                                                                                                                          |\n| shipping_option_reference  | The shipping option reference provided by a custom shipping carrier during the checkout process.                                                                                                                                             |\n| shipping_pickup_details    | The shipping pickup details (address and/or business hours) of the selected pickup point.                                                                                                                                                    |\n| shipping_tracking_number   | Shipment's tracking number provided by the shipping company.                                                                                                                                                                                 |\n| shipping_tracking_url      | Shipment's tracking URL provided by the shipping company.                                                                                                                                                                                    |\n| shipping_store_branch_name | If order is going to be picked up, shows the store branch name.                                                                                                                                                                              |\n| shipping_pickup_type       | \"ship\" if the order is going to be shipped; \"pickup\" if it's going to be picked up from a store branch.                                                                                                                                      |\n| shipping_suboption         | List of suboptions chosen for the shipping method.                                                                                                                                                                                           |\n| extra                      | A JSON object containing custom information. Can be set via the API or through custom form fields of name \"extra[key]\" on the cart's checkout form in the storefront.                                                                        |\n| storefront                 | Origin of the order. Possible values are \"store\", \"meli\", \"api\" or \"form\". A draft order is always \"form\".                                                                                                                                   |\n| note                       | Customer's note about the draft order.                                                                                                                                                                                                       |\n| created_at                 | Date when the draft order was created in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601).                                                                                                                                           |\n| updated_at                 | Date when the draft order was last updated in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601).                                                                                                                                      |\n| completed_at               | A JSON object containing the date when the draft order was confirm.                                                                                                                                                                          |\n| next_action                | Next available operation in the draft orders flow. A draft order is always \"noop\".                                                                                                                                                           |\n| payment_details            | A JSON object containing payment details.                                                                                                                                                                                                    |\n| attributes                 | Line item properties.                                                                                                                                                                                                                        |\n| customer                   | [Customer](https://github.com/tiendanube/api-docs/blob/master/resources/customer.md) that purchased this draft order. Only given if the 'read_customers' scope is set for the app.                                                           |\n| products                   | List of the [Products](#Products) purchased by the `customer`. Contents are explained below and values hold are the ones corresponding to the time the products were purchased.                                                              |\n| clearsale                  | Information on risk management. Only applies to stores in Brazil.                                                                                                                                                                            |\n| number                     | Unique number identifier for an order used by the shop owner and customers.                                                                                                                                                                  |\n| cancel_reason              | Reason why the store owner cancelled an Order. Possible values are \"customer\", \"fraud\", \"inventory\" or \"other\".                                                                                                                              |\n| owner_note                 | Merchant owner's note about the draft order.                                                                                                                                                                                                 |\n| cancelled_at               | Date when the draft order was cancelled in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601).                                                                                                                                         |\n| closed_at                  | Date when the draft order was closed in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601).                                                                                                                                            |\n| read_at                    | Date when the merchant view the draft order for first time in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601).                                                                                                                      |\n| status                     | Draft order's status. Possible values are \"open\", \"closed\" or \"cancelled\".                                                                                                                                                                   |\n| payment_status             | Draft order's payment status. Possible values are \"pending\", \"pending_confirmation\" or \"paid\".                                                                                                                                               |\n| shipping_address           | Shipping address for the draft order.                                                                                                                                                                                                        |\n| shipping_status            | Draft order's shipping status. A draft order is always \"unpackaged\".                                                                                                                                                                         |\n| shipped_at                 | Date when the draft order was shipped in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601).                                                                                                                                           |\n| paid_at                    | Date when the draft order was paid in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601).                                                                                                                                              |\n| landing_url                | Store url.                                                                                                                                                                                                                                   |\n| client_details             | Customer details for analytics.                                                                                                                                                                                                              |\n| app_id                     | The unique numeric identifier for the app.                                                                                                                                                                                                   |\n| checkout_url               | Url of the checkout corresponding to the draft order.                                                                                                                                                                                        |"
+      },
+      {
+         "name":"Payment Providers",
+         "item":[
+            {
+               "name":"Get Payment Providers",
+               "protocolProfileBehavior":{
+                  "disableBodyPruning":true
+               },
+               "request":{
+                  "method":"GET",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "type":"text",
+                        "value":"bearer {{app_token}}"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "type":"text",
+                        "value":"MyApp test@tiendanube.com.com"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/payment_providers",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "payment_providers"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Create a new Payment Provider",
+               "request":{
+                  "method":"POST",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{\n  \"name\": \"My Payments\",\n  \"public_name\": \"Pay with My Payments\",\n  \"description\": \"Some short description for merchants.\",\n  \"logo_urls\": {\n    \"400x120\": \"https://mypayments.com/logo1.png\",\n    \"160x100\": \"https://mypayments.com/logo2.png\"\n  },\n  \"configuration_url\": \"https://mypayments.com/configuration\",\n  \"support_url\": \"https://mypayments.com/support\",\n  \"rates_url\": \"https://mypayments.com/rates\",\n  \"checkout_js_url\": \"https://mypayments.com/checkout.min.js\",\n  \"supported_currencies\": [\n    \"ARS\",\n    \"BRL\"\n  ],\n  \"supported_payment_methods\": [\n    {\n      \"payment_method_type\": \"credit_card\",\n      \"payment_methods\": [\n        \"visa\",\n        \"mastercard\",\n        \"amex\",\n        \"diners\"\n      ],\n      \"installments\": {\n        \"min_installment_value\": [\n          {\n            \"currency\": \"ARS\",\n            \"value\": \"100.00\"\n          }\n        ],\n        \"specification\": [\n          {\n            \"installments\": 1,\n            \"interest_rate\": \"0.00\",\n            \"applies_to\": [\n              \"bbva\",\n              \"itau\",\n              \"santander\",\n              \"galicia\",\n              \"icbc\"\n            ]\n          },\n          {\n            \"installments\": 3,\n            \"interest_rate\": \"0.00\",\n            \"applies_to\": [\n              \"bbva\",\n              \"itau\"\n            ]\n          },\n          {\n            \"installments\": 6,\n            \"interest_rate\": \"0.045\",\n            \"applies_to\": [\n              \"santander\",\n              \"galicia\"\n            ]\n          },\n          {\n            \"installments\": 12,\n            \"interest_rate\": \"0.15\",\n            \"applies_to\": [\n              \"icbc\"\n            ]\n          }\n        ]\n      }\n    },\n    {\n      \"payment_method_type\": \"debit_card\",\n      \"payment_methods\": [\n        \"visa_debit\",\n        \"maestro\"\n      ]\n    },\n    {\n      \"payment_method_type\": \"boleto\",\n      \"payment_methods\": [\n        \"boleto\",\n        \"banco_do_brasil\", \n        \"bradesco\", \n        \"caixa\"\n      ]\n    }\n  ],\n  \"rates\": [\n    {\n      \"payment_method_type\": \"credit_card\",\n      \"rates_definition\": [\n        {\n          \"percent_fee\": \"2.25\",\n          \"flat_fee\": {\n            \"value\": \"1.00\",\n            \"currency\": \"ARS\"\n          },\n          \"plus_tax\": true,\n          \"days_to_withdraw_money\": 10\n        },\n        {\n          \"percent_fee\": \"3.99\",\n          \"flat_fee\": {\n            \"value\": \"2.50\",\n            \"currency\": \"BRL\"\n          },\n          \"plus_tax\": false,\n          \"days_to_withdraw_money\": 5\n        }\n      ]\n    }\n  ],\n  \"checkout_payment_options\": [\n    {\n      \"id\": \"mypayments_transparent_card\",\n      \"name\": \"My Payments Card\",\n      \"description\": \"Some description for transparent card option\",\n      \"logo_url\": \"https://cdn.mypayments.com/apps/tiendanube/logo.png\",\n      \"supported_billing_countries\": [\n        \"AR\"\n      ],\n      \"supported_payment_method_types\": [\n        \"credit_card\",\n        \"debit_card\"\n      ]\n    },\n    {\n      \"id\": \"mypayments_transparent_offline\",\n      \"name\": \"My Payments Boleto\",\n      \"description\": \"Some description for transparent offline option\",\n      \"logo_url\": \"https://cdn.mypayments.com/apps/tiendanube/logo.png\",\n      \"supported_billing_countries\": [\n        \"BR\"\n      ],\n      \"supported_payment_method_types\": [\n        \"boleto\"\n      ]\n    },\n    {\n      \"id\": \"mypayments_redirect\",\n      \"name\": \"My Payments External\",\n      \"description\": \"Some description for external option\",\n      \"logo_url\": \"https://cdn.mypayments.com/apps/tiendanube/logo.png\",\n      \"supported_billing_countries\": [\n        \"AR\",\n        \"BR\"\n      ],\n      \"supported_payment_method_types\": [\n        \"credit_card\",\n        \"wire_transfer\",\n        \"wallet\"\n      ]\n    }\n  ],\n  \"features\": [\n    \"special_rates\",\n    \"transparent_checkout\",\n    \"gateway\"\n  ],\n  \"enabled\": true\n}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/payment_providers",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "payment_providers"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Modify Payment Provide",
+               "request":{
+                  "method":"PUT",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{\n  \"name\": \"My payment\",\n  \"public_name\": \"Pay with My Payments\",\n  \"description\": \"Some short description for merchants.\",\n  \"logo_urls\": {\n    \"400x120\": \"https://mypayments.com/logo9.png\",\n    \"160x100\": \"https://mypayments.com/logo99.png\"\n  },\n  \"configuration_url\": \"https://mypayments.com/configuration\",\n  \"support_url\": \"https://mypayments.com/support\",\n  \"rates_url\": \"https://mypayments.com/rates\",\n  \"checkout_js_url\": \"https://mypayments.com/checkout.min.js\"\n}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/payment_providers/{{payment_id}}",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "payment_providers",
+                        "{{payment_id}}"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Remove Payment Provider",
+               "request":{
+                  "method":"DELETE",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "type":"text",
+                        "value":"bearer {{app_token}}"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "type":"text",
+                        "value":"MyApp test@tiendanube.com.com"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/payment_providers/{{payment_id}}",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "payment_providers",
+                        "{{payment_id}}"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            }
+         ],
+         "description":"Payment Provider\n================\n\nA Payment Provider, shorter name for Payments Services Provider, represents any entity which provides all the necessary resources and infrastructure for merchants and consumers to execute [Transactions](transaction.md) between them. This entities could be any of the following:\n\n- **Aggregator**\n- **Acquirer**\n- **Gateway**\n\nPayments companies have many different and sometimes complex features which add value to the purchase experience, mainly providing multiple payments options and simpler checkout flows. They also provide merchants with tools to make better management of their Transactions as well as their incomes.\n\nIn our platform, a Payment Provider is created for a specific `store`.\n\n\nProperties\n----------\n\n| Field                       | Type          | Description                                                  |\n| :-------------------------- | :------------ | :----------------------------------------------------------- |\n| `id`                        | String        | [Read-only] Unique identifier of the Payment Provider object. |\n| `store_id`                  | Integer       | [Read-only] Id of the store to which the Payment Provider belongs. |\n| `app_id`                    | String        | [Read-only] Id of the app to which the Payment Provider belongs. |\n| `name`                      | String        | Name to be displayed to merchants at the store admin tool.   |\n| `public_name`               | String        | [Optional] Name to be displayed to consumers at the storefront. If not specified, the same value as `name` is used. |\n| `description`               | String        | Short paragraph which provides merchants with a description of the Payment Provider. |\n| `logo_urls`                 | Object        | Object containing `key:value` pair for each version of the logos for the frontend. Only supports HTTPS URLs. See [Logos](#Logos). |\n| `supported_currencies`      | Array(String) | ISO.4217 currency codes supported by the Payment Provider. See [Currency Codes](#Currency-Codes). |\n| `supported_payment_methods` | Array(Object) | List of available payment methods for each payment method type. See [Payment Methods](#Payment-Methods). |\n| `checkout_js_url`           | String        | HTTPS URL of the JavaScript file to be included in the checkout frontend. See [Checkout](checkout.md). |\n| `checkout_payment_options`  | Array(Object) | Object containing the available payment options for the checkout frontend. See [Checkout Options](#Checkout-Options). |\n| `configuration_url`         | String        | [Optional] HTTPS URL of the Payment Provider configuration UI. |\n| `support_url`               | String        | [Optional] Payment Provider support site HTTPS URL.          |\n| `rates`                     | Array(Object) | [Optional] List of rates definitions for merchants by payment method type. See [Rates](#Rates). |\n| `rates_url`                 | String        | [Optional] HTTPS URL of the Payment Provider's rate information site. |\n| `features`                  | Array(String) | [Optional] List of payment provider's features. See [Features](#Features). |\n| `enabled`                   | Boolean       | [Optional] Indicates whether the Payment Provider is activated or deactivated in the store. Defaults to `true`. |\n\n> ***Note:*** All URLs must be secure URLs (https).\n\n> ***Note:*** Read-only properties will only appear in our responses, which means that should not be part of the requests."
+      },
+      {
+         "name":"Transactions",
+         "item":[
+            {
+               "name":"Get Transaction",
+               "protocolProfileBehavior":{
+                  "disableBodyPruning":true
+               },
+               "request":{
+                  "method":"GET",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/orders/{{order_id}}/transactions/{{transaction_id}}",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "orders",
+                        "{{order_id}}",
+                        "transactions",
+                        "{{transaction_id}}"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            },
+            {
+               "name":"Create a new Transaction",
+               "request":{
+                  "method":"POST",
+                  "header":[
+                     {
+                        "key":"Authentication",
+                        "value":"bearer {{app_token}}",
+                        "type":"text"
+                     },
+                     {
+                        "key":"User-Agent",
+                        "value":"MyApp test@tiendanube.com.com",
+                        "type":"text"
+                     }
+                  ],
+                  "body":{
+                     "mode":"raw",
+                     "raw":"{\n  \"payment_provider_id\": \"60cdeefe-4dfe-4405-8ce1-ff9b75d357a1\",\n  \"payment_method\": {\n    \"type\": \"credit_card\",\n    \"id\": \"visa\"\n  },\n  \"info\": {\n    \"card\": {\n      \"brand\": \"visa\",\n      \"expiration_month\": 12,\n      \"expiration_year\": 2020,\n      \"first_digits\": \"445566\",\n      \"last_digits\": \"1234\",\n      \"masked_number\": \"XXXXXXXXXXXX1234\",\n      \"name\": \"Ash Ketchum\"\n    },\n    \"installments\": {\n      \"quantity\": 3,\n      \"interest\": \"0.15\"\n    },\n    \"external_id\": \"1234\",\n    \"external_url\": \"https://mypayments.com/account/transactions/1234\",\n    \"ip\": \"192.168.0.25\"\n  },\n  \"first_event\": {\n    \"amount\": {\n      \"value\": \"132.95\",\n      \"currency\": \"BRL\"\n    },\n    \"type\": \"sale\",\n    \"status\": \"success\",\n    \"happened_at\": \"2020-01-25T12:30:15.000Z\"\n  }\n}",
+                     "options":{
+                        "raw":{
+                           "language":"json"
+                        }
+                     }
+                  },
+                  "url":{
+                     "raw":"https://{{api_url}}/{{store_id}}/orders/{{order_id}}/transactions",
+                     "protocol":"https",
+                     "host":[
+                        "{{api_url}}"
+                     ],
+                     "path":[
+                        "{{store_id}}",
+                        "orders",
+                        "{{order_id}}",
+                        "transactions"
+                     ]
+                  }
+               },
+               "response":[
+                  
+               ]
+            }
+         ],
+         "description":"Transaction\n===========\n\nEach movement of money is modeled through a `Transaction` object, which can be of different types (e.g. credit card, debit card, boleto, wire transfer, etc.). Each `Transaction` type has a Finite State Machine (FSM) that defines its current status. The `Transaction Event` object represents transitions in the `Transaction`'s FSM.\n\nA [Payment Provider](payment_provider.md) can create a Transaction and update its status through Transaction Events as it changes over time. Since an order can be related to multiple payment methods, a different Transaction must be created for each of them using the same order ID.\n\nProperties\n---------\n\nAll `Transaction` types have the same attributes, but may generate different kinds of  *events* and contain some *info* fields specific to their type.\n\n| Field                 | Type          | Description                                                  |\n| :-------------------- | :------------ | :----------------------------------------------------------- |\n| `id`                  | String        | [Read-only] Unique identifier of the Transaction object.     |\n| `payment_provider_id` | String        | ID of the [Payment Provider](payment_provider.md) that processed this Transaction. |\n| `payment_method`      | Object        | Object containing the payment method used in this Transaction. See [Payment Method](#Payment-Method). |\n| `info`                | Object        | Object containing specific info related to this Transaction. See [Transaction Info](#Transaction-Info). |\n| `status`              | Object        | [Read-only] The state of the FSM in which the Transaction is. See [Transaction Status](#Transaction-Status). |\n| `events`              | Array(Object) | [Read-only] List of fulfillment events related to this Transaction. See [Transaction Events](#Transaction-Events). |\n| `captured_amount`     | Object        | [Read-only] Object containing the captured amount of this Transaction. See [Money](#Money). |\n| `refunded_amount`     | Object        | [Read-only] Object containing the refunded amount of this Transaction. See [Money](#Money). |\n| `authorized_amount`   | Object        | [Read-only] Object containing the authorized amount of this Transaction. See [Money](#Money). |\n| `voided_amount`       | Object        | [Read-only] Object containing the voided amount of this Transaction. See [Money](#Money). |\n| `failure_code`        | String        | [Read-only] If the transaction failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |\n| `created_at`          | Date          | [Read-only] ISO 8601 date for the date the Transaction was created in our platform. Defaults to current time. E.g. `\"2020-03-11T12:42:15.000Z\"`. |\n\n> ***Note:*** Read-only properties will only appear in our responses, which means that should not be part of the requests."
+      }
+   ]
+}

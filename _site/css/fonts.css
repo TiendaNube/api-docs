@@ -1,0 +1,44 @@
+@font-face {
+    font-family: 'CentraNube';
+    src: url('fonts/centranube-mediumitalic-webfont.woff2') format('woff2'),
+         url('fonts/centranube-mediumitalic-webfont.woff') format('woff'),
+         url('fonts/centranube-mediumitalic-webfont.ttf') format('truetype'),
+         url('fonts/centranube-mediumitalic-webfont.eot') format('eot');
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'CentraNube';
+    src: url('fonts/centranube-bookitalic-webfont.woff2') format('woff2'),
+         url('fonts/centranube-bookitalic-webfont.woff') format('woff'),
+         url('fonts/centranube-bookitalic-webfont.ttf') format('truetype'),
+         url('fonts/centranube-bookitalic-webfont.eot') format('eot');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+}
+
+
+@font-face {
+    font-family: 'CentraNube';
+    src: url('fonts/centranube-book-webfont.woff2') format('woff2'),
+         url('fonts/centranube-book-webfont.woff') format('woff'),
+         url('fonts/centranube-book-webfont.ttf') format('truetype'),
+         url('fonts/centranube-book-webfont.eot') format('eot');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'CentraNube';
+    src: url('fonts/centranube-medium-webfont.woff2') format('woff2'),
+         url('fonts/centranube-medium-webfont.woff') format('woff'),
+         url('fonts/centranube-medium-webfont.ttf') format('truetype'),
+         url('fonts/centranube-medium-webfont.eot') format('eot');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
