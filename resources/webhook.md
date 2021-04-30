@@ -115,6 +115,9 @@ In order for our company to comply with data protection laws (example [LGPD](htt
 
 These webhooks help you manage the user data that an application uses. You must enter the addresses on the application's configuration page in the Partner's admin.
 
+![image](https://user-images.githubusercontent.com/4175639/116715345-0009a300-a9ad-11eb-9b91-3a408150a343.png)
+
+
 ### store/redact
 Request to delete store information. 48 hours after a store uninstalls your app, Nuvemshop|Tiendanube sends this webhook with the store ID so that you can delete the shopkeeper's information from your database.
 Payload:
