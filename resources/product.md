@@ -20,7 +20,7 @@ Properties
 | free_shipping  | *true* if the Product is elegible for free shipping. *false* otherwise                            |
 | seo_title      | The SEO friendly title for the Product. Up to 70 characters                                       |
 | seo_description| The SEO friendly description for the Product. Up to 320 characters                                |
-| attributes     | List of the names of the attributes whose values define the variants. E.g.: Color, Size, etc      |
+| attributes     | List of the names of the attributes whose values define the variants. E.g.: Color, Size, etc. It is important that the number of `attributes` is equal to the number of `values` within the variants.      |
 | tags           | String with all the Product's tags, separated by commas                                           |
 | created_at     | Date when the Product was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)     | 
 | updated_at     | Date when the Product was last updated in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)|
