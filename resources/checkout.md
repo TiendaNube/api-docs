@@ -462,6 +462,7 @@ These are the input fields rendered and available in the object `Checkout.getDat
 | Name    | Description                                  | Required     | `fields` value       |
 | --------| -------------------------------------------- | ------------ | -------------------- |
 | `brand` | Brand name for selected cash list option     | Always       | `efectivo_list`      |
+| `efectivo_list` | Brand name for selected ticket or boleto list option | Always | [{ name: 'PagoFacil', code: 'pagofacil' }, { name: 'Rapipago', code: 'rapipago' }, { name: 'Caixa', code: 'caixa' }, { name: 'Itau', code: 'itau' }, ...]  |
 
 ##### PixPayment
 
