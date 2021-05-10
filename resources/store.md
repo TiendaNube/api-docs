@@ -23,7 +23,7 @@ Properties
 | blog              | Store's blog URL                                                                              |
 | address           | Store's address                                                                               |
 | phone             | Store's phone                                                                                 |
-| business_id       | Business identifier (different for each country) of the company who owns the store            |
+| business_id       | Business identifier (different for each country) of the company who owns the store. Brazil options: number of CPF or CNPJ. Argentina options: DNI, CUIL or CUIT.            |
 | business_name     | Business name of the company who owns the store                                               |
 | business_address  | Business address of the company who owns the store                                            |
 | customer_accounts | "optional" if the customer is allowed to checkout as guest. "mandatory" if not.               |
