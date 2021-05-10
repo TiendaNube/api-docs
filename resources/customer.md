@@ -466,7 +466,6 @@ Modify an existing Customer
       "city": "Springfield",
       "country": "US",
       "created_at": "2013-01-03T09:11:51-03:00",
-      "default": true,
       "floor": null,
       "id": 1234,
       "locality": null,
