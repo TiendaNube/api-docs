@@ -591,13 +591,7 @@ LoadCheckoutPaymentContext(function(Checkout, PaymentOptions) {
 
 #### Installments
 
-In order to offer installment's options you must update the object `data.installments` by calling `setInstallments`. This will update the select input for the installments options on the card information form. For example:
-
-```javascript
-Checkout.setInstallments({
-    installments: []
-})
-```
+In order to offer installment's options you must update the object `data.installments` by calling `setInstallments`. This will update the select input for the installments options on the card information form. 
 
 Each element of the list must be an object with the following fields.
 
@@ -606,13 +600,13 @@ Each element of the list must be an object with the following fields.
 | `quantity`          | Number of installments.          |
 | `installmentAmount` | Value of a single installment.   |
 | `totalAmount`       | Total value of all installments. |
-| `cft`               | (optional) Total financial cost. |
+| `cft`               | (optional)[String] Total financial cost. |
 
 ##### Example
 
 ```js
-Checkout.setInstallments({
-  installments: [
+Checkout.setInstallments(
+   [
     {
       quantity: 1,
       installmentAmount: 25,
@@ -632,7 +626,7 @@ Checkout.setInstallments({
       cft: '196,59%'
     }
   ]
-});
+);
 ```
 
 ## Appendix
