@@ -3705,6 +3705,265 @@
 				}
 			],
 			"description": "Webhook\n=======\n\nA Webhook is a tool that allows you to receive a notification for a certain event. It allows you to register an *https* URL which will receive the event data, stored in JSON. Webhooks can be registered for the following events:\n\n| Category       | Events                                                                                           |\n| -------------- | ------------------------------------------------------------------------------------------------ |\n| App            | uninstalled/suspended/resumed                                                                    |\n| Category       | created/updated/deleted                                                                          |\n| Order          | created/updated/paid/packed/fulfilled/cancelled                                                  |\n| Product        | created/updated/deleted                                                                          |\n| Domain         | updated                                                                                          |\n| Theme          | updated                                                                                          |\n\nProperties\n----------\n\n| Property       | Explanation                                                                                      |\n| -------------- | ------------------------------------------------------------------------------------------------ |\n| id             | The unique numeric identifier for the Webhook                                                    |\n| url            | The URL where the webhook should send the POST request when the event occurs. **Must be HTTPS**. |\n| event          | The event that will trigger the webhook                                                          |\n| created_at     | Date when the Webhook was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)    | \n| updated_at     | Date when the Webhook was last updated in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)|"
+		},
+		{
+			"name": "Discounts",
+			"item": [
+				{
+					"name": "Create a Promotion",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authentication",
+								"value": "bearer {{app_token}}",
+								"type": "text"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Awesome App (awesome@app.com)",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"50% off in the second unit\",\n  \"description\": \"Taking two pay 50 percent on the second unit\",\n  \"disclaimer\": \"Deal only valid for São Paulo city\",\n  \"allocation_type\": \"line_item\",\n  \"discount_type\": \"percentage\",\n  \"discount_amount\": 50,\n  \"translations\": [\n    {\n      \"lang\": \"pt_BR\",\n      \"name\": \"50% off in the second unit\",\n      \"description\": \"Taking two pay 50 percent on the second unit\",\n      \"disclaimer\": \"Deal only valid for Buenos Aires city\"\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{api_url}}/{{store_id}}/promotions",
+							"protocol": "https",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"{{store_id}}",
+								"promotions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a Discount",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authentication",
+								"value": "bearer {{app_token}}",
+								"type": "text"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Awesome App (awesome@app.com)",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"promotion_id\": \"{{promotion_id}}\",\n  \"cart_id\": 12345,\n  \"line_items\": [\n    67890\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{api_url}}/{{store_id}}/discounts",
+							"protocol": "https",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"{{store_id}}",
+								"discounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove a discount associated with a cart",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authentication",
+								"value": "bearer {{app_token}}",
+								"type": "text"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Awesome App (awesome@app.com)",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{api_url}}/{{store_id}}/discounts/carts/{{cart_id}}/promotions/{{promotion_id}}",
+							"protocol": "https",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"{{store_id}}",
+								"discounts",
+								"carts",
+								"{{cart_id}}",
+								"promotions",
+								"{{promotion_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove a discount associated with a cart from a specific line item",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authentication",
+								"value": "bearer {{app_token}}",
+								"type": "text"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Awesome App (awesome@app.com)",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{api_url}}/{{store_id}}/discounts/carts/{{cart_id}}/promotions/{{promotion_id}}",
+							"protocol": "https",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"{{store_id}}",
+								"discounts",
+								"carts",
+								"{{cart_id}}",
+								"promotions",
+								"{{promotion_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "api_url",
+			"value": "api.nuvemshop.com.br/v1"
+		},
+		{
+			"key": "store_id",
+			"value": ""
+		},
+		{
+			"key": "app_token",
+			"value": ""
+		},
+		{
+			"key": "carrier_id",
+			"value": ""
+		},
+		{
+			"key": "payment_id",
+			"value": ""
+		},
+		{
+			"key": "order_id",
+			"value": ""
+		},
+		{
+			"key": "product_id",
+			"value": ""
+		},
+		{
+			"key": "webhook_id",
+			"value": ""
+		},
+		{
+			"key": "image_id",
+			"value": ""
+		},
+		{
+			"key": "variant_id",
+			"value": ""
+		},
+		{
+			"key": "owner_resource",
+			"value": ""
+		},
+		{
+			"key": "draft_order_id",
+			"value": ""
 		}
 	]
 }
