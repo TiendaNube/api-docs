@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "1b509dd4-7d32-4ee2-8499-a5e84dde3ebd",
+		"_postman_id": "787330f0-29c9-481a-b9e6-0c1ff8446ad3",
 		"name": "Public Api TiendaNube",
 		"description": "This collection represents all examples of tiendanube's / nuvemshop's public API.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -36,6 +36,151 @@
 								"apps",
 								"authorize",
 								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Abandoned Checkout",
+			"item": [
+				{
+					"name": "Receive all abandoned carts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authentication",
+								"value": "bearer cba3bc57074e24c0b713fd774973ffd28a2d25c3",
+								"type": "text"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Awesome App (awesome@app.com)",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://{{api_url}}/{{store_id}}/checkouts/",
+							"protocol": "https",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"{{store_id}}",
+								"checkouts",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Receive a specific abandoned cart",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authentication",
+								"value": "bearer cba3bc57074e24c0b713fd774973ffd28a2d25c3",
+								"type": "text"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Awesome App (awesome@app.com)",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://{{api_url}}/{{store_id}}/checkouts/{{cart_id}}",
+							"protocol": "https",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"{{store_id}}",
+								"checkouts",
+								"{{cart_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a discount coupon to the abandoned cart",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authentication",
+								"value": "bearer cba3bc57074e24c0b713fd774973ffd28a2d25c3",
+								"type": "text"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Awesome App (awesome@app.com)",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"coupon_id\": 1924499\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{api_url}}/{{store_id}}/checkouts/{{cart_id}}/coupon",
+							"protocol": "https",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"{{store_id}}",
+								"checkouts",
+								"{{cart_id}}",
+								"coupon"
 							]
 						}
 					},
@@ -668,6 +813,195 @@
 				}
 			],
 			"description": "Customer\n========\n\nA Customer of the store. Customer accounts store contact information for the customer, saving logged-in customers the trouble of having to provide it at every checkout.\n\nProperties\n----------\n\n| Property             | Explanation                                                                                  |\n| -------------------- | -------------------------------------------------------------------------------------------- |\n| id                   | The unique numeric identifier for the Customer                                               |\n| name                 | Name of the Customer                                                                         |\n| email                | E-mail of the Customer                                                                       |\n| phone                | Phone number of the customer (not necessarily the same as the address's phone)               |\n| identification       | Customer's identification (in Brazil for example, it would be the CPF/CNPJ)                  |\n| note                 | Store owner's notes about the customer                                                       |\n| default_address      | Default shipping address of the Customer                                                     |\n| addresses            | List of shipping addresses for the Customer                                                  |\n| billing_address      | Billing address of the Customer                                                              |\n| billing_number       | Billing number of the Customer                                                               |\n| billing_floor        | Billing floor of the Customer                                                                |\n| billing_locality     | Billing locality of the Customer                                                             |\n| billing_zipcode      | Billing zipcode of the Customer                                                              |\n| billing_city         | Billing city of the Customer                                                                 |\n| billing_province     | Billing province of the Customer                                                             |\n| billing_country      | Billing country code of the Customer                                                         |\n| extra                | A JSON object containing custom information. Can be set via the API or through custom form fields of name \"extra[key]\" on the Customer's register form in the storefront. |\n| total_spent          | The total amount of money that the Customer has spent at the store                           |\n| total_spent_currency | The total spent's currency in [ISO 4217 format](http://en.wikipedia.org/wiki/ISO_4217)       |\n| last_order_id        | The id of the Customer's last Order                                                          |\n| active               | \"true\" if the Customer activated his account. \"false\" if he/she hasn't                       |\n| created_at           | Date when the Customer was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)     | \n| updated_at           | Date when the Customer was last updated in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)|"
+		},
+		{
+			"name": "Discounts",
+			"item": [
+				{
+					"name": "Create a Promotion",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authentication",
+								"value": "bearer {{app_token}}",
+								"type": "text"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Awesome App (awesome@app.com)",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"50% off in the second unit\",\n  \"description\": \"Taking two pay 50 percent on the second unit\",\n  \"disclaimer\": \"Deal only valid for São Paulo city\",\n  \"allocation_type\": \"line_item\",\n  \"discount_type\": \"percentage\",\n  \"discount_amount\": 50,\n  \"translations\": [\n    {\n      \"lang\": \"pt_BR\",\n      \"name\": \"50% off in the second unit\",\n      \"description\": \"Taking two pay 50 percent on the second unit\",\n      \"disclaimer\": \"Deal only valid for São Paulo city\"\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{api_url}}/{{store_id}}/promotions",
+							"protocol": "https",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"{{store_id}}",
+								"promotions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a Discount",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authentication",
+								"value": "bearer {{app_token}}",
+								"type": "text"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Awesome App (awesome@app.com)",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"promotion_id\": \"{{promotion_id}}\",\n  \"cart_id\": 12345,\n  \"line_items\": [\n    67890\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{api_url}}/{{store_id}}/discounts",
+							"protocol": "https",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"{{store_id}}",
+								"discounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove a discount associated with a cart",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authentication",
+								"value": "bearer {{app_token}}",
+								"type": "text"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Awesome App (awesome@app.com)",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{api_url}}/{{store_id}}/discounts/carts/{{cart_id}}/promotions/{{promotion_id}}",
+							"protocol": "https",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"{{store_id}}",
+								"discounts",
+								"carts",
+								"{{cart_id}}",
+								"promotions",
+								"{{promotion_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove a discount associated with a cart from a specific line item",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authentication",
+								"value": "bearer {{app_token}}",
+								"type": "text"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Awesome App (awesome@app.com)",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{api_url}}/{{store_id}}/discounts/carts/{{cart_id}}/promotions/{{promotion_id}}",
+							"protocol": "https",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"{{store_id}}",
+								"discounts",
+								"carts",
+								"{{cart_id}}",
+								"promotions",
+								"{{promotion_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "Draft Order",
@@ -3705,195 +4039,6 @@
 				}
 			],
 			"description": "Webhook\n=======\n\nA Webhook is a tool that allows you to receive a notification for a certain event. It allows you to register an *https* URL which will receive the event data, stored in JSON. Webhooks can be registered for the following events:\n\n| Category       | Events                                                                                           |\n| -------------- | ------------------------------------------------------------------------------------------------ |\n| App            | uninstalled/suspended/resumed                                                                    |\n| Category       | created/updated/deleted                                                                          |\n| Order          | created/updated/paid/packed/fulfilled/cancelled                                                  |\n| Product        | created/updated/deleted                                                                          |\n| Domain         | updated                                                                                          |\n| Theme          | updated                                                                                          |\n\nProperties\n----------\n\n| Property       | Explanation                                                                                      |\n| -------------- | ------------------------------------------------------------------------------------------------ |\n| id             | The unique numeric identifier for the Webhook                                                    |\n| url            | The URL where the webhook should send the POST request when the event occurs. **Must be HTTPS**. |\n| event          | The event that will trigger the webhook                                                          |\n| created_at     | Date when the Webhook was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)    | \n| updated_at     | Date when the Webhook was last updated in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)|"
-		},
-		{
-			"name": "Discounts",
-			"item": [
-				{
-					"name": "Create a Promotion",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authentication",
-								"value": "bearer {{app_token}}",
-								"type": "text"
-							},
-							{
-								"key": "User-Agent",
-								"value": "Awesome App (awesome@app.com)",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"name\": \"50% off in the second unit\",\n  \"description\": \"Taking two pay 50 percent on the second unit\",\n  \"disclaimer\": \"Deal only valid for São Paulo city\",\n  \"allocation_type\": \"line_item\",\n  \"discount_type\": \"percentage\",\n  \"discount_amount\": 50,\n  \"translations\": [\n    {\n      \"lang\": \"pt_BR\",\n      \"name\": \"50% off in the second unit\",\n      \"description\": \"Taking two pay 50 percent on the second unit\",\n      \"disclaimer\": \"Deal only valid for Buenos Aires city\"\n    }\n  ]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://{{api_url}}/{{store_id}}/promotions",
-							"protocol": "https",
-							"host": [
-								"{{api_url}}"
-							],
-							"path": [
-								"{{store_id}}",
-								"promotions"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create a Discount",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Authentication",
-								"value": "bearer {{app_token}}",
-								"type": "text"
-							},
-							{
-								"key": "User-Agent",
-								"value": "Awesome App (awesome@app.com)",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"promotion_id\": \"{{promotion_id}}\",\n  \"cart_id\": 12345,\n  \"line_items\": [\n    67890\n  ]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://{{api_url}}/{{store_id}}/discounts",
-							"protocol": "https",
-							"host": [
-								"{{api_url}}"
-							],
-							"path": [
-								"{{store_id}}",
-								"discounts"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Remove a discount associated with a cart",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Authentication",
-								"value": "bearer {{app_token}}",
-								"type": "text"
-							},
-							{
-								"key": "User-Agent",
-								"value": "Awesome App (awesome@app.com)",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://{{api_url}}/{{store_id}}/discounts/carts/{{cart_id}}/promotions/{{promotion_id}}",
-							"protocol": "https",
-							"host": [
-								"{{api_url}}"
-							],
-							"path": [
-								"{{store_id}}",
-								"discounts",
-								"carts",
-								"{{cart_id}}",
-								"promotions",
-								"{{promotion_id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Remove a discount associated with a cart from a specific line item",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Authentication",
-								"value": "bearer {{app_token}}",
-								"type": "text"
-							},
-							{
-								"key": "User-Agent",
-								"value": "Awesome App (awesome@app.com)",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://{{api_url}}/{{store_id}}/discounts/carts/{{cart_id}}/promotions/{{promotion_id}}",
-							"protocol": "https",
-							"host": [
-								"{{api_url}}"
-							],
-							"path": [
-								"{{store_id}}",
-								"discounts",
-								"carts",
-								"{{cart_id}}",
-								"promotions",
-								"{{promotion_id}}"
-							]
-						}
-					},
-					"response": []
-				}
-			]
 		}
 	],
 	"event": [
@@ -3963,6 +4108,14 @@
 		},
 		{
 			"key": "draft_order_id",
+			"value": ""
+		},
+		{
+			"key": "cart_id",
+			"value": ""
+		},
+		{
+			"key": "promotion_id",
 			"value": ""
 		}
 	]

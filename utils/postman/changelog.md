@@ -2,6 +2,20 @@
 # Change Log
 All notable changes to the collection will be documented in this file.
  
+## [1.3.0] - 2021-05-19
+  
+Abandoned Checkout API methods included according with documentation available at https://github.com/TiendaNube/api-docs/blob/master/resources/abandoned_checkout.md
+
+### Added
+- Folder Abandoned Checkout
+  POST Create a discount coupon to the abandoned cart
+  GET Receive all abandoned carts
+  GET Receive a specific abandoned cart
+
+### Changed
+
+### Fixed
+ 
 ## [1.2.0] - 2021-05-13
   
 Discounts API methods included according with documentation available at http://tiendanube.github.io/api-docs/resources/discounts/api/
