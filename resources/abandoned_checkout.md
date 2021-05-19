@@ -7,14 +7,14 @@ The abandoned checkout is created when the customer reaches the second checkout 
 
   #### Table of Contents
 
->  GET /checkouts
+>  [Get all abandoned checkout](#get-checkouts)
 
 >
 
->  GET /checkouts/{checkout_id}
+>  [Get an abandoned checkout](#get-checkoutscheckout_id)
 >
 
->  [Create a discount coupon](#POST-/checkouts/{cart_id}/coupons)
+>  [Create a discount coupon](#post-checkoutscart_idcoupons)
   
 
 Notes
@@ -184,6 +184,7 @@ List all Abandoned Checkouts.
 #### Examples
 
 **GET /checkouts**
+
 `HTTP/1.1 200 OK`
 
 ```json
@@ -322,6 +323,7 @@ Returns a specific abandoned checkout.
 #### Examples
 
 **GET /checkouts/411335234**
+
 `HTTP/1.1 200 OK`
 
 ```json
