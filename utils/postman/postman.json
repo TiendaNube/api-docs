@@ -64,7 +64,7 @@
 						"header": [
 							{
 								"key": "Authentication",
-								"value": "bearer cba3bc57074e24c0b713fd774973ffd28a2d25c3",
+								"value": "bearer {{app_token}}",
 								"type": "text"
 							},
 							{
@@ -100,7 +100,7 @@
 						"header": [
 							{
 								"key": "Authentication",
-								"value": "bearer cba3bc57074e24c0b713fd774973ffd28a2d25c3",
+								"value": "bearer {{app_token}}",
 								"type": "text"
 							},
 							{
@@ -147,7 +147,7 @@
 						"header": [
 							{
 								"key": "Authentication",
-								"value": "bearer cba3bc57074e24c0b713fd774973ffd28a2d25c3",
+								"value": "bearer {{app_token}}",
 								"type": "text"
 							},
 							{
