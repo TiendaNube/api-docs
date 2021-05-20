@@ -2,7 +2,7 @@
 Abandoned Checkout
 =====
 
-The abandoned checkout is created when the customer reaches the second checkout step with the cart, but for some reason it does not finish the process.
+The abandoned checkout is created when the customer reaches checkout's seconds step, but for some reason it does not finish the process.
 
 
   #### Table of Contents
@@ -25,7 +25,7 @@ Notes
 
 > ***Note:*** The carts are accessible for `30 days` after being created.
 
-> ***Note:*** A purchase is only converted into a cart if the customer has arrived for the second checkout step.
+> ***Note:*** A purchase is only converted into an abandoned cart if the customer has arrived to checkout's second step.
   
 
 Properties
