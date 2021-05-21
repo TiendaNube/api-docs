@@ -241,7 +241,7 @@ In either case, all API calls will return a `402 Payment Required` response, [Sc
 
 Once the required payment is made, the API becomes accessible again.
 
-If your app needs to know when access to the API is suspended or ç (because you may have missed a webhook and want to do a full resync, for example), you can register to the `app/suspended` and `app/resumed` events using a Webhook.
+If your app needs to know when access to the API is suspended or resumed (because you may have missed a webhook and want to do a full resync, for example), you can register to the `app/suspended` and `app/resumed` events using a Webhook.
 
 Note: these webhooks aren't triggered when the app runs out of "free days". In these cases the API will also be inaccessible, but no webhooks will be triggered.
 
