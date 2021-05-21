@@ -52,7 +52,6 @@ Properties
 | shipping_store_branch_name | If order is going to be picked up, shows the store branch name                                                                                                              |
 | shipping_address           | The customer's shipping address where the order will be 
 name                                                                                                              |
-| customs                    | An object to insert additional information into the shipping address |
 | shipping_tracking_number   | The shipping tracking number for the order. This may be null if not available                                                                                               |
 | shipping_min_days          | The minimum number of weekdays needed for the order to be delivered                                                                                                         |
 | shipping_max_days          | The maximum number of weekdays needed for the order to be delivered                                                                                                         |
@@ -234,7 +233,10 @@ Receive a list of all Orders.
         "province": "Oregon",
         "updated_at": "2013-03-10T11:13:01-03:00",
         "zipcode": "97475",
-        "customs": {} 
+        "customs": {
+          "reference": "584A",
+          "between_streets": "Entre Calles"
+        }
       },
       "customer": {
         "created_at": "2013-01-03T09:11:51-03:00",
@@ -375,7 +377,10 @@ Receive a single Order
       "province": "Oregon",
       "updated_at": "2013-03-10T11:13:01-03:00",
       "zipcode": "97475",
-      "customs": {}
+      "customs": {
+        "reference": "584A",
+        "between_streets": "Entre Calles"
+      }
     },
     "customer": {
       "created_at": "2013-01-03T09:11:51-03:00",
