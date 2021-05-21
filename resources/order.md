@@ -482,7 +482,7 @@ Create an Order.
 | zipcode     | The shipping_address postal code. The default is `0000`.                                                          | String | Yes      |
 | country     | The shipping_address country ([ISO 3166-1 Format](http://en.wikipedia.org/wiki/ISO_3166-1)). The default is the store country. | String | Yes      |
 | phone       | The shipping_address phone number.                                                          | String | No       |
-| custom      | The shipping_address custom fields. The default is null                                     | Object | No       |
+| customs     | The customs fields of the shipping address. this field can receive any custom value within the object. The default is null | Object | No       |
 
 
 #### Product
