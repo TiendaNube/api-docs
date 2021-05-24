@@ -248,7 +248,7 @@ Note: these webhooks aren't triggered when the app runs out of "free days". In t
 
 API resources
 -----------------
-
+* [Abandoned Checkout](https://github.com/TiendaNube/api-docs/blob/master/resources/abandoned_checkout.md)
 * [Category](https://github.com/tiendanube/api-docs/blob/master/resources/category.md)
 * [Coupons](https://github.com/tiendanube/api-docs/blob/master/resources/coupon.md)
 * [Customer](https://github.com/tiendanube/api-docs/blob/master/resources/customer.md)
