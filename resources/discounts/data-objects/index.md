@@ -21,7 +21,7 @@ layout: default
 | --- | --- |
 | barcode | String |
 | depth | String |
-| free\discount-request-flow.png_shipping | Boolean |
+| free_shipping | Boolean |
 | height | String |
 | id | Integer |
 | name | String |
