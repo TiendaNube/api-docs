@@ -55,11 +55,10 @@ layout: default
 | --- | --- |
 | weight | String |
 
-## Shipping Object
+## Payment Object
 
 | Property | Type |
 | --- | --- |
-| city | String |
-| cost | String |
-| country | String |
-| postalcode | String |
+| creditCardCompany | String |
+| method | String |
+| installments | Integer |
