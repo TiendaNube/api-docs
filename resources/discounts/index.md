@@ -124,6 +124,8 @@ This example presents some points to consider.
 - The executor will get the information needed as a data object as a parameter.
 - The body MUST contain the property **acknowledge,** which will be used to determine if partner does some modification to the cart (add or remove a discount)
 
+In order to subscribe the executor, make sure the js file is public and register it through `POST / scripts` ([see more]({{ site.data.links.script.main | absolute_url}}/#post-scripts)) when authenticating a new user.
+
 ### Data Objects
 
 At the time that the executor is called, a data object will be sent as a parameter. This object will contain the information of the current cart.
