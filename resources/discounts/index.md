@@ -89,7 +89,7 @@ You should take into consideration some values can&#39;t be updated after the cr
 
 Any modification on the cart state will be evaluated and informed to each partner which is registered to a promotion tier through the Discount Application JS API.
 
-Each partner should evaluate the current cart and decide if a promotion should be applied (or removed), and do the corresponding request to do this.
+Each partner should evaluate the current cart and decide if a discount should be applied (or removed), and do the corresponding request to do this.
 
 For more information about the API requests used to create or remove a discount, please refer to [Discount API Docs]({{ site.data.links.discounts.main | absolute_url }}/api).
 
