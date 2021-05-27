@@ -511,7 +511,7 @@ The following is the list of payment method IDs by payment method type currently
 | `bank_debit`        | See the [Supported Bank list](#Supported-Banks).             |
 | `boleto`            | See the [Supported Bank list](#Supported-Banks). Use the default value `boleto` if no issuer is specified. |
 | `cash`              | `cash`                                                       |
-| `credit_card`       | `amex`, `argencard`, `aura`, `cabal`, `cordial`, `cordobesa`, `diners`, `discover`, `elo`, `falabella`, `hiper`, `hipercard`, `hsbc_access_now`, `magna`, `mastercard`, `nativa`, `oi_paggo`, `provencred`, `rebanking`, `tarjeta_naranja`, `tarjeta_saenz`, `tarjeta_shopping`, `tarjeta_walmart`, `visa` |
+| `credit_card`       | `amex`, `argencard`, `aura`, `cabal`, `cencosud`, `cordial`, `cordobesa`, `diners`, `discover`, `elo`, `falabella`, `hiper`, `hipercard`, `hsbc_access_now`, `magna`, `mastercard`, `nativa`, `oi_paggo`, `provencred`, `rebanking`, `tarjeta_naranja`, `tarjeta_saenz`, `tarjeta_shopping`, `tarjeta_walmart`, `visa` |
 | `debit_card`        | `cabal_debit`, `maestro`, `visa_debit`, `vr-beneficios`, `sodexo`, `alelo` |
 | `pix`               | `pix`                                                        |
 | `ticket`            | ` efecty`, ` oxxo`, `  pagofacil`, `rapipago`, ` servipag`, `seven_eleven`, `via_baloto` |
@@ -520,4 +520,4 @@ The following is the list of payment method IDs by payment method type currently
 
 #### Supported Banks
 
-`banamex`, `banco_chaco`, `banco_chubut`, `banco_ciudad`, `banco_coinag`, `banco_columbia`, `banco_comafi`, `banco_comercio`, `banco_do_brasil`, `banco_do_nordeste`, `banco_entre_rios`, `banco_hipotecario`, `banco_industrial`, `banco_la_pampa`, `banco_municipal`, `banco_nacion`, `banco_patagonia`, `banco_provincia`, `banco_san_juan`, `banco_santa_cruz`, `banco_santa_fe`, `banco_tierra_del_fuego`, `banco_tucuman`, `banrisul`, `bbva`, `bica`, `bradesco`, `caixa`, `cencosud`, `citi`, `galicia`, `hsbc`, `icbc`, `itau`, `macro`, `santander`, `scotiabank`, `sicoob`, `sicredi`, `supervielle`
+`banamex`, `banco_chaco`, `banco_chubut`, `banco_ciudad`, `banco_coinag`, `banco_columbia`, `banco_comafi`, `banco_comercio`, `banco_do_brasil`, `banco_do_nordeste`, `banco_entre_rios`, `banco_hipotecario`, `banco_industrial`, `banco_la_pampa`, `banco_municipal`, `banco_nacion`, `banco_patagonia`, `banco_provincia`, `banco_san_juan`, `banco_santa_cruz`, `banco_santa_fe`, `banco_tierra_del_fuego`, `banco_tucuman`, `banrisul`, `bbva`, `bica`, `bradesco`, `caixa`, `citi`, `galicia`, `hsbc`, `icbc`, `itau`, `macro`, `santander`, `scotiabank`, `sicoob`, `sicredi`, `supervielle`
