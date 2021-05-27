@@ -231,7 +231,11 @@ Receive a list of all Orders.
         "phone": "555-123-0413",
         "province": "Oregon",
         "updated_at": "2013-03-10T11:13:01-03:00",
-        "zipcode": "97475"
+        "zipcode": "97475",
+        "customs": {
+          "reference": "580A",
+          "between_streets": "Entre Calles"
+        }
       },
       "customer": {
         "created_at": "2013-01-03T09:11:51-03:00",
@@ -371,7 +375,11 @@ Receive a single Order
       "phone": "555-123-0413",
       "province": "Oregon",
       "updated_at": "2013-03-10T11:13:01-03:00",
-      "zipcode": "97475"
+      "zipcode": "97475",
+      "customs": {
+        "reference": "580A",
+        "between_streets": "Entre Calles"
+      }
     },
     "customer": {
       "created_at": "2013-01-03T09:11:51-03:00",
@@ -456,6 +464,23 @@ Create an Order.
 | zipcode     | The address's postal code. The default is `0000`.                                                          | String | Yes      |
 | country     | The address's country ([ISO 3166-1 Format](http://en.wikipedia.org/wiki/ISO_3166-1)). The default is the store country. | String | Yes      |
 | phone       | The address's phone number.                                                          | String | No       |
+
+#### Shipping_Address
+
+| Value       | Description                                                                         | Type   | Required |
+|-------------|-------------------------------------------------------------------------------------|--------|----------|
+| first_name  | The customer's first name. The defaults are `Não informado` for pt_BR and `No informado` in every other cases (es_AR, es_MX, es_CO).                                                          | String | Yes      |
+| last_name   | The customer's last name. The defaults are `Não informado` for pt_BR and `No informado` in every other cases (es_AR, es_MX, es_CO).                                                           | String | Yes      |
+| address     | The customer's street. The defaults are `Não informado` for pt_BR and `No informado` in every other cases (es_AR, es_MX, es_CO).                                                               | String | Yes      |
+| number      | The shipping_address number. The defaults are `Não informado` for pt_BR and `No informado` in every other cases (es_AR, es_MX, es_CO).                                                                | String | Yes      |
+| floor       | The shipping_address complement. The defaults are `Não informado` for pt_BR and `No informado` in every other cases (es_AR, es_MX, es_CO).                                                            | String | No       |
+| locality    | The shipping_address locality. The defaults are `Não informado` for pt_BR and `No informado` in every other cases (es_AR, es_MX, es_CO).                                                              | String | No       | 
+| city        | The shipping_address city. The defaults are `Não informado` for pt_BR and `No informado` in every other cases (es_AR, es_MX, es_CO).                                                                  | String | Yes      |
+| province    | The shipping_address province. The defaults are `Não informado` for pt_BR and `No informado` in every other cases (es_AR, es_MX, es_CO).                                                              | String | Yes      |
+| zipcode     | The shipping_address postal code. The default is `0000`.                                                          | String | Yes      |
+| country     | The shipping_address country ([ISO 3166-1 Format](http://en.wikipedia.org/wiki/ISO_3166-1)). The default is the store country. | String | Yes      |
+| phone       | The shipping_address phone number.                                                          | String | No       |
+| customs     | The customs fields of the shipping address. this field can receive any custom value within the object. The default is null | Object | No       |
 
 
 #### Product
