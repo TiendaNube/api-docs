@@ -36,7 +36,7 @@ An Executor refers to a function registered by the application to be performed o
 
 We will call Tier to a specific group of promotions. These tiers will be executed in order and will apply depending on one of each other.
 
-We have three tiers: Line Item, Cross Item and Shipping Line.
+We have three tiers: Line Item, Cross Items and Shipping Line.
 
 ![](./images/promotion_tiers.png)
 
