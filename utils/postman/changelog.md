@@ -2,15 +2,30 @@
 # Change Log
 All notable changes to the collection will be documented in this file.
  
+## [1.3.1] - 2021-05-24
+  
+Fix PUT and DELETE methods on Discounts API.
+
+### Changed
+- Updated the format of the paragraphs of Changelog.md
+
+
+### Fixed
+- Folder Discounts
+  - **PUT Create a Discount:** 
+    - `cart_id` and `line_items` replaced from integer to string on body request example.
+  - **DELETE Remove a discount associated with a cart from a specific line item:** 
+    - path parameter updated with `/line-items/{{line_item}}`
+ 
 ## [1.3.0] - 2021-05-19
   
 Abandoned Checkout API methods included according with documentation available at https://github.com/TiendaNube/api-docs/blob/master/resources/abandoned_checkout.md
 
 ### Added
 - Folder Abandoned Checkout
-  POST Create a discount coupon to the abandoned cart
-  GET Receive all abandoned carts
-  GET Receive a specific abandoned cart
+  - POST Create a discount coupon to the abandoned cart
+  - GET Receive all abandoned carts
+  - GET Receive a specific abandoned cart
 
 ### Changed
 
@@ -22,10 +37,10 @@ Discounts API methods included according with documentation available at http://
 
 ### Added
 - Folder Discounts
-  POST Create a Promotion
-  PUT Create a Discount
-  DELETE Remove a discount associated with a cart
-  DELETE Remove a discount associated with a cart from a specific line item
+  - POST Create a Promotion
+  - PUT Create a Discount
+  - DELETE Remove a discount associated with a cart
+  - DELETE Remove a discount associated with a cart from a specific line item
 
 ### Changed
 

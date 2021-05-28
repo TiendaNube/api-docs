@@ -884,7 +884,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"promotion_id\": \"{{promotion_id}}\",\n  \"cart_id\": 12345,\n  \"line_items\": [\n    67890\n  ]\n}",
+							"raw": "{\n  \"promotion_id\": \"{{promotion_id}}\",\n  \"cart_id\": \"{{cart_id}}\",\n  \"line_items\": [\n    \"{{line_item}}\", //retrieved by the object data-line-item-id \n    \"{{line_item}}\"\n  ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -984,7 +984,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://{{api_url}}/{{store_id}}/discounts/carts/{{cart_id}}/promotions/{{promotion_id}}",
+							"raw": "https://{{api_url}}/{{store_id}}/discounts/carts/{{cart_id}}/promotions/{{promotion_id}}/line-items/{{line_item}}",
 							"protocol": "https",
 							"host": [
 								"{{api_url}}"
@@ -995,7 +995,9 @@
 								"carts",
 								"{{cart_id}}",
 								"promotions",
-								"{{promotion_id}}"
+								"{{promotion_id}}",
+								"line-items",
+								"{{line_item}}"
 							]
 						}
 					},
@@ -4116,6 +4118,10 @@
 		},
 		{
 			"key": "promotion_id",
+			"value": ""
+		},
+		{
+			"key": "line_item",
 			"value": ""
 		}
 	]
