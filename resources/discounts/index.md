@@ -38,6 +38,12 @@ We will call Tier to a specific group of promotions. These tiers will be execute
 
 We have three tiers: Line Item, Cross Items and Shipping Line.
 
+**Line Item**: applies at the product level.
+
+**Cross Items**: applies to all products.
+
+**Shipping Line**: applies to shipping costs.
+
 ![](./images/promotion_tiers.png)
 
 ## How it works
