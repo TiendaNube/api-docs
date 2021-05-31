@@ -422,3 +422,15 @@ td,
 th {
   padding: 0;
 }
+
+.alert {
+  padding: 20px;
+  background-color: #ff9800;
+  color: white;
+  margin-bottom: 15px;
+}
+
+.alert a {
+  color: white;
+  font-weight: bold;
+}
