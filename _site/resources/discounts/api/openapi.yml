@@ -219,7 +219,7 @@ paths:
                   example: Deal only valid for Buenos Aires city
                 allocation_type:
                   type: string
-                  enum: [cross_item, line_item, shipping_item]
+                  enum: [cross_items, line_item, shipping_line]
                   description: Type of concept in which the promotion will be applied
                   example: line_item
                 discount_type:

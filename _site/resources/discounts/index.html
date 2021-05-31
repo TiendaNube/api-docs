@@ -6,10 +6,10 @@
   <title></title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#157878">
-  <link rel="stylesheet" href="/tiendanube.api.docs/css/normalize.css">
+  <link rel="stylesheet" href="/api-docs/css/normalize.css">
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="/tiendanube.api.docs/css/fonts.css">
-  <link rel="stylesheet" href="/tiendanube.api.docs/css/cayman.css">
+  <link rel="stylesheet" href="/api-docs/css/fonts.css">
+  <link rel="stylesheet" href="/api-docs/css/cayman.css">
 </head>
 
 
@@ -55,7 +55,13 @@
 
 <p>We will call Tier to a specific group of promotions. These tiers will be executed in order and will apply depending on one of each other.</p>
 
-<p>We have three tiers: Line Item, Cross Item and Shipping Line.</p>
+<p>We have three tiers: Line Item, Cross Items and Shipping Line.</p>
+
+<p><strong>Line Item</strong>: applies at the product level.</p>
+
+<p><strong>Cross Items</strong>: applies to all products.</p>
+
+<p><strong>Shipping Line</strong>: applies to shipping costs.</p>
 
 <p><img src="./images/promotion_tiers.png" alt="" /></p>
 
@@ -120,7 +126,7 @@
 <ol>
   <li>Register as a partner in <a href="http://www.tiendanube.com/partners">Tiendanube</a> or <a href="{site.data.institutional.partners.br}}">Nuvemshop</a>.</li>
   <li>Once inside your partner's admin panel, go to the "Apps" section and create your app.</li>
-  <li>Read up on <a href="/tiendanube.api.docs/resources/authentication">how to authenticate</a> your app with us.</li>
+  <li>Read up on <a href="/api-docs/resources/authentication">how to authenticate</a> your app with us.</li>
   <li>Read the API docs to understand what you can do with your app.</li>
 </ol>
 
@@ -134,7 +140,7 @@
 
 <p>This operation will return an ID to the combination of the promotions and the current store.</p>
 
-<p>You should take into consideration some values can't be updated after the creation. For more information about the API, please refer to <a href="/tiendanube.api.docs/resources/discounts/api">Discount API Docs</a>.</p>
+<p>You should take into consideration some values can't be updated after the creation. For more information about the API, please refer to <a href="/api-docs/resources/discounts/api">Discount API Docs</a>.</p>
 
 <h3 id="apply-a-discount">Apply a discount</h3>
 
@@ -142,9 +148,9 @@
 
 <p>Any modification on the cart state will be evaluated and informed to each partner which is registered to a promotion tier through the Discount Application JS API.</p>
 
-<p>Each partner should evaluate the current cart and decide if a promotion should be applied (or removed), and do the corresponding request to do this.</p>
+<p>Each partner should evaluate the current cart and decide if a discount should be applied (or removed), and do the corresponding request to do this.</p>
 
-<p>For more information about the API requests used to create or remove a discount, please refer to <a href="/tiendanube.api.docs/resources/discounts/api">Discount API Docs</a>.</p>
+<p>For more information about the API requests used to create or remove a discount, please refer to <a href="/api-docs/resources/discounts/api">Discount API Docs</a>.</p>
 
 <h2 id="front-end-integration">Front-End Integration</h2>
 
@@ -160,7 +166,7 @@
 <span class="kd">const</span> <span class="nx">tierName</span> <span class="o">=</span> <span class="nx">tierNameProvider</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">LINE_ITEM</span><span class="dl">'</span><span class="p">),</span>
 
 <span class="nx">discountService</span><span class="p">.</span><span class="nx">suscribe</span><span class="p">(</span><span class="nx">tierName</span><span class="p">,</span> <span class="k">async</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-   <span class="k">return</span> <span class="k">await</span> <span class="nx">fetch</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://rules.my-discount-app.com</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="k">await</span> <span class="nx">fetch</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://rules.my-discount-app.com?store=1234</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
       <span class="na">method</span><span class="p">:</span> <span class="dl">'</span><span class="s1">POST</span><span class="dl">'</span><span class="p">,</span>
       <span class="na">body</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">detail</span><span class="p">)</span>
    <span class="p">})</span>
@@ -173,15 +179,18 @@
 
 <ul>
   <li>The tier name is retrieved using the global instance of <strong>tierNameProvider</strong>.</li>
+  <li>The URL where the executor will be called must contain a <strong>store</strong> parameter with the store ID value, in order to know which store is calling it.</li>
   <li>The executor will get the information needed as a data object as a parameter.</li>
   <li>The body MUST contain the property <strong>acknowledge,</strong> which will be used to determine if partner does some modification to the cart (add or remove a discount)</li>
 </ul>
+
+<p>In order to subscribe the executor, make sure the js file is public and register it through <code class="language-plaintext highlighter-rouge">POST / scripts</code> (<a href="/api-docs/resources/script/#post-scripts">see more</a>) when authenticating a new user.</p>
 
 <h3 id="data-objects">Data Objects</h3>
 
 <p>At the time that the executor is called, a data object will be sent as a parameter. This object will contain the information of the current cart.</p>
 
-<p>For more information about the structures please refers <a href="/tiendanube.api.docs/resources/discounts/data-objects">here</a></p>
+<p>For more information about the structures please refers <a href="/api-docs/resources/discounts/data-objects">here</a></p>
 
 <h2 id="discount-application-flow">Discount application flow</h2>
 
@@ -190,8 +199,8 @@
 <h2 id="resources">Resources</h2>
 
 <ul>
-  <li><a href="/tiendanube.api.docs/resources/discounts/api">Api Specification</a></li>
-  <li><a href="/tiendanube.api.docs/resources/discounts/api/openapi.yml">Openapi.yml</a></li>
+  <li><a href="/api-docs/resources/discounts/api">Api Specification</a></li>
+  <li><a href="/api-docs/resources/discounts/api/openapi.yml">Openapi.yml</a></li>
 </ul>
 
 <h2 id="frequently-asked-questions">Frequently Asked Questions</h2>

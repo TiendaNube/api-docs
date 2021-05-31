@@ -9,7 +9,7 @@
 ## Install Jekyll
 
 ```bash
-gem install Jekyll bundler
+gem install jekyll bundler
 ```
 
 For more information, please refer to the [official documentation](https://jekyllrb.com/docs/).
@@ -17,7 +17,7 @@ For more information, please refer to the [official documentation](https://jekyl
 
 # Develop on the local environment
 
-To run the site locally, run the following command: 
+To build and run the site locally, run the following command: 
 
 ```bash
 bundle exec jekyll serve
