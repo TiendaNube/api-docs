@@ -36,7 +36,13 @@ An Executor refers to a function registered by the application to be performed o
 
 We will call Tier to a specific group of promotions. These tiers will be executed in order and will apply depending on one of each other.
 
-We have three tiers: Line Item, Cross Item and Shipping Line.
+We have three tiers: Line Item, Cross Items and Shipping Line.
+
+**Line Item**: applies at the product level.
+
+**Cross Items**: applies to all products.
+
+**Shipping Line**: applies to shipping costs.
 
 ![](./images/promotion_tiers.png)
 
@@ -89,7 +95,7 @@ You should take into consideration some values can&#39;t be updated after the cr
 
 Any modification on the cart state will be evaluated and informed to each partner which is registered to a promotion tier through the Discount Application JS API.
 
-Each partner should evaluate the current cart and decide if a promotion should be applied (or removed), and do the corresponding request to do this.
+Each partner should evaluate the current cart and decide if a discount should be applied (or removed), and do the corresponding request to do this.
 
 For more information about the API requests used to create or remove a discount, please refer to [Discount API Docs]({{ site.data.links.discounts.main | absolute_url }}/api).
 
@@ -108,7 +114,7 @@ Fn is representing an async function. This one is responsible for the execution 
 const tierName = tierNameProvider.get('LINE_ITEM'),
 
 discountService.suscribe(tierName, async (data) => {
-   return await fetch('https://rules.my-discount-app.com', {
+   return await fetch('https://rules.my-discount-app.com?store=1234', {
       method: 'POST',
       body: JSON.stringify(event.detail)
    })
@@ -121,8 +127,11 @@ discountService.suscribe(tierName, async (data) => {
 This example presents some points to consider.
 
 - The tier name is retrieved using the global instance of **tierNameProvider**.
+- The URL where the executor will be called must contain a **store** parameter with the store ID value, in order to know which store is calling it.
 - The executor will get the information needed as a data object as a parameter.
 - The body MUST contain the property **acknowledge,** which will be used to determine if partner does some modification to the cart (add or remove a discount)
+
+In order to subscribe the executor, make sure the js file is public and register it through `POST / scripts` ([see more]({{ site.data.links.script.main | absolute_url}}/#post-scripts)) when authenticating a new user.
 
 ### Data Objects
 

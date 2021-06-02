@@ -6,14 +6,19 @@
   <title></title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#157878">
-  <link rel="stylesheet" href="/tiendanube.api.docs/css/normalize.css">
+  <link rel="stylesheet" href="/api-docs/css/normalize.css">
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="/tiendanube.api.docs/css/fonts.css">
-  <link rel="stylesheet" href="/tiendanube.api.docs/css/cayman.css">
+  <link rel="stylesheet" href="/api-docs/css/fonts.css">
+  <link rel="stylesheet" href="/api-docs/css/cayman.css">
+  <link rel="stylesheet" href="/api-docs/css/main.css">
 </head>
 
 
   <body>
+    <div class="alert">
+      This documentation is experimental. Click <a href="https://github.com/TiendaNube/api-docs" target="_blank">here</a> to see the stable version.
+    </div>
+
     <section class="page-header">
   <span class="project-name">Tiendanube/Nuvemshop</span>
   <span class="project-tagline">Developers Documentation</span>
@@ -65,7 +70,7 @@
 
 <p>We follow the OAuth 2 framework for letting users authorize your application to use Tiendanube/Nuvemshop on their behalf. Quite briefly, when a user installs it you can obtain an access token (a secret string denoting your rights over his store), which you have to include in the header of every request (as shown in the above example).</p>
 
-<p>Read the <a href="/tiendanube.api.docs/resources/authentication">authentication guide</a> to get started.</p>
+<p>Read the <a href="/api-docs/resources/authentication">authentication guide</a> to get started.</p>
 
 <h2 id="identify-your-app">Identify your app</h2>
 
@@ -234,7 +239,7 @@ X-Main-Language: es
 
 <h2 id="front-end-integration">Front-end integration</h2>
 
-<p>When using <a href="/tiendanube.api.docs/resources/script">scripts</a> to integrate your app with the storefront, you may want to bind yourself to certain events or access related objects.</p>
+<p>When using <a href="/api-docs/resources/script">scripts</a> to integrate your app with the storefront, you may want to bind yourself to certain events or access related objects.</p>
 
 <p>While support for this is still being improved, there is one single event you may bind yourself to: <code class="language-plaintext highlighter-rouge">LS.registerOnChangeVariant(callback)</code> where <code class="language-plaintext highlighter-rouge">callback</code> is a function that receives a single argument, a <code class="language-plaintext highlighter-rouge">variant</code>, that contains information about the chosen product variant. In particular, <code class="language-plaintext highlighter-rouge">variant.element</code> contains a string detailing a jQuery selector that you may use in order to obtain a container for the chosen variant’s form; this is important when working with themes that have a “quick shop” feature, such as LinkedMan or LinkedWoman, as there may be more than one product form present in a page.</p>
 
@@ -242,7 +247,7 @@ X-Main-Language: es
 
 <p>Being a monthly subscription service, it’s possible that a store will not renew its service. In this case, the store will go offline and the API will be inaccessible. The API will also be inaccessible if the app has a recurring price and it’s not paid in time.</p>
 
-<p>In either case, all API calls will return a <code class="language-plaintext highlighter-rouge">402 Payment Required</code> response, <a href="/tiendanube.api.docs/resources/script">Scripts</a> will not be included and <a href="/tiendanube.api.docs/resources/webhook">Webhooks</a> will not be called. Please make sure you handle this error code to notify the user that he needs to resume his payment instead of displaying a generic server error.</p>
+<p>In either case, all API calls will return a <code class="language-plaintext highlighter-rouge">402 Payment Required</code> response, <a href="/api-docs/resources/script">Scripts</a> will not be included and <a href="/api-docs/resources/webhook">Webhooks</a> will not be called. Please make sure you handle this error code to notify the user that he needs to resume his payment instead of displaying a generic server error.</p>
 
 <p>Once the required payment is made, the API becomes accessible again.</p>
 
@@ -251,22 +256,22 @@ X-Main-Language: es
 <h2 id="api-resources">API resources</h2>
 
 <ul>
-  <li><a href="/tiendanube.api.docs/resources/store">Store</a></li>
-  <li><a href="/tiendanube.api.docs/resources/product">Product</a></li>
-  <li><a href="/tiendanube.api.docs/resources/product/variant">Product Variant</a></li>
-  <li><a href="/tiendanube.api.docs/resources/product/image">Product Image</a></li>
-  <li><a href="/tiendanube.api.docs/resources/product/category">Category</a></li>
-  <li><a href="/tiendanube.api.docs/resources/order">Order</a></li>
-  <li><a href="/tiendanube.api.docs/:Qcustomer">Customer</a></li>
-  <li><a href="/tiendanube.api.docs/resources/script">Script</a></li>
-  <li><a href="/tiendanube.api.docs/resources/webhook">Webhook</a></li>
-  <li><a href="/tiendanube.api.docs/resources/order/coupon">Coupons</a></li>
-  <li><a href="/tiendanube.api.docs/resources/metafields">Metafields</a></li>
-  <li><a href="/tiendanube.api.docs/resources/shipping/carrier">Shipping Carrier</a></li>
-  <li><a href="/tiendanube.api.docs/resources/payment/provider">Payment Provider</a></li>
-  <li><a href="/tiendanube.api.docs/resources/payment/transaction">Transaction</a></li>
-  <li><a href="/tiendanube.api.docs/resources/order/draft-order">Draft Order</a></li>
-  <li><a href="/tiendanube.api.docs/resources/discounts">Discount</a></li>
+  <li><a href="/api-docs/resources/store">Store</a></li>
+  <li><a href="/api-docs/resources/product">Product</a></li>
+  <li><a href="/api-docs/resources/product/variant">Product Variant</a></li>
+  <li><a href="/api-docs/resources/product/image">Product Image</a></li>
+  <li><a href="/api-docs/resources/product/category">Category</a></li>
+  <li><a href="/api-docs/resources/order">Order</a></li>
+  <li><a href="/api-docs/:Qcustomer">Customer</a></li>
+  <li><a href="/api-docs/resources/script">Script</a></li>
+  <li><a href="/api-docs/resources/webhook">Webhook</a></li>
+  <li><a href="/api-docs/resources/order/coupon">Coupons</a></li>
+  <li><a href="/api-docs/resources/metafields">Metafields</a></li>
+  <li><a href="/api-docs/resources/shipping/carrier">Shipping Carrier</a></li>
+  <li><a href="/api-docs/resources/payment/provider">Payment Provider</a></li>
+  <li><a href="/api-docs/resources/payment/transaction">Transaction</a></li>
+  <li><a href="/api-docs/resources/order/draft-order">Draft Order</a></li>
+  <li><a href="/api-docs/resources/discounts">Discount</a></li>
 </ul>
 
 <h2 id="help-us-make-it-better">Help us make it better</h2>
