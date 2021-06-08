@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "787330f0-29c9-481a-b9e6-0c1ff8446ad3",
+		"_postman_id": "21db7d55-eee3-4fc1-b945-fb8b19ebaad4",
 		"name": "Public Api TiendaNube",
 		"description": "This collection represents all examples of tiendanube's / nuvemshop's public API.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -813,197 +813,6 @@
 				}
 			],
 			"description": "Customer\n========\n\nA Customer of the store. Customer accounts store contact information for the customer, saving logged-in customers the trouble of having to provide it at every checkout.\n\nProperties\n----------\n\n| Property             | Explanation                                                                                  |\n| -------------------- | -------------------------------------------------------------------------------------------- |\n| id                   | The unique numeric identifier for the Customer                                               |\n| name                 | Name of the Customer                                                                         |\n| email                | E-mail of the Customer                                                                       |\n| phone                | Phone number of the customer (not necessarily the same as the address's phone)               |\n| identification       | Customer's identification (in Brazil for example, it would be the CPF/CNPJ)                  |\n| note                 | Store owner's notes about the customer                                                       |\n| default_address      | Default shipping address of the Customer                                                     |\n| addresses            | List of shipping addresses for the Customer                                                  |\n| billing_address      | Billing address of the Customer                                                              |\n| billing_number       | Billing number of the Customer                                                               |\n| billing_floor        | Billing floor of the Customer                                                                |\n| billing_locality     | Billing locality of the Customer                                                             |\n| billing_zipcode      | Billing zipcode of the Customer                                                              |\n| billing_city         | Billing city of the Customer                                                                 |\n| billing_province     | Billing province of the Customer                                                             |\n| billing_country      | Billing country code of the Customer                                                         |\n| extra                | A JSON object containing custom information. Can be set via the API or through custom form fields of name \"extra[key]\" on the Customer's register form in the storefront. |\n| total_spent          | The total amount of money that the Customer has spent at the store                           |\n| total_spent_currency | The total spent's currency in [ISO 4217 format](http://en.wikipedia.org/wiki/ISO_4217)       |\n| last_order_id        | The id of the Customer's last Order                                                          |\n| active               | \"true\" if the Customer activated his account. \"false\" if he/she hasn't                       |\n| created_at           | Date when the Customer was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)     | \n| updated_at           | Date when the Customer was last updated in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)|"
-		},
-		{
-			"name": "Discounts",
-			"item": [
-				{
-					"name": "Create a Promotion",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authentication",
-								"value": "bearer {{app_token}}",
-								"type": "text"
-							},
-							{
-								"key": "User-Agent",
-								"value": "Awesome App (awesome@app.com)",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"name\": \"50% off in the second unit\",\n  \"description\": \"Taking two pay 50 percent on the second unit\",\n  \"disclaimer\": \"Deal only valid for São Paulo city\",\n  \"allocation_type\": \"line_item\",\n  \"discount_type\": \"percentage\",\n  \"discount_amount\": 50,\n  \"translations\": [\n    {\n      \"lang\": \"pt_BR\",\n      \"name\": \"50% off in the second unit\",\n      \"description\": \"Taking two pay 50 percent on the second unit\",\n      \"disclaimer\": \"Deal only valid for São Paulo city\"\n    }\n  ]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://{{api_url}}/{{store_id}}/promotions",
-							"protocol": "https",
-							"host": [
-								"{{api_url}}"
-							],
-							"path": [
-								"{{store_id}}",
-								"promotions"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create a Discount",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Authentication",
-								"value": "bearer {{app_token}}",
-								"type": "text"
-							},
-							{
-								"key": "User-Agent",
-								"value": "Awesome App (awesome@app.com)",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"promotion_id\": \"{{promotion_id}}\",\n  \"cart_id\": \"{{cart_id}}\",\n  \"line_items\": [\n    \"{{line_item}}\", //retrieved by the object data-line-item-id \n    \"{{line_item}}\"\n  ]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://{{api_url}}/{{store_id}}/discounts",
-							"protocol": "https",
-							"host": [
-								"{{api_url}}"
-							],
-							"path": [
-								"{{store_id}}",
-								"discounts"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Remove a discount associated with a cart",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Authentication",
-								"value": "bearer {{app_token}}",
-								"type": "text"
-							},
-							{
-								"key": "User-Agent",
-								"value": "Awesome App (awesome@app.com)",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://{{api_url}}/{{store_id}}/discounts/carts/{{cart_id}}/promotions/{{promotion_id}}",
-							"protocol": "https",
-							"host": [
-								"{{api_url}}"
-							],
-							"path": [
-								"{{store_id}}",
-								"discounts",
-								"carts",
-								"{{cart_id}}",
-								"promotions",
-								"{{promotion_id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Remove a discount associated with a cart from a specific line item",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Authentication",
-								"value": "bearer {{app_token}}",
-								"type": "text"
-							},
-							{
-								"key": "User-Agent",
-								"value": "Awesome App (awesome@app.com)",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://{{api_url}}/{{store_id}}/discounts/carts/{{cart_id}}/promotions/{{promotion_id}}/line-items/{{line_item}}",
-							"protocol": "https",
-							"host": [
-								"{{api_url}}"
-							],
-							"path": [
-								"{{store_id}}",
-								"discounts",
-								"carts",
-								"{{cart_id}}",
-								"promotions",
-								"{{promotion_id}}",
-								"line-items",
-								"{{line_item}}"
-							]
-						}
-					},
-					"response": []
-				}
-			]
 		},
 		{
 			"name": "Draft Order",
@@ -3506,7 +3315,18 @@
 					"name": "Receive a list of all fulfillment events for an order",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authentication",
+								"value": "bearer {{app_token}}",
+								"type": "text"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Awesome App (awesome@app.com)",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "https://{{api_url}}/{{store_id}}/orders/{{order_id}}/fulfillments",
 							"protocol": "https",
@@ -3527,7 +3347,18 @@
 					"name": "Receive a single fulfillment event",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authentication",
+								"value": "bearer {{app_token}}",
+								"type": "text"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Awesome App (awesome@app.com)",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "https://{{api_url}}/{{store_id}}/orders/{{order_id}}/fulfillments/{{fullfillment_id}}",
 							"protocol": "https",
@@ -3549,7 +3380,18 @@
 					"name": "Create a new fulfillment event",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authentication",
+								"value": "bearer {{app_token}}",
+								"type": "text"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Awesome App (awesome@app.com)",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"status\": \"delivered\",\n    \"description\": \"Objeto entregue ao destinatário\",\n    \"city\": \"São Paulo\",\n    \"province\": \"São Paulo\",\n    \"country\": \"BR\",\n    \"happened_at\": \"2013-04-22T11:39:12-03:00\",\n    \"estimated_delivery_at\": \"2013-04-22T11:39:12-03:00\"\n}",
@@ -3579,7 +3421,18 @@
 					"name": "Remove a fulfillment event",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authentication",
+								"value": "bearer {{app_token}}",
+								"type": "text"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Awesome App (awesome@app.com)",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "https://{{api_url}}/{{store_id}}/orders/{{order_id}}/fulfillments/{{fullfillment_id}}",
 							"protocol": "https",
@@ -4117,11 +3970,35 @@
 			"value": ""
 		},
 		{
-			"key": "promotion_id",
+			"key": "transaction_id",
 			"value": ""
 		},
 		{
-			"key": "line_item",
+			"key": "fullfillment_id",
+			"value": ""
+		},
+		{
+			"key": "script_id",
+			"value": ""
+		},
+		{
+			"key": "metafield_id",
+			"value": ""
+		},
+		{
+			"key": "customer_id",
+			"value": ""
+		},
+		{
+			"key": "coupon_id",
+			"value": ""
+		},
+		{
+			"key": "category_id",
+			"value": ""
+		},
+		{
+			"key": "sku_id",
 			"value": ""
 		}
 	]
