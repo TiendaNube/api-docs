@@ -151,7 +151,7 @@ Payment Providers can specify the list of functionalities of the service that th
 
 This object contains the data that the Checkout's frontend needs to render the available payment options for the consumer.
 
-Payment Providers can implement multiple payment options to be displayed in the store's checkout. To do this, apps must specify the configuration of their Checkout Payment Options through our REST API. The event handlers for each Checkout Payment Option must be defined in the JavaScript file indicated in the `checkout_js_url` field (check out the [Checkout Resource ](./checkout.md#payment-options-javascript-interface) for more details on implementing this script).
+Payment Providers can implement multiple payment options to display at the store checkout. To do this, apps must specify the configuration of their Checkout Payment Options through our REST API. The event handlers for each Checkout Payment Option must be defined in the JavaScript file indicated in the `checkout_js_url` field (check out the [Checkout Resource ](./checkout.md#payment-options-javascript-interface) for more details on implementing this script).
 
 | Field                            | Type          | Description                                                  |
 | :------------------------------- | :------------ | :----------------------------------------------------------- |
@@ -317,7 +317,8 @@ E.g.
       "supported_payment_method_types": [
         "credit_card",
         "debit_card"
-      ]
+      ],
+      "integration_type": "transparent"
     },
     {
       "id": "mypayments_transparent_offline",
@@ -329,7 +330,8 @@ E.g.
       ],
       "supported_payment_method_types": [
         "boleto"
-      ]
+      ],
+      "integration_type": "transparent"
     },
     {
       "id": "mypayments_redirect",
@@ -344,7 +346,8 @@ E.g.
         "credit_card",
         "wire_transfer",
         "wallet"
-      ]
+      ],
+      "integration_type": "redirect"
     }
   ],
   "features": [
