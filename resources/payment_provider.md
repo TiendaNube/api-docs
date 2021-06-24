@@ -27,7 +27,7 @@ Properties
 | `supported_currencies`      | Array(String) | ISO.4217 currency codes supported by the Payment Provider. See [Currency Codes](#Currency-Codes). |
 | `supported_payment_methods` | Array(Object) | List of available payment methods for each payment method type. See [Payment Methods](#Payment-Methods). |
 | `checkout_js_url`           | String        | HTTPS URL of the JavaScript file to be included in the checkout frontend. See [Checkout](checkout.md). |
-| `checkout_payment_options`  | Array(Object) | Object containing the available payment options for the checkout frontend. See [Checkout Options](#Checkout-Options). |
+| `checkout_payment_options`  | Array(Object) | Object containing the available payment options for the checkout frontend. See [Checkout Payment Options](#Checkout-Payment-Options). |
 | `configuration_url`         | String        | [Optional] HTTPS URL of the Payment Provider configuration UI. |
 | `support_url`               | String        | [Optional] Payment Provider support site HTTPS URL.          |
 | `rates`                     | Array(Object) | [Optional] List of rates definitions for merchants by payment method type. See [Rates](#Rates). |
@@ -132,7 +132,7 @@ Payment Providers may charge merchants with different rates per Transaction depe
 
 ### Features
 
-Payment Providers can specify the list of functionalities of the service that they offer to the merchant. This will be displayed in the list of available payment applications together with the description of the Payment Provider in order to provide more detail about the application's characteristics.
+Payment Providers can specify the list of functionalities of the service that they offer to the merchant. This will be displayed in the list of available payment applications together with the description of the Payment Provider in order to provide more detail about the application's features.
 
 | Field      | Type          | Description                                                  |
 | :--------- | :------------ | :----------------------------------------------------------- |
@@ -140,16 +140,18 @@ Payment Providers can specify the list of functionalities of the service that th
 
 #### Supported Feature Values
 
-| Feature                           | Description                               |
-| --------------------------------- | ----------------------------------------- |
-| `special_rates`                   | Exclusive rates for Tiendanube customers. |
-| `transparent_checkout`            | Transparent checkout.                     |
-| `supports_international_payments` | International sales.                      |
-| `gateway`                         | Gateway.                                  |
+| Feature                           | Description                                                  |
+| --------------------------------- | ------------------------------------------------------------ |
+| `special_rates`                   | The payment provider offers exclusive rates for Tiendanube customers. |
+| `transparent_checkout`            | The payment provider offers transparent payment options (without leaving the store checkout). |
+| `supports_international_payments` | The payment provider allows payments from foreign countries. |
+| `gateway`                         | The payment provider offers gateway services.                |
 
-### Checkout Options
+### Checkout Payment Options
 
-Payment Providers can implement multiple payment options which will be displayed in the store's checkout. The partners has to specify the Payment Options configuration properties via our REST API on the Payment Provider. The event handlers for each Payment Options will be defined in the JavaScript file indicated in the `checkout_js_url` field (check [Checkout Resource](./checkout.md#payment-options-javascript-interface). This object contains the data that the checkout frontend needs to render these payment options.
+This object contains the data that the Checkout's frontend needs to render the available payment options for the consumer.
+
+Payment Providers can implement multiple payment options to display at the store checkout. To do this, apps must specify the configuration of their Checkout Payment Options through our REST API. The event handlers for each Checkout Payment Option must be defined in the JavaScript file indicated in the `checkout_js_url` field (check out the [Checkout Resource ](./checkout.md#payment-options-javascript-interface) for more details on implementing this script).
 
 | Field                            | Type          | Description                                                  |
 | :------------------------------- | :------------ | :----------------------------------------------------------- |
@@ -159,6 +161,7 @@ Payment Providers can implement multiple payment options which will be displayed
 | `logo_url`                       | String        | [Optional] HTTPS URL of the Payment Provider logo.           |
 | `supported_billing_countries`    | Array(String) | List of [ISO_3166-1](https://es.wikipedia.org/wiki/ISO_3166-1) country codes where the payment option will be available. |
 | `supported_payment_method_types` | Array(String) | Payment method types supported by the payment option. See [Payment Method Types](#Payment-Method-Types). |
+| `integration_type`               | String        | [Optional] The integration type of the payment option. One of these values: `redirect` or ` transparent`. |
 
 ### Money
 
@@ -314,7 +317,8 @@ E.g.
       "supported_payment_method_types": [
         "credit_card",
         "debit_card"
-      ]
+      ],
+      "integration_type": "transparent"
     },
     {
       "id": "mypayments_transparent_offline",
@@ -326,7 +330,8 @@ E.g.
       ],
       "supported_payment_method_types": [
         "boleto"
-      ]
+      ],
+      "integration_type": "transparent"
     },
     {
       "id": "mypayments_redirect",
@@ -341,7 +346,8 @@ E.g.
         "credit_card",
         "wire_transfer",
         "wallet"
-      ]
+      ],
+      "integration_type": "redirect"
     }
   ],
   "features": [
