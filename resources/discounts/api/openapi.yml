@@ -19,22 +19,47 @@ components:
         lang:
           type: string
           description: language identifier
-          example: es_AR
+          example: 'es_AR'
         name:
           type: string
           description: Promotion name
-          example: 50% off in the second unit
+          example: '50% off in the second unit'
         description:
           type: string
           description: Describe the promotion to the consumer
-          example: Taking two pay 50 percent on the second unit
+          example: 'Taking two pay 50 percent on the second unit'
         disclaimer:
           type: string
           description: Describe the terms and conditions of the promotion
-          example: Deal only valid for Buenos Aires city
+          example: 'Deal only valid for Buenos Aires city'
       required:
         - lang
         - name
+    discountLineItem:
+      type: object
+      properties:
+        line_item:
+          type: string
+          description: Product to apply the promotion.
+          example: '67890'
+        quantity:
+          type: number
+          description: Product quantity.
+          example: 2
+        original_price:
+          type: string
+          description: Product original price, should have two decimals separated by dot (".").
+          example: '10000.25'
+        discount_amount:
+          type: string
+          description: Product amount to be discounted, should have two decimals separated by dot (".").
+          example: '5000.25'
+      required:
+        - line_item
+        - quantity
+        - original_price
+        - discount_amount
+
   responses:
     forbiddenError:
       description: The __store__/__app__ provided does not belong to promotion
@@ -58,8 +83,8 @@ components:
 paths:
   /discounts:
     put:
-      summary: Create a discount
-      description: Register a discount for the current cart
+      summary: Register a discount
+      description: Create or Update a discount for the current cart
       tags:
         - discounts
       requestBody:
@@ -70,17 +95,20 @@ paths:
                 promotion_id:
                   type: string
                   description: Promotion identifier
-                  example: 5d7a23c7-7abe-4207-b175-33aa1d866a2a
+                  example: '5d7a23c7-7abe-4207-b175-33aa1d866a2a'
                 cart_id:
                   type: string
                   description: Cart identifier
-                  example: 12345
+                  example: '12345'
+                discount_amount:
+                  type: string
+                  description: Amount to be discounted, should have two decimals separated by dot ("."). Is required only if the allocation type of the promotion is "cross_items" or "shipping_line"
+                  example: '5000.25'
                 line_items:
                   type: array
+                  description: Is required only if the allocation type of the promotion is "line_item"
                   items:
-                    type: string
-                    description: Products to apply the promotion. Is evaluated only if the allocation type of the promotion is "line_item"
-                    example: 67890
+                    $ref: '#/components/schemas/discountLineItem'
               required:
                 - cart_id
                 - promotion_id
@@ -96,7 +124,7 @@ paths:
                     properties:
                       id:
                         type: string
-                        example: 1234567890
+                        example: '1234567890'
         '400':
           description: Unable to process the request sent
           content:
@@ -195,8 +223,8 @@ paths:
 
   /promotions:
     post:
-      summary: Create a promotion
-      description: Register a promotion for the current store
+      summary: Register a promotion
+      description: Create a promotion for the current store
       tags:
         - promotions
       operationId: create-promotion
@@ -208,29 +236,20 @@ paths:
                 name:
                   type: string
                   description: Promotion Name
-                  example: 50% off in the second unit
+                  example: '50% off in the second unit'
                 description:
                   type: string
                   description: Describe the promotion to the consumer
-                  example: Taking two pay 50 percent on the second unit
+                  example: 'Taking two pay 50 percent on the second unit'
                 disclaimer:
                   type: string
                   description: Describe the terms and conditions of the promotion
-                  example: Deal only valid for Buenos Aires city
+                  example: 'Deal only valid for Buenos Aires city'
                 allocation_type:
                   type: string
-                  enum: [cross_items, line_item, shipping_line]
+                  enum: ['cross_items', 'line_item', 'shipping_line']
                   description: Type of concept in which the promotion will be applied
-                  example: line_item
-                discount_type:
-                  type: string
-                  enum: [fixed, percentage]
-                  description: Method used to calculate the discount
-                  example: fixed
-                discount_amount:
-                  type: number
-                  description: Discount modifier
-                  example: 1000
+                  example: 'line_item'
                 translations:
                   type: array
                   items:
@@ -238,8 +257,6 @@ paths:
               required:
                 - name
                 - allocation_type
-                - discount_type
-                - discount_amount
       responses:
         '201':
           description: The promotion has been created
@@ -252,7 +269,7 @@ paths:
                     properties:
                       id:
                         type: string
-                        example: e855b201-be35-496c-8aed-28c6f1de840d
+                        example: 'e855b201-be35-496c-8aed-28c6f1de840d'
         '400':
           description: Unable to process the request sent
           content:
