@@ -167,15 +167,18 @@
 
 <p>Fn is representing an async function. This one is responsible for the execution of any needed logic to evaluate the business rules.</p>
 
-<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-<span class="kd">const</span> <span class="nx">tierName</span> <span class="o">=</span> <span class="nx">tierNameProvider</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">LINE_ITEM</span><span class="dl">'</span><span class="p">),</span>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">let</span> <span class="nx">tierName</span> <span class="o">=</span> <span class="nx">tierNameProvider</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">LINE_ITEM</span><span class="dl">'</span><span class="p">),</span>
 
-<span class="nx">discountService</span><span class="p">.</span><span class="nx">suscribe</span><span class="p">(</span><span class="nx">tierName</span><span class="p">,</span> <span class="k">async</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-   <span class="k">return</span> <span class="k">await</span> <span class="nx">fetch</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://rules.my-discount-app.com?store=1234</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+<span class="nx">discountService</span><span class="p">.</span><span class="nx">suscribe</span><span class="p">(</span><span class="nx">tierName</span><span class="p">,</span> <span class="k">async</span> <span class="p">(</span><span class="nx">cart</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+   <span class="kd">const</span> <span class="nx">rawResponse</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">fetch</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://rules.my-discount-app.com?store=1234</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
       <span class="na">method</span><span class="p">:</span> <span class="dl">'</span><span class="s1">POST</span><span class="dl">'</span><span class="p">,</span>
-      <span class="na">body</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">detail</span><span class="p">)</span>
-   <span class="p">})</span>
-   <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">response</span> <span class="o">=&gt;</span> <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">());</span>
+      <span class="na">body</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">cart</span><span class="p">)</span>
+   <span class="p">});</span>
+   <span class="kd">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">rawResponse</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
+
+   <span class="k">return</span> <span class="p">{</span>
+      <span class="na">discountChanged</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+   <span class="p">};</span>
 <span class="p">});</span>
 
 </code></pre></div></div>
@@ -183,10 +186,16 @@
 <p>This example presents some points to consider.</p>
 
 <ul>
-  <li>The tier name is retrieved using the global instance of <strong>tierNameProvider</strong>.</li>
+  <li>The tier name is retrieved using the global instance of <strong>tierNameProvider</strong>. Currently, you can get three tiers that will be executed in the following order:
+    <ul>
+      <li>LINE_ITEM</li>
+      <li>CROSS_ITEMS</li>
+      <li>SHIPPING_LINE</li>
+    </ul>
+  </li>
   <li>The URL where the executor will be called must contain a <strong>store</strong> parameter with the store ID value, in order to know which store is calling it.</li>
   <li>The executor will get the information needed as a data object as a parameter.</li>
-  <li>The body MUST contain the property <strong>acknowledge,</strong> which will be used to determine if partner does some modification to the cart (add or remove a discount)</li>
+  <li>The body MUST contain the property <strong>discountChanged</strong> which will be used to determine if partner does some modification to the cart (add or remove a discount)</li>
 </ul>
 
 <p>In order to subscribe the executor, make sure the js file is public and register it through <code class="language-plaintext highlighter-rouge">POST / scripts</code> (<a href="/api-docs/resources/script/#post-scripts">see more</a>) when authenticating a new user.</p>

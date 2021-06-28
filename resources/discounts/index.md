@@ -110,15 +110,18 @@ Different events are available to listen up and take actions based on it, and ev
 Fn is representing an async function. This one is responsible for the execution of any needed logic to evaluate the business rules.
 
 ```javascript
+let tierName = tierNameProvider.get('LINE_ITEM'),
 
-const tierName = tierNameProvider.get('LINE_ITEM'),
-
-discountService.suscribe(tierName, async (data) => {
-   return await fetch('https://rules.my-discount-app.com?store=1234', {
+discountService.suscribe(tierName, async (cart) => {
+   const rawResponse = await fetch('https://rules.my-discount-app.com?store=1234', {
       method: 'POST',
-      body: JSON.stringify(event.detail)
-   })
-   .then(response => response.json());
+      body: JSON.stringify(cart)
+   });
+   const response = rawResponse.json();
+
+   return {
+      discountChanged: true,
+   };
 });
 
 ```
@@ -126,10 +129,13 @@ discountService.suscribe(tierName, async (data) => {
 
 This example presents some points to consider.
 
-- The tier name is retrieved using the global instance of **tierNameProvider**.
+- The tier name is retrieved using the global instance of **tierNameProvider**. Currently, you can get three tiers that will be executed in the following order:
+   - LINE_ITEM
+   - CROSS_ITEMS
+   - SHIPPING_LINE
 - The URL where the executor will be called must contain a **store** parameter with the store ID value, in order to know which store is calling it.
 - The executor will get the information needed as a data object as a parameter.
-- The body MUST contain the property **acknowledge,** which will be used to determine if partner does some modification to the cart (add or remove a discount)
+- The body MUST contain the property **discountChanged** which will be used to determine if partner does some modification to the cart (add or remove a discount)
 
 In order to subscribe the executor, make sure the js file is public and register it through `POST / scripts` ([see more]({{ site.data.links.script.main | absolute_url}}/#post-scripts)) when authenticating a new user.
 
