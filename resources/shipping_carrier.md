@@ -625,8 +625,21 @@ Create a new Fulfillment Event
 | happened_at          | Date when the Fulfillment Event occured was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601).|
 | estimated_delivery_at| Estimated date when the package will be delivered in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601).  |
 
-Valid status are:
+Valid dates ISO-8601 are:
 
+| Date                       | Explanation                                                    |
+| -------------------------- | -------------------------------------------------------------- |
+| 2021-03-03 12:32:54-0300   | YYYY-MM-DD hh:mm:ss±hhmm                                       |
+| 2021-04-03 12:32:54Z       | YYYY-MM-DD hh:mm:ssZ                                           |
+| 2021-10-12 12:32+03:00     | YYYY-MM-DD hh:mm±hh:mm                                         |
+| 2021-11-23 12:32Z          | YYYY-MM-DD hh:mmZ                                              |
+| 2021-05-17T12:32:54+0300   | YYYY-MM-DDThh:mm:ss±hhmm                                       |
+| 2021-08-11T12:32:54Z       | YYYY-MM-DDThh:mm:ssZ                                           |
+| 2021-03-03T12:32-03:00     | YYYY-MM-DDThh:mm±hh:mm                                         |
+| 2021-03-03T12:32Z          | YYYY-MM-DDThh:mmZ                                              |
+| 2021-03-03                 | YYYY-MM-DD                                                     |
+
+Valid status are:
 
 | Status                 | Explanation                                                    |
 | ---------------------- | -------------------------------------------------------------- |
@@ -675,6 +688,34 @@ Valid status are:
     "estimated_delivery_at": "2013-04-22T12:00:00-03:00"
 }
 ```
+#### Any invalid request wil return a 402 code for example
+`Invalid request`
+```json
+{
+   "status": "in_transit",
+   "happened_at": "2021-01-32",
+   "estimated_delivery_at": "2021-12-32",
+   "description": "Em rota",
+   "city": "[SP] São Paulo",
+   "province": "SP",
+   "country": "Brasil"
+}
+```
+`HTTP/1.1 422 Unprocessable Entity`
+```json
+{
+  "code": 422,
+  "message": "Unprocessable Entity",
+  "description": "Validation error",
+  "happened_at": [
+    "The happened at must be a valid ISO 8601 datetime."
+  ],
+  "estimated_delivery_at": [
+    "The estimated delivery at must be a valid ISO 8601 datetime."
+  ]
+}
+```
+
 
 ### DELETE /orders/${order_id}/fulfillments/{id}
 
