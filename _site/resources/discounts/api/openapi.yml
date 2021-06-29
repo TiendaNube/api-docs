@@ -46,19 +46,25 @@ components:
           type: number
           description: Product quantity.
           example: 2
-        original_price:
-          type: string
-          description: Product original price, should have two decimals separated by dot (".").
-          example: '10000.25'
-        discount_amount:
-          type: string
-          description: Product amount to be discounted, should have two decimals separated by dot (".").
-          example: '5000.25'
+        discount_specifications:
+          type: object
+          properties:
+            type:
+              type: string
+              enum: [ 'fixed', 'percentage' ]
+              description: Method used to calculate the discount
+              example: 'fixed'
+            amount:
+              type: string
+              description: Discount modifier, should have two decimals separated by dot (".").
+              example: '100.00'
+          required:
+            - type
+            - amount
       required:
         - line_item
         - quantity
-        - original_price
-        - discount_amount
+        - discount_specifications
 
   responses:
     forbiddenError:
@@ -100,10 +106,26 @@ paths:
                   type: string
                   description: Cart identifier
                   example: '12345'
-                discount_amount:
+                currency:
                   type: string
-                  description: Amount to be discounted, should have two decimals separated by dot ("."). Is required only if the allocation type of the promotion is "cross_items" or "shipping_line"
-                  example: '5000.25'
+                  description: ISO 4217 code for the currency
+                  example: 'ARS'
+                specifications:
+                  type: object
+                  description: Is required only if the allocation type of the promotion is "cross_items" or "shipping_line"
+                  properties:
+                    type:
+                      type: string
+                      enum: [ 'fixed', 'percentage' ]
+                      description: Method used to calculate the discount
+                      example: 'fixed'
+                    amount:
+                      type: string
+                      description: Discount modifier, should have two decimals separated by dot (".").
+                      example: '100.00'
+                  required:
+                    - type
+                    - amount
                 line_items:
                   type: array
                   description: Is required only if the allocation type of the promotion is "line_item"
@@ -112,6 +134,7 @@ paths:
               required:
                 - cart_id
                 - promotion_id
+                - currency
       responses:
         '200':
           description: The discount has been created or the new line items have been associated
