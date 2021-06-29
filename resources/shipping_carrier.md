@@ -693,7 +693,7 @@ Valid status are:
 ```json
 {
    "status": "in_transit",
-   "happened_at": "2021-01-32",
+   "happened_at": "28-01-2021",
    "estimated_delivery_at": "2021-12-32",
    "description": "Em rota",
    "city": "[SP] São Paulo",
@@ -728,4 +728,3 @@ Remove a Fulfillment Event
 ```json
 {}
 ```
-
