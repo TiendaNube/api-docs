@@ -631,11 +631,13 @@ Valid dates ISO-8601 are:
 | -------------------------- | -------------------------------------------------------------- |
 | 2021-03-03 12:32:54-0300   | YYYY-MM-DD hh:mm:ss±hhmm                                       |
 | 2021-04-03 12:32:54Z       | YYYY-MM-DD hh:mm:ssZ                                           |
+| 2021-04-03 12:32:54        | YYYY-MM-DD hh:mm:ss                                            |
 | 2021-10-12 12:32+03:00     | YYYY-MM-DD hh:mm±hh:mm                                         |
 | 2021-11-23 12:32Z          | YYYY-MM-DD hh:mmZ                                              |
 | 2021-05-17T12:32:54+0300   | YYYY-MM-DDThh:mm:ss±hhmm                                       |
 | 2021-08-11T12:32:54Z       | YYYY-MM-DDThh:mm:ssZ                                           |
 | 2021-03-03T12:32-03:00     | YYYY-MM-DDThh:mm±hh:mm                                         |
+| 2021-03-03T12:32:02        | YYYY-MM-DDThh:mm:ss                                            |
 | 2021-03-03T12:32Z          | YYYY-MM-DDThh:mmZ                                              |
 | 2021-03-03                 | YYYY-MM-DD                                                     |
 
