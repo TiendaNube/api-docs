@@ -4,10 +4,12 @@ layout: default
 
 # Data Objects
 
-## Root Object
+## Cart Object
 
 | Property | Type |
 | --- | --- |
+| id | Integer |
+| coupons | Boolean |
 | products | Array  <Product> |
 | shipping | Object |
 | payment | Object |
@@ -62,3 +64,60 @@ layout: default
 | creditCardCompany | String |
 | method | String |
 | installments | Integer |
+
+# Example
+
+```json
+{
+    "id": 397256730,
+    "currency": "ARS",
+    "coupons": false,
+    "language": "es",
+    "shipping": {
+        "country": null,
+        "city": null,
+        "postalcode": null
+    },
+    "package": {
+        "weight": "0.600"
+    },
+    "payment": {
+        "creditCardCompany": null,
+        "method": null,
+        "installments": 1
+    },
+    "products": [
+        {
+            "id": 467422732,
+            "depth": "20.00",
+            "height": "5.00",
+            "name": "Mi first product",
+            "price": "12.00",
+            "product_id": 17310718,
+            "image": {
+                "id": 0,
+                "product_id": 0,
+                "src": "https://static.tiendanube.com/stores_files/img/no-photo-1024-1024.png",
+                "position": 0,
+                "alt": [],
+                "created_at": "2021-06-30T20:47:29+0000",
+                "updated_at": "2021-06-30T20:47:29+0000"
+            },
+            "quantity": 4,
+            "free_shipping": false,
+            "weight": "0.00",
+            "width": "30.00",
+            "variant_id": 33739098,
+            "variant_values": [],
+            "properties": [],
+            "sku": null,
+            "barcode": null,
+            "url": "http://www.mystore.com/productos/mi-primero-producto/",
+            "price_short": "$12",
+            "price_long": "$12 ARS",
+            "subtotal_short": "$48",
+            "subtotal_long": "$48 ARS"
+        }
+    ]
+}
+```

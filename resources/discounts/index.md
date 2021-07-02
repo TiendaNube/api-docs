@@ -101,50 +101,56 @@ For more information about the API requests used to create or remove a discount,
 
 ## Front-End Integration
 
-Inside the execution context, in the global scope, the application will have available an instance of the discountService. This can be used to subscribe to executors. Through this, Tiendanube will be capable of orchestrating all the application executors for each available event.
+Inside the execution context, in the global scope, the application will have available an instance of the `discountService`. This can be used to subscribe to executors. Through this, Tiendanube will be capable of orchestrating all the application executors for each available event.
 
-### Subscribing Executors
+### 1. Creating and subscribing executors
 
-Different events are available to listen up and take actions based on it, and even though a custom listener can be used, in this context, the method **discountService.subscribe(fn)** should be used.
+Different events are available to listen up and take actions based on it. In this context, the method **discountService.subscribe(fn)** should be used.
 
 Fn is representing an async function. This one is responsible for the execution of any needed logic to evaluate the business rules.
 
 ```javascript
-let tierName = tierNameProvider.get('LINE_ITEM'),
+(function() {
+   let tierName = tierNameProvider.get('LINE_ITEM');
 
-discountService.suscribe(tierName, async (cart) => {
-   const rawResponse = await fetch('https://rules.my-discount-app.com?store=1234', {
-      method: 'POST',
-      body: JSON.stringify(cart)
+   discountService.suscribe(tierName, async (cart) => {
+      const rawResponse = await fetch(`https://rules.myapp.com/?store=${LS.store.id}`, {
+         method: 'POST',
+         body: JSON.stringify(cart)
+      });
+      const response = rawResponse.json();
+
+      return {
+         discountChanged: true,
+      };
    });
-   const response = rawResponse.json();
-
-   return {
-      discountChanged: true,
-   };
-});
-
+})()
 ```
-
 
 This example presents some points to consider.
 
-- The tier name is retrieved using the global instance of **tierNameProvider**. Currently, you can get three tiers that will be executed in the following order:
+- The tier name is retrieved using the global instance of **tierNameProvider**. Currently, you can get three tiers that will be executed in the following order when the cart is updated:
    - LINE_ITEM
    - CROSS_ITEMS
    - SHIPPING_LINE
-- The URL where the executor will be called must contain a **store** parameter with the store ID value, in order to know which store is calling it.
-- The executor will get the information needed as a data object as a parameter.
-- The body MUST contain the property **discountChanged** which will be used to determine if partner does some modification to the cart (add or remove a discount)
+- The example URL `rules.myapp.com` is supposed to be your backend where it will call our API applying the discounts.
+- The executor will get the information needed as a data object as a parameter. This object will contain the information of the current cart. For more information about the structures please refers [here]({{ site.data.links.discounts.main | absolute_url}}/data-objects)
+- The return body MUST contain the property **discountChanged** which will be used to determine whether the partner have done some modification to the cart (add or remove a discount)
 
-In order to subscribe the executor, make sure the js file is public and register it through `POST / scripts` ([see more]({{ site.data.links.script.main | absolute_url}}/#post-scripts)) when authenticating a new user.
+### 2. Post the script into the storefront
 
-### Data Objects
+In order to load the JS script in the storefront, the JS file should be hosted somewhere and register it through our API `POST /scripts` ([see more]({{ site.data.links.script.main | absolute_url}}/#post-scripts)). 
 
-At the time that the executor is called, a data object will be sent as a parameter. This object will contain the information of the current cart.
+POST https://api.tiendanube.com/v1/storeId/scripts
+```json
+{
+    "src": "https://myapp.com/executor.js",
+    "event" : "onload",
+    "where" : "store"
+}
+```
 
-For more information about the structures please refers [here]({{ site.data.links.discounts.main | absolute_url}}/data-objects)
-
+This example supposes that you have your JS specifically in `https://myapp.com/executor.js`.
 
 ## Discount application flow
 
