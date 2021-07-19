@@ -42,10 +42,6 @@ components:
           type: string
           description: Product to apply the promotion.
           example: '67890'
-        quantity:
-          type: number
-          description: Product quantity.
-          example: 2
         discount_specifications:
           type: object
           properties:
@@ -63,7 +59,6 @@ components:
             - amount
       required:
         - line_item
-        - quantity
         - discount_specifications
 
   responses:
