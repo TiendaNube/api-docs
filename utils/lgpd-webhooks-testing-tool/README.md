@@ -81,6 +81,8 @@ To force a customer data request situation (event sending **without** registrati
 
 `Step 2:` In the LGPD folder of the collection, `GET customers/data_request` is prepared for a request in **GET /orders?fields=id,customer&customer_ids={{customer_id}}** with the following script in the **[Tests]** tab:
 
+> ***Note:*** The `data_request` object is still in definition, so, by now, you can test the way it is, because it does not impact the event of sending the webhook.
+
 ![Step 2 Postman](images/step_2_customers_data_request.png)
 
 `Step 3:` After executing the request (click the ***Send*** button), the payload corresponding to the `customers/data_request` event will be visible in your backend, as the **example** shown below:
