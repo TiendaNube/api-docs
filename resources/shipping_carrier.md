@@ -60,7 +60,7 @@ The response object rates must be a JSON array of objects with the following fie
 | type               | __(required)__ The rate's type: _ship_ if it will be deliverd to a buyer's address or _pickup_ if it will be picked up by the buyer.       |
 | address            | __(required)__ _(pickup only)_ Where the pickup point is located.                                                                          |
 | hours              | __(required)__ _(pickup only)_ The location open hours providing: `day` (0: sunday, 6: saturday), `start` and `end` on `HHMM` format.      |
-| price_merchant     | The rate's price that will be payed by the merchant. It may be different than `price` due to items with free shipping. Defaults to `price`.|
+| price_merchant     | The rate's price that will be payed by the merchant. It may be different than `price` due to items with free shipping. Defaults to `price`. |
 | min_delivery_date  | The earliest estimated delivery date in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601). Defaults to `null`.                      |
 | max_delivery_date  | The latest estimated delivery date in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601). Defaults to `null`.                        | 
 | id_required        | Whether the customer must provide an identification number at checkout. Defaults to `false`.                                               |
@@ -68,6 +68,8 @@ The response object rates must be a JSON array of objects with the following fie
 | accepts_cod        | Whether the customer is allowed to pay for this rate with a Cash on Delivery (COD) payment method (defaults to `true`).                    |
 | reference          | An internal reference yo wish to save for the rate. We will save it and return it on the Order as `shipping_option_reference`.             |
 | availability       | _(pickup only)_ Whether there is availability for all items at the location. Defaults to `true`.                                                               |
+
+> ***Note:*** Additional information about `price` and `price_merchant` related to `free shipping` can be found in this [guide](https://github.com/TiendaNube/api-docs/tree/master/guides/Shipping%20Provider#free-shipping-in-mixed-carts).
 
 ### Example requests for shipping rates
 
