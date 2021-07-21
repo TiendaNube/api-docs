@@ -71,6 +71,10 @@
       <td>language</td>
       <td>String</td>
     </tr>
+    <tr>
+      <td>discounts</td>
+      <td>Array <Discount></Discount></td>
+    </tr>
   </tbody>
 </table>
 
@@ -164,6 +168,67 @@
       <td>width</td>
       <td>String</td>
     </tr>
+    <tr>
+      <td>categories</td>
+      <td>Array <Category></Category></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="category-object">Category Object</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td>id</td>
+      <td>Integer</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>String</td>
+      <td>Object</td>
+    </tr>
+    <tr>
+      <td> description</td>
+      <td>Object</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>handle</td>
+      <td>Object</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>parent</td>
+      <td>Integer</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>subcategories</td>
+      <td>Array <Integer></Integer></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>seo_title</td>
+      <td>Object</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>seo_description</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>created_at</td>
+      <td>String</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>updated_at</td>
+      <td>String</td>
+      <td> </td>
+    </tr>
   </tbody>
 </table>
 
@@ -238,6 +303,55 @@
   </tbody>
 </table>
 
+<h2 id="discount-object">Discount Object</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>script_type</td>
+      <td>String</td>
+    </tr>
+    <tr>
+      <td>scope_type</td>
+      <td>String</td>
+    </tr>
+    <tr>
+      <td>scope_value_id</td>
+      <td>Integer</td>
+    </tr>
+    <tr>
+      <td>total_amount</td>
+      <td>Integer</td>
+    </tr>
+    <tr>
+      <td>original_price</td>
+      <td>Integer</td>
+    </tr>
+    <tr>
+      <td>final_price</td>
+      <td>Integer</td>
+    </tr>
+    <tr>
+      <td>begin_date</td>
+      <td>String</td>
+    </tr>
+    <tr>
+      <td>end_date</td>
+      <td>String</td>
+    </tr>
+    <tr>
+      <td>quantity</td>
+      <td>Integer</td>
+    </tr>
+  </tbody>
+</table>
+
 <h1 id="example">Example</h1>
 
 <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
@@ -288,7 +402,70 @@
             </span><span class="nl">"price_short"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$12"</span><span class="p">,</span><span class="w">
             </span><span class="nl">"price_long"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$12 ARS"</span><span class="p">,</span><span class="w">
             </span><span class="nl">"subtotal_short"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$48"</span><span class="p">,</span><span class="w">
-            </span><span class="nl">"subtotal_long"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$48 ARS"</span><span class="w">
+            </span><span class="nl">"subtotal_long"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$48 ARS"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"categories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">9090471</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Category with subcategory"</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nl">"handle"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"category-with-subcategory"</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nl">"parent"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"subcategories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="mi">9090472</span><span class="w">
+                    </span><span class="p">],</span><span class="w">
+                    </span><span class="nl">"seo_title"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nl">"seo_description"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2021-07-20T20:07:12+0000"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2021-07-20T20:09:12+0000"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">9090472</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Subcategory"</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nl">"handle"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"subcategory"</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nl">"parent"</span><span class="p">:</span><span class="w"> </span><span class="mi">9090471</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"subcategories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="mi">9090473</span><span class="w">
+                    </span><span class="p">],</span><span class="w">
+                    </span><span class="nl">"seo_title"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nl">"seo_description"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="nl">"es"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2021-07-20T20:07:28+0000"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2021-07-20T20:09:12+0000"</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">]</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"discounts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"script_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2x1"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"scope_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"products"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"scope_value_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">17310718</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"total_amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">24</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"original_price"</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"final_price"</span><span class="p">:</span><span class="w"> </span><span class="mf">7.2</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"begin_date"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"end_date"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"quantity"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="w">
         </span><span class="p">}</span><span class="w">
     </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">

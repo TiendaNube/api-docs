@@ -16,6 +16,7 @@ layout: default
 | package | Object |
 | currency | String |
 | language | String |
+| discounts | Array <Discount> |
 
 ## Product Object
 
@@ -41,6 +42,20 @@ layout: default
 | variant\_values | Array |
 | weight | String |
 | width | String |
+| categories | Array <Category> |
+
+## Category Object
+
+| id | Integer |
+| name | String | Object |
+| description | Object |
+| handle | Object |
+| parent | Integer |
+| subcategories | Array <Integer>
+| seo_title | Object |
+| seo_description | 
+| created_at | String |
+| updated_at | String |
 
 ## Shipping Object
 
@@ -64,6 +79,20 @@ layout: default
 | creditCardCompany | String |
 | method | String |
 | installments | Integer |
+
+## Discount Object
+
+| Property | Type |
+| --- | --- |
+| script_type | String |
+| scope_type | String |
+| scope_value_id | Integer |
+| total_amount | Integer |
+| original_price | Integer |
+| final_price | Integer |
+| begin_date | String |
+| end_date | String | 
+| quantity | Integer |
 
 # Example
 
@@ -116,7 +145,70 @@ layout: default
             "price_short": "$12",
             "price_long": "$12 ARS",
             "subtotal_short": "$48",
-            "subtotal_long": "$48 ARS"
+            "subtotal_long": "$48 ARS",
+            "categories": [
+                {
+                    "id": 9090471,
+                    "name": {
+                        "es": "Category with subcategory"
+                    },
+                    "description": {
+                        "es": ""
+                    },
+                    "handle": {
+                        "es": "category-with-subcategory"
+                    },
+                    "parent": null,
+                    "subcategories": [
+                        9090472
+                    ],
+                    "seo_title": {
+                        "es": ""
+                    },
+                    "seo_description": {
+                        "es": ""
+                    },
+                    "created_at": "2021-07-20T20:07:12+0000",
+                    "updated_at": "2021-07-20T20:09:12+0000"
+                },
+                {
+                    "id": 9090472,
+                    "name": {
+                        "es": "Subcategory"
+                    },
+                    "description": {
+                        "es": ""
+                    },
+                    "handle": {
+                        "es": "subcategory"
+                    },
+                    "parent": 9090471,
+                    "subcategories": [
+                        9090473
+                    ],
+                    "seo_title": {
+                        "es": ""
+                    },
+                    "seo_description": {
+                        "es": ""
+                    },
+                    "created_at": "2021-07-20T20:07:28+0000",
+                    "updated_at": "2021-07-20T20:09:12+0000"
+                }
+            ]
+        },
+    ],
+    "discounts": [
+        {
+            "script_type": "2x1",
+            "scope_type": "products",
+            "scope_value_id": 17310718,
+            "total_amount": 24,
+            "original_price": 12,
+            "final_price": 7.2,
+            "begin_date": null,
+            "end_date": null,
+            "quantity": 5
         }
     ]
 }
