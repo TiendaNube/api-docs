@@ -4,7 +4,7 @@ Postman Collection for LGPD Webhooks Testing
 Scope
 ----------------
 
-Provide a palliative mechanism for testing LGPD webhooks for partners, as the triggering scenarios for each event depend on time or action via store Admin which are not always available at design/development time.
+Provide an alternative mechanism for testing LGPD webhooks for partners, as the triggering scenarios for each event depend on time or an action via store Admin which is not always available at design/development time.
 
 Test Coverage
 ----------------
