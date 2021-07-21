@@ -1,0 +1,292 @@
+{
+	"info": {
+		"_postman_id": "8a3cef46-4ca1-4d8d-bbc2-b33f6da2552a",
+		"name": "LGPD Webhooks Test",
+		"description": "This collection represents all examples of tiendanube's / nuvemshop's public API.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "LGPD",
+			"item": [
+				{
+					"name": "store/redact",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"pm.sendRequest({",
+									"    url: pm.variables.get(\"url_webhook_store_redact\"),",
+									"    method: 'POST',",
+									"    header: \"'Content-Type': 'application/json'\",",
+									"    body: {",
+									"        mode: 'raw',",
+									"        raw: JSON.stringify({ \"store_id\": jsonData.id})",
+									"    }",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authentication",
+								"value": "bearer {{app_token}}",
+								"type": "text"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Awesome App (awesome@app.com)",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://{{api_url}}/{{store_id}}/store",
+							"protocol": "https",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"{{store_id}}",
+								"store"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "customers/redact",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"const orders_to_redact = [];",
+									"for(var order = 0; order < jsonData.length; order++) {",
+									"    orders_to_redact[order] = jsonData[order].id;",
+									"}",
+									"",
+									"pm.sendRequest({",
+									"    ",
+									"    url: pm.variables.get(\"url_webhook_customers_redact\"),",
+									"    method: 'POST',",
+									"    header: \"'Content-Type': 'application/json'\",",
+									"    body: {",
+									"        mode: 'raw',",
+									"        raw: JSON.stringify({ \"store_id\": pm.variables.get(\"store_id\"),\"customer\":{\"id\": jsonData[0].customer.id, \"email\":jsonData[0].customer.email, \"phone\":jsonData[0].customer.phone, \"identification\": jsonData[0].customer.identification}, \"orders_to_redact\": orders_to_redact})",
+									"    }",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authentication",
+								"value": "bearer {{app_token}}",
+								"type": "text"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Awesome App (awesome@app.com)",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://{{api_url}}/{{store_id}}/orders?fields=id,customer&customer_ids={{customer_id}}",
+							"protocol": "https",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"{{store_id}}",
+								"orders"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "id,customer"
+								},
+								{
+									"key": "customer_ids",
+									"value": "{{customer_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "customers/data_request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"const orders_requested = [];",
+									"for(var order = 0; order < jsonData.length; order++) {",
+									"    orders_requested[order] = jsonData[order].id;",
+									"}",
+									"",
+									"pm.sendRequest({",
+									"    ",
+									"    url: pm.variables.get(\"url_webhook_customers_datarequest\"),",
+									"    method: 'POST',",
+									"    header: \"'Content-Type': 'application/json'\",",
+									"    body: {",
+									"        mode: 'raw',",
+									"        raw: JSON.stringify({ \"store_id\": pm.variables.get(\"store_id\"),\"customer\":{\"id\": jsonData[0].customer.id, \"email\":jsonData[0].customer.email, \"phone\":jsonData[0].customer.phone, \"identification\": jsonData[0].customer.identification}, \"orders_requested\": orders_requested, \"data_request\": {\"id\": 1 }})",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authentication",
+								"value": "bearer {{app_token}}",
+								"type": "text"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Awesome App (awesome@app.com)",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://{{api_url}}/{{store_id}}/orders?fields=id,customer&customer_ids={{customer_id}}",
+							"protocol": "https",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"{{store_id}}",
+								"orders"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "id,customer"
+								},
+								{
+									"key": "customer_ids",
+									"value": "{{customer_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authorization",
+			"item": [
+				{
+					"name": "Get Store ID and Access Token from a store",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"client_id\": \"0000\",\n    \"client_secret\": \"xxxxxxxx\",\n    \"grant_type\": \"authorization_code\",\n    \"code\": \"xxxxxxxx\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://www.nuvemshop.com.br/apps/authorize/token",
+							"protocol": "https",
+							"host": [
+								"www",
+								"nuvemshop",
+								"com",
+								"br"
+							],
+							"path": [
+								"apps",
+								"authorize",
+								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "api_url",
+			"value": "api.nuvemshop.com.br/v1"
+		},
+		{
+			"key": "store_id",
+			"value": ""
+		},
+		{
+			"key": "app_token",
+			"value": ""
+		},
+		{
+			"key": "url_webhook_store_redact",
+			"value": ""
+		},
+		{
+			"key": "url_webhook_customers_redact",
+			"value": ""
+		},
+		{
+			"key": "url_webhook_customers_datarequest",
+			"value": ""
+		},
+		{
+			"key": "customer_id",
+			"value": ""
+		}
+	]
+}
