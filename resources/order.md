@@ -227,6 +227,7 @@ Receive a list of all Orders.
         "floor": null,
         "id": 1234,
         "locality": null,
+        "name": "John Doe",
         "number": "742",
         "phone": "555-123-0413",
         "province": "Oregon",
@@ -371,6 +372,7 @@ Receive a single Order
       "floor": null,
       "id": 1234,
       "locality": null,
+      "name": "John Doe",
       "number": "742",
       "phone": "555-123-0413",
       "province": "Oregon",
@@ -469,8 +471,7 @@ Create an Order.
 
 | Value       | Description                                                                         | Type   | Required |
 |-------------|-------------------------------------------------------------------------------------|--------|----------|
-| first_name  | The customer's first name. The defaults are `Não informado` for pt_BR and `No informado` in every other cases (es_AR, es_MX, es_CO).                                                          | String | Yes      |
-| last_name   | The customer's last name. The defaults are `Não informado` for pt_BR and `No informado` in every other cases (es_AR, es_MX, es_CO).                                                           | String | Yes      |
+| name  | The customer's full name. The defaults are `Não informado` for pt_BR and `No informado` in every other cases (es_AR, es_MX, es_CO).                                                          | String | Yes      |
 | address     | The customer's street. The defaults are `Não informado` for pt_BR and `No informado` in every other cases (es_AR, es_MX, es_CO).                                                               | String | Yes      |
 | number      | The shipping_address number. The defaults are `Não informado` for pt_BR and `No informado` in every other cases (es_AR, es_MX, es_CO).                                                                | String | Yes      |
 | floor       | The shipping_address complement. The defaults are `Não informado` for pt_BR and `No informado` in every other cases (es_AR, es_MX, es_CO).                                                            | String | No       |
@@ -705,6 +706,7 @@ Change an Order's attributes (just `owner_note` for now) and/or update an Order'
       "floor": null,
       "id": 1234,
       "locality": null,
+      "name": "John Doe",
       "number": "742",
       "phone": "555-123-0413",
       "province": "Oregon",
@@ -824,6 +826,7 @@ Close an Order
       "floor": null,
       "id": 1234,
       "locality": null,
+      "name": "John Doe",
       "number": "742",
       "phone": "555-123-0413",
       "province": "Oregon",
@@ -939,6 +942,7 @@ Re-open a closed Order
       "floor": null,
       "id": 1234,
       "locality": null,
+      "name": "John Doe",
       "number": "742",
       "phone": "555-123-0413",
       "province": "Oregon",
@@ -1057,6 +1061,7 @@ Pack an Order
       "floor": null,
       "id": 1234,
       "locality": null,
+      "name": "John Doe",
       "number": "742",
       "phone": "555-123-0413",
       "province": "Oregon",
@@ -1189,6 +1194,7 @@ Fulfill an Order
       "floor": null,
       "id": 1234,
       "locality": null,
+      "name": "John Doe",
       "number": "742",
       "phone": "555-123-0413",
       "province": "Oregon",
@@ -1314,6 +1320,7 @@ Cancel an Order
       "floor": null,
       "id": 1234,
       "locality": null,
+      "name": "John Doe",
       "number": "742",
       "phone": "555-123-0413",
       "province": "Oregon",
