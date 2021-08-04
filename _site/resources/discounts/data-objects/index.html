@@ -75,6 +75,10 @@
       <td>discounts</td>
       <td>Array <Discount></Discount></td>
     </tr>
+    <tr>
+      <td>totalDiscountAmount</td>
+      <td>String</td>
+    </tr>
   </tbody>
 </table>
 
@@ -178,56 +182,69 @@
 <h2 id="category-object">Category Object</h2>
 
 <table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+    </tr>
+  </thead>
   <tbody>
     <tr>
       <td>id</td>
       <td>Integer</td>
-      <td> </td>
     </tr>
     <tr>
       <td>name</td>
-      <td>String</td>
-      <td>Object</td>
+      <td>I18n</td>
     </tr>
     <tr>
       <td> description</td>
-      <td>Object</td>
-      <td> </td>
+      <td>I18n</td>
     </tr>
     <tr>
       <td>handle</td>
-      <td>Object</td>
-      <td> </td>
+      <td>I18n</td>
     </tr>
     <tr>
       <td>parent</td>
       <td>Integer</td>
-      <td> </td>
     </tr>
     <tr>
       <td>subcategories</td>
       <td>Array <Integer></Integer></td>
-      <td> </td>
     </tr>
     <tr>
       <td>seo_title</td>
-      <td>Object</td>
-      <td> </td>
+      <td>I18n</td>
     </tr>
     <tr>
       <td>seo_description</td>
-      <td> </td>
-      <td> </td>
+      <td>I18n</td>
     </tr>
     <tr>
       <td>created_at</td>
       <td>String</td>
-      <td> </td>
     </tr>
     <tr>
       <td>updated_at</td>
       <td>String</td>
-      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="i18n-object">I18n Object</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Language code (Ex: es)</td>
+      <td>String</td>
     </tr>
   </tbody>
 </table>
@@ -467,7 +484,8 @@
             </span><span class="nl">"end_date"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
             </span><span class="nl">"quantity"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="w">
         </span><span class="p">}</span><span class="w">
-    </span><span class="p">]</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"totalDiscountAmount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"24.00"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div></div>
 

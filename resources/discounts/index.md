@@ -110,21 +110,17 @@ Different events are available to listen up and take actions based on it. In thi
 Fn is representing an async function. This one is responsible for the execution of any needed logic to evaluate the business rules.
 
 ```javascript
-(function() {
-   let tierName = tierNameProvider.get('LINE_ITEM');
-
-   discountService.suscribe(tierName, async (cart) => {
-      const rawResponse = await fetch(`https://rules.myapp.com/?store=${LS.store.id}`, {
-         method: 'POST',
-         body: JSON.stringify(cart)
-      });
-      const response = rawResponse.json();
-
-      return {
-         discountChanged: true,
-      };
+discountService.suscribe(tierNameProvider.get('LINE_ITEM'), async (cart) => {
+   const rawResponse = await fetch(`https://rules.myapp.com/?store=${LS.store.id}`, {
+      method: 'POST',
+      body: JSON.stringify(cart)
    });
-})()
+   const response = rawResponse.json();
+
+   return {
+      discountChanged: true,
+   };
+});
 ```
 
 This example presents some points to consider.
@@ -139,7 +135,7 @@ This example presents some points to consider.
 
 ### 2. Post the script into the storefront
 
-In order to load the JS script in the storefront, the JS file should be hosted somewhere and register it through our API `POST /scripts` ([see more]({{ site.data.links.script.main | absolute_url}}/#post-scripts)). 
+In order to load the JS script in the storefront, the JS file should be hosted somewhere and register it through our API `POST /scripts` ([see more]({{ site.data.links.script.main | absolute_url}}/#post-scripts)).
 
 POST https://api.tiendanube.com/v1/storeId/scripts
 ```json
@@ -151,6 +147,8 @@ POST https://api.tiendanube.com/v1/storeId/scripts
 ```
 
 This example supposes that you have your JS specifically in `https://myapp.com/executor.js`.
+
+**Note:** Keep in mind that the store's id is attached to the script request. So following with the example, the above script will be called like this: `https://myapp.com/executor.js?store={storeId}`. This is useful when your script content is dynamic, otherwise you can use the global variable `LS` to get the store id.
 
 ## Discount application flow
 

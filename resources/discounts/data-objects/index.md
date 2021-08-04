@@ -17,6 +17,7 @@ layout: default
 | currency | String |
 | language | String |
 | discounts | Array <Discount> |
+| totalDiscountAmount | String |
 
 ## Product Object
 
@@ -46,16 +47,24 @@ layout: default
 
 ## Category Object
 
+| Property | Type |
+| --- | --- |
 | id | Integer |
-| name | String | Object |
-| description | Object |
-| handle | Object |
+| name | I18n |
+| description | I18n |
+| handle | I18n |
 | parent | Integer |
-| subcategories | Array <Integer>
-| seo_title | Object |
-| seo_description | 
+| subcategories | Array <Integer> |
+| seo_title | I18n |
+| seo_description | I18n |
 | created_at | String |
 | updated_at | String |
+
+## I18n Object
+
+| Property | Type |
+| --- | --- |
+| Language code (Ex: es) | String |
 
 ## Shipping Object
 
@@ -210,6 +219,7 @@ layout: default
             "end_date": null,
             "quantity": 5
         }
-    ]
+    ],
+    "totalDiscountAmount": "24.00"
 }
 ```

@@ -167,21 +167,17 @@
 
 <p>Fn is representing an async function. This one is responsible for the execution of any needed logic to evaluate the business rules.</p>
 
-<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-   <span class="kd">let</span> <span class="nx">tierName</span> <span class="o">=</span> <span class="nx">tierNameProvider</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">LINE_ITEM</span><span class="dl">'</span><span class="p">);</span>
-
-   <span class="nx">discountService</span><span class="p">.</span><span class="nx">suscribe</span><span class="p">(</span><span class="nx">tierName</span><span class="p">,</span> <span class="k">async</span> <span class="p">(</span><span class="nx">cart</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-      <span class="kd">const</span> <span class="nx">rawResponse</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">fetch</span><span class="p">(</span><span class="s2">`https://rules.myapp.com/?store=</span><span class="p">${</span><span class="nx">LS</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">id</span><span class="p">}</span><span class="s2">`</span><span class="p">,</span> <span class="p">{</span>
-         <span class="na">method</span><span class="p">:</span> <span class="dl">'</span><span class="s1">POST</span><span class="dl">'</span><span class="p">,</span>
-         <span class="na">body</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">cart</span><span class="p">)</span>
-      <span class="p">});</span>
-      <span class="kd">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">rawResponse</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
-
-      <span class="k">return</span> <span class="p">{</span>
-         <span class="na">discountChanged</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-      <span class="p">};</span>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">discountService</span><span class="p">.</span><span class="nx">suscribe</span><span class="p">(</span><span class="nx">tierNameProvider</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">LINE_ITEM</span><span class="dl">'</span><span class="p">),</span> <span class="k">async</span> <span class="p">(</span><span class="nx">cart</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+   <span class="kd">const</span> <span class="nx">rawResponse</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">fetch</span><span class="p">(</span><span class="s2">`https://rules.myapp.com/?store=</span><span class="p">${</span><span class="nx">LS</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">id</span><span class="p">}</span><span class="s2">`</span><span class="p">,</span> <span class="p">{</span>
+      <span class="na">method</span><span class="p">:</span> <span class="dl">'</span><span class="s1">POST</span><span class="dl">'</span><span class="p">,</span>
+      <span class="na">body</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">cart</span><span class="p">)</span>
    <span class="p">});</span>
-<span class="p">})()</span>
+   <span class="kd">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">rawResponse</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
+
+   <span class="k">return</span> <span class="p">{</span>
+      <span class="na">discountChanged</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+   <span class="p">};</span>
+<span class="p">});</span>
 </code></pre></div></div>
 
 <p>This example presents some points to consider.</p>
@@ -212,6 +208,8 @@
 </span></code></pre></div></div>
 
 <p>This example supposes that you have your JS specifically in <code class="language-plaintext highlighter-rouge">https://myapp.com/executor.js</code>.</p>
+
+<p><strong>Note:</strong> Keep in mind that the store’s id is attached to the script request. So following with the example, the above script will be called like this: <code class="language-plaintext highlighter-rouge">https://myapp.com/executor.js?store={storeId}</code>. This is useful when your script content is dynamic, otherwise you can use the global variable <code class="language-plaintext highlighter-rouge">LS</code> to get the store id.</p>
 
 <h2 id="discount-application-flow">Discount application flow</h2>
 
