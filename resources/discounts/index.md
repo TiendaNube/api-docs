@@ -105,7 +105,7 @@ Inside the execution context, in the global scope, the application will have ava
 
 ### 1. Creating and subscribing executors
 
-Different events are available to listen up and take actions based on it. In this context, the method **discountService.subscribe(fn)** should be used.
+Different events are available to listen up and take actions based on it. In this context, the method **discountService.subscribe(tierName, fn)** should be used.
 
 Fn is representing an async function. This one is responsible for the execution of any needed logic to evaluate the business rules.
 
