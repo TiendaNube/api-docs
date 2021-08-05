@@ -164,7 +164,7 @@ This example supposes that you have your JS specifically in `https://myapp.com/e
 
 ### What should my executor return?
 
-Once the executor was performed, the discountService will evaluate the property **acknowledge**. This property informs that the application made a successful Intent and the result should be verified.
+Once the executor was performed, the discountService will evaluate the property **discountChanged**. This property informs that the application made a successful Intent and the result should be verified.
 
 ### What happens if my discount is no longer valid?
 
