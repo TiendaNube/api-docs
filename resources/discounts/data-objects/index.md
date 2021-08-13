@@ -10,13 +10,13 @@ layout: default
 | --- | --- |
 | id | Integer |
 | coupons | Boolean |
-| products | Array  <Product> |
-| shipping | Object |
-| payment | Object |
-| package | Object |
+| products | Array\<[Product]\> |
+| shipping | [Shipping] |
+| payment | [Payment] |
+| package | [Package] |
 | currency | String |
 | language | String |
-| discounts | Array <Discount> |
+| discounts | Array\<[Discount]\> |
 | totalDiscountAmount | String |
 
 ## Product Object
@@ -43,20 +43,20 @@ layout: default
 | variant\_values | Array |
 | weight | String |
 | width | String |
-| categories | Array <Category> |
+| categories | Array\<[Category]\> |
 
 ## Category Object
 
 | Property | Type |
 | --- | --- |
 | id | Integer |
-| name | I18n |
-| description | I18n |
-| handle | I18n |
+| name | [I18n] |
+| description | [I18n] |
+| handle | [I18n] |
 | parent | Integer |
-| subcategories | Array <Integer> |
-| seo_title | I18n |
-| seo_description | I18n |
+| subcategories | Array\<Integer\> |
+| seo_title | [I18n] |
+| seo_description | [I18n] |
 | created_at | String |
 | updated_at | String |
 
@@ -102,6 +102,14 @@ layout: default
 | begin_date | String |
 | end_date | String | 
 | quantity | Integer |
+
+[Product]: #product-object
+[Category]: #category-object
+[I18n]: #i18n-object
+[Shipping]: #shipping-object
+[Package]: #package-object
+[Payment]: #payment-object
+[Discount]: #discount-object
 
 # Example
 
