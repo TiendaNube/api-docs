@@ -191,8 +191,8 @@
     </ul>
   </li>
   <li>The example URL <code class="language-plaintext highlighter-rouge">rules.myapp.com</code> is supposed to be your backend where it will call our API applying the discounts.</li>
-  <li>The executor will get the information needed as a data object as a parameter. This object will contain the information of the current cart. For more information about the structures please refers <a href="/api-docs/resources/discounts/data-objects">here</a></li>
-  <li>The return body MUST contain the property <strong>discountChanged</strong> which will be used to determine whether the partner have done some modification to the cart (add or remove a discount)</li>
+  <li>The executor will get the information needed as a data object as a parameter. This object will contain the information of the current cart. For more information about the structures please refers <a href="/api-docs/resources/discounts/data-objects">here</a>.</li>
+  <li>The return body MUST contain the property <strong>discountChanged</strong> which will be used to determine whether the partner have done some modification to the cart (add or remove a discount) and its value must be a <strong>boolean</strong>.</li>
 </ul>
 
 <h3 id="2-post-the-script-into-the-storefront">2. Post the script into the storefront</h3>

@@ -130,8 +130,8 @@ This example presents some points to consider.
    - CROSS_ITEMS
    - SHIPPING_LINE
 - The example URL `rules.myapp.com` is supposed to be your backend where it will call our API applying the discounts.
-- The executor will get the information needed as a data object as a parameter. This object will contain the information of the current cart. For more information about the structures please refers [here]({{ site.data.links.discounts.main | absolute_url}}/data-objects)
-- The return body MUST contain the property **discountChanged** which will be used to determine whether the partner have done some modification to the cart (add or remove a discount)
+- The executor will get the information needed as a data object as a parameter. This object will contain the information of the current cart. For more information about the structures please refers [here]({{ site.data.links.discounts.main | absolute_url}}/data-objects).
+- The return body MUST contain the property **discountChanged** which will be used to determine whether the partner have done some modification to the cart (add or remove a discount) and its value must be a **boolean**.
 
 ### 2. Post the script into the storefront
 
