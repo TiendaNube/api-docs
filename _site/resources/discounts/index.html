@@ -159,43 +159,57 @@
 
 <h2 id="front-end-integration">Front-End Integration</h2>
 
-<p>Inside the execution context, in the global scope, the application will have available an instance of the discountService. This can be used to subscribe to executors. Through this, Tiendanube will be capable of orchestrating all the application executors for each available event.</p>
+<p>Inside the execution context, in the global scope, the application will have available an instance of the <code class="language-plaintext highlighter-rouge">discountService</code>. This can be used to subscribe to executors. Through this, Tiendanube will be capable of orchestrating all the application executors for each available event.</p>
 
-<h3 id="subscribing-executors">Subscribing Executors</h3>
+<h3 id="1-creating-and-subscribing-executors">1. Creating and subscribing executors</h3>
 
-<p>Different events are available to listen up and take actions based on it, and even though a custom listener can be used, in this context, the method <strong>discountService.subscribe(fn)</strong> should be used.</p>
+<p>Different events are available to listen up and take actions based on it. In this context, the method <strong>discountService.subscribe(tierName, fn)</strong> should be used.</p>
 
 <p>Fn is representing an async function. This one is responsible for the execution of any needed logic to evaluate the business rules.</p>
 
-<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-<span class="kd">const</span> <span class="nx">tierName</span> <span class="o">=</span> <span class="nx">tierNameProvider</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">LINE_ITEM</span><span class="dl">'</span><span class="p">),</span>
-
-<span class="nx">discountService</span><span class="p">.</span><span class="nx">suscribe</span><span class="p">(</span><span class="nx">tierName</span><span class="p">,</span> <span class="k">async</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-   <span class="k">return</span> <span class="k">await</span> <span class="nx">fetch</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://rules.my-discount-app.com?store=1234</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">discountService</span><span class="p">.</span><span class="nx">suscribe</span><span class="p">(</span><span class="nx">tierNameProvider</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">LINE_ITEM</span><span class="dl">'</span><span class="p">),</span> <span class="k">async</span> <span class="p">(</span><span class="nx">cart</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+   <span class="kd">const</span> <span class="nx">rawResponse</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">fetch</span><span class="p">(</span><span class="s2">`https://rules.myapp.com/?store=</span><span class="p">${</span><span class="nx">LS</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">id</span><span class="p">}</span><span class="s2">`</span><span class="p">,</span> <span class="p">{</span>
       <span class="na">method</span><span class="p">:</span> <span class="dl">'</span><span class="s1">POST</span><span class="dl">'</span><span class="p">,</span>
-      <span class="na">body</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">detail</span><span class="p">)</span>
-   <span class="p">})</span>
-   <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">response</span> <span class="o">=&gt;</span> <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">());</span>
-<span class="p">});</span>
+      <span class="na">body</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">cart</span><span class="p">)</span>
+   <span class="p">});</span>
+   <span class="kd">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">rawResponse</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
 
+   <span class="k">return</span> <span class="p">{</span>
+      <span class="na">discountChanged</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+   <span class="p">};</span>
+<span class="p">});</span>
 </code></pre></div></div>
 
 <p>This example presents some points to consider.</p>
 
 <ul>
-  <li>The tier name is retrieved using the global instance of <strong>tierNameProvider</strong>.</li>
-  <li>The URL where the executor will be called must contain a <strong>store</strong> parameter with the store ID value, in order to know which store is calling it.</li>
-  <li>The executor will get the information needed as a data object as a parameter.</li>
-  <li>The body MUST contain the property <strong>acknowledge,</strong> which will be used to determine if partner does some modification to the cart (add or remove a discount)</li>
+  <li>The tier name is retrieved using the global instance of <strong>tierNameProvider</strong>. Currently, you can get three tiers that will be executed in the following order when the cart is updated:
+    <ul>
+      <li>LINE_ITEM</li>
+      <li>CROSS_ITEMS</li>
+      <li>SHIPPING_LINE</li>
+    </ul>
+  </li>
+  <li>The example URL <code class="language-plaintext highlighter-rouge">rules.myapp.com</code> is supposed to be your backend where it will call our API applying the discounts.</li>
+  <li>The executor will get the information needed as a data object as a parameter. This object will contain the information of the current cart. For more information about the structures please refers <a href="/api-docs/resources/discounts/data-objects">here</a>.</li>
+  <li>The return body MUST contain the property <strong>discountChanged</strong> which will be used to determine whether the partner have done some modification to the cart (add or remove a discount) and its value must be a <strong>boolean</strong>.</li>
 </ul>
 
-<p>In order to subscribe the executor, make sure the js file is public and register it through <code class="language-plaintext highlighter-rouge">POST / scripts</code> (<a href="/api-docs/resources/script/#post-scripts">see more</a>) when authenticating a new user.</p>
+<h3 id="2-post-the-script-into-the-storefront">2. Post the script into the storefront</h3>
 
-<h3 id="data-objects">Data Objects</h3>
+<p>In order to load the JS script in the storefront, the JS file should be hosted somewhere and register it through our API <code class="language-plaintext highlighter-rouge">POST /scripts</code> (<a href="/api-docs/resources/script/#post-scripts">see more</a>).</p>
 
-<p>At the time that the executor is called, a data object will be sent as a parameter. This object will contain the information of the current cart.</p>
+<p>POST https://api.tiendanube.com/v1/storeId/scripts</p>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"src"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://myapp.com/executor.js"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"event"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"onload"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"where"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"store"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
 
-<p>For more information about the structures please refers <a href="/api-docs/resources/discounts/data-objects">here</a></p>
+<p>This example supposes that you have your JS specifically in <code class="language-plaintext highlighter-rouge">https://myapp.com/executor.js</code>.</p>
+
+<p><strong>Note:</strong> Keep in mind that the store’s id is attached to the script request. So following with the example, the above script will be called like this: <code class="language-plaintext highlighter-rouge">https://myapp.com/executor.js?store={storeId}</code>. This is useful when your script content is dynamic, otherwise you can use the global variable <code class="language-plaintext highlighter-rouge">LS</code> to get the store id.</p>
 
 <h2 id="discount-application-flow">Discount application flow</h2>
 
@@ -212,7 +226,7 @@
 
 <h3 id="what-should-my-executor-return">What should my executor return?</h3>
 
-<p>Once the executor was performed, the discountService will evaluate the property <strong>acknowledge</strong>. This property informs that the application made a successful Intent and the result should be verified.</p>
+<p>Once the executor was performed, the discountService will evaluate the property <strong>discountChanged</strong>. This property informs that the application made a successful Intent and the result should be verified.</p>
 
 <h3 id="what-happens-if-my-discount-is-no-longer-valid">What happens if my discount is no longer valid?</h3>
 
