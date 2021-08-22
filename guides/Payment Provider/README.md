@@ -25,7 +25,7 @@ For instance, if the Payment Method Type is *credit card*, then an example of Pa
 The Payment Method is the resource that allows the transfer of money from the consumer to the merchant, while the Payment Option is how the Payment Method is used to execute the Transaction. In the physical world, if the selected Payment Method is *credit card*, then the payment could be executed using a card reader, or using an app that reads a QR code and has the credit card's information, etc.
 
 A Payment Option has three main properties:
-- The Payment Provider that will execute the Trasnsaction.
+- The Payment Provider that will execute the Transaction.
 - One or more supported Payment Method Types.
 - An Integration Type.
 
