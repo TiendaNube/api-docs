@@ -384,7 +384,7 @@ Returns the first Product found where one of its variants has the given SKU.
 
 ### POST /products
 
-Create a new Product
+Creates a new Product
 
 #### POST /products
 
@@ -401,6 +401,36 @@ Create a new Product
     "name": [
       "can't be blank"
     ]
+}
+```
+
+`HTTP/1.1 422 Unprocessable Entity`
+
+```json
+{
+    "code": 422,
+    "message": "Unprocessable Entity",
+    "description": "Store has reached maximum limit of 100000 allowed products"
+}
+```
+
+`HTTP/1.1 422 Unprocessable Entity`
+
+```json
+{
+    "code": 422,
+    "message": "Unprocessable Entity",
+    "description": "Product is not allowed to have more than 250 images"
+}
+```
+
+`HTTP/1.1 422 Unprocessable Entity`
+
+```json
+{
+    "code": 422,
+    "message": "Unprocessable Entity",
+    "description": "Product is not allowed to have more than 1000 variants"
 }
 ```
 
