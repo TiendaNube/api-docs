@@ -110,7 +110,7 @@ Different events are available to listen up and take actions based on it. In thi
 Fn is representing an async function. This one is responsible for the execution of any needed logic to evaluate the business rules.
 
 ```javascript
-discountService.suscribe(tierNameProvider.get('LINE_ITEM'), async (cart) => {
+discountService.subscribe(tierNameProvider.get('LINE_ITEM'), async (cart) => {
    const rawResponse = await fetch(`https://rules.myapp.com/?store=${LS.store.id}`, {
       method: 'POST',
       body: JSON.stringify(cart)
