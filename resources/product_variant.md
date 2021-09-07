@@ -219,6 +219,27 @@ Create a new Product Variant
 }
 ```
 
+`HTTP/1.1 422 Unprocessable Entity`
+
+```json
+{
+    "code": 422,
+    "message": "Unprocessable Entity",
+    "description": "Variants cannot be repeated"
+}
+```
+
+
+`HTTP/1.1 422 Unprocessable Entity`
+
+```json
+{
+    "code": 422,
+    "message": "Unprocessable Entity",
+    "description": "Product is not allowed to have more than 1000 variants"
+}
+```
+
 `HTTP/1.1 201 Created`
 
 ```json
