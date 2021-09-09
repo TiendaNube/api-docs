@@ -150,6 +150,16 @@ Check the examples below for more details.
 }
 ```
 
+`HTTP/1.1 422 Unprocessable Entity`
+
+```json
+{
+  "code": 422,
+  "message": "Unprocessable Entity",
+  "description": "Product is not allowed to have more than 250 images"
+}
+```
+
 #### POST /products/1234/images
 
 ```json
