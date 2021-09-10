@@ -148,6 +148,16 @@ Create a new Category
 }
 ```
 
+`HTTP/1.1 422 Unprocessable Entity`
+
+```json
+{
+    "code": 422,
+    "message": "Unprocessable Entity",
+    "description": "Store has reached maximum limit of 5000 allowed categories"
+}
+```
+
 #### POST /categories
 
 ```json
