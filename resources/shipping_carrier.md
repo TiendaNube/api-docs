@@ -294,6 +294,7 @@ Create a new Shipping Carrier
 | callback_url       | __(required)__ The URL endpoint that we need to retrieve shipping rates when the buyer wants the items ship to an address.    |
 | types              | __(required)__ Comma separated values indicating supported methods: can be any of `ship` or `pickup`.                         |
 | active             | The shipping carrier availability status, used to disable or enable it for the store. Defaults to __true__.             |
+| options            | When sending the carrier, you can already send the shipping options in the same request|
 
 #### POST /shipping_carriers
 
@@ -301,7 +302,25 @@ Create a new Shipping Carrier
 {
     "name": "My Shipping Company",
     "callback_url": "https://example.com/rates",
-    "types": "ship,pickup"
+    "types": "ship,pickup",
+    "options": [
+        {
+           	"name": "Shipping Carrier Option 1",
+            "code": "code1",
+            "active": true,
+            "additional_days": 1,
+            "additional_cost": 0,
+            "allow_free_shipping": true
+        },
+        {
+           	"name": "Shipping Carrier Option 2",
+            "code": "code2",
+            "active": true,
+            "additional_days": 1,
+            "additional_cost": 0,
+            "allow_free_shipping": true
+        }
+    ]
 }
 ```
 
@@ -315,7 +334,31 @@ Create a new Shipping Carrier
     "callback_url": "https://example.com/rates",
     "types": "ship,pickup",
     "created_at": "2013-06-11T11:12:10-03:00",
-    "updated_at": "2013-06-11T11:12:10-03:00"    
+    "updated_at": "2013-06-11T11:12:10-03:00",
+    "options": [
+        {
+            "id": 33,
+            "name": "Shipping Carrier Option 1",
+            "code": "code1",
+            "additional_days": 1,
+            "additional_cost": 0,
+            "active": true,
+            "allow_free_shipping": true,
+            "created_at": "2021-10-08T15:02:13+0000",
+            "updated_at": "2021-10-08T15:02:13+0000"
+        },
+        {
+            "id": 34,
+            "name": "Shipping Carrier Option 2",
+            "code": "code2",
+            "additional_days": 1,
+            "additional_cost": 0,
+            "active": true,
+            "allow_free_shipping": true,
+            "created_at": "2021-10-08T15:02:13+0000",
+            "updated_at": "2021-10-08T15:02:13+0000"
+        }
+    ]   
 }
 ```
 
@@ -423,11 +466,16 @@ Create a new Shipping Carrier Option
 | active | The avaiability status of the Shipping Carrier Option. Defaults to __true__ | No |
 
 #### POST /shipping_carriers/1234/options
+Create a new single Shipping Carrier Option
 
 ```json
 {
     "code": "pac",
-    "name": "Correios - PAC"
+    "name": "Correios - PAC",
+    "active": true,
+    "additional_days": 1,
+    "additional_cost": 0,
+    "allow_free_shipping": true   
 }
 ```
 
@@ -445,6 +493,59 @@ Create a new Shipping Carrier Option
     "created_at": "2013-04-12T10:15:10-03:00",
     "updated_at": "2013-04-12T10:15:10-03:00"
 }
+```
+
+#### POST /shipping_carriers/1234/options
+Create a new multiple Shipping Carrier Option
+
+```json
+[
+    {
+        "code": "pac",
+        "name": "Correios - PAC",
+        "active": true,
+        "additional_days": 1,
+        "additional_cost": 0,
+        "allow_free_shipping": true   
+    },
+    {
+        "code": "Sedex",
+        "name": "Correios - Sedex",
+        "active": true,
+        "additional_days": 1,
+        "additional_cost": 0,
+        "allow_free_shipping": true   
+    }   
+]
+```
+
+`HTTP/1.1 201 Created`
+
+```json
+[
+    {
+        "id": 35,
+        "name": "Correios - PAC",
+        "code": "pac",
+        "additional_days": 1,
+        "additional_cost": 0,
+        "active": true,
+        "allow_free_shipping": true,
+        "created_at": "2021-10-08T15:07:17+0000",
+        "updated_at": "2021-10-08T15:07:17+0000"
+    },
+    {
+        "id": 36,
+        "name": "Correios - Sedex",
+        "code": "Sedex",
+        "additional_days": 1,
+        "additional_cost": 0,
+        "active": true,
+        "allow_free_shipping": true,
+        "created_at": "2021-10-08T15:07:17+0000",
+        "updated_at": "2021-10-08T15:07:17+0000"
+    }
+]
 ```
 
 ### GET /shipping_carriers/{carrier_id}/options
