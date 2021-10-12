@@ -158,6 +158,8 @@ customer: {
 	identification: ...
 },                                                                                                                                                                                                                                    
 orders_requested: [213, 3415, 21515],
+checkouts_requested: [214, 3416, 21518],
+drafts_orders_requested: [10, 1245, 5456],
 data_request: {
 	id: 456,
 }
