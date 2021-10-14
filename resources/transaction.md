@@ -22,6 +22,7 @@ All `Transaction` types have the same attributes, but may generate different kin
 | `refunded_amount`     | Object        | [Read-only] Object containing the refunded amount of this Transaction. See [Money](#Money). |
 | `authorized_amount`   | Object        | [Read-only] Object containing the authorized amount of this Transaction. See [Money](#Money). |
 | `voided_amount`       | Object        | [Read-only] Object containing the voided amount of this Transaction. See [Money](#Money). |
+| `discount_amount`     | Object        | [Read-only] Object containing the discount applied to the Transaction on the Payment Provider external site. See [Redirect Transactions Discounts](#Redirect-Transactions-Discounts). |
 | `failure_code`        | String        | [Read-only] If the transaction failed, this field is used to indicate the code related to the failure cause. See [Transaction Failure Codes](#Transaction-Failure-Codes). |
 | `created_at`          | Date          | [Read-only] ISO 8601 date for the date the Transaction was created in our platform. Defaults to current time. E.g. `"2020-03-11T12:42:15.000Z"`. |
 
@@ -42,7 +43,6 @@ This object is used to indicate specific information of a Transaction. It can be
 | ------------------------------ | ------ | ------------------------------------------------------------ |
 | `card`                         | Object | [Optional] Object containing data related to the consumer's credit or debit card. See [Card Info](#Card-Info). |
 | `installments`                 | Object | [Required for `credit_card`] Object containing the installments data related to this Transaction. See [Installments Info](#Installments-Info). |
-| `integration_type`             | String | One of the available [Transaction Integration Types](#Transaction-Integration-Types). |
 | `external_id`                  | String | [Optional] ID used by the Payment Provider.                  |
 | `external_url`                 | String | [Optional] HTTPS URL with details of this Transaction for the merchant. |
 | `external_resource_url`        | String | [Required for transparent transactions with `boleto`, `ticket`, `wire_transfer`, `bank_debit` and `pix`] HTTPS URL of the boleto or ticket to show to the consumer to resume the payment. In the case of bank debit and wire transfer, link to the bank selected by the consumer to make the transaction. In the case of PIX, source to the QR code image to show to the consumer to make the payment, it could be a URL or a `base64` code. |
@@ -163,12 +163,6 @@ Each type of Transaction has a Finite State Machine (FSM) that defines its statu
 * `refunded`: The transaction is refunded.
 * `voided`: The transaction is voided.
 
-### Transaction Integration Types
-
-* `external`: Payment was processed on the payment provider's site.
-* `modal`: Payment was processed opening a modal to the payment provider's site.
-* `transparent`: Payment was processed directly on the merchant's checkout.
-
 ### Transaction Event Types
 
 * `authorization`: The credit card transaction has been authorized.
@@ -224,6 +218,13 @@ A Transaction may change its *status* upon receiving a Transaction Event. The fo
 > The arrows represent the occurrence of a Transaction Event with *status* `success` unless another status is mentioned in its description.
 
 <img style="text-align:center" src="images/transaction_status.png" alt="transaction_status" width="950" />
+
+### Redirect Transactions Discounts
+
+The Payment Provider may use discounts on its external checkout to reduce the amount charged to a customer on a payment Transaction.
+In these cases, the Transaction must include the `discount_amount` field with the value of the discount applied to the order on the Payment Provider external site. On the other hand, the total amount of the Transaction must also be updated with the corresponding value after the discount has been applied (see the [Example Nº 6](#Common-Examples)).
+
+> ***Note:*** Discounts on external Transactions must be applied to the order total amount reported by Tiendanube.
 
 
 
@@ -855,6 +856,65 @@ Get a specific Transaction for a given order.
    ]
 }
 ```
+
+</details>
+
+
+
+<details>
+  <summary><b>Example Nº 6: Create an external transaction for a $100 order with a $10 discount.</b></summary>
+
+
+
+
+
+#### POST /orders/24680/transactions
+
+##### Request
+
+```json
+{
+  "payment_provider_id": "eeac118e-5534-40ba-b539-443449bc67a3",
+  "payment_method": {
+    "type": "credit_card",
+    "id": "amex"
+  },
+  "info": {
+    "card": {
+      "brand": "amex",
+      "expiration_month": 12,
+      "expiration_year": 2021,
+      "first_digits": "445566",
+      "last_digits": "1234",
+      "masked_number": "XXXXXXXXXXXX1234",
+      "name": "Ash Ketchum"
+    },
+    "installments": {
+      "quantity": 1,
+      "interest": "0.00"
+    },
+    "external_id": "1234",
+    "external_url": "https://mypayments.com/account/transactions/1234"
+  },
+  "first_event": {
+    "amount": {
+      "value": "90.00",
+      "currency": "ARS"
+    },
+    "discount_amount": {
+      "value": "10.00",
+      "currency": "ARS"
+    },
+    "type": "sale",
+    "status": "success",
+    "happened_at": "2021-10-25T12:30:15.000Z"
+  }
+}
+```
+
+##### Response
+
+`201 Created`
 
 </details>
 
