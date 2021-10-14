@@ -222,7 +222,8 @@ A Transaction may change its *status* upon receiving a Transaction Event. The fo
 ### Redirect Transactions Discounts
 
 Payment Providers may use discounts on their external checkouts to reduce the amount charged to a customer on a payment Transaction. Under this scenario, any promotion applied on the Payment Provider external site, such as a bank promotion or a discount coupon, can affect the Transaction amount for an order,  reducing its value.
-In these cases, the Transaction object created for the order must include the `discount_amount` field with the value of the discount applied on the Payment Provider external site. On the other hand, the total amount of the Transaction must also be updated with the corresponding value after the discount has been applied (see the [Example Nº 6](#Common-Examples)).
+
+In these cases, the Transaction object created for the order must include the `discount_amount` field with the value of the discount applied on the Payment Provider external site. On the other hand, the total amount of the Transaction must also be updated with the corresponding value after the discount has been applied (see case Nº 6 of the [Common Examples](#Common-Examples)).
 
 > ***Note:*** Discounts on external Transactions must be applied to the order total amount reported by Tiendanube.
 
