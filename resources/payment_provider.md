@@ -32,7 +32,7 @@ Properties
 | `support_url`               | String        | [Optional] Payment Provider support site HTTPS URL.          |
 | `rates`                     | Array(Object) | [Optional] List of rates definitions for merchants by payment method type. See [Rates](#Rates). |
 | `rates_url`                 | String        | [Optional] HTTPS URL of the Payment Provider's rate information site. |
-| `features`                  | Array(String) | [Optional] List of payment provider's features. See [Features](#Features). |
+| `features`                  | Array(String) | [Optional] List of features offered by the Payment Provider. See [Features](#Features). |
 | `enabled`                   | Boolean       | [Optional] Indicates whether the Payment Provider is activated or deactivated in the store. Defaults to `true`. |
 
 > ***Note:*** All URLs must be secure URLs (https).

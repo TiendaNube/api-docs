@@ -517,18 +517,36 @@ The Payment App metadata information is country specific, so, if your App will b
 
 ***Note:*** All fields in the metadata object are *optional*. However, it is required to provide the merchant with a way to check the App's rate information. Therefore, one of the `rates_url` or `rates` fields must be specified so that the App can be available to stores.
 
+Properties
+----------
+
+| Field                            | Type          | Description                                                  |
+| :------------------------------- | :------------ | :----------------------------------------------------------- |
+| `type`                           | String        | One of `aggregator`, `acquirer` or `gateway`.                |
+| `name`                           | String        | Name to be displayed to merchants at the store admin tool.   |
+| `description`                    | String        | Brief description about the app.                             |
+| `installation_description`       | String        | Brief description of the app installation process.           |
+| `installation_url`               | String        | HTTPS URL of the Payment Provider installation site.         |
+| `logo_urls`                      | Object        | Object containing `key:value` pair for each version of the logos for the frontend. Only supports HTTPS URLs. See [Logos](../../resources/payment_provider.md#Logos). |
+| `register_url`                   | String        | HTTPS URL of the Payment Provider registration site.         |
+| `support_url`                    | String        | HTTPS URL of the Payment Provider support site.              |
+| `support_phone`                  | String        | Payment Provider support phone number.                       |
+| `supported_payment_method_types` | Array(String) | List of available payment methods types. See [Payment Method Types](../../resources/payment_provider.md#payment-method-types). |
+| `rates_url`                      | String        | [Optional] HTTPS URL of the Payment Provider rate information site. |
+| `rates`                          | Array(Object) | [Optional] List of rates definitions for merchants by payment method type. See [Rates](../../resources/payment_provider.md#Rates). |
+| `features`                       | Array(String) | [Optional] List of features offered by the Payment Provider. See [Features](../../resources/payment_provider.md#Features). |
+
 *Here is an example of what a JSON would look like for the metadata of a Payment App:*
 
 ```json
 {
     "type":"aggregator",
     "name": "Acme Payments",
+    "description": "This is a brief description about the Acme Payments app.",
     "logo_urls":{
        "400x120":"https://cdn.acme.com/logos/400x120.png"
     },
-    "description": "This is a brief description about the Acme Payments app.",
     "installation_description":"This is a brief description of the installation process for the Acme Payments app.",
-    "rates_url":"https://acme.com/rates",
     "register_url":"https://acme.com/register",
     "support_phone":"+54123456789",
     "supported_payment_method_types":[
@@ -540,6 +558,7 @@ The Payment App metadata information is country specific, so, if your App will b
        "special_rates",
        "transparent_checkout"
     ],
+    "rates_url":"https://acme.com/rates",
     "rates":[
        {
           "payment_method_type":"credit_card",
