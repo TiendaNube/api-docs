@@ -308,3 +308,41 @@ paths:
                         items:
                           type: string
                           example: 'name must be a string'
+  /webhooks:
+    put:
+      summary: Register a webhook
+      description: Create or Update a webhook
+      tags:
+        - webhooks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                url:
+                  type: string
+                  description: Valid URL with protocol
+                  example: 'https://www.webhook.com'
+      responses:
+        '204':
+          description: The webhooks has been created or updated
+        '400':
+          description: Unable to process the request sent
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: number
+                        example: 400
+                      code:
+                        type: string
+                        example: 'BadRequestException'
+                      detail:
+                        type: array
+                        items:
+                          type: string
+                          example: 'url must be an URL address'
