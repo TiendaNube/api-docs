@@ -50,7 +50,8 @@ At the moment, our platform requires two versions of the Payment Provider logo. 
 
 ### Currency Codes
 
-Every amount value needs to be complemented by a currency. Supported currency codes must be specified according to [ISO 4217](https://docs.1010data.com/1010dataReferenceManual/DataTypesAndFormats/currencyUnitCodes.html). A few examples of these are:
+Every amount value needs to be complemented by a currency. Supported currency codes must be specified according to [ISO 4217](https://docs.1010data.com/1010dataReferenceManual/DataTypesAndFormats/currencyUnitCodes.html).
+The currencies currently supported on our platform are:
 
 - `ARS`: Argentine Peso
 - `BRL`: Brazilian Real
