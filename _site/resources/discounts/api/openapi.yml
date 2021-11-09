@@ -308,7 +308,7 @@ paths:
                         items:
                           type: string
                           example: 'name must be a string'
-  /webhooks:
+  /webhooks/discounts:
     put:
       summary: Register a webhook
       description: Create or Update a webhook
