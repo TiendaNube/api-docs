@@ -308,12 +308,12 @@ paths:
                         items:
                           type: string
                           example: 'name must be a string'
-  /webhooks/discounts:
+  /callbacks/discounts:
     put:
-      summary: Register a webhook
-      description: Create or Update a webhook
+      summary: Register a callback
+      description: Create or Update a callback
       tags:
-        - webhooks
+        - callbacks
       requestBody:
         content:
           application/json:
@@ -322,10 +322,10 @@ paths:
                 url:
                   type: string
                   description: Valid URL with protocol
-                  example: 'https://www.webhook.com'
+                  example: 'https://www.callback.com'
       responses:
         '204':
-          description: The webhooks has been created or updated
+          description: The callback has been created or updated
         '400':
           description: Unable to process the request sent
           content:
