@@ -322,6 +322,166 @@ Modify an existing Product Variant
 }
 ```
 
+### PUT /products/{product_id}/variants
+
+Updates the entire `ProductVariant` collection owned by a specific `Product`. Use this endpoint to add, modify or remove `ProductVariant`s in one single batch operation.
+
+If the operation is successful, all the variants sent in the request will be the current and only variants for the `Product`.
+
+Each `ProductVariant` will be identified by its value combination. If a specified value combination doesn't exist, a new `ProductVariant` will be created, otherwise, the `ProductVariant` matching that value combination will be updated. Value combinations that aren't present in the request body, identify `ProductVariant`s that will be deleted.
+
+#### PUT /products/1234/variants
+```json
+[
+    {
+        "values": [
+            {
+                "es": "Large"
+            }
+        ],
+        "stock": 4,
+        "price": 10.5
+    },
+    {
+        "values": [
+            {
+                "es": "Medium"
+            }
+        ]
+    }
+]
+```
+
+`HTTP/1.1 200 OK`
+
+Indicates that the entire collection has been processed successfully. Returns the current `ProductVariant`s collection of the `Product`.
+
+```json
+[
+  {
+    "id": 33739371,
+    "image_id": null,
+    "product_id": 17310851,
+    "position": 27,
+    "price": "10.50",
+    "promotional_price": null,
+    "stock_management": true,
+    "stock": 4,
+    "weight": "0.000",
+    "width": "0.00",
+    "height": "0.00",
+    "depth": "0.00",
+    "sku": null,
+    "values": [
+      {
+        "es": "Large"
+      }
+    ],
+    "barcode": null,
+    "created_at": "2021-11-10T20:40:44+0000",
+    "updated_at": "2021-11-10T20:40:44+0000"
+  },
+  {
+    "id": 33739372,
+    "image_id": null,
+    "product_id": 17310851,
+    "position": 28,
+    "price": null,
+    "promotional_price": null,
+    "stock_management": false,
+    "stock": null,
+    "weight": "0.000",
+    "width": "0.00",
+    "height": "0.00",
+    "depth": "0.00",
+    "sku": null,
+    "values": [
+      {
+        "es": "Medium"
+      }
+    ],
+    "barcode": null,
+    "created_at": "2021-11-10T20:40:44+0000",
+    "updated_at": "2021-11-10T20:40:44+0000"
+  }
+]
+```
+
+`HTTP/1.1 400 Bad Request`
+
+```json
+{
+  "code": 400,
+  "message": "Bad Request",
+  "description": "Invalid input format"
+}
+```
+
+```json
+{
+    "code": 400,
+    "message": "Bad Request",
+    "description": "Variant values should not be empty"
+}
+```
+
+```json
+{
+  "code": 400,
+  "message": "Bad Request",
+  "description": "There must be at least one variant"
+}
+```
+
+```json
+{
+  "code": 400,
+  "message": "Bad Request",
+  "description": "Invalid values format"
+}
+```
+
+`HTTP/1.1 422 Unprocessable Entity`
+
+```json
+{
+    "code": 422,
+    "message": "Unprocessable Entity",
+    "description": "Validation error",
+    "price": [
+        "The price must be at least 0."
+    ],
+    "stock": [
+        "The stock must be an integer."
+    ]
+}
+```
+
+```json
+{
+  "code": 422,
+  "message": "Unprocessable Entity",
+  "description": "Variant values should not be repeated"
+}
+```
+
+```json
+{
+  "code": 422,
+  "message": "Unprocessable Entity",
+  "description": "Product is not allowed to have more than 1000 variants."
+}
+```
+`HTTP/1.1 500 Internal Server Error`
+
+```json
+{
+  "code": 500,
+  "message": "Internal Server Error",
+  "description": null
+}
+```
+
 ### PATCH /products/{product_id}/variants
 
 Partially update a `ProductVariant` collection. This endpoint allows to modify many existing `ProductVariant`s that belong to the given `Product`.
