@@ -326,6 +326,8 @@ Modify an existing Product Variant
 
 Updates the entire `ProductVariant` collection owned by a specific `Product`. Use this endpoint to add, modify or remove `ProductVariant`s in one single batch operation.
 
+If the operation is successful, all the variants sent in the request will be the current and only variants for the `Product`.
+
 Each `ProductVariant` will be identified by its value combination. If a specified value combination doesn't exist, a new `ProductVariant` will be created, otherwise, the `ProductVariant` matching that value combination will be updated. Value combinations that aren't present in the request body, identify `ProductVariant`s that will be deleted.
 
 #### PUT /products/1234/variants
