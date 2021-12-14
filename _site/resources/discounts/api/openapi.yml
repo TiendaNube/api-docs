@@ -183,6 +183,45 @@ paths:
                       detail:
                         type: string
                         example: 'The identifier of the promotion provided does not exist'
+
+  /discounts/callbacks:
+    put:
+      summary: Register a callback
+      description: Create or Update a callback
+      tags:
+        - discounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                url:
+                  type: string
+                  description: Valid URL with protocol
+                  example: 'https://www.callback.com'
+      responses:
+        '204':
+          description: The callback has been created or updated
+        '400':
+          description: Unable to process the request sent
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: number
+                        example: 400
+                      code:
+                        type: string
+                        example: 'BadRequestException'
+                      detail:
+                        type: array
+                        items:
+                          type: string
+
   /discounts/carts/{cart_id}/promotions/{promotion_id}:
     delete:
       summary: Remove a discount associated with a cart
@@ -308,41 +347,3 @@ paths:
                         items:
                           type: string
                           example: 'name must be a string'
-  /callbacks/discounts:
-    put:
-      summary: Register a callback
-      description: Create or Update a callback
-      tags:
-        - callbacks
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                url:
-                  type: string
-                  description: Valid URL with protocol
-                  example: 'https://www.callback.com'
-      responses:
-        '204':
-          description: The callback has been created or updated
-        '400':
-          description: Unable to process the request sent
-          content:
-            application/json:
-              schema:
-                properties:
-                  error:
-                    type: object
-                    properties:
-                      status:
-                        type: number
-                        example: 400
-                      code:
-                        type: string
-                        example: 'BadRequestException'
-                      detail:
-                        type: array
-                        items:
-                          type: string
-                          example: 'url must be an URL address'
