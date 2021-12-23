@@ -10,8 +10,29 @@ The Discount API is a set of tools that allows the development of a wide range o
 Before we start working, we need to clarify some basic concepts that we will be using from now on.
 
 
-## Definitions 
-### Promotions and discounts
+# Table of Contents
+
+1. [Main Concepts](#main-concepts)
+   1. [Promotions and discounts](#promotions-and-discounts)
+   2. [Tier](#tier)
+2. [How it works](#how-it-works)
+3. [Accountabilities](#accountabilities)
+4. [Where do I start?](#where-do-i-start)
+5. [Integration](#integration)
+   1. [Register a callback](#register-a-callback)
+   2. [Create promotions](#create-promotions)
+   3. [Apply a discount](#apply-a-discount)
+   4. [Remove a discount](#remove-a-discount)
+   5. [Message specifications](#message-specifications)
+   6. [Life Cycle](#life-cycle)
+   7. [Security](#security)
+6. [Upcoming changes](#upcoming-changes)
+7. [Frequently Asked Questions](#frequently-asked-questions)
+8. [Resources](#resources)
+
+
+## Main Concepts<a name="mainconcept"></a> 
+### Promotions and discounts<a name="promotions-and-discounts"></a>
 
 A promotion is a set of properties and business rules that can be applied to a user&#39;s cart. An example could be _**3x2 in black t-shirts**_.
 
@@ -28,11 +49,7 @@ In a nutshell, a discount is a promotion applied to a specific cart.
 **PROMOTION** : Set of properties and business rules that describes a behavior.<br/>
 **DISCOUNT** : The net value that will be extracted from the cart total because a promotion was applied.
 
-### Executors
-
-An Executor refers to a function registered by the application to be performed once an event occurs.
-
-### Tier
+### Tier<a name="tier"></a>
 
 We will call Tier to a specific group of promotions. These tiers will be executed in order and will apply depending on one of each other.
 
@@ -46,28 +63,22 @@ We have three tiers: Line Item, Cross Items and Shipping Line.
 
 ![](./images/promotion_tiers.png)
 
-## How it works
+## How it works<a name="how-it-works"></a>
 
-Each application that wants to work with promotions, should interact with two main services provided by Tiendanube, the Discount Javascript API, and the Tiendanube API.
+Each application that wants to work with promotions should interact with the Tiendanube/Nuvemshop API to create promotions and 
+validate their business rules based on the cart information sent to a specific endpoint on the partner's side.
 
-The applications can validate their business rules using executors, and these need to be subscribed using the Discount Javascript API to be orchestrated.
-
-On the other side, the Tiendanube API will allow the applications to manage promotions and register discounts through an authenticated REST API.
-
-Likewise, each application must have a way to get the executor&#39;s requests and interact with the Tiendanube API.
-
-## Accountabilities
+## Accountabilities<a name="accountabilities"></a>
 
 | Accountability | Tiendanube | APP |
 | --- | --- | --- |
 | To ease the creation and storage of the promotion&#39;s business logic | | **X** |
 | Verify that the promotion&#39;s rules comply | | **X** |
-| Request the discount application to a cart | | **X** |
-| Provide acknowledgment that a discount was applied | | **X** |
+| Request a discount to be applied | | **X** |
 | Add a discount to a cart | **X** | |
-| Show the available discount into the cart | **X** | |
+| Show the applied discount in the cart | **X** | |
 
-## Where do I start?
+## Where do I start?<a name="where-do-i-start"></a>
 
 Before you start to create your app, you need to follow the points described below:
 
@@ -77,95 +88,89 @@ Before you start to create your app, you need to follow the points described bel
 4. Read the API docs to understand what you can do with your app.
 
 
-## Integration
+## Integration<a name="integration"></a>
 
-### Create promotions
+### Register a callback<a name="register-a-callback"></a>
 
-![](./images/c4_register_a_discount_context.png)
+The first step to bind an app with a store is to create a callback URL. This URL will be used by Tiendanube/Nuvemshop to 
+send all the cart information every time the consumer makes an action on it (Ex: Adds or removes an item, changes the 
+quantity of an item, etc.), and the store has promotions.
+
+
+### Create promotions<a name="create-promotions"></a>
+
+![](./images/create_a_promotion.png)
 
 Each application is responsible for the creation and storage of all their business logic. Nevertheless, {{ site.data.institutional.name.mixed }} needs to identify each promotion, which should be doing it through the API.
 
 This operation will return an ID to the combination of the promotions and the current store.
 
-You should take into consideration some values can&#39;t be updated after the creation. For more information about the API, please refer to [Discount API Docs]({{ site.data.links.discounts.main | absolute_url }}/api).
+You should take into consideration that some values can&#39;t be updated after the creation. For more information about the API, please refer to [Discount API Docs]({{ site.data.links.discounts.main | absolute_url }}/api).
 
-### Apply a discount
 
-![](./images/c4_apply_a_discount_context.png)
+### Apply a discount<a name="apply-a-discount"></a>
 
-Any modification on the cart state will be evaluated and informed to each partner which is registered to a promotion tier through the Discount Application JS API.
+![](./images/apply_a_discount.png)
 
-Each partner should evaluate the current cart and decide if a discount should be applied (or removed), and do the corresponding request to do this.
+Any modification on the cart state will be informed to each of the partners that have  registered a promotion in the store.
+
+Each partner should evaluate the current cart and decide if a promotion should be applied (or removed), and make the corresponding request to do this.
 
 For more information about the API requests used to create or remove a discount, please refer to [Discount API Docs]({{ site.data.links.discounts.main | absolute_url }}/api).
 
-## Front-End Integration
 
-Inside the execution context, in the global scope, the application will have available an instance of the `discountService`. This can be used to subscribe to executors. Through this, Tiendanube will be capable of orchestrating all the application executors for each available event.
+### Remove a discount<a name="remove-a-discount"></a>
 
-### 1. Creating and subscribing executors
+The same flow applies to discount removal. Once the cart is sent and the discount to remove is identified, the partner’s 
+application needs to send a request to delete it.
 
-Different events are available to listen up and take actions based on it. In this context, the method **discountService.subscribe(tierName, fn)** should be used.
+For more information about the API requests used to create or remove a discount, please refer to [Discount API Docs]({{ site.data.links.discounts.main | absolute_url }}/api).
 
-Fn is representing an async function. This one is responsible for the execution of any needed logic to evaluate the business rules.
+### Message specifications<a name="message-specifications"></a>
 
-```javascript
-discountService.subscribe(tierNameProvider.get('LINE_ITEM'), async (cart) => {
-   const rawResponse = await fetch(`https://rules.myapp.com/?store=${LS.store.id}`, {
-      method: 'POST',
-      body: JSON.stringify(cart)
-   });
-   const response = rawResponse.json();
+In each cart update, we will send the following information to the callback URL.
 
-   return {
-      discountChanged: true,
-   };
-});
-```
+[Cart Payload](./payload/cart.json)
 
-This example presents some points to consider.
+### Life Cycle<a name="life-cycle"></a>
 
-- The tier name is retrieved using the global instance of **tierNameProvider**. Currently, you can get three tiers that will be executed in the following order when the cart is updated:
-   - LINE_ITEM
-   - CROSS_ITEMS
-   - SHIPPING_LINE
-- The example URL `rules.myapp.com` is supposed to be your backend where it will call our API applying the discounts.
-- The executor will get the information needed as a data object as a parameter. This object will contain the information of the current cart. For more information about the structures please refers [here]({{ site.data.links.discounts.main | absolute_url}}/data-objects).
-- The return body MUST contain the property **discountChanged** which will be used to determine whether the partner have done some modification to the cart (add or remove a discount) and its value must be a **boolean**.
+Each flow starts with a user interaction changing the cart state. For that reason, any request related to a cart that wasn't modified will be rejected by the service.
 
-### 2. Post the script into the storefront
+### Security<a name="security"></a>
 
-In order to load the JS script in the storefront, the JS file should be hosted somewhere and register it through our API `POST /scripts` ([see more]({{ site.data.links.script.main | absolute_url}}/#post-scripts)).
-
-POST https://api.tiendanube.com/v1/storeId/scripts
-```json
-{
-    "src": "https://myapp.com/executor.js",
-    "event" : "onload",
-    "where" : "store"
-}
-```
-
-This example supposes that you have your JS specifically in `https://myapp.com/executor.js`.
-
-**Note:** Keep in mind that the store's id is attached to the script request. So following with the example, the above script will be called like this: `https://myapp.com/executor.js?store={storeId}`. This is useful when your script content is dynamic, otherwise you can use the global variable `LS` to get the store id.
-
-## Discount application flow
-
-![](./images/discount_request_flow.png)
+Tiendanube/Nuvemshop will share a list of IP addresses to be registered as a Whitelist in a WFA and each Partner is responsible to block any other connections to their applications.
 
 
-## Resources
+## Upcoming changes<a name="mainconcept"></a>
 
-- [Api Specification]({{ site.data.links.discounts.main | absolute_url }}/api)
-- [Openapi.yml]({{ site.data.links.discounts.main | absolute_url }}/api/openapi.yml)
+### Flow Improvements
 
-## Frequently Asked Questions
+The new architecture allows us to reduce the number of operations needed to add or remove a discount. We will change 
+the requested response on callback to get that information on the same request instead of additional requests through 
+the Public API.
 
-### What should my executor return?
+![](./images/apply_a_discount_v2.png)
 
-Once the executor was performed, the discountService will evaluate the property **discountChanged**. This property informs that the application made a successful Intent and the result should be verified.
+
+### Signed Communication
+
+We will share a secret token with each application to sign each request made by Tiendanube/Nuvemshop on the application callback. Each partner will be responsible for validating that signature.
+
+Once the communication is signed, the WAF will not be necessary anymore, and Tiendanube/Nuvemshop could change their IP without any restriction.
+
+
+## Frequently Asked Questions<a name="frequently-asked-questions"></a>
+
+### What happens if the server does respond properly?
+
+When Tiendanube/Nuvemshop informs the cart state, each partner should respond as it is expected. If the partner does not respond correctly or have a delay in their response,  given that we can’t determine if a promotion still applies or not, the promotions registered in previous updates will be removed.
 
 ### What happens if my discount is no longer valid?
 
-If a promotional rule was valid in the past but is no longer applicable, the discount must be removed through the API by the partner.
+If a promotional rule was valid in the past but is no longer applicable, the discount must be removed through the API by the partner. 
+
+
+## Resources<a name="resources"></a>
+
+- [Api Specification]({{ site.data.links.discounts.main | absolute_url }}/api)
+- [Openapi.yml]({{ site.data.links.discounts.main | absolute_url }}/api/openapi.yml)

@@ -2,7 +2,9 @@
     padding: 20px;
     background-color: #ff9800;
     color: white;
-    margin-bottom: 15px;
+    box-shadow: 0px 8px 8px rgb(0 0 0 / 20%);
+    z-index: 200;
+    position: relative;
 }
 
 .alert a {

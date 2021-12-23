@@ -1,0 +1,90 @@
+{
+  "store_id": "92760",
+  "cart_id": "397256730",
+  "execution_tier": "cross_items",
+  "currency": "ARS",
+  "coupons": false,
+  "language": "es",
+  "shipping": {
+    "country": null,
+    "city": null,
+    "postalcode": null,
+    "cost": "0.0"
+  },
+  "package": {
+    "weight": "0.600"
+  },
+  "payment": {
+    "credit_card_company": null,
+    "method": null,
+    "installments": 1
+  },
+  "products": [
+    {
+      "id": 467422732,
+      "depth": "20.00",
+      "height": "5.00",
+      "name": "Mi first product",
+      "price": "12.00",
+      "product_id": 17310718,
+      "quantity": 4,
+      "free_shipping": false,
+      "weight": "0.00",
+      "width": "30.00",
+      "variant_id": 33739098,
+      "variant_values": [],
+      "properties": [],
+      "sku": null,
+      "barcode": null,
+      "url": "https://www.mystore.com/productos/mi-primero-producto/",
+      "price_short": "$12",
+      "price_long": "$12 ARS",
+      "subtotal_short": "$48",
+      "subtotal_long": "$48 ARS",
+      "categories": [
+        {
+          "id": 9090471,
+          "name": {
+            "es": "Category with subcategory"
+          },
+          "description": {
+            "es": ""
+          },
+          "handle": {
+            "es": "category-with-subcategory"
+          },
+          "parent": null,
+          "subcategories": [
+            9090472
+          ],
+          "seo_title": {
+            "es": ""
+          },
+          "seo_description": {
+            "es": ""
+          },
+          "created_at": "2021-07-20T20:07:12+0000",
+          "updated_at": "2021-07-20T20:09:12+0000"
+        }
+      ]
+    }
+  ],
+  "totals": {
+    "subtotal": "30000.00",
+    "total_discount": "10300.00",
+    "total": "19700.00"
+  },
+  "promotions": [
+    {
+      "id": "231bbfe4-31bc-11ec-8d3d-0242ac130003",
+      "line_items": []
+    },
+    {
+      "id": "4eb6777a-31bc-11ec-8d3d-0242ac130003",
+      "line_items": [ "467422732", "122422253" ]
+    }
+  ],
+  "customer": {
+  "id": "123293"
+}
+}
