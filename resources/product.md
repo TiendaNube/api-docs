@@ -18,7 +18,7 @@ Properties
 | brand          | The Product's brand                                                                               |
 | published      | *true* if the Product is published in the store. *false* otherwise                                |
 | free_shipping  | *true* if the Product is elegible for free shipping. *false* otherwise                            |
-| video_url      | String with a valid URL format                                                                    | 
+| video_url      | String with a valid URL format. Only admits https links                                           | 
 | seo_title      | The SEO friendly title for the Product. Up to 70 characters                                       |
 | seo_description| The SEO friendly description for the Product. Up to 320 characters                                |
 | attributes     | List of the names of the attributes whose values define the variants. E.g.: Color, Size, etc. It is important that the number of `attributes` is equal to the number of `values` within the variants.      |
@@ -434,6 +434,14 @@ Creates a new Product
     "code": 422,
     "message": "Unprocessable Entity",
     "description": "Product is not allowed to have more than 1000 variants"
+}
+```
+
+```json
+{
+    "code": 422,
+    "message": "Unprocessable Entity",
+    "description": "The video url field is not a secure url"
 }
 ```
 
