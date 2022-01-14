@@ -434,16 +434,6 @@ Creates a new Product
 }
 ```
 
-`HTTP/1.1 422 Unprocessable Entity`
-
-```json
-{
-    "code": 422,
-    "message": "Unprocessable Entity",
-    "description": "The video url field is not a secure url"
-}
-```
-
 #### POST /products
 
 ```json
