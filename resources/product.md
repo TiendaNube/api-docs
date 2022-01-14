@@ -435,7 +435,7 @@ Creates a new Product
 {
   "code": 422,
   "message": "Unprocessable Entity",
-  "description": "The video url field is not a secure url"
+  "description": "The video url field"
 }
 ```
 
