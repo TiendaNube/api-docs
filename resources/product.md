@@ -18,6 +18,7 @@ Properties
 | brand          | The Product's brand                                                                               |
 | published      | *true* if the Product is published in the store. *false* otherwise                                |
 | free_shipping  | *true* if the Product is elegible for free shipping. *false* otherwise                            |
+| video_url      | String with a valid URL format. Only admits https links                                           | 
 | seo_title      | The SEO friendly title for the Product. Up to 70 characters                                       |
 | seo_description| The SEO friendly description for the Product. Up to 320 characters                                |
 | attributes     | List of the names of the attributes whose values define the variants. E.g.: Color, Size, etc. It is important that the number of `attributes` is equal to the number of `values` within the variants.      |
@@ -139,6 +140,7 @@ Receive a list of all Products.
           "pt": "Master Ball"
       },
       "brand": null,
+      "video_url": "https://www.youtube.com/watch?v=57aG16_gQcU",
       "seo_title": "Master Ball",
       "seo_description": "The best Ball with the ultimate level of performance. It will catch any wild Pokémon without fail.",
       "published": true,
@@ -307,6 +309,7 @@ Receive a single Product
       "pt": "Master Ball"
   },
   "brand": null,
+  "video_url": "https://www.youtube.com/watch?v=57aG16_gQcU",
   "seo_title": "Master Ball",
   "seo_description": "The best Ball with the ultimate level of performance. It will catch any wild Pokémon without fail.",
   "published": true,
@@ -434,6 +437,14 @@ Creates a new Product
 }
 ```
 
+```json
+{
+    "code": 422,
+    "message": "Unprocessable Entity",
+    "description": "The video url field is not a secure url"
+}
+```
+
 #### POST /products
 
 ```json
@@ -448,6 +459,7 @@ Creates a new Product
       "es": "Ultra Ball",
       "pt": "Ultra Ball"
     },
+    "video_url": "https://www.youtube.com/watch?v=57aG16_gQcU",
     "variants": [
         {
             "price": "10.00",
@@ -514,6 +526,7 @@ Creates a new Product
         "pt": "Ultra Ball"
     },
     "brand": null,
+    "video_url": "https://www.youtube.com/watch?v=57aG16_gQcU",
     "seo_title": "Ultra Ball",
     "seo_description": "",
     "published": true,
@@ -625,6 +638,7 @@ Modify an existing Product
         "pt": "Master Ball"
     },
     "brand": null,
+    "video_url": null,
     "seo_title": "Master Ball",
     "seo_description": "The best Ball with the ultimate level of performance. It will catch any wild Pokémon without fail.",
     "published": false,
