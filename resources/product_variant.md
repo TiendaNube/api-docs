@@ -22,7 +22,7 @@ Properties
 | sku               | Unique identifier of the Product Variant in your store                                          |
 | values            | List of the values of the attributes whose values define the variant. E.g.: Large, Medium, etc. It is important that the number of `values` is equal to the number of `attributes` within the products. |
 | barcode           | The value associated with an identifier of the product (GTIN, EAN, ISBN, etc.)                  |
-| mpn               | The Manufacturer Part Number (MPN) of the product, or the product to which the offer refers.    |
+| mpn               | The Manufacturer Part Number (MPN) of the product    |
 | age_group         | Attribute to set the demographic that the product is designed for. It is optional and only supports this values: "newborn", "infant", "toddler", "kids" and "adult".    |
 | gender            | Attribute to specify the gender your product is designed for. It is optional and only supports the values: "female", "male" and "unisex"                  |
 | created_at        | Date when the Product Variant was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)     | 
