@@ -22,6 +22,9 @@ Properties
 | sku               | Unique identifier of the Product Variant in your store                                          |
 | values            | List of the values of the attributes whose values define the variant. E.g.: Large, Medium, etc. It is important that the number of `values` is equal to the number of `attributes` within the products. |
 | barcode           | The value associated with an identifier of the product (GTIN, EAN, ISBN, etc.)                  |
+| mpn               | The Manufacturer Part Number (MPN) of the product, or the product to which the offer refers.    |
+| age_group         | Attribute to set the demographic that the product is designed for. It is optional and only supports this values: "newborn", "infant", "toddler", "kids" and "adult".    |
+| gender            | Attribute to specify the gender your product is designed for. It is optional and only supports the values: "female", "male" and "unisex"                  |
 | created_at        | Date when the Product Variant was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)     | 
 | updated_at        | Date when the Product Variant was last updated in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)|
 
@@ -66,6 +69,9 @@ Receive a list of all Product Variants for a given product.
       "stock_management": true,
       "stock": 5,
       "sku": "BSG1234A",
+      "mpn": null,
+      "age_group": null,
+      "gender": null,
       "updated_at": "2013-03-11T09:14:11-03:00",
       "weight": "2.00",
       "width": null      
@@ -87,6 +93,9 @@ Receive a list of all Product Variants for a given product.
       "stock_management": true,
       "stock": 5,
       "sku": "BSG1234B",
+      "mpn": null,
+      "age_group": null,
+      "gender": null,
       "updated_at": "2013-03-11T09:14:11-03:00",
       "weight": "2.25",
       "width": null      
@@ -108,6 +117,9 @@ Receive a list of all Product Variants for a given product.
       "stock_management": true,
       "stock": 5,
       "sku": "BSG1234C",
+      "mpn": null,
+      "age_group": null,
+      "gender": null,
       "updated_at": "2013-03-11T09:14:11-03:00",
       "weight": "2.50",
       "width": null
@@ -138,6 +150,9 @@ Receive a list of all Product Variants for a given product.
       "stock_management": true,
       "stock": 5,
       "sku": "BSG1234B",
+      "mpn": "00638HAY",
+      "age_group": "adult",
+      "gender": "unisex",
       "updated_at": "2013-03-11T09:14:11-03:00",
       "weight": "2.25",
       "width": null      
@@ -159,6 +174,9 @@ Receive a list of all Product Variants for a given product.
       "stock_management": true,
       "stock": 5,
       "sku": "BSG1234C",
+      "mpn": "00638ANG",
+      "age_group": "adult",
+      "gender": "unisex",
       "updated_at": "2013-03-11T09:14:11-03:00",
       "weight": "2.50",
       "width": null
@@ -196,6 +214,9 @@ Receive a single Product Variant
       "stock_management": true,
       "stock": 5,
       "sku": "BSG1234B",
+      "mpn": "LO2302GIU",
+      "age_group": "adult",
+      "gender": "female",
       "updated_at": "2013-03-11T09:14:11-03:00",
       "weight": "2.25",
       "width": null      
@@ -229,7 +250,6 @@ Create a new Product Variant
 }
 ```
 
-
 `HTTP/1.1 422 Unprocessable Entity`
 
 ```json
@@ -237,6 +257,22 @@ Create a new Product Variant
     "code": 422,
     "message": "Unprocessable Entity",
     "description": "Product is not allowed to have more than 1000 variants"
+}
+```
+
+```json
+{
+    "code": 422,
+    "message": "Unprocessable Entity",
+    "description": "The selected age group is invalid"
+}
+```
+
+```json
+{
+    "code": 422,
+    "message": "Unprocessable Entity",
+    "description": "The selected gender is invalid"
 }
 ```
 
@@ -260,6 +296,9 @@ Create a new Product Variant
       "stock_management": false,
       "stock": null,
       "sku": null,
+      "mpn": null,
+      "age_group": null,
+      "gender": null,
       "updated_at": "2013-06-01T09:15:11-03:00",
       "weight": null,
       "width": null      
@@ -290,6 +329,9 @@ Modify an existing Product Variant
       "stock_management": true,
       "stock": 5,
       "sku": "BSG1234D",
+      "mpn": null,
+      "age_group": null,
+      "gender": null,
       "updated_at": "2013-06-01T09:15:11-03:00",
       "weight": "2.75",
       "width": null
@@ -316,6 +358,9 @@ Modify an existing Product Variant
       "stock_management": true,
       "stock": 5,
       "sku": "BSG1234D",
+      "mpn": null,
+      "age_group": null,
+      "gender": null,
       "updated_at": "2013-06-01T12:15:11-03:00",
       "weight": "2.75",
       "width": null      
@@ -372,6 +417,9 @@ Indicates that the entire collection has been processed successfully. Returns th
     "height": "0.00",
     "depth": "0.00",
     "sku": null,
+    "mpn": null,
+    "age_group": null,
+    "gender": null,
     "values": [
       {
         "es": "Large"
@@ -395,6 +443,9 @@ Indicates that the entire collection has been processed successfully. Returns th
     "height": "0.00",
     "depth": "0.00",
     "sku": null,
+    "mpn": null,
+    "age_group": null,
+    "gender": null,
     "values": [
       {
         "es": "Medium"
@@ -470,6 +521,26 @@ Indicates that the entire collection has been processed successfully. Returns th
   "code": 422,
   "message": "Unprocessable Entity",
   "description": "Product is not allowed to have more than 1000 variants."
+}
+```
+
+`HTTP/1.1 422 Unprocessable Entity`
+
+```json
+{
+  "code": 422,
+  "message": "Unprocessable Entity",
+  "description": "The selected age group is invalid"
+}
+```
+
+`HTTP/1.1 422 Unprocessable Entity`
+
+```json
+{
+  "code": 422,
+  "message": "Unprocessable Entity",
+  "description": "The selected gender is invalid"
 }
 ```
 `HTTP/1.1 500 Internal Server Error`
@@ -576,6 +647,9 @@ If any of the above preconditions is not met, the response:
       "stock_management": false,
       "stock": null,
       "sku": null,
+      "mpn": null,
+      "age_group": null,
+      "gender": null,
       "updated_at": "2013-06-01T09:15:11-03:00",
       "weight": null,
       "width": null      
@@ -597,6 +671,9 @@ If any of the above preconditions is not met, the response:
       "stock_management": false,
       "stock": null,
       "sku": null,
+      "mpn": null,
+      "age_group": null,
+      "gender": null,
       "updated_at": "2013-06-01T09:15:11-03:00",
       "weight": null,
       "width": null      
