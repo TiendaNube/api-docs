@@ -19,7 +19,7 @@ components:
         lang:
           type: string
           description: language identifier
-          example: 'es_AR'
+          example: 'es-ar'
         name:
           type: string
           description: Promotion name
@@ -101,6 +101,14 @@ paths:
                   type: string
                   description: Cart identifier
                   example: '12345'
+                display_text:
+                  type: object
+                  description: Object where each attribute is a translation
+                  properties:
+                    es-ar:
+                      type: string
+                      description: The key is the language language identifier and the value the display text
+                      example: '50% off in the second unit'
                 currency:
                   type: string
                   description: ISO 4217 code for the currency
