@@ -41,7 +41,7 @@ Receive a list of all Products.
 | language       | Specify search language                                                                          |
 | q              | Search Products containing the given text in their names, descriptions or SKU                    |
 | handle         | Show Products with a given URL                                                                   |
-| category_id    | Show Products with a given category                                                              |
+| category_id    | Show Products with a given category<br><br>**Note: The API currently supports only one category_id to be returned by this time even if more is added to the request.**                                              |
 | published      | Show Products by published status. Valid values are "true" or "false"
 | free_shipping  | Show Products by free_shipping status. Valid values are "true" or "false"            
 | created_at_min | Show Products created after date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))      |
