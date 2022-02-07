@@ -67,6 +67,7 @@ Receive a list of all Categories.
       },
       "parent": null,
       "subcategories": [],
+      "google_shopping_category": null,
       "updated_at": "2013-03-11T09:14:11-03:00"
     }
 ]
@@ -123,6 +124,7 @@ Receive a single Category
   },
   "parent": null,
   "subcategories": [],
+  "google_shopping_category": null, 
   "updated_at": "2013-03-11T09:14:11-03:00"
 }
 ```
@@ -168,7 +170,8 @@ Create a new Category
       "es": "Gen I",
       "pt": "Gen I"
     },
-    "parent": 4567    
+    "parent": 4567,
+  "google_shopping_category": "Clothing & Accessories > Jewelry"
 }
 ```
 
@@ -194,6 +197,7 @@ Create a new Category
       "pt": "Gen I"
   },
   "parent": 4567,
+  "google_shopping_category": "Clothing & Accessories > Jewelry",
   "subcategories": [],
   "updated_at": "2013-06-01T12:15:11-03:00"
 }
@@ -235,6 +239,7 @@ Modify an existing Category
   },
   "parent": null,
   "subcategories": [],
+  "google_shopping_category": null,
   "updated_at": "2013-06-01T12:15:11-03:00"
 }
 ```
