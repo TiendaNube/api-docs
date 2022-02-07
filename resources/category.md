@@ -14,7 +14,7 @@ Properties
 | handle         | List of the url-friendly strings generated from the Category's names, in every language supported by the store |
 | parent         | Id of the Category's parent. *null* if it has no parent                                          |
 | subcategories  | The ids of the Category's first level subcategories                                              |
-| google_shopping_category | Attributes used to categorize an item. This category is selected from the Google’s taxonomy. The full list of product categories can be found here. | 
+| google_shopping_category | Attributes used to categorize an item. This category is selected from the Google’s taxonomy. The full list of product categories can be found here: [ES](https://www.google.com/basepages/producttype/taxonomy.es-ES.txt) - [PT](https://www.google.com/basepages/producttype/taxonomy.pt-BR.txt)  | 
 | created_at     | Date when the Category was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)   | 
 | updated_at     | Date when the Category was last updated in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)|
 
