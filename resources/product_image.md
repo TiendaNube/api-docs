@@ -118,6 +118,19 @@ Receive a single Product Image
     "updated_at": "2013-03-11T09:14:11-03:00"
 }
 ```
+## Size of images
+
+Today our API returns the URL where the image is in size 1024x1024, when changing the final part of the URL we can have the image in other sizes, namely: 50px, 100px, 240px, 320px, 480px, 640px, 1024px. 
+Example of URLs:
+
+ - 50px = https://d3ugyf2ht6aenh.cloudfront.net/stores/239/907/products/607213-mla31157935441_062019-f-85022a547f02c6b4bf15610802532590-50-0.jpg
+ - 100px = https://d3ugyf2ht6aenh.cloudfront.net/stores/239/907/products/607213-mla31157935441_062019-f-85022a547f02c6b4bf15610802532590-100-0.jpg
+ - 240px = https://d3ugyf2ht6aenh.cloudfront.net/stores/239/907/products/607213-mla31157935441_062019-f-85022a547f02c6b4bf15610802532590-240-0.jpg
+ - 320px = https://d3ugyf2ht6aenh.cloudfront.net/stores/239/907/products/607213-mla31157935441_062019-f-85022a547f02c6b4bf15610802532590-320-0.jpg
+ - 480px = https://d3ugyf2ht6aenh.cloudfront.net/stores/239/907/products/607213-mla31157935441_062019-f-85022a547f02c6b4bf15610802532590-480-0.jpg
+ - 640px = https://d3ugyf2ht6aenh.cloudfront.net/stores/239/907/products/607213-mla31157935441_062019-f-85022a547f02c6b4bf15610802532590-640-0.jpg
+ - 1024px= https://d3ugyf2ht6aenh.cloudfront.net/stores/239/907/products/607213-mla31157935441_062019-f-85022a547f02c6b4bf15610802532590-1024-1024.jpg 
+
 
 ### POST /products/{product_id}/images
 
