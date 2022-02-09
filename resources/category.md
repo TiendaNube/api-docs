@@ -14,6 +14,7 @@ Properties
 | handle         | List of the url-friendly strings generated from the Category's names, in every language supported by the store |
 | parent         | Id of the Category's parent. *null* if it has no parent                                          |
 | subcategories  | The ids of the Category's first level subcategories                                              |
+| google_shopping_category | Attributes used to categorize an item. This category is selected from the Google’s taxonomy. The full list of product categories can be found here: [ES](https://www.google.com/basepages/producttype/taxonomy.es-ES.txt) - [PT](https://www.google.com/basepages/producttype/taxonomy.pt-BR.txt)  | 
 | created_at     | Date when the Category was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)   | 
 | updated_at     | Date when the Category was last updated in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)|
 
@@ -66,6 +67,7 @@ Receive a list of all Categories.
       },
       "parent": null,
       "subcategories": [],
+      "google_shopping_category": null,
       "updated_at": "2013-03-11T09:14:11-03:00"
     }
 ]
@@ -122,6 +124,7 @@ Receive a single Category
   },
   "parent": null,
   "subcategories": [],
+  "google_shopping_category": null, 
   "updated_at": "2013-03-11T09:14:11-03:00"
 }
 ```
@@ -167,7 +170,8 @@ Create a new Category
       "es": "Gen I",
       "pt": "Gen I"
     },
-    "parent": 4567    
+    "parent": 4567,
+  "google_shopping_category": "Clothing & Accessories > Jewelry"
 }
 ```
 
@@ -193,6 +197,7 @@ Create a new Category
       "pt": "Gen I"
   },
   "parent": 4567,
+  "google_shopping_category": "Clothing & Accessories > Jewelry",
   "subcategories": [],
   "updated_at": "2013-06-01T12:15:11-03:00"
 }
@@ -234,6 +239,7 @@ Modify an existing Category
   },
   "parent": null,
   "subcategories": [],
+  "google_shopping_category": null,
   "updated_at": "2013-06-01T12:15:11-03:00"
 }
 ```

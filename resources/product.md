@@ -99,6 +99,7 @@ Receive a list of all Products.
               },
               "parent": null,
               "subcategories": [],
+            "google_shopping_category": null,
               "updated_at": "2013-03-11T09:14:11-03:00"
         }
       ],
@@ -268,6 +269,7 @@ Receive a single Product
           },
           "parent": null,
           "subcategories": [],
+        "google_shopping_category": null,
           "updated_at": "2013-03-11T09:14:11-03:00"
     }
   ],
@@ -497,6 +499,7 @@ Creates a new Product
             },
             "parent": null,
             "subcategories": [],
+          "google_shopping_category": null,
             "updated_at": "2013-03-11T09:14:11-03:00"
       }
     ],
@@ -597,6 +600,7 @@ Modify an existing Product
             },
             "parent": null,
             "subcategories": [],
+          "google_shopping_category": null,
             "updated_at": "2013-03-11T09:14:11-03:00"
       }
     ],
