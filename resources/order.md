@@ -76,9 +76,11 @@ An order is created when a customer completes the checkout process. Orders also 
 | next_action                | Next available operation in the orders flow                                                                                                                                                                                              |
 | payment_details            | A JSON object containing payment details.                                                                                                                                                                                                |
 | shipped_at                 | Date when the Order was shipped in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601)                                                                                                                                              |
+| paid_at                    | Date when the order was paid in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601).                                                                                                                                                |
 | cancel_reason              | Reason why the store owner cancelled an Order. Possible values are "customer", "fraud", "inventory" or "other"                                                                                                                           |
 | created_at                 | Date when the Order was created in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601)                                                                                                                                              |
 | updated_at                 | Date when the Order was last updated in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601)                                                                                                                                         |
+| client_details             | Customer details for analytics.                                                                                                                                                                                                          |
 
 Property `next_action` can take one of the following values:
 
