@@ -1,42 +1,38 @@
-Product Image
-=============
+# Product Image
 
 Product images could well be the single most important design aspect of any store. Without the ability to touch, hold, smell, taste or otherwise handle the products they are interested in, potential customers have only images to interact with.
 
 The product images have the following restrictions:
 
-* Must weight less than 10MB
-* Must be in one of the following formats: .gif, .jpg, .png
+- Must weight less than 10MB
+- Must be in one of the following formats: .gif, .jpg, .png
 
-Properties
-----------
+## Properties
 
-| Property       | Explanation                                                                                             |
-| -------------- | ------------------------------------------------------------------------------------------------------- |
-| id             | The unique numeric identifier for the Product Image                                                     |
-| product_id     | The id of the product associated with the image                                                         |
-| src            | URL of the product image                                                                                |
-| position       | Number indicating the position of the image in the product's image list. 1 is the first and the main product image |
-| created_at     | Date when the Product Image was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)     | 
-| updated_at     | Date when the Product Image was last updated in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)|
+| Property   | Explanation                                                                                                        |
+| ---------- | ------------------------------------------------------------------------------------------------------------------ |
+| id         | The unique numeric identifier for the Product Image                                                                |
+| product_id | The id of the product associated with the image                                                                    |
+| src        | URL of the product image                                                                                           |
+| position   | Number indicating the position of the image in the product's image list. 1 is the first and the main product image |
+| created_at | Date when the Product Image was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)                |
+| updated_at | Date when the Product Image was last updated in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)           |
+| alt        | Image alt text helps search engines like Google understand when to show the image in a search result               |
 
-Endpoints
----------
+## Endpoints
 
 ### GET /products/{product_id}/images
 
 Receive a list of all Product Images for a given product.
 
-
-| Parameter      | Explanation                                                                                      |
-| -------------- | ------------------------------------------------------------------------------------------------ |
-| since_id       | Restrict results to after the specified ID                                                       |
-| src            | Show Product Images with a given URL                                                             |
-| position       | Show Product Images at a given position                                                          |
-| page           | Page to show                                                                                     |
-| per_page       | Amount of results                                                                                |
-| fields         | Comma-separated list of fields to include in the response                                        |
-
+| Parameter | Explanation                                               |
+| --------- | --------------------------------------------------------- |
+| since_id  | Restrict results to after the specified ID                |
+| src       | Show Product Images with a given URL                      |
+| position  | Show Product Images at a given position                   |
+| page      | Page to show                                              |
+| per_page  | Amount of results                                         |
+| fields    | Comma-separated list of fields to include in the response |
 
 #### GET /products/1234/images
 
@@ -44,30 +40,30 @@ Receive a list of all Product Images for a given product.
 
 ```json
 [
-    {
-      "id": 101,
-      "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/servine-640-0.jpg",
-      "position": 1,
-      "product_id": 1234,
-      "created_at": "2013-01-03T09:11:51-03:00",
-      "updated_at": "2013-03-11T09:14:11-03:00"
-    },
-    {
-      "id": 112,
-      "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/onyx-640-0.jpg",
-      "position": 2,
-      "product_id": 1234,
-      "created_at": "2013-01-03T09:11:51-03:00",
-      "updated_at": "2013-03-11T09:14:11-03:00"
-    },
-    {
-      "id": 123,
-      "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/stoutland-640-0.jpg",
-      "position": 3,
-      "product_id": 1234,
-      "created_at": "2013-01-03T09:11:51-03:00",
-      "updated_at": "2013-03-11T09:14:11-03:00"
-    }
+  {
+    "id": 101,
+    "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/servine-640-0.jpg",
+    "position": 1,
+    "product_id": 1234,
+    "created_at": "2013-01-03T09:11:51-03:00",
+    "updated_at": "2013-03-11T09:14:11-03:00"
+  },
+  {
+    "id": 112,
+    "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/onyx-640-0.jpg",
+    "position": 2,
+    "product_id": 1234,
+    "created_at": "2013-01-03T09:11:51-03:00",
+    "updated_at": "2013-03-11T09:14:11-03:00"
+  },
+  {
+    "id": 123,
+    "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/stoutland-640-0.jpg",
+    "position": 3,
+    "product_id": 1234,
+    "created_at": "2013-01-03T09:11:51-03:00",
+    "updated_at": "2013-03-11T09:14:11-03:00"
+  }
 ]
 ```
 
@@ -77,22 +73,22 @@ Receive a list of all Product Images for a given product.
 
 ```json
 [
-    {
-      "id": 112,
-      "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/onyx-640-0.jpg",
-      "position": 2,
-      "product_id": 1234,
-      "created_at": "2013-01-03T09:11:51-03:00",
-      "updated_at": "2013-03-11T09:14:11-03:00"
-    },
-    {
-      "id": 123,
-      "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/stoutland-640-0.jpg",
-      "position": 3,
-      "product_id": 1234,
-      "created_at": "2013-01-03T09:11:51-03:00",
-      "updated_at": "2013-03-11T09:14:11-03:00"
-    }
+  {
+    "id": 112,
+    "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/onyx-640-0.jpg",
+    "position": 2,
+    "product_id": 1234,
+    "created_at": "2013-01-03T09:11:51-03:00",
+    "updated_at": "2013-03-11T09:14:11-03:00"
+  },
+  {
+    "id": 123,
+    "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/stoutland-640-0.jpg",
+    "position": 3,
+    "product_id": 1234,
+    "created_at": "2013-01-03T09:11:51-03:00",
+    "updated_at": "2013-03-11T09:14:11-03:00"
+  }
 ]
 ```
 
@@ -100,9 +96,9 @@ Receive a list of all Product Images for a given product.
 
 Receive a single Product Image
 
-| Parameter      | Explanation                                                                                      |
-| -------------- | ------------------------------------------------------------------------------------------------ |
-| fields         | Comma-separated list of fields to include in the response                                        |
+| Parameter | Explanation                                               |
+| --------- | --------------------------------------------------------- |
+| fields    | Comma-separated list of fields to include in the response |
 
 #### GET /products/1234/images/112
 
@@ -110,38 +106,38 @@ Receive a single Product Image
 
 ```json
 {
-    "id": 112,
-    "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/onyx-640-0.jpg",
-    "position": 2,
-    "product_id": 1234,
-    "created_at": "2013-01-03T09:11:51-03:00",
-    "updated_at": "2013-03-11T09:14:11-03:00"
+  "id": 112,
+  "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/onyx-640-0.jpg",
+  "position": 2,
+  "product_id": 1234,
+  "created_at": "2013-01-03T09:11:51-03:00",
+  "updated_at": "2013-03-11T09:14:11-03:00"
 }
 ```
+
 ## Size of images
 
-Today our API returns the URL where the image is in size 1024x1024, when changing the final part of the URL we can have the image in other sizes, namely: 50px, 100px, 240px, 320px, 480px, 640px, 1024px. 
+Today our API returns the URL where the image is in size 1024x1024, when changing the final part of the URL we can have the image in other sizes, namely: 50px, 100px, 240px, 320px, 480px, 640px, 1024px.
 Example of URLs:
 
- - 50px = https://d3ugyf2ht6aenh.cloudfront.net/stores/239/907/products/607213-mla31157935441_062019-f-85022a547f02c6b4bf15610802532590-50-0.jpg
- - 100px = https://d3ugyf2ht6aenh.cloudfront.net/stores/239/907/products/607213-mla31157935441_062019-f-85022a547f02c6b4bf15610802532590-100-0.jpg
- - 240px = https://d3ugyf2ht6aenh.cloudfront.net/stores/239/907/products/607213-mla31157935441_062019-f-85022a547f02c6b4bf15610802532590-240-0.jpg
- - 320px = https://d3ugyf2ht6aenh.cloudfront.net/stores/239/907/products/607213-mla31157935441_062019-f-85022a547f02c6b4bf15610802532590-320-0.jpg
- - 480px = https://d3ugyf2ht6aenh.cloudfront.net/stores/239/907/products/607213-mla31157935441_062019-f-85022a547f02c6b4bf15610802532590-480-0.jpg
- - 640px = https://d3ugyf2ht6aenh.cloudfront.net/stores/239/907/products/607213-mla31157935441_062019-f-85022a547f02c6b4bf15610802532590-640-0.jpg
- - 1024px= https://d3ugyf2ht6aenh.cloudfront.net/stores/239/907/products/607213-mla31157935441_062019-f-85022a547f02c6b4bf15610802532590-1024-1024.jpg 
-
+- 50px = https://d3ugyf2ht6aenh.cloudfront.net/stores/239/907/products/607213-mla31157935441_062019-f-85022a547f02c6b4bf15610802532590-50-0.jpg
+- 100px = https://d3ugyf2ht6aenh.cloudfront.net/stores/239/907/products/607213-mla31157935441_062019-f-85022a547f02c6b4bf15610802532590-100-0.jpg
+- 240px = https://d3ugyf2ht6aenh.cloudfront.net/stores/239/907/products/607213-mla31157935441_062019-f-85022a547f02c6b4bf15610802532590-240-0.jpg
+- 320px = https://d3ugyf2ht6aenh.cloudfront.net/stores/239/907/products/607213-mla31157935441_062019-f-85022a547f02c6b4bf15610802532590-320-0.jpg
+- 480px = https://d3ugyf2ht6aenh.cloudfront.net/stores/239/907/products/607213-mla31157935441_062019-f-85022a547f02c6b4bf15610802532590-480-0.jpg
+- 640px = https://d3ugyf2ht6aenh.cloudfront.net/stores/239/907/products/607213-mla31157935441_062019-f-85022a547f02c6b4bf15610802532590-640-0.jpg
+- 1024px= https://d3ugyf2ht6aenh.cloudfront.net/stores/239/907/products/607213-mla31157935441_062019-f-85022a547f02c6b4bf15610802532590-1024-1024.jpg
 
 ### POST /products/{product_id}/images
 
 Create a new Product Image
 
-| Parameter      | Explanation                                                                                      |
-| -------------- | ------------------------------------------------------------------------------------------------ |
-|      src       | The URL to the image (ex: http://example.com/charmander.jpg)                                     |
-|   attachment   | Must be image encoded in a Base64 String.                                                        |
-|    filename    | A filename containing only letters, numbers, dashes, underscores and dots (ex: mewtwo.gif)       |
-|    position    | A number indicating in which position of the image list, the new image should be placed          |
+| Parameter  | Explanation                                                                                |
+| ---------- | ------------------------------------------------------------------------------------------ |
+| src        | The URL to the image (ex: http://example.com/charmander.jpg)                               |
+| attachment | Must be image encoded in a Base64 String.                                                  |
+| filename   | A filename containing only letters, numbers, dashes, underscores and dots (ex: mewtwo.gif) |
+| position   | A number indicating in which position of the image list, the new image should be placed    |
 
 Check the examples below for more details.
 
@@ -149,7 +145,7 @@ Check the examples below for more details.
 
 ```json
 {
-    "invalid_name": "foobar"
+  "invalid_name": "foobar"
 }
 ```
 
@@ -157,9 +153,7 @@ Check the examples below for more details.
 
 ```json
 {
-    "src": [
-      "can't be blank"
-    ]
+  "src": ["can't be blank"]
 }
 ```
 
@@ -177,7 +171,7 @@ Check the examples below for more details.
 
 ```json
 {
-    "src": "http://example.com/charmander.jpg"
+  "src": "http://example.com/charmander.jpg"
 }
 ```
 
@@ -185,12 +179,12 @@ Check the examples below for more details.
 
 ```json
 {
-    "id": 134,
-    "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/charmander-640-0.jpg",
-    "position": 4,
-    "product_id": 1234,
-    "created_at": "2013-04-12T09:14:11-03:00",
-    "updated_at": "2013-04-12T09:14:11-03:00"
+  "id": 134,
+  "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/charmander-640-0.jpg",
+  "position": 4,
+  "product_id": 1234,
+  "created_at": "2013-04-12T09:14:11-03:00",
+  "updated_at": "2013-04-12T09:14:11-03:00"
 }
 ```
 
@@ -217,12 +211,12 @@ CQA7"
 
 ```json
 {
-    "id": 145,
-    "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/mewtwo-640-0.jpg",
-    "position": 5,
-    "product_id": 1234,
-    "created_at": "2013-04-12T09:15:11-03:00",
-    "updated_at": "2013-04-12T09:15:11-03:00"
+  "id": 145,
+  "src": "http://d26lpennugtm8s.cloudfront.net/stores/001/234/products/mewtwo-640-0.jpg",
+  "position": 5,
+  "product_id": 1234,
+  "created_at": "2013-04-12T09:15:11-03:00",
+  "updated_at": "2013-04-12T09:15:11-03:00"
 }
 ```
 
