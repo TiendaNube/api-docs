@@ -355,3 +355,22 @@ paths:
                         items:
                           type: string
                           example: 'name must be a string'
+
+  /promotions/{promotion_id}:
+    delete:
+      summary: Delete promotion
+      description: Delete a promotion created by the current app for the current store
+      tags:
+        - promotions
+      parameters:
+        - in: path
+          name: promotion_id
+          schema:
+            type: string
+          required: true
+          description: Promotion identifier
+      responses:
+        '204':
+          description: The promotion has been deleted
+        '403':
+          $ref: '#/components/responses/forbiddenError'
