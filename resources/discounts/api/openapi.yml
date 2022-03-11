@@ -52,7 +52,7 @@ components:
               example: 'fixed'
             amount:
               type: string
-              description: Discount modifier, should have two decimals separated by dot (".").
+              description: Total discount that will apply to the cart item subtotal. Must have two decimals separated by dot (".").
               example: '100.00'
           required:
             - type
@@ -124,7 +124,7 @@ paths:
                       example: 'fixed'
                     amount:
                       type: string
-                      description: Discount modifier, should have two decimals separated by dot (".").
+                      description: Discount modifier. Must have two decimals separated by dot (".").
                       example: '100.00'
                   required:
                     - type
