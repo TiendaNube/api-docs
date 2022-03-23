@@ -50,10 +50,28 @@
     <ol>
       <li><a href="#register-a-callback">Register a callback</a></li>
       <li><a href="#create-promotions">Create promotions</a></li>
-      <li><a href="#apply-a-discount">Apply a discount</a></li>
-      <li><a href="#remove-a-discount">Remove a discount</a></li>
+      <li><a href="#managing-discounts">Managing discounts</a>
+        <ol>
+          <li><a href="#create-or-update-discount">Create or Update Discount</a></li>
+          <li><a href="#remove-a-discount">Remove a discount</a>
+            <ol>
+              <li><a href="#scope-line-item">Scope: Line Item</a></li>
+              <li><a href="#scope-cart">Scope: Cart</a></li>
+            </ol>
+          </li>
+          <li><a href="#no-action-needed">No action needed</a></li>
+          <li><a href="#command-errors">Errors</a>
+            <ol>
+              <li><a href="#invalid-response">Invalid Response</a></li>
+              <li><a href="#invalid-command">Invalid Command</a></li>
+            </ol>
+          </li>
+        </ol>
+      </li>
       <li><a href="#message-specifications">Message specifications</a></li>
-      <li><a href="#life-cycle">Life Cycle</a></li>
+      <li><a href="#request-life-cycle">Request life cycle</a></li>
+      <li><a href="#cart-life-cycle">Cart life cycle</a></li>
+      <li><a href="#uninstalled-apps">Uninstalled apps</a></li>
       <li><a href="#security">Security</a></li>
     </ol>
   </li>
@@ -126,6 +144,11 @@ validate their business rules based on the cart information sent to a specific e
       <td><strong>X</strong></td>
     </tr>
     <tr>
+      <td>Request a discount to be removed</td>
+      <td> </td>
+      <td><strong>X</strong></td>
+    </tr>
+    <tr>
       <td>Add a discount to a cart</td>
       <td><strong>X</strong></td>
       <td> </td>
@@ -167,22 +190,125 @@ quantity of an item, etc.), and the store has promotions.</p>
 
 <p>You should take into consideration that some values can't be updated after the creation. For more information about the API, please refer to <a href="/api-docs/resources/discounts/api">Discount API Docs</a>.</p>
 
-<h3 id="apply-a-discount">Apply a discount<a name="apply-a-discount"></a></h3>
+<h3 id="managing-discounts">Managing discounts<a name="managing-discounts"></a></h3>
 
-<p><img src="./images/apply_a_discount.png" alt="" /></p>
+<p><img src="./images/apply_a_discount_v2.png" alt="" /></p>
 
 <p>Any modification on the cart state will be informed to each of the partners that have  registered a promotion in the store.</p>
 
-<p>Each partner should evaluate the current cart and decide if a promotion should be applied (or removed), and make the corresponding request to do this.</p>
+<p>Each partner should evaluate the current cart, decide if a promotion should be applied or removed, and respond with the corresponding operations.</p>
 
-<p>For more information about the API requests used to create or remove a discount, please refer to <a href="/api-docs/resources/discounts/api">Discount API Docs</a>.</p>
+<p>These operations in the application responses will receive the name of “commands”. All the commands will have two main properties, the command key, and the command specification.</p>
+
+<p>The command’s key defines which operation will be executed, and the specification provides all the data needed to perform it.</p>
+
+<p>The available commands will be the following.</p>
+
+<h4 id="create-or-update-discount">Create or Update Discount<a name="create-or-update-discount"></a></h4>
+
+<p>Allows to create or update a discount in a cart.</p>
+
+<p>The operation allows to:</p>
+
+<ul>
+  <li>Add a new discount to one or many line items</li>
+  <li>Add a new discount to the cart (cross items)</li>
+  <li>Add new line items to an already created discount.</li>
+  <li>Update the amount of a specific promotion</li>
+</ul>
+
+<p>Examples:</p>
+
+<p><em>Line Item Discount Creation</em></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"commands"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">	
+        </span><span class="nl">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"create_or_update_discount"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"specs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"promotion_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"c78c3a59-70a9-4d8a-a224-fdd3f925cc72"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ARS"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"display_text"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"es-ar"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nombre visible de promoción"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"line_items"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">
+                    </span><span class="nl">"line_item"</span><span class="p">:</span><span class="w"> </span><span class="s2">"717394929"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"discount_specs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                         </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fixed"</span><span class="p">,</span><span class="w">
+                          </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"250.00"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">}]</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+    </span><span class="p">}]</span><span class="w">	
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><em>Cross Items Discount Creation</em></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"commands"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">	
+        </span><span class="nl">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"create_or_update_discount"</span><span class="p">,</span><span class="w">
+	</span><span class="nl">"specs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"promotion_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"449039b3-3c35-4860-8fde-668428ced5f3"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ARS"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"display_text"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"es-ar"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nombre visible de promoción"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"discount_specs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fixed"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"20.00"</span><span class="w">	
+                </span><span class="p">}</span><span class="w">
+	</span><span class="p">}</span><span class="w">
+     </span><span class="p">}]</span><span class="w">	
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
 
 <h3 id="remove-a-discount">Remove a discount<a name="remove-a-discount"></a></h3>
+<p>Allows removing an applied discount to a line_item or an entire cart (cross_items) specifying the scope where the operation will affect.</p>
 
-<p>The same flow applies to discount removal. Once the cart is sent and the discount to remove is identified, the partner’s 
-application needs to send a request to delete it.</p>
+<h5 id="scope-line-item">Scope: Line Item<a name="scope-line-item"></a></h5>
+<p>Allows to remove discounts applied to one or more line_items associated with a single promotion.</p>
 
-<p>For more information about the API requests used to create or remove a discount, please refer to <a href="/api-docs/resources/discounts/api">Discount API Docs</a>.</p>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"commands"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">	
+	</span><span class="nl">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"remove_discount"</span><span class="p">,</span><span class="w">
+	</span><span class="nl">"specs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"scope"</span><span class="p">:</span><span class="w"> </span><span class="s2">"line_item"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"promotion_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"c78c3a59-70a9-4d8a-a224-fdd3f925cc72"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"line_items"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="s2">"717394929"</span><span class="w">
+                </span><span class="p">]</span><span class="w">
+	</span><span class="p">}</span><span class="w">
+    </span><span class="p">}]</span><span class="w">	
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h5 id="scope-cart">Scope: Cart<a name="scope-cart"></a></h5>
+<p>Allows removing one or many promotions to the current cart. If the promotion is associated with many line items will be removed from each one.</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"commands"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">
+        </span><span class="nl">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"remove_discount"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"specs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"scope"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cart"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"promotion_ids"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> 
+                </span><span class="s2">"c78c3a59-70a9-4d8a-a224-fdd3f925cc72"</span><span class="w"> 
+            </span><span class="p">]</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}]</span><span class="w">	
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h4 id="no-actions-needed">No actions needed<a name="no-action-needed"></a></h4>
+<p>If no actions are needed, the partner should respond with a 204 HTTP code.</p>
+
+<h4 id="errors">Errors<a name="command-errors"></a></h4>
+<h5 id="invalid-response">Invalid Response<a name="invalid-response"></a></h5>
+
+<p>If the partner’s response doesn’t comply with the specifications, the service will remove ALL the applied discounts from the cart. We are doing this because, given that we don’t know the business logic, we cannot determine if a discount applies or not, and we will try to protect the merchant from money losses instead of getting a new sale.</p>
+
+<h5 id="invalid-command">Invalid Command<a name="invalid-command"></a></h5>
+
+<p>If just one command contains invalid specifications, we will consider the response as invalid, therefore, the system will remove ALL the applied discounts from the cart.</p>
 
 <h3 id="message-specifications">Message specifications<a name="message-specifications"></a></h3>
 
@@ -190,23 +316,26 @@ application needs to send a request to delete it.</p>
 
 <p><a href="./payload/cart.json">Cart Payload</a></p>
 
-<h3 id="life-cycle">Life Cycle<a name="life-cycle"></a></h3>
+<h3 id="request-life-cycle">Request Life Cycle<a name="request-life-cycle"></a></h3>
 
 <p>Each flow starts with a user interaction changing the cart state. For that reason, any request related to a cart that wasn’t modified will be rejected by the service.</p>
+
+<h3 id="cart-life-cycle">Cart Life Cycle<a name="cart-life-cycle"></a></h3>
+
+<p>Some carts are not completed at the moment they were created and could be resumed after a while.</p>
+
+<p>If the cart has applied discounts, but the promotion doesn’t exist anymore, or is temporarily deactivated, <strong>it is the responsibility of the partner to remove that promotion</strong>, otherwise, it will still exist on the cart and will cause losses to the merchant.</p>
+
+<h3 id="uninstalled-apps">Uninstalled apps<a name="uninstalled-apps"></a></h3>
+<p>When a promotions app is uninstalled, we will <strong>permanently</strong> remove all the promotions created for that store; In that case, we will stop sending cart update traffic to the partner.</p>
+
+<p>Given this process takes place in the background and asynchronously, some delays could appear. To prevent any misplaced discount, if some cart is sent for a store that uninstalled the app, <strong>a 310 status code MUST be returned</strong>.</p>
 
 <h3 id="security">Security<a name="security"></a></h3>
 
 <p>Tiendanube/Nuvemshop will share a list of IP addresses to be registered as a Whitelist in a WFA and each Partner is responsible to block any other connections to their applications.</p>
 
 <h2 id="upcoming-changes">Upcoming changes<a name="mainconcept"></a></h2>
-
-<h3 id="flow-improvements">Flow Improvements</h3>
-
-<p>The new architecture allows us to reduce the number of operations needed to add or remove a discount. We will change 
-the requested response on callback to get that information on the same request instead of additional requests through 
-the Public API.</p>
-
-<p><img src="./images/apply_a_discount_v2.png" alt="" /></p>
 
 <h3 id="signed-communication">Signed Communication</h3>
 
