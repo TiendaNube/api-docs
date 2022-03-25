@@ -185,6 +185,120 @@ LoadCheckoutPaymentContext(function (Checkout, PaymentOptions) {
 });
 ```
 
+### Modal Payment Option
+
+Modal is lightbox or modal with an embedded iframe containing the Payment Provider's checkout UI on the merchant's website. The checkout flow is run under the Payment Provider's domain, but the buyer never really leaves the Merchant's website.
+
+When the user submits our checkout, a modal rendered by the Payment Provider is displayed and the user finishes the payment process on it.
+
+```javascript
+//For modal payments, you will need to set up your own Modal
+
+LoadCheckoutPaymentContext(function (Checkout, PaymentMethods) {
+  var checkoutOverlay = window.document.createElement("div");
+  var checkoutModal = window.document.createElement("div");
+  var buttonClose = window.document.createElement("button");
+  var checkoutFrame = window.document.createElement("iframe");
+
+  var CheckoutPayment = new PaymentMethods.ModalPayment({
+    id: "id_checkout_payment",
+    name: "Credit Card",
+    fields: {
+      billing_address: true,
+    },
+    onLoad: function (callback) {
+      // Implementation
+    },
+    onSubmit: function (callback) {
+      window.addEventListener("message", (event) => {
+        if (event.data == "closeModal") {
+          window.removeEventListener("message");
+
+          callback({
+            success: false,
+            reason_code: "unknown_error",
+          });
+        }
+      });
+
+      //Modal style
+      checkoutOverlay.setAttribute("id", "checkout-overlay");
+      checkoutOverlay.setAttribute(
+        "style",
+        "position:fixed; left:0px; top:0px; width:100%; height: 100%; background-color: rgba(0,0,0,0.8); border:0px none transparent; overflow:hidden; display:block; z-index:9999;"
+      );
+
+      checkoutModal.setAttribute("id", "checkout-modal");
+      checkoutModal.setAttribute("class", "modal");
+      checkoutModal.setAttribute("role", "dialog");
+      checkoutModal.setAttribute("aria-hidden", "true");
+      checkoutModal.setAttribute(
+        "style",
+        "width: 100%; height: auto; max-width: 400px !important; left: 40% !important; top: 1% !important; opacity: 1; overflow-y: hidden;"
+      );
+
+      buttonClose.setAttribute("id", "checkout-close-button");
+      buttonClose.setAttribute("class", "close");
+      buttonClose.setAttribute("data-dismiss", "modal");
+      buttonClose.setAttribute("type", "button");
+      buttonClose.setAttribute("onclick", "closeModal()");
+      buttonClose.innerHTML = '<span aria-hidden="true">&times;</span>';
+      checkoutModal.appendChild(buttonClose);
+
+      checkoutFrame.setAttribute("id", "checkout-iframe");
+      checkoutFrame.setAttribute(
+        "src",
+        "https://path/to/nuvemshop/static/checkout-modal.html?" +
+          new Date().getTime()
+      );
+      checkoutFrame.setAttribute(
+        "style",
+        "background-color: white; width: 100% !important; height: auto !important; min-height: 700px; border-style: solid !important; border-width: 1px !important;"
+      );
+      checkoutFrame.setAttribute("frameborder", "0");
+
+      var modalScript = window.document.createElement("script");
+      modalScript.innerText =
+        "function closeModal(){ document.getElementById('checkout-overlay').setAttribute('style','display: none;');parent.postMessage('closeModal', '*');}";
+      checkoutModal.appendChild(modalScript);
+
+      let data = {
+        storeId: Checkout.getData("storeId"),
+        orderId: Checkout.getData("order.cart.id"),
+        currency: Checkout.getData("order.cart.currency"),
+        amount: Number(Checkout.getData("order.cart.prices.total")).toFixed(2),
+        callbackUrl: Checkout.getData("callbackUrls"),
+      };
+
+      try {
+        checkoutModal.appendChild(checkoutFrame);
+        checkoutOverlay.appendChild(checkoutModal);
+        window.document.body.appendChild(checkoutOverlay);
+
+        var iframe =
+          window.document.getElementById("checkout-iframe").contentWindow;
+        var isSent = false;
+        var interval = setInterval(function () {
+          if (!isSent) {
+            isSent = true;
+            iframe.postMessage(data, "*");
+          } else {
+            clearInterval(interval);
+          }
+        }, 2000);
+      } catch (e) {
+        callback({
+          success: false,
+          error: e,
+        });
+      }
+    },
+  });
+
+  Checkout.addPaymentOption(CheckoutPayment);
+});
+```
+
 ## Checkout Context
 
 The `LoadCheckoutPaymentContext` function takes function as a argument, which will be invoked with two arguments, `Checkout` and `PaymentOptions`, to provide access to our Checkout's context.
