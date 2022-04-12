@@ -25,6 +25,7 @@
     {
       "id": 467422732,
       "price": "12.00",
+      "original_price": "20.00",
       "product_id": 17310718,
       "quantity": 4,
       "free_shipping": false,
