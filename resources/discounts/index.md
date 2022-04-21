@@ -77,7 +77,7 @@ We have three tiers: Line Item, Cross Items and Shipping Line.
 Each application that wants to work with promotions should interact with the Tiendanube/Nuvemshop API to create promotions and 
 validate their business rules based on the cart information sent to a specific endpoint on the partner's side.
 
-**Disclaimer**: The use of these applications for multi-currency stores is not recommended. Their behavior may not be as desired.
+**Disclaimer**: Currently, the use of multicurrency is not supported. For this reason, its use is not recommended in stores with this feature.
 
 ## Accountabilities<a name="accountabilities"></a>
 
