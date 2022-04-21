@@ -77,6 +77,8 @@ We have three tiers: Line Item, Cross Items and Shipping Line.
 Each application that wants to work with promotions should interact with the Tiendanube/Nuvemshop API to create promotions and 
 validate their business rules based on the cart information sent to a specific endpoint on the partner's side.
 
+**Disclaimer**: The use of these applications for multi-currency stores is not recommended. Their behavior may not be as desired.
+
 ## Accountabilities<a name="accountabilities"></a>
 
 | Accountability | Tiendanube | APP |
@@ -129,6 +131,8 @@ Each partner should evaluate the current cart, decide if a promotion should be a
 These operations in the application responses will receive the name of “commands”. All the commands will have two main properties, the command key, and the command specification.
 
 The command's key defines which operation will be executed, and the specification provides all the data needed to perform it.
+
+The order of command execution is not guaranteed.
 
 The available commands will be the following.
 
