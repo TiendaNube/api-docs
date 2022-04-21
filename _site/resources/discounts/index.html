@@ -117,6 +117,8 @@
 <p>Each application that wants to work with promotions should interact with the Tiendanube/Nuvemshop API to create promotions and 
 validate their business rules based on the cart information sent to a specific endpoint on the partner’s side.</p>
 
+<p><strong>Disclaimer</strong>: Currently, the use of multicurrency is not supported. For this reason, its use is not recommended in stores with this feature.</p>
+
 <h2 id="accountabilities">Accountabilities<a name="accountabilities"></a></h2>
 
 <table>
@@ -201,6 +203,8 @@ quantity of an item, etc.), and the store has promotions.</p>
 <p>These operations in the application responses will receive the name of “commands”. All the commands will have two main properties, the command key, and the command specification.</p>
 
 <p>The command’s key defines which operation will be executed, and the specification provides all the data needed to perform it.</p>
+
+<p>The order of command execution is not guaranteed.</p>
 
 <p>The available commands will be the following.</p>
 
