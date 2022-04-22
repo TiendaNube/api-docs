@@ -22,7 +22,7 @@ Let's take a look at a simple script for a hypothetical integration with a Payme
 LoadCheckoutPaymentContext(function (Checkout, PaymentOptions) {
   // Create a new instance of external Payment Option and set its properties.
   var AcmeExternalPaymentOption = PaymentOptions.ExternalPayment({
-    // Set the option's unique id as it is configured on the Payment Provider so Checkout can relate them.
+    // Set the option's unique ID as it is configured on the Payment Provider so they can be related at the checkout.
     id: "acme_redirect",
 
     // This parameter renders the billing information form and requires the information to the consumer.
@@ -45,7 +45,7 @@ LoadCheckoutPaymentContext(function (Checkout, PaymentOptions) {
           data: acmeRelevantData,
         })
         .then(function (responseBody) {
-          // Once you get the redirect URL, invoke the callback by passing it as argument.
+          // Once the redirect URL is generated, invoke the callback by passing it as argument.
           if (responseBody.data.success) {
             callback({
               success: true,
@@ -53,6 +53,7 @@ LoadCheckoutPaymentContext(function (Checkout, PaymentOptions) {
               extraAuthorize: true, // Legacy paameter, but currently required with `true` value. Will be deprecrated soon.
             });
           } else {
+          // If the generation of the redirect URL fails, invoke the callback indicating the corresponding error code. E.g.: `consumer_country_invalid`. See the list of available error codes.
             callback({
               success: false,
               error_code: responseBody.data.error_code,
@@ -64,7 +65,7 @@ LoadCheckoutPaymentContext(function (Checkout, PaymentOptions) {
 
           callback({
             success: false,
-            error_code: "unknown_error",
+            error_code: "payment_processing_error",
           });
         });
     },
@@ -126,7 +127,7 @@ LoadCheckoutPaymentContext(function (Checkout, PaymentOptions) {
 
   // Create a new instance of card Payment Option and set its properties.
   var AcmeCardPaymentOption = PaymentOptions.Transparent.CardPayment({
-    // Set the option's unique `i`` as it is configured on the Payment Provider so Checkout can relate them.
+    // Set the option's unique ID as it is configured on the Payment Provider so then can be related at the checkout.
     id: "acme_transparent_card",
 
     // Event handler for form field input.
@@ -158,11 +159,12 @@ LoadCheckoutPaymentContext(function (Checkout, PaymentOptions) {
         .post("https://acmepayments.com/charge", acmeCardRelevantData)
         .then(function (responseBody) {
           if (responseBody.data.success) {
-            // If the charge was successful, invoke the callback to indicate you want to close order.
+            // If the transaction was successful, invoke the callback to indicate you want to close order.
             callback({
               success: true,
             });
           } else {
+            // If the transaction fails, invoke the callback indicating the corresponding error code. E.g.: `card_rejected_insufficient_funds`. See the list of available error codes.
             callback({
               success: false,
               error_code: responseBody.data.error_code,
@@ -174,7 +176,7 @@ LoadCheckoutPaymentContext(function (Checkout, PaymentOptions) {
 
           callback({
             success: false,
-            error_code: "unknown_error",
+            error_code: "payment_processing_error",
           });
         });
     },
@@ -261,6 +263,11 @@ Here's an example of the data available in the `Checkout.getData()` object (rend
   "totalPrice": 135,
   "country": "AR",
   "storeId": 1196173,
+  "callbackUrls": {
+    "success": "https://examplestore.com/checkout/v3/success/375854104/aebe04afab671411e6d75352fb4f514898b1667a",
+    "failure": "https://examplestore.com/checkout/v3/next/375854104/aebe04afab671411e6d75352fb4f514898b1667a",
+    "cancel": "https://examplestore.com/checkout/v3/next/375854104/aebe04afab671411e6d75352fb4f514898b1667a"
+  },
   "order": {
     "cart": {
       "id": 375854104,
@@ -629,11 +636,10 @@ Checkout.setInstallments([
 
 If for some reason the `onSubmit` event handler fails to execute the action expected by the payment option chosen by the user, together with a `success: false` callback parameter, a `error_code` must be specified in order to allow us to give the consumer clear information on what went wrong so the consumer understands what they need to do in order be able to fix the problem.
 
-All [Transaction Failure Codes](https://github.com/TiendaNube/api-docs/blob/master/resources/transaction.md#transaction-failure-codes) are valid `error_codes`, plus the extra ones specified on the following list.
+All [Transaction Failure Codes](https://github.com/TiendaNube/api-docs/blob/master/resources/transaction.md#transaction-failure-codes) are valid `error_codes`, in addition to those specified below:
 
 | Failure Code                | Description                                                                                                                       |
 | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| `consumer_same_as_merchant` | The redirection fails because the consumer account is the same as the merchant account and merchants cannot pay themselves.       |
-| `server_error`              | There is a problem accessing the server which prevents either the execution of the payment or the generation of the redirect url. |
-| `server_error_timeout`      | Same as `server_error` but the problem is due to a timeout condition.                                                             |
-| `unknown_error`             | An unknown error occurred while trying to process the payment.                                                                    |
+| `server_error`              | There is a problem accessing the server which prevents either the execution of the payment or the generation of the redirect URL. |
+| `server_error_timeout`      | Same as `server_error` but the problem is due to a timeout condition.    
+| `payment_processing_error` | There was a problem processing the payment. Use this error as default only if it is not possible to use another error code from the list.       ||                                                                 |
