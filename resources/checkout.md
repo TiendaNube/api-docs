@@ -263,6 +263,7 @@ Here's an example of the data available in the `Checkout.getData()` object (rend
   "totalPrice": 135,
   "country": "AR",
   "storeId": 1196173,
+  "storeUrl": "https://examplestore.com",
   "callbackUrls": {
     "success": "https://examplestore.com/checkout/v3/success/375854104/aebe04afab671411e6d75352fb4f514898b1667a",
     "failure": "https://examplestore.com/checkout/v3/next/375854104/aebe04afab671411e6d75352fb4f514898b1667a",
@@ -394,7 +395,8 @@ Here's an example of the data available in the `Checkout.getData()` object (rend
       "email": "john.doe@example.com",
       "name": "John Doe",
       "phone": "+54123456789"
-    }
+    },
+    "customer": 123123123 // logged in user id or undefined if not logged
   }
 }
 ```
