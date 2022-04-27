@@ -346,6 +346,24 @@ Create a new Script.
 }
 ```
 
+##### Available events
+
+To prevent performance issues, we use two different events where it's possible to attach the script, `onfirstinteraction`, and `onload`. 
+
+* __onfirstinteraction__: The scripts will be loaded and executed after the user's first interaction. A scroll up/down, a mouseclick, or a tap will trigger the event. 
+
+This event is intended for functionalities that don't affect the above-the-fold or provide other functionalities that are not needed as soon as possible. 
+
+This type of event should be the first choice for most applications. 
+
+Some application examples could be chatbots, subscription popups, product wishlists, etc. 
+
+
+* __onload__: The script will be part of the critical path and will be executed as soon as possible on the page load. Its behavior is equivalent to the `window.onload` event. 
+
+In most cases this event should be avoided, unless you need to change some critical components above the fold or collect user-related data like behavior or conversions. 
+
+
 ### PUT /scripts/{id}
 
 Modify an existing Script
