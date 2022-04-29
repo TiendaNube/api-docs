@@ -11,7 +11,9 @@ A Webhook is a tool that allows you to receive a notification for a certain even
 | Domain   | updated                                         |
 | Theme    | updated                                         |
 
-To register for the product created event, for example, you should send `product/created` in the event field.
+To register for the product created event, for example, you should send `product/created` in the event field. Basically, you make a POST request in Webhooks endpoint providing a body with the type of webhook you want to create as well as the URL where you will be notified.
+
+Now let's say you want to be notified whenever an order gets paid so you don't have to make scheduled calls to retrieve this information. Here you should create a Webhook with the event `order/paid` and the URL where you will be notified in your backend.
 
 The `app/suspended` and `app/resumed` events refer to the [suspension of API access due to lack of payment](https://github.com/TiendaNube/api-docs/#suspension-of-api-access-due-to-lack-of-payment).
 
@@ -100,7 +102,19 @@ No additional parameter is sent along with this event. To get the list of domain
 
 ### Retry policies
 
-A webhook notification expects a 200 status code in response (40 seconds timeout). If this does not happen (it gets another response code or no response at all) we will try to deliver the notification up to 17 times (a success response code will stop next notifications) along the next two days in incremental lapses of time. After this, the notification is lost.
+A Webhook notification expects a 2XX status code in response (to guarantee that the App has received the notification) and has a timeout of 40 seconds. That is, we wait 40 seconds for a 2XX code in response (it can be any code that starts with 2 - 200/201, etc).
+
+When a webhook notification cannot be delivered due to a problem (e.g when the App is down) then retry policy is on.
+
+The first 4 retries are: one immediately after timeout and then at approximately 5, 10 and 15 minutes. Then it starts to do exponential backoff multiplying the waiting time of the previous one by 1.4 within the next 48 hours (up to 18 attempts).
+
+Overview of the process:
+
+- We send the webhook.
+- We wait 40 seconds for response confirmation by the App.
+- If we do not receive any responses, then retry policy is activated.
+
+A success response code will stop next notifications. But, if that does not happen at all, notifications will be sent 18 times.
 
 ## Required Webhooks
 
