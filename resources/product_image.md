@@ -132,12 +132,12 @@ Example of URLs:
 
 Create a new Product Image
 
-| Parameter  | Explanation                                                                                |
-| ---------- | ------------------------------------------------------------------------------------------ |
-| src        | The URL to the image (ex: http://example.com/charmander.jpg)                               |
-| attachment | Must be image encoded in a Base64 String.                                                  |
-| filename   | A filename containing only letters, numbers, dashes, underscores and dots (ex: mewtwo.gif) |
-| position   | A number indicating in which position of the image list, the new image should be placed    |
+| Parameter  | Explanation                                                                             |
+| ---------- | --------------------------------------------------------------------------------------- |
+| src        | The URL to the image (ex: http://example.com/charmander.jpg)                            |
+| attachment | Must be image encoded in a Base64 String.                                               |
+| filename   | A filename string (ex: mewtwo.gif)                                                      |
+| position   | A number indicating in which position of the image list, the new image should be placed |
 
 Check the examples below for more details.
 
