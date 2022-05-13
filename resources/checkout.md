@@ -187,6 +187,91 @@ LoadCheckoutPaymentContext(function (Checkout, PaymentOptions) {
 });
 ```
 
+### Modal Payment Option
+
+Modal is lightbox or modal with an embedded iframe containing the Payment Provider's checkout UI on the merchant's website. The checkout flow is run under the Payment Provider's domain, but the buyer never really leaves the Merchant's website.
+
+When the user submits our checkout, a modal rendered by the Payment Provider is displayed and the user finishes the payment process on it.
+
+```javascript
+LoadCheckoutPaymentContext(function (Checkout, PaymentMethods) {
+  var CheckoutPayment = new PaymentMethods.ModalPayment({
+    id: "modal",
+    name: "Credit Card",
+    onSubmit: function (callback) {
+
+      var modalData = {
+        storeId: Checkout.getData("storeId"),
+        orderId: Checkout.getData("order.cart.id"),
+        amount: Checkout.getData("order.cart.prices.total")
+      };
+
+      var modalUrl = Checkout.utils.setQueryString("http://localhost:3003/", modalData)
+      // http://localhost:3003/?storeId=9999&orderId=123&amount=120.9
+
+      // in this param objet you could pass any iframe attribute
+      // Example: src, id, className, frameBorder, style...
+      var iframeData = { src: modalUrl }
+
+      var iframeConfigs = { showBackDrop: false }
+
+      this.createModal(iframeData, iframeConfigs);
+
+      var modalEventHandler = (event) => {
+        // the method `parseModalResponse` validate the response because in some cases it was a string
+        var response = this.parseModalResponse(event.data)
+        // {
+        //   type: 'PAYMENT_MODAL_RESPONSE',
+        //   data: {
+        //     success: true || false
+        //     error_code: null || error string
+        //   }
+        // }
+
+        if (response.type === "PAYMENT_MODAL_RESPONSE") {
+          // removing event to avoid duplicated messages
+          window.removeEventListener("message", modalEventHandler)
+
+          callback(response.data);
+        }
+      }
+
+      window.addEventListener("message", modalEventHandler);
+    },
+  });
+  Checkout.addPaymentOption(CheckoutPayment);
+});
+```
+
+On your website which will be rendered by the iframe you have three possible answers
+
+##### Close modal button
+
+```js
+window.parent.postMessage({
+  type: "PAYMENT_MODAL_RESPONSE",
+  data: { success: true, closeModal: true }
+}, '*');
+```
+
+##### Failed payment
+
+```js
+window.parent.postMessage({
+  type: "PAYMENT_MODAL_RESPONSE",
+  data: { success: false, error_code: 'payment_processing_error' }
+}, '*');
+```
+
+##### Success payment
+
+```js
+window.parent.postMessage({
+  type: "PAYMENT_MODAL_RESPONSE",
+  data: { success: true }
+}, '*');
+```
+
 ## Checkout Context
 
 The `LoadCheckoutPaymentContext` function takes function as a argument, which will be invoked with two arguments, `Checkout` and `PaymentOptions`, to provide access to our Checkout's context.
