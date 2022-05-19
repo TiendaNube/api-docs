@@ -197,9 +197,9 @@ Transaction Events are used to alter the status of a Transaction and to provide 
 
 There are specific *status* values and transitions for each Transaction Event Type, which are shown in the following diagram.
 
-> The green boxes contains the list of *status* values that each Transaction Event Type supports.
+> The blue boxes contains the list of *status* values that each Transaction Event Type supports.
 
-<img style="text-align:center" src="images/event_types.png" alt="event_types" width="900" />
+![event_types](images/event_types.drawio.png)
 
 #### Available Transaction Event Types by Payment Method Type
 
