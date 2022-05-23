@@ -179,18 +179,18 @@ _Cross Items Discount Creation_
 {
     "commands": [{	
         "command": "create_or_update_discount",
-	"specs": {
-                "promotion_id": "449039b3-3c35-4860-8fde-668428ced5f3",
-                "currency": "ARS",
-                "display_text": {
-                    "es-ar": "nombre visible de promoción"
-                },
-                "discount_specs": {
-                    "type": "fixed",
-                    "amount": "20.00"	
-                }
-	}
-     }]	
+        "specs": {
+            "promotion_id": "449039b3-3c35-4860-8fde-668428ced5f3",
+            "currency": "ARS",
+            "display_text": {
+               "es-ar": "nombre visible de promoción"
+            },
+           "discount_specs": {
+              "type": "fixed",
+              "amount": "20.00"	
+           }
+	    }
+    }]	
 }
 ```
 
@@ -203,14 +203,14 @@ Allows to remove discounts applied to one or more line_items associated with a s
 ```json
 {
     "commands": [{	
-	"command": "remove_discount",
-	"specs": {
-                "scope": "line_item",
-                "promotion_id": "c78c3a59-70a9-4d8a-a224-fdd3f925cc72",
-                "line_items": [
-                    "717394929"
-                ]
-	}
+	  "command": "remove_discount",
+	  "specs": {
+         "scope": "line_item",
+         "promotion_id": "c78c3a59-70a9-4d8a-a224-fdd3f925cc72", 
+         "line_items": [
+            "717394929"
+         ]
+      }
     }]	
 }
 ```
@@ -225,7 +225,7 @@ Allows removing one or many promotions to the current cart. If the promotion is 
         "specs": {
             "scope": "cart",
             "promotion_ids": [ 
-                "c78c3a59-70a9-4d8a-a224-fdd3f925cc72" 
+                "449039b3-3c35-4860-8fde-668428ced5f3" 
             ]
         }
     }]	
