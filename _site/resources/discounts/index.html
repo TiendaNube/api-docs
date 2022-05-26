@@ -251,18 +251,18 @@ quantity of an item, etc.), and the store has promotions.</p>
 <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
     </span><span class="nl">"commands"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">	
         </span><span class="nl">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"create_or_update_discount"</span><span class="p">,</span><span class="w">
-	</span><span class="nl">"specs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                </span><span class="nl">"promotion_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"449039b3-3c35-4860-8fde-668428ced5f3"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ARS"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"display_text"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                    </span><span class="nl">"es-ar"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nombre visible de promoción"</span><span class="w">
-                </span><span class="p">},</span><span class="w">
-                </span><span class="nl">"discount_specs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                    </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fixed"</span><span class="p">,</span><span class="w">
-                    </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"20.00"</span><span class="w">	
-                </span><span class="p">}</span><span class="w">
-	</span><span class="p">}</span><span class="w">
-     </span><span class="p">}]</span><span class="w">	
+        </span><span class="nl">"specs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"promotion_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"449039b3-3c35-4860-8fde-668428ced5f3"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ARS"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"display_text"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+               </span><span class="nl">"es-ar"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nombre visible de promoción"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+           </span><span class="nl">"discount_specs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+              </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fixed"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"20.00"</span><span class="w">	
+           </span><span class="p">}</span><span class="w">
+	    </span><span class="p">}</span><span class="w">
+    </span><span class="p">}]</span><span class="w">	
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div></div>
 
@@ -274,14 +274,14 @@ quantity of an item, etc.), and the store has promotions.</p>
 
 <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
     </span><span class="nl">"commands"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">	
-	</span><span class="nl">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"remove_discount"</span><span class="p">,</span><span class="w">
-	</span><span class="nl">"specs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                </span><span class="nl">"scope"</span><span class="p">:</span><span class="w"> </span><span class="s2">"line_item"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"promotion_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"c78c3a59-70a9-4d8a-a224-fdd3f925cc72"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"line_items"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-                    </span><span class="s2">"717394929"</span><span class="w">
-                </span><span class="p">]</span><span class="w">
-	</span><span class="p">}</span><span class="w">
+	  </span><span class="nl">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"remove_discount"</span><span class="p">,</span><span class="w">
+	  </span><span class="nl">"specs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+         </span><span class="nl">"scope"</span><span class="p">:</span><span class="w"> </span><span class="s2">"line_item"</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"promotion_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"c78c3a59-70a9-4d8a-a224-fdd3f925cc72"</span><span class="p">,</span><span class="w"> 
+         </span><span class="nl">"line_items"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="s2">"717394929"</span><span class="w">
+         </span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
     </span><span class="p">}]</span><span class="w">	
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div></div>
@@ -295,7 +295,7 @@ quantity of an item, etc.), and the store has promotions.</p>
         </span><span class="nl">"specs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
             </span><span class="nl">"scope"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cart"</span><span class="p">,</span><span class="w">
             </span><span class="nl">"promotion_ids"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> 
-                </span><span class="s2">"c78c3a59-70a9-4d8a-a224-fdd3f925cc72"</span><span class="w"> 
+                </span><span class="s2">"449039b3-3c35-4860-8fde-668428ced5f3"</span><span class="w"> 
             </span><span class="p">]</span><span class="w">
         </span><span class="p">}</span><span class="w">
     </span><span class="p">}]</span><span class="w">	
