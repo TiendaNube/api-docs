@@ -528,3 +528,21 @@ paths:
           description: The promotion has been modified
         '403':
           $ref: '#/components/responses/forbiddenError'
+        '404':
+          description: The promotion does not exist
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: number
+                        example: 404
+                      code:
+                        type: string
+                        example: 'NotFoundException'
+                      detail:
+                        type: string
+                        example: 'The promotion id does not exist'
