@@ -388,6 +388,8 @@ paths:
                   type: string
                   description: Valid URL with protocol
                   example: 'https://www.callback.com'
+              required:
+                - url
       responses:
         '204':
           description: The callback has been created or updated
@@ -500,3 +502,47 @@ paths:
           description: The promotion has been deleted
         '403':
           $ref: '#/components/responses/forbiddenError'
+    patch:
+      summary: Modify promotion
+      description: Modify a promotion created by the current app for the current store
+      tags:
+        - promotions
+      parameters:
+        - in: path
+          name: promotion_id
+          schema:
+            type: string
+          required: true
+          description: Promotion identifier
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                active:
+                  type: boolean
+                  description: Promotion status
+                  example: true
+      responses:
+        '204':
+          description: The promotion has been modified
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+        '404':
+          description: The promotion does not exist
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: number
+                        example: 404
+                      code:
+                        type: string
+                        example: 'NotFoundException'
+                      detail:
+                        type: string
+                        example: 'The promotion id does not exist'
