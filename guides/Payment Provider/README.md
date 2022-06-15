@@ -145,7 +145,7 @@ curl --location --request POST 'https://api.tiendanube.com/v1/<STORE_ID>/payment
 --data-raw '{
 	"name": "Acme Payments",
 	"description": "This is a brief description about the Acme Payments app.",
-	
+    
 	// Other Payment Provider properties.
 }'
 ```
@@ -365,6 +365,7 @@ For example, if "Acme Payments" wants to add three different payment options, on
       "id": "acme_external",
       "name": "...",
       "description": "...",
+      "instructions": "...",
       "logo_url": "...",
       "supported_billing_countries": [
         "BR"

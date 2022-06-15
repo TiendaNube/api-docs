@@ -159,6 +159,7 @@ Payment Providers can implement multiple payment options to display at the store
 | `id`                             | String        | Payment option UUID. It must be unique between payment providers of the same app and match the ID indicated in the `chechkout_js_url` file. |
 | `name`                           | String        | Payment option name to be displayed in the store checkout.                                                                                  |
 | `description`                    | String        | [Optional] Payment option description to be displayed in the store checkout.                                                                |
+| `instructions`                   | String        | [Optional] Payment option instructions to be displayed in the thank you page.                                                               |
 | `logo_url`                       | String        | [Optional] HTTPS URL of the Payment Provider logo.                                                                                          |
 | `supported_billing_countries`    | Array(String) | List of [ISO_3166-1](https://es.wikipedia.org/wiki/ISO_3166-1) country codes where the payment option will be available.                    |
 | `supported_payment_method_types` | Array(String) | Payment method types supported by the payment option. See [Payment Method Types](#Payment-Method-Types).                                    |
@@ -276,6 +277,7 @@ E.g.
       "id": "mypayments_transparent_card",
       "name": "My Payments Card",
       "description": "Some description for transparent card option",
+      "instructions": "Some instructions for transparent card option",
       "logo_url": "https://cdn.mypayments.com/apps/tiendanube/logo.png",
       "supported_billing_countries": ["AR"],
       "supported_payment_method_types": ["credit_card", "debit_card"],
@@ -285,6 +287,7 @@ E.g.
       "id": "mypayments_transparent_offline",
       "name": "My Payments Boleto",
       "description": "Some description for transparent offline option",
+      "instructions": "Some instructions for transparent offline option",
       "logo_url": "https://cdn.mypayments.com/apps/tiendanube/logo.png",
       "supported_billing_countries": ["BR"],
       "supported_payment_method_types": ["boleto"],
@@ -294,6 +297,7 @@ E.g.
       "id": "mypayments_redirect",
       "name": "My Payments External",
       "description": "Some description for external option",
+      "instructions": "Some instructions for external option",
       "logo_url": "https://cdn.mypayments.com/apps/tiendanube/logo.png",
       "supported_billing_countries": ["AR", "BR"],
       "supported_payment_method_types": [
