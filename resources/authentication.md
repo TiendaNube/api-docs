@@ -6,9 +6,7 @@ We provide authorization and user authentication by a restricted form of OAuth 2
 
 ## Introduction
 
-When creating an app, you have to select the scopes it needs and set a redirection URL, which is the URL where we will redirect the client once the application is installed.
-The scopes specify the resources for which the app is asking authorization of its users (see Scopes).
-The redirection URL is used as part of the authorization flow (see below). Check out this [video](https://www.loom.com/share/91a7a5aa56384fdca9519220d80f5db7) where we show how the authorization process works here in Tiendanube.
+When creating an app, you'll be prompted to complete some information regarding your application URLs ([see URLs](https://github.com/TiendaNube/api-docs/blob/master/resources/authentication.md#urls)). You also have to select the scopes your App needs and set a redirection URL, which is the URL where we will redirect the client once the application is installed. The scopes specify the resources for which the app is asking authorization of its users ([see Scopes](https://github.com/TiendaNube/api-docs/blob/master/resources/authentication.md#scopes)). The redirection URL is used as part of the authorization flow (see below). Check out this [video](https://www.loom.com/share/91a7a5aa56384fdca9519220d80f5db7) where we show how the authorization process works here in Tiendanube.
 
 ## Authorization flow
 
@@ -53,6 +51,30 @@ and receive:
 ```
 
 > At some requests, you will get the response with a `store_id` field containing the data of `user_id`
+
+## URLs
+
+Your application URLs are important to provide the best Merchant/Consumer experience while using our platform. All of them are required.
+
+![URLs](./images/urls.png)
+
+- **URL where we will redirect to the client after installing the application:** URL to which the user will be redirected after installing the App. This is your callback URL. You must use it to get the authorization code and generate the access token as explained above (see Authorization Flow).
+
+- **URL:** URL of your admin panel that the user will access to use the application. For example, the first page the user sees after logging in your application.
+
+- **Preferences URL:** URL to your app's page where the user can configure the App's settings. Some examples: Payments - set up installments for credit card purchases. Shipping - configure which shipping methods will be available to consumers. Marketing - modification of the Scripts inserted in the page.
+
+- **Privacy Policy URL:** this URL is displayed in the App Details Page. Works as a transparency tool between company and user.
+
+- **URL Webhook Store Redact:** store data deletion requests. This Webhook will only be triggered if the Merchant requests that the store data be deleted through the admin panel.
+
+- **URL Webhook Customer Redact:** consumer data deletion request. This Webhook will only be triggered if the Merchant requests that the customer data be deleted through the admin panel.
+
+- **URL Customers Data Request Webhook:** request to receive a user's stored data report.
+
+- **Support URL:** URL where the user will be redirected when they need help. This could be a self-service support page or contact form. If the Support URL is empty, then the Merchant will be redirected to the support email.
+
+- **Support Email:** contact email for support where App users can contact.
 
 ## Scopes
 
