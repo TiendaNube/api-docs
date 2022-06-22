@@ -36,7 +36,8 @@ Asume that your app has:
 4. Then you do:
 
 ```sh
-curl https://www.tiendanube.com/apps/authorize/token --data 'client_id=123&client_secret=abcdef&grant_type=authorization_code&code=xyz'
+curl -d '{"client_id": "0000", "client_secret": "xxxxxxxx", "grant_type": "authorization_code", "code": "xxxxxxxx" }' \
+-X POST "https://www.tiendanube.com/apps/authorize/token"
 ```
 
 and receive:
