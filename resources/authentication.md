@@ -59,13 +59,17 @@ Your application URLs are important to provide the best Merchant/Consumer experi
 
 ![URLs](./images/urls.png)
 
-- **URL where we will redirect to the client after installing the application:** URL to which the user will be redirected after installing the App. This is your callback URL. You must use it to get the authorization code and generate the access token as explained above (see Authorization Flow).
+- **URL where we will redirect to the Merchant after installing the application:** URL to which the user will be redirected after installing the App. This is your callback URL. You must use it to get the authorization code and generate the access token as explained above (see Authorization Flow).
 
 - **URL:** URL of your admin panel that the user will access to use the application. For example, the first page the user sees after logging in your application.
 
-- **Preferences URL:** URL to your app's page where the user can configure the App's settings. Some examples: Payments - set up installments for credit card purchases. Shipping - configure which shipping methods will be available to consumers. Marketing - modification of the Scripts inserted in the page.
+- **Preferences URL:** URL to your app's page where the user can configure the App's settings. Some examples:
 
-- **Privacy Policy URL:** this URL is displayed in the App Details Page. Works as a transparency tool between company and user.
+  - Payments: set up installments for credit card purchases.
+  - Shipping: configure which shipping methods will be available to consumers.
+  - Marketing: modify the Scripts inserted in the page.
+
+- **Privacy Policy URL:** this URL is displayed in the App Details Page in the App Store. Works as a transparency tool between company and user.
 
 - **URL Webhook Store Redact:** store data deletion requests. This Webhook will only be triggered if the Merchant requests that the store data be deleted through the admin panel.
 
