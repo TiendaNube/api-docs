@@ -442,6 +442,10 @@ paths:
                   enum: ['cross_items', 'line_item', 'shipping_line']
                   description: Type of concept in which the promotion will be applied
                   example: 'line_item'
+                active:
+                  type: boolean
+                  description: Initial status
+                  example: true
                 translations:
                   type: array
                   items:
