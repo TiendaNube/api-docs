@@ -194,8 +194,8 @@ Modal is lightbox or modal with an embedded iframe containing the Payment Provid
 When the user submits our checkout, a modal rendered by the Payment Provider is displayed and the user finishes the payment process on it.
 
 ```javascript
-LoadCheckoutPaymentContext(function (Checkout, PaymentMethods) {
-  var CheckoutPayment = new PaymentMethods.ModalPayment({
+LoadCheckoutPaymentContext(function (Checkout, PaymentOptions) {
+  var CheckoutPayment = new PaymentOptions.ModalPayment({
     id: "modal",
     name: "Credit Card",
     onSubmit: function (callback) {
