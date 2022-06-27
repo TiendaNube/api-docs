@@ -1,68 +1,71 @@
-Script
-======
+# Script
 
 The Script resource allows the app to register custom Javascript to be run in the store or in the checkout page. Also, if the user deletes your app, then he will not have to edit his theme to remove your JavaScript. When an app is uninstalled from a store, all of the scripts the app created are automatically removed along with it.
 
 You should have the following things into consideration:
 
-* Scripts **must be served over HTTPS**.
+- Scripts **must be served over HTTPS**.
 
-* You cannot depend of any JavaScript available in the store's theme. Not even jQuery.
+- You cannot depend of any JavaScript available in the store's theme. Not even jQuery.
 
-* Another applications may be installed and can include other JavaScript in addition to yours.
+- Another applications may be installed and can include other JavaScript in addition to yours.
 
-* When we include your script in the store, we will send a `store` parameter with the store id (e.g. `<script type="text/javascript" src="https://myapp.com/new.js?store=1234"></script>`). 
-
+- When we include your script in the store, we will send a `store` parameter with the store id (e.g. `<script type="text/javascript" src="https://myapp.com/new.js?store=1234"></script>`).
 
 Ideally, your javascript should be inside a closure to avoid any conflict:
 
 ```javascript
-(function(){
-    // Your JavaScript
+(function () {
+  // Your JavaScript
 })();
 ```
 
 Use AJAX to load specific configurations for the store. Access your own defined URL with the store ID specified in that URL. Your app will serve those store settings in JSON format, which you can then use in your JavaScript file.
 
-If you are going to use jQuery, you should load it in your JS using `jQuery.noConflict` as some stores already have jQuery in their themes. You should not assume the store has a cutting-edge jQuery version. 
+If you are going to use jQuery, you should load it in your JS using `jQuery.noConflict` as some stores already have jQuery in their themes. You should not assume the store has a cutting-edge jQuery version.
 
 ```javascript
-var loadScript = function(url, callback){
-
+var loadScript = function (url, callback) {
   /* JavaScript that will load the jQuery library on Google's CDN.
      We recommend this code: https://snipplr.com/view/18756/loadscript/.
      Once the jQuery library is loaded, the callback function will be executed. */
-
 };
 
-var myAppJavaScript = function($){
+var myAppJavaScript = function ($) {
   /* Your app's JavaScript here.
      $ in this scope references the jQuery object we'll use.
      Don't use 'jQuery', or 'jQuery191', here. Use the dollar sign
      that was passed as argument.*/
-  $('body').append("<p>I'm using jQuery version "+$.fn.jquery+'</p>');
+  $("body").append("<p>I'm using jQuery version " + $.fn.jquery + "</p>");
 };
 
 // For jQuery version 1.7
 var target = [1, 7, 0];
 
-var current = typeof jQuery === 'undefined' ? [0,0,0] : $.fn.jquery.split('.').map(function(item) {
-    return parseInt(item);
-});
+var current =
+  typeof jQuery === "undefined"
+    ? [0, 0, 0]
+    : $.fn.jquery.split(".").map(function (item) {
+        return parseInt(item);
+      });
 
-if (current[0] < target[0] || (current[0] == target[0] && current[1] < target[1])) {
-  loadScript('//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js', function(){
-    var jQuery1101 = jQuery.noConflict(true);
-    myAppJavaScript(jQuery1101);
-  });
+if (
+  current[0] < target[0] ||
+  (current[0] == target[0] && current[1] < target[1])
+) {
+  loadScript(
+    "//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js",
+    function () {
+      var jQuery1101 = jQuery.noConflict(true);
+      myAppJavaScript(jQuery1101);
+    }
+  );
 } else {
   myAppJavaScript(jQuery);
 }
-
 ```
 
-Variables
----------
+## Variables
 
 We make your life easier by providing a Javascript object (called `LS`) with some common variables.
 
@@ -151,7 +154,7 @@ var LS = {
                 name: /* Product Variant's name */,
                 unit_price: /* Product Variant's price in cents */,
                 quantity: /* Quantity to be purchased */,
-                          
+
 
             }
         ]
@@ -161,6 +164,8 @@ var LS = {
     currency : /* Current currency in ISO 4217 format */
 }
 ```
+
+> Note: You cannot access this variable from the [JavaScript file](https://github.com/TiendaNube/api-docs/blob/master/resources/checkout.md#payment-options-javascript-interface) where developers can create their own Payment Options.
 
 #### Thank you page
 
@@ -180,38 +185,34 @@ LS.order = {
 };
 ```
 
-Properties
-----------
+## Properties
 
-| Property       | Explanation                                                                                       |
-| -------------- | ------------------------------------------------------------------------------------------------- |
-| id             | The unique numeric identifier for the Script                                                      |
-| src            | Specifies the location of the Script. **Must be HTTPS**.                                          |
-| event          | DOM event which triggers the loading of the script. Valid values are **onload** (default)         |
-| where          | A comma-separated list of places where the javascript will run. Valid values are **store** (default) or **checkout** |
-| created_at     | Date when the Script was created in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601)     | 
-| updated_at     | Date when the Script was last updated in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601)|
+| Property   | Explanation                                                                                                          |
+| ---------- | -------------------------------------------------------------------------------------------------------------------- |
+| id         | The unique numeric identifier for the Script                                                                         |
+| src        | Specifies the location of the Script. **Must be HTTPS**.                                                             |
+| event      | DOM event which triggers the loading of the script. Valid values are **onload** (default)                            |
+| where      | A comma-separated list of places where the javascript will run. Valid values are **store** (default) or **checkout** |
+| created_at | Date when the Script was created in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601)                        |
+| updated_at | Date when the Script was last updated in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601)                   |
 
-Endpoints
----------
+## Endpoints
 
 ### GET /scripts
 
 Receive a list of all Scripts.
 
-
-| Parameter      | Explanation                                                                                      |
-| -------------- | ------------------------------------------------------------------------------------------------ |
-| since_id       | Restrict results to after the specified ID                                                       |
-| src            | Show Scripts with a given URL                                                                    |
-| created_at_min | Show Scripts created after date ([ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601))      |
-| created_at_max | Show Scripts created before date ([ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601))     |
-| updated_at_min | Show Scripts last updated after date ([ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601)) |
-| updated_at_max | Show Scripts last updated before date ([ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601))|
-| page           | Page to show                                                                                     |
-| per_page       | Amount of results                                                                                |
-| fields         | Comma-separated list of fields to include in the response                                        |
-
+| Parameter      | Explanation                                                                                       |
+| -------------- | ------------------------------------------------------------------------------------------------- |
+| since_id       | Restrict results to after the specified ID                                                        |
+| src            | Show Scripts with a given URL                                                                     |
+| created_at_min | Show Scripts created after date ([ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601))       |
+| created_at_max | Show Scripts created before date ([ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601))      |
+| updated_at_min | Show Scripts last updated after date ([ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601))  |
+| updated_at_max | Show Scripts last updated before date ([ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601)) |
+| page           | Page to show                                                                                      |
+| per_page       | Amount of results                                                                                 |
+| fields         | Comma-separated list of fields to include in the response                                         |
 
 #### GET /scripts
 
@@ -219,30 +220,30 @@ Receive a list of all Scripts.
 
 ```json
 [
-    {
-      "created_at": "2013-01-03T09:11:51-03:00",
-      "event": "onload",
-      "id": 101,
-      "src": "https://myapp.com/foo.js",
-      "updated_at": "2013-03-11T09:14:11-03:00",
-      "where": "store,checkout"
-    },
-    {
-      "created_at": "2013-04-07T09:11:51-03:00",
-      "event": "onload",
-      "id": 5123,
-      "src": "https://myapp.com/bar.js",
-      "updated_at": "2013-04-08T11:11:51-03:00",
-      "where": "store"
-    },
-    {
-      "created_at": "2013-04-08T12:09:48-03:00",
-      "event": "onload",
-      "id": 6412,
-      "src": "https://myapp.com/yet_another_script.js",
-      "updated_at": "2013-04-08T11:11:53-03:00",
-      "where": "checkout"
-    }
+  {
+    "created_at": "2013-01-03T09:11:51-03:00",
+    "event": "onload",
+    "id": 101,
+    "src": "https://myapp.com/foo.js",
+    "updated_at": "2013-03-11T09:14:11-03:00",
+    "where": "store,checkout"
+  },
+  {
+    "created_at": "2013-04-07T09:11:51-03:00",
+    "event": "onload",
+    "id": 5123,
+    "src": "https://myapp.com/bar.js",
+    "updated_at": "2013-04-08T11:11:51-03:00",
+    "where": "store"
+  },
+  {
+    "created_at": "2013-04-08T12:09:48-03:00",
+    "event": "onload",
+    "id": 6412,
+    "src": "https://myapp.com/yet_another_script.js",
+    "updated_at": "2013-04-08T11:11:53-03:00",
+    "where": "checkout"
+  }
 ]
 ```
 
@@ -252,22 +253,22 @@ Receive a list of all Scripts.
 
 ```json
 [
-    {
-      "created_at": "2013-04-07T09:11:51-03:00",
-      "event": "onload",
-      "id": 5123,
-      "src": "https://myapp.com/foo.js",
-      "updated_at": "2013-04-08T11:11:51-03:00",
-      "where": "store"
-    },
-    {
-      "created_at": "2013-04-08T12:09:48-03:00",
-      "event": "onload",
-      "id": 6412,
-      "src": "https://myapp.com/bar.js",
-      "updated_at": "2013-04-08T11:11:53-03:00",
-      "where": "checkout"
-    }
+  {
+    "created_at": "2013-04-07T09:11:51-03:00",
+    "event": "onload",
+    "id": 5123,
+    "src": "https://myapp.com/foo.js",
+    "updated_at": "2013-04-08T11:11:51-03:00",
+    "where": "store"
+  },
+  {
+    "created_at": "2013-04-08T12:09:48-03:00",
+    "event": "onload",
+    "id": 6412,
+    "src": "https://myapp.com/bar.js",
+    "updated_at": "2013-04-08T11:11:53-03:00",
+    "where": "checkout"
+  }
 ]
 ```
 
@@ -275,9 +276,9 @@ Receive a list of all Scripts.
 
 Receive a single Script
 
-| Parameter      | Explanation                                                                                      |
-| -------------- | ------------------------------------------------------------------------------------------------ |
-| fields         | Comma-separated list of fields to include in the response                                        |
+| Parameter | Explanation                                               |
+| --------- | --------------------------------------------------------- |
+| fields    | Comma-separated list of fields to include in the response |
 
 #### GET /scripts/1234
 
@@ -302,8 +303,8 @@ Create a new Script.
 
 ```json
 {
-    "invalid_name": "foobar",
-    "where" : "invalid_where"
+  "invalid_name": "foobar",
+  "where": "invalid_where"
 }
 ```
 
@@ -311,15 +312,9 @@ Create a new Script.
 
 ```json
 {
-    "event": [
-      "can't be blank"
-    ],
-    "src": [
-      "can't be blank"
-    ],
-    "where": [
-      "is not included in the list"
-    ]
+  "event": ["can't be blank"],
+  "src": ["can't be blank"],
+  "where": ["is not included in the list"]
 }
 ```
 
@@ -327,9 +322,9 @@ Create a new Script.
 
 ```json
 {
-    "src": "https://myapp.com/new.js",
-    "event" : "onload",
-    "where" : "store"
+  "src": "https://myapp.com/new.js",
+  "event": "onload",
+  "where": "store"
 }
 ```
 
@@ -337,32 +332,30 @@ Create a new Script.
 
 ```json
 {
-    "created_at": "2013-06-01T15:12:15-03:00",
-    "event": "onload",
-    "id": 8901,
-    "src": "https://myapp.com/new.js",
-    "updated_at": "2013-06-01T15:12:15-03:00",
-    "where": "store"
+  "created_at": "2013-06-01T15:12:15-03:00",
+  "event": "onload",
+  "id": 8901,
+  "src": "https://myapp.com/new.js",
+  "updated_at": "2013-06-01T15:12:15-03:00",
+  "where": "store"
 }
 ```
 
 ##### Available events
 
-To prevent performance issues, we use two different events where it's possible to attach the script, `onfirstinteraction`, and `onload`. 
+To prevent performance issues, we use two different events where it's possible to attach the script, `onfirstinteraction`, and `onload`.
 
-* __onfirstinteraction__: The scripts will be loaded and executed after the user's first interaction. A scroll up/down, a mouseclick, or a tap will trigger the event. 
+- **onfirstinteraction**: The scripts will be loaded and executed after the user's first interaction. A scroll up/down, a mouseclick, or a tap will trigger the event.
 
-This event is intended for functionalities that don't affect the above-the-fold or provide other functionalities that are not needed as soon as possible. 
+This event is intended for functionalities that don't affect the above-the-fold or provide other functionalities that are not needed as soon as possible.
 
-This type of event should be the first choice for most applications. 
+This type of event should be the first choice for most applications.
 
-Some application examples could be chatbots, subscription popups, product wishlists, etc. 
+Some application examples could be chatbots, subscription popups, product wishlists, etc.
 
+- **onload**: The script will be part of the critical path and will be executed as soon as possible on the page load. Its behavior is equivalent to the `window.onload` event.
 
-* __onload__: The script will be part of the critical path and will be executed as soon as possible on the page load. Its behavior is equivalent to the `window.onload` event. 
-
-In most cases this event should be avoided, unless you need to change some critical components above the fold or collect user-related data like behavior or conversions. 
-
+In most cases this event should be avoided, unless you need to change some critical components above the fold or collect user-related data like behavior or conversions.
 
 ### PUT /scripts/{id}
 

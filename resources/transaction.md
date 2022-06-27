@@ -5,6 +5,8 @@ Each movement of money is modeled through a `Transaction` object, which can be o
 
 A [Payment Provider](payment_provider.md) can create a Transaction and update its status through Transaction Events as it changes over time. Since an order can be related to multiple payment methods, a different Transaction must be created for each of them using the same order ID.
 
+> **_Note:_** This endpoint is for the exclusive use of payment apps.
+
 Properties
 ---------
 

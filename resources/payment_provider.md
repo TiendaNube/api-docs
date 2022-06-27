@@ -10,6 +10,10 @@ Payments companies have many different and sometimes complex features which add 
 
 In our platform, a Payment Provider is created for a specific `store`.
 
+> **_Note:_** This endpoint is for the exclusive use of payment apps.
+
+> **_Note:_** To create a Payments App you need to create an App in the Partners Portal and request our Partner Support Team (partners@nuvemshop.com.br/partners@tiendanube.com) to enable your app to access our Payments APIs.
+
 ## Properties
 
 | Field                       | Type          | Description                                                                                                                           |
@@ -328,7 +332,7 @@ Unique identifier of the created Payment Provider.
 
 </details>
 
-### PUT /payment_providers/{_payment_provider_id_}
+### PUT /payment*providers/{\_payment_provider_id*}
 
 Update a Payment Provider for a given store. This is especially useful to update the installments specs.
 
@@ -368,7 +372,7 @@ Array of [Payment Provider Objects](#Properties)
 
 </details>
 
-### GET /payment_providers/{_payment_provider_id_}
+### GET /payment*providers/{\_payment_provider_id*}
 
 Get a specific Payment Provider for a given store.
 
@@ -390,7 +394,7 @@ Get a specific Payment Provider for a given store.
 
 </details>
 
-### DELETE /payment_providers/{_payment_provider_id_}
+### DELETE /payment*providers/{\_payment_provider_id*}
 
 Delete a Payment Provider for a given store.
 
