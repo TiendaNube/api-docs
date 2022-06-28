@@ -561,6 +561,8 @@ Creates a new Product
 
 Modify an existing Product
 
+> **_Note:_** If you create a product without the [Product Variant](https://github.com/tiendanube/api-docs/blob/master/resources/product_variant.md) object and want to change information such as price and stock, in the API there is a "virtual" variant which is linked to the typical properties of a variant (prices, stock, dimensions, etc). Therefore, in these cases, changes in any of the properties mentioned above must be made on its "virtual" variant, not on the product itself. That is, the endpoint to use is: [PUT /products/{product_id}/variants/{id}](https://github.com/TiendaNube/api-docs/blob/master/resources/product_variant.md#put-productsproduct_idvariantsid)
+
 #### PUT /products/5123
 
 ```json
