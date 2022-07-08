@@ -109,7 +109,7 @@ Each application is responsible for the creation and storage of all their busine
 
 This operation will return an ID to the combination of the promotions and the current store.
 
-You should take into consideration that some values can&#39;t be updated after the creation. For more information about the API, please refer to [Discount API Docs](./discounts/api).
+You should take into consideration that some values can&#39;t be updated after the creation. For more information about the API, please refer to [Discount API Docs](./api/discounts).
 
 ### Managing discounts<a name="managing-discounts"></a>
 
@@ -280,5 +280,5 @@ If a promotional rule was valid in the past but is no longer applicable, the dis
 
 ## Resources<a name="resources"></a>
 
-- [Api Specification](./discounts/api)
-- [Openapi.yml](./discounts//api/openapi.yml)
+- [Api Specification](./api/discounts)
+- [Openapi.yml](./api/discounts/openapi.yml)
