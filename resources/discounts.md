@@ -109,7 +109,7 @@ Each application is responsible for the creation and storage of all their busine
 
 This operation will return an ID to the combination of the promotions and the current store.
 
-You should take into consideration that some values can&#39;t be updated after the creation. For more information about the API, please refer to [Discount API Docs](./api/discounts).
+You should take into consideration that some values can&#39;t be updated after the creation. For more information about the API, please refer to [Openapi.yml](https://raw.githubusercontent.com/TiendaNube/api-docs/master/resources/openapi/discounts/openapi.yml).
 
 ### Managing discounts<a name="managing-discounts"></a>
 
@@ -239,7 +239,7 @@ If just one command contains invalid specifications, we will consider the respon
 
 In each cart update, we will send the following information to the callback URL.
 
-[Cart Payload](./payload/cart.json)
+[Cart Payload](https://raw.githubusercontent.com/TiendaNube/api-docs/master/resources/payload/cart.json)
 
 ### Request Life Cycle<a name="request-life-cycle"></a>
 
@@ -280,5 +280,4 @@ If a promotional rule was valid in the past but is no longer applicable, the dis
 
 ## Resources<a name="resources"></a>
 
-- [Api Specification](./api/discounts)
-- [Openapi.yml](./api/discounts/openapi.yml)
+- [Openapi.yml](https://raw.githubusercontent.com/TiendaNube/api-docs/master/resources/openapi/discounts/openapi.yml)
