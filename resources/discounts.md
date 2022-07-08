@@ -88,9 +88,9 @@ validate their business rules based on the cart information sent to a specific e
 
 Before you start to create your app, you need to follow the points described below:
 
-1. Register as a partner in [{{site.data.institutional.name.ar}}]({{site.data.institutional.partners.ar}}) or [{{ site.data.institutional.name.br }}]({site.data.institutional.partners.br}}).
+1. Register as a partner in [Tiendanube](http://www.tiendanube.com/partners) or [Nuvemshop](http://www.nuvemshop.com.br/parceiros).
 2. Once inside your partner&#39;s admin panel, go to the &quot;Apps&quot; section and create your app.
-3. Read up on [how to authenticate]({{ site.data.links.authentication.main | absolute_url }}) your app with us.
+3. Read up on [how to authenticate](./authentication.md) your app with us.
 4. Read the API docs to understand what you can do with your app.
 
 ## Integration<a name="integration"></a>
@@ -105,11 +105,11 @@ quantity of an item, etc.), and the store has promotions.
 
 ![](./images/create_a_promotion.png)
 
-Each application is responsible for the creation and storage of all their business logic. Nevertheless, {{ site.data.institutional.name.mixed }} needs to identify each promotion, which should be doing it through the API.
+Each application is responsible for the creation and storage of all their business logic. Nevertheless, Tiendanube/Nuvemshop needs to identify each promotion, which should be doing it through the API.
 
 This operation will return an ID to the combination of the promotions and the current store.
 
-You should take into consideration that some values can&#39;t be updated after the creation. For more information about the API, please refer to [Discount API Docs]({{ site.data.links.discounts.main | absolute_url }}/api).
+You should take into consideration that some values can&#39;t be updated after the creation. For more information about the API, please refer to [Discount API Docs](./discounts/api).
 
 ### Managing discounts<a name="managing-discounts"></a>
 
@@ -280,5 +280,5 @@ If a promotional rule was valid in the past but is no longer applicable, the dis
 
 ## Resources<a name="resources"></a>
 
-- [Api Specification]({{ site.data.links.discounts.main | absolute_url }}/api)
-- [Openapi.yml]({{ site.data.links.discounts.main | absolute_url }}/api/openapi.yml)
+- [Api Specification](./discounts/api)
+- [Openapi.yml](./discounts//api/openapi.yml)
