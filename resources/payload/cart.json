@@ -1,0 +1,68 @@
+{
+  "cart_id": "397256730",
+  "store_id": "92760",
+  "execution_tier": "cross_items",
+  "customer": {
+    "id": null
+  },
+  "currency": "ARS",
+  "language": "es",
+  "shipping": {
+    "country": null,
+    "city": null,
+    "postalcode": null,
+    "cost": "0.0"
+  },
+  "package": {
+    "weight": "0.600"
+  },
+  "payment": {
+    "credit_card_company": null,
+    "method": null,
+    "installments": 1
+  },
+  "products": [
+    {
+      "id": 467422732,
+      "price": "12.00",
+      "compare_at_price": "20.00",
+      "product_id": 17310718,
+      "quantity": 4,
+      "free_shipping": false,
+      "variant_id": 33739098,
+      "variant_values": [
+        "S"
+      ],
+      "categories": [
+        {
+          "id": 11353744,
+          "parent": null,
+          "subcategories": [
+            11353746,
+            11353747
+          ]
+        },
+        {
+          "id": 11353747,
+          "parent": 11353744,
+          "subcategories": []
+        }
+      ]
+    }
+  ],
+  "totals": {
+    "subtotal": "30000.00",
+    "total_discount": "10300.00",
+    "total": "19700.00"
+  },
+  "promotions": [
+    {
+      "id": "231bbfe4-31bc-11ec-8d3d-0242ac130003",
+      "line_items": []
+    },
+    {
+      "id": "4eb6777a-31bc-11ec-8d3d-0242ac130003",
+      "line_items": [ "467422732", "122422253" ]
+    }
+  ]
+}
