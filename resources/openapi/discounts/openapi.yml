@@ -1,7 +1,6 @@
 openapi: '3.0.0'
 
 tags:
-  - name: callbacks
   - name: discounts
   - name: promotions
 
@@ -372,6 +371,44 @@ paths:
                         - $ref: '#/components/schemas/commandRemoveLineItem'
         '204':
           description: The callback has not detected any commands to execute
+
+  /carts/{id}/discounts:
+    get:
+      summary: Return the cart discounts by order
+      description: Returns all the promotions applied to a cart by app.
+      tags:
+        - discounts
+      parameters:
+        - name: id
+          in: path
+          description: Current cart identifier
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: The discounts associated with the cart and app have been returned
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        promotion_id:
+                          type: string
+                          description: Promotion identifier
+                          example: 'e855b201-be35-496c-8aed-28c6f1de840d'
+                        line_items:
+                          type: array
+                          description: Is filled only if the allocation type of the promotion is "line_item"
+                          items:
+                            type: string
+                            description: Product to apply the promotion.
+                            example: '67890'
 
   /discounts/callbacks:
     put:
