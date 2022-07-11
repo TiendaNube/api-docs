@@ -252,6 +252,7 @@ API resources
 * [Category](https://github.com/tiendanube/api-docs/blob/master/resources/category.md)
 * [Coupons](https://github.com/tiendanube/api-docs/blob/master/resources/coupon.md)
 * [Customer](https://github.com/tiendanube/api-docs/blob/master/resources/customer.md)
+* [Discounts](https://github.com/tiendanube/api-docs/blob/master/resources/discounts.md)
 * [Draft Order](https://github.com/tiendanube/api-docs/blob/master/resources/draft_order.md)
 * [Metafields](https://github.com/tiendanube/api-docs/blob/master/resources/metafields.md)
 * [Order](https://github.com/tiendanube/api-docs/blob/master/resources/order.md)

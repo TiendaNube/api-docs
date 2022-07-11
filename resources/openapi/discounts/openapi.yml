@@ -1,0 +1,589 @@
+openapi: '3.0.0'
+
+tags:
+  - name: discounts
+  - name: promotions
+
+servers: []
+
+info:
+  version: '1.0'
+  title: Discount Applications API
+  description: 'Manage the creation of promotions and discounts'
+
+components:
+  schemas:
+    commandCreateOrUpdate:
+      type: object
+      properties:
+        command:
+          type: string
+          enum: ['create_or_update_discount']
+          description: Command identifier
+          example: 'create_or_update_discount'
+        specs:
+          type: object
+          properties:
+            promotion_id:
+              type: string
+              description: Promotion identifier
+              example: '449039b3-3c35-4860-8fde-668428ced5f3'
+            currency:
+              type: string
+              description: ISO 4217 code for the currency
+              example: 'ARS'
+            display_text:
+              type: object
+              description: Object where each attribute is a translation (optional)
+              properties:
+                es-ar:
+                  type: string
+                  description: The key is the language language identifier and the value the display text
+                  example: '50% off in the second unit'
+            discount_specs:
+              type: object
+              description: Is required only if the allocation type of the promotion is "cross_items" or "shipping_line"
+              properties:
+                type:
+                  type: string
+                  enum: ['fixed', 'percentage']
+                  description: Method used to calculate the discount
+                  example: 'fixed'
+                amount:
+                  type: string
+                  description: Discount modifier. Must have two decimals separated by dot (".").
+                  example: '20.00'
+    commandCreateOrUpdateLineItem:
+      type: object
+      properties:
+        command:
+          type: string
+          enum: ['create_or_update_discount']
+          description: Command identifier
+          example: 'create_or_update_discount'
+        specs:
+          type: object
+          properties:
+            promotion_id:
+              type: string
+              description: Promotion identifier
+              example: 'c78c3a59-70a9-4d8a-a224-fdd3f925cc72'
+            currency:
+              type: string
+              description: ISO 4217 code for the currency
+              example: 'ARS'
+            display_text:
+              type: object
+              description: Object where each attribute is a translation (optional)
+              properties:
+                es-ar:
+                  type: string
+                  description: The key is the language language identifier and the value the display text
+                  example: '50% off in the second unit'
+            line_items:
+              type: array
+              items:
+                type: object
+                properties:
+                  line_item:
+                    type: string
+                    description: Product to apply the promotion.
+                    example: '717394929'
+                  discount_specs:
+                    type: object
+                    description: Is required only if the allocation type of the promotion is "cross_items" or "shipping_line"
+                    properties:
+                      type:
+                        type: string
+                        enum: ['fixed', 'percentage']
+                        description: Method used to calculate the discount
+                        example: 'fixed'
+                      amount:
+                        type: string
+                        description: Discount modifier. Must have two decimals separated by dot (".").
+                        example: '250.00'
+    commandRemove:
+      type: object
+      properties:
+        command:
+          type: string
+          enum: ['remove_discount']
+          description: Command identifier
+          example: 'remove_discount'
+        scope:
+          type: string
+          enum: ['cart']
+          description: Scope identifier
+          example: 'cart'
+        promotion_ids:
+          type: array
+          items:
+            type: string
+            description: Promotion identifier
+            example: '449039b3-3c35-4860-8fde-668428ced5f3'
+    commandRemoveLineItem:
+      type: object
+      properties:
+        command:
+          type: string
+          enum: ['remove_discount']
+          description: Command identifier
+          example: 'remove_discount'
+        scope:
+          type: string
+          enum: ['line_item']
+          description: Scope identifier
+          example: 'line_item'
+        promotion_id:
+          type: string
+          description: Promotion identifier
+          example: 'c78c3a59-70a9-4d8a-a224-fdd3f925cc72'
+        line_items:
+          type: array
+          items:
+            type: string
+            description: Line item identifier
+            example: '717394929'
+    promotionI18n:
+      type: object
+      properties:
+        lang:
+          type: string
+          description: language identifier
+          example: 'es-ar'
+        name:
+          type: string
+          description: Promotion name
+          example: '50% off in the second unit'
+        description:
+          type: string
+          description: Describe the promotion to the consumer
+          example: 'Taking two pay 50 percent on the second unit'
+        disclaimer:
+          type: string
+          description: Describe the terms and conditions of the promotion
+          example: 'Deal only valid for Buenos Aires city'
+      required:
+        - lang
+        - name
+
+  responses:
+    forbiddenError:
+      description: The __store__/__app__ provided does not belong to promotion
+      content:
+        application/json:
+          schema:
+            properties:
+              error:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 403
+                  code:
+                    type: string
+                    example: 'ForbiddenException'
+                  detail:
+                    type: string
+                    example: 'Forbidden resource'
+
+paths:
+  /dinamicUrl:
+    post:
+      summary: Evaluate cart
+      description: The owner of this endpoint is the discount application. It could be any URL of your choice.
+      tags:
+        - callbacks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                cart_id:
+                  type: string
+                  description: Cart identifier
+                  example: '397256730'
+                store_id:
+                  type: string
+                  description: Store identifier
+                  example: '92760'
+                execution_tier:
+                  type: string
+                  description: Tier identifier
+                  example: 'cross_items'
+                customer:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: Customer identifier
+                      example: null
+                currency:
+                  type: string
+                  description: ISO 4217 code for the currency
+                  example: 'ARS'
+                language:
+                  type: string
+                  description: Language identifier
+                  example: 'es'
+                shipping:
+                  type: object
+                  properties:
+                    country:
+                      type: string
+                      description: Country code
+                      example: null
+                    city:
+                      type: string
+                      description: City name
+                      example: null
+                    postalcode:
+                      type: string
+                      description: Postal code
+                      example: null
+                    cost:
+                      type: string
+                      description: Shipping cost
+                      example: '0.00'
+                package:
+                  type: object
+                  properties:
+                    weight:
+                      type: string
+                      description: Pacakge weight
+                      example: '0.600'
+                payment:
+                  type: object
+                  properties:
+                    credit_card_company:
+                      type: string
+                      description: Credit card company
+                      example: null
+                    method:
+                      type: string
+                      description: Payment method
+                      example: null
+                    installments:
+                      type: string
+                      description: Number of installments
+                      example: 1
+                products:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                        description: Line item identifier
+                        example: 467422732
+                      price:
+                        type: string
+                        description: Product price
+                        example: '12.00'
+                      compare_at_price:
+                        type: string
+                        description: Product original price
+                        example: '20.00'
+                      product_id:
+                        type: number
+                        description: Product identifier
+                        example: 17310718
+                      quantity:
+                        type: number
+                        description: Quantity of product in cart
+                        example: 4
+                      free_shipping:
+                        type: boolean
+                        description: Free shipping included
+                        example: false
+                      variant_id:
+                        type: number
+                        description: Variant identifier
+                        example: 33739098
+                      variant_values:
+                        type: array
+                        description: Variant values
+                        items:
+                          type: string
+                          example: 'S'
+                      categories:
+                        type: array
+                        description: Product categories
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                              description: Category identifier
+                              example: 11353744
+                            parent:
+                              type: number
+                              description: Parent category identifier
+                              example: null
+                            subcategories:
+                              type: array
+                              description: Subcategory identifiers
+                              items:
+                                type: string
+                                example: 11353746
+                totals:
+                  type: object
+                  properties:
+                    subtotal:
+                      type: string
+                      description: Cart subtotal price
+                      example: '30000.00'
+                    total_discount:
+                      type: string
+                      description: Cart discount amount
+                      example: '10300.00'
+                    total:
+                      type: string
+                      description: Cart total price
+                      example: '19700.00'
+                promotions:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: Promotion identifier
+                      example: '231bbfe4-31bc-11ec-8d3d-0242ac130003'
+                    line_items:
+                      type: array
+                      items:
+                        type: string
+                        description: Line item identifier
+                        example: '467422732'
+      responses:
+        '200':
+          description: The callback has detected one or more commands to execute
+          content:
+            application/json:
+              schema:
+                properties:
+                  commands:
+                    type: array
+                    items:
+                      oneOf:
+                        - $ref: '#/components/schemas/commandCreateOrUpdate'
+                        - $ref: '#/components/schemas/commandCreateOrUpdateLineItem'
+                        - $ref: '#/components/schemas/commandRemove'
+                        - $ref: '#/components/schemas/commandRemoveLineItem'
+        '204':
+          description: The callback has not detected any commands to execute
+
+  /carts/{id}/discounts:
+    get:
+      summary: Return the cart discounts by order
+      description: Returns all the promotions applied to a cart by app.
+      tags:
+        - discounts
+      parameters:
+        - name: id
+          in: path
+          description: Current cart identifier
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: The discounts associated with the cart and app have been returned
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        promotion_id:
+                          type: string
+                          description: Promotion identifier
+                          example: 'e855b201-be35-496c-8aed-28c6f1de840d'
+                        line_items:
+                          type: array
+                          description: Is filled only if the allocation type of the promotion is "line_item"
+                          items:
+                            type: string
+                            description: Product to apply the promotion.
+                            example: '67890'
+
+  /discounts/callbacks:
+    put:
+      summary: Register a callback
+      description: Create or Update a callback
+      tags:
+        - discounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                url:
+                  type: string
+                  description: Valid URL with protocol
+                  example: 'https://www.callback.com'
+              required:
+                - url
+      responses:
+        '204':
+          description: The callback has been created or updated
+        '400':
+          description: Unable to process the request sent
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: number
+                        example: 400
+                      code:
+                        type: string
+                        example: 'BadRequestException'
+                      detail:
+                        type: array
+                        items:
+                          type: string
+
+  /promotions:
+    post:
+      summary: Register a promotion
+      description: Create a promotion for the current store
+      tags:
+        - promotions
+      operationId: create-promotion
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+                  description: Promotion Name
+                  example: '50% off in the second unit'
+                description:
+                  type: string
+                  description: Describe the promotion to the consumer
+                  example: 'Taking two pay 50 percent on the second unit'
+                disclaimer:
+                  type: string
+                  description: Describe the terms and conditions of the promotion
+                  example: 'Deal only valid for Buenos Aires city'
+                allocation_type:
+                  type: string
+                  enum: ['cross_items', 'line_item', 'shipping_line']
+                  description: Type of concept in which the promotion will be applied
+                  example: 'line_item'
+                active:
+                  type: boolean
+                  description: Initial status
+                  example: true
+                translations:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/promotionI18n'
+              required:
+                - name
+                - allocation_type
+      responses:
+        '201':
+          description: The promotion has been created
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: Promotion identifier
+                        example: 'e855b201-be35-496c-8aed-28c6f1de840d'
+        '400':
+          description: Unable to process the request sent
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: number
+                        example: 400
+                      code:
+                        type: string
+                        example: 'BadRequestException'
+                      detail:
+                        type: array
+                        items:
+                          type: string
+                          example: 'name must be a string'
+
+  /promotions/{promotion_id}:
+    delete:
+      summary: Delete promotion
+      description: Delete a promotion created by the current app for the current store
+      tags:
+        - promotions
+      parameters:
+        - in: path
+          name: promotion_id
+          schema:
+            type: string
+          required: true
+          description: Promotion identifier
+      responses:
+        '204':
+          description: The promotion has been deleted
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+    patch:
+      summary: Modify promotion
+      description: Modify a promotion created by the current app for the current store
+      tags:
+        - promotions
+      parameters:
+        - in: path
+          name: promotion_id
+          schema:
+            type: string
+          required: true
+          description: Promotion identifier
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                active:
+                  type: boolean
+                  description: Promotion status
+                  example: true
+      responses:
+        '204':
+          description: The promotion has been modified
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+        '404':
+          description: The promotion does not exist
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      status:
+                        type: number
+                        example: 404
+                      code:
+                        type: string
+                        example: 'NotFoundException'
+                      detail:
+                        type: string
+                        example: 'The promotion id does not exist'
