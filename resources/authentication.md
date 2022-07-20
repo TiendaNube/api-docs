@@ -6,7 +6,7 @@ We provide authorization and user authentication by a restricted form of OAuth 2
 
 ## Introduction
 
-When creating an app, you'll be prompted to complete some information regarding your application URLs ([see URLs](https://github.com/TiendaNube/api-docs/blob/master/resources/authentication.md#urls)). You also have to select the scopes your App needs and set a redirection URL, which is the URL where we will redirect the client once the application is installed. The scopes specify the resources for which the app is asking authorization of its users ([see Scopes](https://github.com/TiendaNube/api-docs/blob/master/resources/authentication.md#scopes)). The redirection URL is used as part of the authorization flow (see below). Check out this [video](https://www.loom.com/share/91a7a5aa56384fdca9519220d80f5db7) where we show how the authorization process works here in Tiendanube.
+When creating an app, you'll be prompted to complete some information regarding your application URLs ([see URLs](https://github.com/TiendaNube/api-docs/blob/master/resources/authentication.md#urls)). You also have to select the scopes your App needs and set a redirection URL, which is the URL where we will redirect the client once the application is installed. The scopes specify the resources for which the app is asking authorization of its users ([see Scopes](https://github.com/TiendaNube/api-docs/blob/master/resources/authentication.md#scopes)). The redirection URL is used as part of the authorization flow (see below). Check out this [video](https://www.youtube.com/watch?v=LfjES_55CGQ) where we show how the authorization process works here in Tiendanube.
 
 ## Authorization flow
 
