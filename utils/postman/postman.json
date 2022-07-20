@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "21db7d55-eee3-4fc1-b945-fb8b19ebaad4",
+		"_postman_id": "cae43e1c-d4bd-4ea5-a4b7-56d06feefea7",
 		"name": "Public Api TiendaNube",
 		"description": "This collection represents all examples of tiendanube's / nuvemshop's public API.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -813,6 +813,654 @@
 				}
 			],
 			"description": "Customer\n========\n\nA Customer of the store. Customer accounts store contact information for the customer, saving logged-in customers the trouble of having to provide it at every checkout.\n\nProperties\n----------\n\n| Property             | Explanation                                                                                  |\n| -------------------- | -------------------------------------------------------------------------------------------- |\n| id                   | The unique numeric identifier for the Customer                                               |\n| name                 | Name of the Customer                                                                         |\n| email                | E-mail of the Customer                                                                       |\n| phone                | Phone number of the customer (not necessarily the same as the address's phone)               |\n| identification       | Customer's identification (in Brazil for example, it would be the CPF/CNPJ)                  |\n| note                 | Store owner's notes about the customer                                                       |\n| default_address      | Default shipping address of the Customer                                                     |\n| addresses            | List of shipping addresses for the Customer                                                  |\n| billing_address      | Billing address of the Customer                                                              |\n| billing_number       | Billing number of the Customer                                                               |\n| billing_floor        | Billing floor of the Customer                                                                |\n| billing_locality     | Billing locality of the Customer                                                             |\n| billing_zipcode      | Billing zipcode of the Customer                                                              |\n| billing_city         | Billing city of the Customer                                                                 |\n| billing_province     | Billing province of the Customer                                                             |\n| billing_country      | Billing country code of the Customer                                                         |\n| extra                | A JSON object containing custom information. Can be set via the API or through custom form fields of name \"extra[key]\" on the Customer's register form in the storefront. |\n| total_spent          | The total amount of money that the Customer has spent at the store                           |\n| total_spent_currency | The total spent's currency in [ISO 4217 format](http://en.wikipedia.org/wiki/ISO_4217)       |\n| last_order_id        | The id of the Customer's last Order                                                          |\n| active               | \"true\" if the Customer activated his account. \"false\" if he/she hasn't                       |\n| created_at           | Date when the Customer was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)     | \n| updated_at           | Date when the Customer was last updated in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)|"
+		},
+		{
+			"name": "Discounts",
+			"item": [
+				{
+					"name": "Promotion",
+					"item": [
+						{
+							"name": "Create a new promotion",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authentication",
+										"value": "bearer {{app_token}}",
+										"type": "text"
+									},
+									{
+										"key": "User-Agent",
+										"value": "Awesome App (awesome@app.com)",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"50% off in the second unit\",\n  \"allocation_type\": \"line_item\",\n  \"description\": \"Taking two pay 50 percent on the second unit\",\n  \"disclaimer\": \"Deal only valid for Buenos Aires city\",\n  \"active\": true,\n  \"translations\": [\n    {\n      \"lang\": \"en-us\",\n      \"name\": \"50% off in the second unit\",\n      \"description\": \"Taking two pay 50 percent on the second unit\",\n      \"disclaimer\": \"Deal only valid for Buenos Aires city\"\n    }\n  ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{api_url}}/{{store_id}}/promotions",
+									"protocol": "https",
+									"host": [
+										"{{api_url}}"
+									],
+									"path": [
+										"{{store_id}}",
+										"promotions"
+									]
+								},
+								"description": "Create a promotion for the current store"
+							},
+							"response": [
+								{
+									"name": "The promotion has been created",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"50% off in the second unit\",\n  \"allocation_type\": \"line_item\",\n  \"description\": \"Taking two pay 50 percent on the second unit\",\n  \"disclaimer\": \"Deal only valid for Buenos Aires city\",\n  \"active\": true,\n  \"translations\": [\n    {\n      \"lang\": \"es-ar\",\n      \"name\": \"50% off in the second unit\",\n      \"description\": \"Taking two pay 50 percent on the second unit\",\n      \"disclaimer\": \"Deal only valid for Buenos Aires city\"\n    },\n    {\n      \"lang\": \"es-ar\",\n      \"name\": \"50% off in the second unit\",\n      \"description\": \"Taking two pay 50 percent on the second unit\",\n      \"disclaimer\": \"Deal only valid for Buenos Aires city\"\n    }\n  ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://{{api_url}}/{{store_id}}/promotions",
+											"protocol": "https",
+											"host": [
+												"{{api_url}}"
+											],
+											"path": [
+												"{{store_id}}",
+												"promotions"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"data\": {\n    \"id\": \"e855b201-be35-496c-8aed-28c6f1de840d\"\n  }\n}"
+								},
+								{
+									"name": "Unable to process the request sent",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"50% off in the second unit\",\n  \"allocation_type\": \"line_item\",\n  \"description\": \"Taking two pay 50 percent on the second unit\",\n  \"disclaimer\": \"Deal only valid for Buenos Aires city\",\n  \"active\": true,\n  \"translations\": [\n    {\n      \"lang\": \"es-ar\",\n      \"name\": \"50% off in the second unit\",\n      \"description\": \"Taking two pay 50 percent on the second unit\",\n      \"disclaimer\": \"Deal only valid for Buenos Aires city\"\n    },\n    {\n      \"lang\": \"es-ar\",\n      \"name\": \"50% off in the second unit\",\n      \"description\": \"Taking two pay 50 percent on the second unit\",\n      \"disclaimer\": \"Deal only valid for Buenos Aires city\"\n    }\n  ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://{{api_url}}/{{store_id}}/promotions",
+											"protocol": "https",
+											"host": [
+												"{{api_url}}"
+											],
+											"path": [
+												"{{store_id}}",
+												"promotions"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": {\n    \"status\": 400,\n    \"code\": \"BadRequestException\",\n    \"detail\": [\n      \"name must be a string\",\n      \"name must be a string\"\n    ]\n  }\n}"
+								}
+							]
+						},
+						{
+							"name": "Delete a promotion",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authentication",
+										"value": "bearer {{app_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://{{api_url}}/{{store_id}}/promotions/{{promotion_id}}",
+									"protocol": "https",
+									"host": [
+										"{{api_url}}"
+									],
+									"path": [
+										"{{store_id}}",
+										"promotions",
+										"{{promotion_id}}"
+									]
+								},
+								"description": "Delete a promotion created by the current app for the current store"
+							},
+							"response": [
+								{
+									"name": "The promotion has been deleted",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "https://{{api_url}}/{{store_id}}/promotions/{{promotion_id}}",
+											"protocol": "https",
+											"host": [
+												"{{api_url}}"
+											],
+											"path": [
+												"{{store_id}}",
+												"promotions",
+												"{{promotion_id}}"
+											],
+											"variable": [
+												{
+													"value": "ullamco pariatur irure",
+													"key": "promotion_id"
+												}
+											]
+										}
+									},
+									"status": "No Content",
+									"code": 204,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "The __store__/__app__ provided does not belong to promotion",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "https://{{api_url}}/{{store_id}}/promotions/{{promotion_id}}",
+											"protocol": "https",
+											"host": [
+												"{{api_url}}"
+											],
+											"path": [
+												"{{store_id}}",
+												"promotions",
+												"{{promotion_id}}"
+											],
+											"variable": [
+												{
+													"value": "ullamco pariatur irure",
+													"key": "promotion_id"
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": {\n    \"status\": 403,\n    \"code\": \"ForbiddenException\",\n    \"detail\": \"Forbidden resource\"\n  }\n}"
+								}
+							]
+						},
+						{
+							"name": "Modify a promotion",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authentication",
+										"value": "bearer {{app_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"active\": false\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{api_url}}/{{store_id}}/promotions/{{promotion_id}}",
+									"protocol": "https",
+									"host": [
+										"{{api_url}}"
+									],
+									"path": [
+										"{{store_id}}",
+										"promotions",
+										"{{promotion_id}}"
+									]
+								},
+								"description": "Modify a promotion created by the current app for the current store"
+							},
+							"response": [
+								{
+									"name": "The promotion has been modified",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"active\": true\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://{{api_url}}/{{store_id}}/promotions/{{promotion_id}}",
+											"protocol": "https",
+											"host": [
+												"{{api_url}}"
+											],
+											"path": [
+												"{{store_id}}",
+												"promotions",
+												"{{promotion_id}}"
+											],
+											"variable": [
+												{
+													"value": "ullamco pariatur irure",
+													"key": "promotion_id"
+												}
+											]
+										}
+									},
+									"status": "No Content",
+									"code": 204,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "The __store__/__app__ provided does not belong to promotion",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"active\": true\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://{{api_url}}/{{store_id}}/promotions/{{promotion_id}}",
+											"protocol": "https",
+											"host": [
+												"{{api_url}}"
+											],
+											"path": [
+												"{{store_id}}",
+												"promotions",
+												"{{promotion_id}}"
+											],
+											"variable": [
+												{
+													"value": "ullamco pariatur irure",
+													"key": "promotion_id"
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": {\n    \"status\": 403,\n    \"code\": \"ForbiddenException\",\n    \"detail\": \"Forbidden resource\"\n  }\n}"
+								},
+								{
+									"name": "The promotion does not exist",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"active\": true\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://{{api_url}}/{{store_id}}/promotions/{{promotion_id}}",
+											"protocol": "https",
+											"host": [
+												"{{api_url}}"
+											],
+											"path": [
+												"{{store_id}}",
+												"promotions",
+												"{{promotion_id}}"
+											],
+											"variable": [
+												{
+													"value": "ullamco pariatur irure",
+													"key": "promotion_id"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": {\n    \"status\": 404,\n    \"code\": \"NotFoundException\",\n    \"detail\": \"The promotion id does not exist\"\n  }\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Callbacks",
+					"item": [
+						{
+							"name": "Register a callback",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authentication",
+										"value": "bearer {{app_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"url\": \"{{callback_url}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{api_url}}/{{store_id}}/discounts/callbacks",
+									"protocol": "https",
+									"host": [
+										"{{api_url}}"
+									],
+									"path": [
+										"{{store_id}}",
+										"discounts",
+										"callbacks"
+									]
+								},
+								"description": "Create or Update a callback"
+							},
+							"response": [
+								{
+									"name": "The callback has been created or updated",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"url\": \"https://www.callback.com\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/discounts/callbacks",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"discounts",
+												"callbacks"
+											]
+										}
+									},
+									"status": "No Content",
+									"code": 204,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Unable to process the request sent",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"url\": \"https://www.callback.com\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/discounts/callbacks",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"discounts",
+												"callbacks"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": {\n    \"status\": 400,\n    \"code\": \"BadRequestException\",\n    \"detail\": [\n      \"laborum ea nisi velit officia\",\n      \"enim\"\n    ]\n  }\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Shopping Cart",
+					"item": [
+						{
+							"name": "Evaluate cart",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"cart_id\": \"397256730\",\n  \"store_id\": \"92760\",\n  \"execution_tier\": \"cross_items\",\n  \"customer\": {\n    \"id\": \"velit dolore reprehenderit\"\n  },\n  \"currency\": \"ARS\",\n  \"language\": \"es\",\n  \"shipping\": {\n    \"country\": \"esse ipsum nulla\",\n    \"city\": \"do\",\n    \"postalcode\": \"Ut et ea esse ut\",\n    \"cost\": \"0.00\"\n  },\n  \"package\": {\n    \"weight\": \"0.600\"\n  },\n  \"payment\": {\n    \"credit_card_company\": \"exercitation cupidatat ea\",\n    \"method\": \"irure dolore sunt cupidatat enim\",\n    \"installments\": \"nostrud consectetur Ut su\"\n  },\n  \"products\": [\n    {\n      \"id\": 467422732,\n      \"price\": \"12.00\",\n      \"compare_at_price\": \"20.00\",\n      \"product_id\": 17310718,\n      \"quantity\": 4,\n      \"free_shipping\": false,\n      \"variant_id\": 33739098,\n      \"variant_values\": [\n        \"S\",\n        \"S\"\n      ],\n      \"categories\": [\n        {\n          \"id\": 11353744,\n          \"parent\": -2349673.045864448,\n          \"subcategories\": [\n            \"tempor\",\n            \"est ut\"\n          ]\n        },\n        {\n          \"id\": 11353744,\n          \"parent\": -56752377.9158877,\n          \"subcategories\": [\n            \"minim eiusmod consequat ut ut\",\n            \"sunt consectetur occaecat\"\n          ]\n        }\n      ]\n    },\n    {\n      \"id\": 467422732,\n      \"price\": \"12.00\",\n      \"compare_at_price\": \"20.00\",\n      \"product_id\": 17310718,\n      \"quantity\": 4,\n      \"free_shipping\": false,\n      \"variant_id\": 33739098,\n      \"variant_values\": [\n        \"S\",\n        \"S\"\n      ],\n      \"categories\": [\n        {\n          \"id\": 11353744,\n          \"parent\": -57576331.17694758,\n          \"subcategories\": [\n            \"est\",\n            \"cillum labore amet\"\n          ]\n        },\n        {\n          \"id\": 11353744,\n          \"parent\": 68049658.71524912,\n          \"subcategories\": [\n            \"quis labore\",\n            \"est\"\n          ]\n        }\n      ]\n    }\n  ],\n  \"totals\": {\n    \"subtotal\": \"30000.00\",\n    \"total_discount\": \"10300.00\",\n    \"total\": \"19700.00\"\n  },\n  \"promotions\": {\n    \"id\": \"231bbfe4-31bc-11ec-8d3d-0242ac130003\",\n    \"line_items\": [\n      \"467422732\",\n      \"467422732\"\n    ]\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{callback_url}}",
+									"host": [
+										"{{callback_url}}"
+									]
+								},
+								"description": "The owner of this endpoint is the discount application. It could be any URL of your choice."
+							},
+							"response": [
+								{
+									"name": "The callback has detected one or more commands to execute",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"cart_id\": \"397256730\",\n  \"store_id\": \"92760\",\n  \"execution_tier\": \"cross_items\",\n  \"customer\": {\n    \"id\": \"ea proident in\"\n  },\n  \"currency\": \"ARS\",\n  \"language\": \"es\",\n  \"shipping\": {\n    \"country\": \"u\",\n    \"city\": \"Excepteur reprehenderit esse\",\n    \"postalcode\": \"anim nulla proident\",\n    \"cost\": \"0.00\"\n  },\n  \"package\": {\n    \"weight\": \"0.600\"\n  },\n  \"payment\": {\n    \"credit_card_company\": \"esse dolor\",\n    \"method\": \"cupidatat qui Ut\",\n    \"installments\": \"Duis sunt ullamco mollit\"\n  },\n  \"products\": [\n    {\n      \"id\": 467422732,\n      \"price\": \"12.00\",\n      \"compare_at_price\": \"20.00\",\n      \"product_id\": 17310718,\n      \"quantity\": 4,\n      \"free_shipping\": false,\n      \"variant_id\": 33739098,\n      \"variant_values\": [\n        \"S\",\n        \"S\"\n      ],\n      \"categories\": [\n        {\n          \"id\": 11353744,\n          \"parent\": 5373951.936786041,\n          \"subcategories\": [\n            \"incidi\",\n            \"nulla dolor\"\n          ]\n        },\n        {\n          \"id\": 11353744,\n          \"parent\": 95408180.2899696,\n          \"subcategories\": [\n            \"non nostrud mollit sint dolore\",\n            \"occaecat\"\n          ]\n        }\n      ]\n    },\n    {\n      \"id\": 467422732,\n      \"price\": \"12.00\",\n      \"compare_at_price\": \"20.00\",\n      \"product_id\": 17310718,\n      \"quantity\": 4,\n      \"free_shipping\": false,\n      \"variant_id\": 33739098,\n      \"variant_values\": [\n        \"S\",\n        \"S\"\n      ],\n      \"categories\": [\n        {\n          \"id\": 11353744,\n          \"parent\": -6184289.7967721075,\n          \"subcategories\": [\n            \"aliqua velit\",\n            \"cupidatat deserun\"\n          ]\n        },\n        {\n          \"id\": 11353744,\n          \"parent\": -40022743.837492846,\n          \"subcategories\": [\n            \"sit\",\n            \"anim culpa veniam\"\n          ]\n        }\n      ]\n    }\n  ],\n  \"totals\": {\n    \"subtotal\": \"30000.00\",\n    \"total_discount\": \"10300.00\",\n    \"total\": \"19700.00\"\n  },\n  \"promotions\": {\n    \"id\": \"231bbfe4-31bc-11ec-8d3d-0242ac130003\",\n    \"line_items\": [\n      \"467422732\",\n      \"467422732\"\n    ]\n  }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{callback_url}}",
+											"host": [
+												"{{callback_url}}"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"commands\": [\n    {\n      \"command\": \"create_or_update_discount\",\n      \"specs\": {\n        \"promotion_id\": \"449039b3-3c35-4860-8fde-668428ced5f3\",\n        \"currency\": \"ARS\",\n        \"display_text\": {\n          \"es-ar\": \"50% off in the second unit\"\n        },\n        \"discount_specs\": {\n          \"type\": \"fixed\",\n          \"amount\": \"20.00\"\n        }\n      }\n    },\n    {\n      \"command\": \"create_or_update_discount\",\n      \"specs\": {\n        \"promotion_id\": \"449039b3-3c35-4860-8fde-668428ced5f3\",\n        \"currency\": \"ARS\",\n        \"display_text\": {\n          \"es-ar\": \"50% off in the second unit\"\n        },\n        \"discount_specs\": {\n          \"type\": \"fixed\",\n          \"amount\": \"20.00\"\n        }\n      }\n    }\n  ]\n}"
+								},
+								{
+									"name": "The callback has not detected any commands to execute",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"cart_id\": \"397256730\",\n  \"store_id\": \"92760\",\n  \"execution_tier\": \"cross_items\",\n  \"customer\": {\n    \"id\": \"ea proident in\"\n  },\n  \"currency\": \"ARS\",\n  \"language\": \"es\",\n  \"shipping\": {\n    \"country\": \"u\",\n    \"city\": \"Excepteur reprehenderit esse\",\n    \"postalcode\": \"anim nulla proident\",\n    \"cost\": \"0.00\"\n  },\n  \"package\": {\n    \"weight\": \"0.600\"\n  },\n  \"payment\": {\n    \"credit_card_company\": \"esse dolor\",\n    \"method\": \"cupidatat qui Ut\",\n    \"installments\": \"Duis sunt ullamco mollit\"\n  },\n  \"products\": [\n    {\n      \"id\": 467422732,\n      \"price\": \"12.00\",\n      \"compare_at_price\": \"20.00\",\n      \"product_id\": 17310718,\n      \"quantity\": 4,\n      \"free_shipping\": false,\n      \"variant_id\": 33739098,\n      \"variant_values\": [\n        \"S\",\n        \"S\"\n      ],\n      \"categories\": [\n        {\n          \"id\": 11353744,\n          \"parent\": 5373951.936786041,\n          \"subcategories\": [\n            \"incidi\",\n            \"nulla dolor\"\n          ]\n        },\n        {\n          \"id\": 11353744,\n          \"parent\": 95408180.2899696,\n          \"subcategories\": [\n            \"non nostrud mollit sint dolore\",\n            \"occaecat\"\n          ]\n        }\n      ]\n    },\n    {\n      \"id\": 467422732,\n      \"price\": \"12.00\",\n      \"compare_at_price\": \"20.00\",\n      \"product_id\": 17310718,\n      \"quantity\": 4,\n      \"free_shipping\": false,\n      \"variant_id\": 33739098,\n      \"variant_values\": [\n        \"S\",\n        \"S\"\n      ],\n      \"categories\": [\n        {\n          \"id\": 11353744,\n          \"parent\": -6184289.7967721075,\n          \"subcategories\": [\n            \"aliqua velit\",\n            \"cupidatat deserun\"\n          ]\n        },\n        {\n          \"id\": 11353744,\n          \"parent\": -40022743.837492846,\n          \"subcategories\": [\n            \"sit\",\n            \"anim culpa veniam\"\n          ]\n        }\n      ]\n    }\n  ],\n  \"totals\": {\n    \"subtotal\": \"30000.00\",\n    \"total_discount\": \"10300.00\",\n    \"total\": \"19700.00\"\n  },\n  \"promotions\": {\n    \"id\": \"231bbfe4-31bc-11ec-8d3d-0242ac130003\",\n    \"line_items\": [\n      \"467422732\",\n      \"467422732\"\n    ]\n  }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{callback_url}}",
+											"host": [
+												"{{callback_url}}"
+											]
+										}
+									},
+									"status": "No Content",
+									"code": 204,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				}
+			]
 		},
 		{
 			"name": "Draft Order",
@@ -3999,6 +4647,14 @@
 		},
 		{
 			"key": "sku_id",
+			"value": ""
+		},
+		{
+			"key": "promotion_id",
+			"value": ""
+		},
+		{
+			"key": "callback_url",
 			"value": ""
 		}
 	]
