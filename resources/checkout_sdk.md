@@ -23,9 +23,10 @@ window.SDKCheckout.changePaymentTitle({ id: '{{gateway_id}}', value: 'New Title'
 ```
 
 ### Hide payment options
+> An array with the ids of the gateways you want to hide
 
 ```javascript
-window.SDKCheckout.hidePaymentOptions(['{{gateway_id}}', 'gateway_credit_card'])
+window.SDKCheckout.hidePaymentOptions(['{{gateway_id}}', '{{gateway_id}}'])
 ```
 
 ### Adds or changes discount and installment information for a gateway
