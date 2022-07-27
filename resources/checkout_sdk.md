@@ -4,42 +4,48 @@ This library allows you to customize the checkout, through the methods below
 
 ## Payments customization
 
-Renders in the console the list of ids of active gateways in the store.
-These ids can be used in the methods below to customize them
+### Renders in the console the list of ids of active gateways in the store.
+> These ids can be used in the methods below to customize them
 
 ```javascript
 window.SDKCheckout.getPaymentIds()
 ```
 
-Change the title of the payment option
-
+Example:
 ```javascript
-window.SDKCheckout.changePaymentTitle({ id: 'gateway_redirect', value: 'New Title' })
+['mercadopago_transparent_card', 'pagseguro_transparent_debit', 'mercadopago_transparent_offline', 'mercadopago_transparent_pix', 'custom', 'pagseguro_redirect', 'cielo_redirect', 'mercadopago_redirect', 'ame_digital']
 ```
 
-Hide payment options
+### Change the title of the payment option
 
 ```javascript
-window.SDKCheckout.hidePaymentOptions(['gateway_redirect', 'gateway_credit_card'])
+window.SDKCheckout.changePaymentTitle({ id: '{{gateway_id}}', value: 'New Title' })
 ```
 
-Adds or changes discount and installment information for a gateway
+### Hide payment options
 
 ```javascript
-window.SDKCheckout.changePaymentBenefit({ id: 'gateway_credit_card', value: '12x sem juros' })
+window.SDKCheckout.hidePaymentOptions(['{{gateway_id}}', 'gateway_credit_card'])
 ```
 
-Adds extra information to the content of the external payment method
+### Adds or changes discount and installment information for a gateway
 
 ```javascript
-window.SDKCheckout.addPaymentContentText({ id: 'gateway_redirect', value: 'lorem ipsum dolor sit amet' })
+window.SDKCheckout.changePaymentBenefit({ id: '{{gateway_id}}', value: '12x sem juros' })
 ```
 
-Hide installments from the user's picklist
-Only works with transparent credit or debit card gateways
+### Adds extra information to the content of the external payment method
+> Only works with external gateways
 
 ```javascript
-window.SDKCheckout.hideInstallments({ id: 'gateway_credit_card', value: [3, 6] })
+window.SDKCheckout.addPaymentContentText({ id: '{{gateway_id}}', value: 'lorem ipsum dolor sit amet' })
 ```
 
-To reset customizations, just call the method one more time with empty string or empty array
+### Hide installments from the user's picklist
+> Only works with transparent credit or debit card gateways
+
+```javascript
+window.SDKCheckout.hideInstallments({ id: '{{gateway_id}}', value: [3, 6] })
+```
+
+> To reset customizations, just call the method one more time with empty string or empty array
