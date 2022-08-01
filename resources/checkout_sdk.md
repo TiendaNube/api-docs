@@ -16,12 +16,6 @@ Example:
 ['mercadopago_transparent_card', 'pagseguro_transparent_debit', 'mercadopago_transparent_offline', 'mercadopago_transparent_pix', 'custom', 'pagseguro_redirect', 'cielo_redirect', 'mercadopago_redirect', 'ame_digital']
 ```
 
-### Change the title of the payment option
-
-```javascript
-window.SDKCheckout.changePaymentTitle({ id: '{{gateway_id}}', value: 'New Title' })
-```
-
 ### Hide payment options
 > An array with the ids of the gateways you want to hide
 
