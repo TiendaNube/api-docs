@@ -12,6 +12,8 @@ You should have the following things into consideration:
 
 - When we include your script in the store, we will send a `store` parameter with the store id (e.g. `<script type="text/javascript" src="https://myapp.com/new.js?store=1234"></script>`).
 
+- Tiendanube layouts have [HTML selectors](https://docs.nuvemshop.com.br/help/pontos-de-anchoragem) designed so that applications or external agents can be anchored to the design of each store without having to adapt their code based on each layout.
+
 Ideally, your javascript should be inside a closure to avoid any conflict:
 
 ```javascript
