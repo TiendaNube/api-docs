@@ -1553,3 +1553,12 @@ To read an invoice we need to search for the previously created metafield holdin
   "owner_id": 12345678
 }
 ```
+
+## FAQ
+
+<details>
+  <summary><b>Orders placed via API do not update stock?</b></summary>
+
+The Tiendanube API has the ability to create orders without reserving stock. It depends on the inventory behavior parameter. If it's `claim`, it reserves stock. If it's `bypass` skips the stock reserve.
+
+</details>
