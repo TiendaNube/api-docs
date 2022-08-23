@@ -166,7 +166,8 @@ Receive a list of all Products.
         "sku": "BSG1234A",
         "updated_at": "2013-03-11T09:14:11-03:00",
         "weight": "2.00",
-        "width": null
+        "width": null,
+        "cost": null
       },
       {
         "id": 112,
@@ -186,7 +187,8 @@ Receive a list of all Products.
         "sku": "BSG1234B",
         "updated_at": "2013-03-11T09:14:11-03:00",
         "weight": "2.25",
-        "width": null
+        "width": null,
+        "cost": null
       },
       {
         "id": 133,
@@ -206,7 +208,8 @@ Receive a list of all Products.
         "sku": "BSG1234C",
         "updated_at": "2013-03-11T09:14:11-03:00",
         "weight": "2.50",
-        "width": null
+        "width": null,
+        "cost": "10.99"
       }
     ]
   }
@@ -337,7 +340,8 @@ Receive a single Product
       "sku": "BSG1234A",
       "updated_at": "2013-03-11T09:14:11-03:00",
       "weight": "2.00",
-      "width": null
+      "width": null,
+      "cost": null
     },
     {
       "id": 112,
@@ -357,7 +361,8 @@ Receive a single Product
       "sku": "BSG1234B",
       "updated_at": "2013-03-11T09:14:11-03:00",
       "weight": "2.25",
-      "width": null
+      "width": null,
+      "cost": null
     },
     {
       "id": 133,
@@ -377,7 +382,8 @@ Receive a single Product
       "sku": "BSG1234C",
       "updated_at": "2013-03-11T09:14:11-03:00",
       "weight": "2.50",
-      "width": null
+      "width": null,
+      "cost": "10.99"
     }
   ]
 }
@@ -467,7 +473,8 @@ Creates a new Product
       "price": "10.00",
       "stock_management": true,
       "stock": 12,
-      "weight": "2.00"
+      "weight": "2.00",
+      "cost": "10.99"
     }
   ],
   "categories": [11654304, 11654305]
@@ -551,7 +558,8 @@ Creates a new Product
       "sku": null,
       "updated_at": "2013-03-11T09:14:11-03:00",
       "weight": "2.00",
-      "width": null
+      "width": null,
+      "cost": "10.99"
     }
   ]
 }
@@ -670,7 +678,8 @@ Modify an existing Product
       "sku": "BSG1234A",
       "updated_at": "2013-03-11T09:14:11-03:00",
       "weight": "2.00",
-      "width": null
+      "width": null,
+      "cost": null,
     },
     {
       "id": 112,
@@ -690,7 +699,8 @@ Modify an existing Product
       "sku": "BSG1234B",
       "updated_at": "2013-03-11T09:14:11-03:00",
       "weight": "2.25",
-      "width": null
+      "width": null,
+      "cost": null,
     },
     {
       "id": 133,
@@ -710,7 +720,8 @@ Modify an existing Product
       "sku": "BSG1234C",
       "updated_at": "2013-03-11T09:14:11-03:00",
       "weight": "2.50",
-      "width": null
+      "width": null,
+      "cost": null,
     }
   ]
 }
