@@ -45,7 +45,7 @@ An order is created when a customer completes the checkout process. Orders also 
 | currency                   | The total spent's currency in [ISO 4217 format](http://en.wikipedia.org/wiki/ISO_4217) |
 | language                   | Order's language used by the customer during the checkout process |
 | gateway                    | ID of the payment provider that processed the order payment transaction. |
-| gateway_id                 | [Read-only] External ID used by the payment provider.        |
+| gateway_id                 | [Read-only] External transaction ID used by the payment provider. |
 | gateway_name               | [Read-only] Name of the payment provider of the order.       |
 | shipping                   | The shipping method used                                     |
 | shipping_pickup_type       | "ship" if the order is going to be shipped; "pickup" if it's going to be picked up from a store branch |
