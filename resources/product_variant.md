@@ -434,7 +434,7 @@ Indicates that the entire collection has been processed successfully. Returns th
       }
     ],
     "barcode": null,
-    "cost": null
+    "cost": null,
     "created_at": "2021-11-10T20:40:44+0000",
     "updated_at": "2021-11-10T20:40:44+0000"
   },
@@ -461,7 +461,7 @@ Indicates that the entire collection has been processed successfully. Returns th
       }
     ],
     "barcode": null,
-    "cost": null
+    "cost": null,
     "created_at": "2021-11-10T20:40:44+0000",
     "updated_at": "2021-11-10T20:40:44+0000"
   }
