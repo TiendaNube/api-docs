@@ -28,59 +28,61 @@ An order is created when a customer completes the checkout process. Orders also 
 
 ## Properties
 
-| Property                   | Explanation                                                                                                                                                                                                                              |
-| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| id                         | The unique numeric identifier for the Order. It's different from `number`                                                                                                                                                                |
-| token                      | Specifies the location of the Order                                                                                                                                                                                                      |
-| number                     | Unique numberc identifier for an Order used by the shop owner and customers. It's sequential and starts at 100                                                                                                                           |
-| customer                   | [Customer](https://github.com/tiendanube/api-docs/blob/master/resources/customer.md) that purchased this Order. Only given if the 'read_customers' scope is set for the app                                                              |
-| products                   | List of the products purchased by the `customer`. Contents are explained below and values hold are the ones corresponding to the time the products were purchased                                                                        |
-| note                       | Customer's note about the order                                                                                                                                                                                                          |
-| owner_note                 | Store owner's note about the order                                                                                                                                                                                                       |
-| coupon                     | List of coupons applied to the order                                                                                                                                                                                                     |
-| discount                   | Total value of the discount applied to the price of the order                                                                                                                                                                            |
-| subtotal                   | Price of the order before shipping                                                                                                                                                                                                       |
-| total                      | Total price of the order including shipping and discounts                                                                                                                                                                                |
-| total_usd                  | Total price of the order in US dollars                                                                                                                                                                                                   |
-| currency                   | The total spent's currency in [ISO 4217 format](http://en.wikipedia.org/wiki/ISO_4217)                                                                                                                                                   |
-| language                   | Order's language used by the customer during the checkout process                                                                                                                                                                        |
-| gateway                    | The payment gateway used                                                                                                                                                                                                                 |
-| shipping                   | The shipping method used                                                                                                                                                                                                                 |
-| shipping_pickup_type       | "ship" if the order is going to be shipped; "pickup" if it's going to be picked up from a store branch                                                                                                                                   |
-| shipping_store_branch_name | If order is going to be picked up, shows the store branch name                                                                                                                                                                           |
-| shipping_address           | The customer's shipping address where the order will be shipped                                                                                                                                                                          |
-| shipping_tracking_number   | The shipping tracking number for the order. This may be null if not available                                                                                                                                                            |
-| shipping_min_days          | The minimum number of weekdays needed for the order to be delivered                                                                                                                                                                      |
-| shipping_max_days          | The maximum number of weekdays needed for the order to be delivered                                                                                                                                                                      |
-| shipping_cost_owner        | The shipping cost the store owner has to pay to the shipping company.                                                                                                                                                                    |
-| shipping_cost_customer     | The shipping cost the customer has to pay to the store owner.                                                                                                                                                                            |
-| shipping_option            | The shipping option chosen by the customer during the checkout process.                                                                                                                                                                  |
-| shipping_option_code       | The shipping option code selected by the consumers.                                                                                                                                                                                      |
-| shipping_option_reference  | The shipping option reference provided by a custom shipping carrier during the checkout process.                                                                                                                                         |
-| shipping_pickup_details    | The shipping pickup details (address and/or business hours) of the selected pickup point.                                                                                                                                                |
-| shipping_tracking_url      | The shipping tracking URL where the customer can check for the shipment status.                                                                                                                                                          |
-| billing_address            | Billing address for the order                                                                                                                                                                                                            |
-| billing_number             | Billing number for the order                                                                                                                                                                                                             |
-| billing_floor              | Billing floor for the order                                                                                                                                                                                                              |
-| billing_locality           | Billing locality for the order                                                                                                                                                                                                           |
-| billing_zipcode            | Billing zipcode for the order                                                                                                                                                                                                            |
-| billing_city               | Billing city for the order                                                                                                                                                                                                               |
-| billing_province           | Billing province for the order                                                                                                                                                                                                           |
-| billing_country            | Billing country code for the order                                                                                                                                                                                                       |
-| extra                      | A JSON object containing custom information. Can be set via the API or through custom form fields of name "extra[key]" on the cart's checkout form in the storefront                                                                     |
+| Property                   | Explanation                                                  |
+| -------------------------- | ------------------------------------------------------------ |
+| id                         | The unique numeric identifier for the Order. It's different from `number` |
+| token                      | Specifies the location of the Order                          |
+| number                     | Unique numberc identifier for an Order used by the shop owner and customers. It's sequential and starts at 100 |
+| customer                   | [Customer](https://github.com/tiendanube/api-docs/blob/master/resources/customer.md) that purchased this Order. Only given if the 'read_customers' scope is set for the app |
+| products                   | List of the products purchased by the `customer`. Contents are explained below and values hold are the ones corresponding to the time the products were purchased |
+| note                       | Customer's note about the order                              |
+| owner_note                 | Store owner's note about the order                           |
+| coupon                     | List of coupons applied to the order                         |
+| discount                   | Total value of the discount applied to the price of the order |
+| subtotal                   | Price of the order before shipping                           |
+| total                      | Total price of the order including shipping and discounts    |
+| total_usd                  | Total price of the order in US dollars                       |
+| currency                   | The total spent's currency in [ISO 4217 format](http://en.wikipedia.org/wiki/ISO_4217) |
+| language                   | Order's language used by the customer during the checkout process |
+| gateway                    | ID of the payment provider that processed the order payment transaction. |
+| gateway_id                 | [Read-only] External transaction ID used by the payment provider. |
+| gateway_name               | [Read-only] Name of the payment provider of the order.       |
+| shipping                   | The shipping method used                                     |
+| shipping_pickup_type       | "ship" if the order is going to be shipped; "pickup" if it's going to be picked up from a store branch |
+| shipping_store_branch_name | If order is going to be picked up, shows the store branch name |
+| shipping_address           | The customer's shipping address where the order will be shipped |
+| shipping_tracking_number   | The shipping tracking number for the order. This may be null if not available |
+| shipping_min_days          | The minimum number of weekdays needed for the order to be delivered |
+| shipping_max_days          | The maximum number of weekdays needed for the order to be delivered |
+| shipping_cost_owner        | The shipping cost the store owner has to pay to the shipping company. |
+| shipping_cost_customer     | The shipping cost the customer has to pay to the store owner. |
+| shipping_option            | The shipping option chosen by the customer during the checkout process. |
+| shipping_option_code       | The shipping option code selected by the consumers.          |
+| shipping_option_reference  | The shipping option reference provided by a custom shipping carrier during the checkout process. |
+| shipping_pickup_details    | The shipping pickup details (address and/or business hours) of the selected pickup point. |
+| shipping_tracking_url      | The shipping tracking URL where the customer can check for the shipment status. |
+| billing_address            | Billing address for the order                                |
+| billing_number             | Billing number for the order                                 |
+| billing_floor              | Billing floor for the order                                  |
+| billing_locality           | Billing locality for the order                               |
+| billing_zipcode            | Billing zipcode for the order                                |
+| billing_city               | Billing city for the order                                   |
+| billing_province           | Billing province for the order                               |
+| billing_country            | Billing country code for the order                           |
+| extra                      | A JSON object containing custom information. Can be set via the API or through custom form fields of name "extra[key]" on the cart's checkout form in the storefront |
 | storefront                 | Origin of the order. Possible values are "store" (order created in the storefront), "meli" (order imported from Mercado Libre), "api" (order created via API) or "form" (order created in the admin panel with the draft orders feature) |
-| weight                     | Order's total weight, in kilograms                                                                                                                                                                                                       |
-| status                     | Order's status. Possible values are "open", "closed" or "cancelled"                                                                                                                                                                      |
-| payment_status             | Order's payment status. Possible values are "authorized", "pending", "paid", "abandoned", "refunded" or "voided"                                                                                                                         |
-| shipping_status            | Order's shipping status. Possible values are "unpacked", "fulfilled" (means "shipped") or "unfulfilled" (means "unshipped")                                                                                                              |
-| next_action                | Next available operation in the orders flow                                                                                                                                                                                              |
-| payment_details            | A JSON object containing payment details.                                                                                                                                                                                                |
-| shipped_at                 | Date when the Order was shipped in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601)                                                                                                                                              |
-| paid_at                    | Date when the order was paid in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601).                                                                                                                                                |
-| cancel_reason              | Reason why the store owner cancelled an Order. Possible values are "customer", "fraud", "inventory" or "other"                                                                                                                           |
-| created_at                 | Date when the Order was created in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601)                                                                                                                                              |
-| updated_at                 | Date when the Order was last updated in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601)                                                                                                                                         |
-| client_details             | Customer details for analytics.                                                                                                                                                                                                          |
+| weight                     | Order's total weight, in kilograms                           |
+| status                     | Order's status. Possible values are "open", "closed" or "cancelled" |
+| payment_status             | Order's payment status. Possible values are "authorized", "pending", "paid", "abandoned", "refunded" or "voided" |
+| shipping_status            | Order's shipping status. Possible values are "unpacked", "fulfilled" (means "shipped") or "unfulfilled" (means "unshipped") |
+| next_action                | Next available operation in the orders flow                  |
+| payment_details            | A JSON object containing payment details.                    |
+| shipped_at                 | Date when the Order was shipped in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601) |
+| paid_at                    | Date when the order was paid in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601). |
+| cancel_reason              | Reason why the store owner cancelled an Order. Possible values are "customer", "fraud", "inventory" or "other" |
+| created_at                 | Date when the Order was created in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601) |
+| updated_at                 | Date when the Order was last updated in [ISO 8601 format](http://es.wikipedia.org/wiki/ISO_8601) |
+| client_details             | Customer details for analytics.                              |
 
 Property `next_action` can take one of the following values:
 
@@ -200,6 +202,7 @@ Receive a list of all Orders.
     "language": "en",
     "gateway": "paypal",
     "gateway_id": "20396106644",
+    "gateway_name": "PayPal",
     "shipping": "ups",
     "shipping_option": "Synthetics",
     "shipping_option_code": "table_131313",
@@ -391,6 +394,8 @@ Receive a single Order
   "created_at": "2008-01-10T11:00:00-05:00",
   "currency": "USD",
   "gateway": "paypal",
+  "gateway_id": "20396106644",
+  "gateway_name": "PayPal",
   "id": 450789469,
   "landing_site": "http://www.example.com?source=abc",
   "language": "en",
