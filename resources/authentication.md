@@ -1,3 +1,17 @@
+# This documentation is deprecated in this repository
+
+Thinking about the best experience for developers and partners, the documentation has been moved to permanently.
+
+Please access the following link to access the updated documentation
+
+[https://tiendanube.github.io/api-documentation/](https://tiendanube.github.io/api-documentation/)
+
+------------------
+------------------
+------------------
+------------------
+
+
 We provide authorization and user authentication by a restricted form of OAuth 2. In a glance:
 
 - The only grant type we support is the ["authorization code"](https://oauth.net/2/grant-types/authorization-code/) one.
