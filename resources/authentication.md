@@ -4,7 +4,7 @@ Thinking about the best experience for developers and partners, the documentatio
 
 Please access the following link to access the updated documentation
 
-[https://tiendanube.github.io/api-documentation/](https://tiendanube.github.io/api-documentation/)
+[https://tiendanube.github.io/api-documentation/authentication](https://tiendanube.github.io/api-documentation/authentication)
 
 ------------------
 ------------------
