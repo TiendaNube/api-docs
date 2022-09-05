@@ -23,6 +23,7 @@ Product variants allow you to group a shoe with different sizes and colors in th
 | mpn               | The Manufacturer Part Number (MPN) of the product                                                                                                                                                       |
 | age_group         | Attribute to set the demographic that the product is designed for. It is optional and only supports this values: "newborn", "infant", "toddler", "kids" and "adult".                                    |
 | gender            | Attribute to specify the gender your product is designed for. It is optional and only supports the values: "female", "male" and "unisex"                                                                |
+| cost              | Cost of getting or producing the product. It is optional and, if present, has to be a number bigger than 0.                                                                                             |
 | created_at        | Date when the Product Variant was created in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)                                                                                                   |
 | updated_at        | Date when the Product Variant was last updated in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)                                                                                              |
 
@@ -71,7 +72,8 @@ Receive a list of all Product Variants for a given product.
     "gender": null,
     "updated_at": "2013-03-11T09:14:11-03:00",
     "weight": "2.00",
-    "width": null
+    "width": null,
+    "cost": null
   },
   {
     "id": 112,
@@ -95,7 +97,8 @@ Receive a list of all Product Variants for a given product.
     "gender": null,
     "updated_at": "2013-03-11T09:14:11-03:00",
     "weight": "2.25",
-    "width": null
+    "width": null,
+    "cost": null
   },
   {
     "id": 133,
@@ -119,7 +122,8 @@ Receive a list of all Product Variants for a given product.
     "gender": null,
     "updated_at": "2013-03-11T09:14:11-03:00",
     "weight": "2.50",
-    "width": null
+    "width": null,
+    "cost": "10.99"
   }
 ]
 ```
@@ -152,7 +156,8 @@ Receive a list of all Product Variants for a given product.
     "gender": "unisex",
     "updated_at": "2013-03-11T09:14:11-03:00",
     "weight": "2.25",
-    "width": null
+    "width": null,
+    "cost": null
   },
   {
     "id": 133,
@@ -176,7 +181,8 @@ Receive a list of all Product Variants for a given product.
     "gender": "unisex",
     "updated_at": "2013-03-11T09:14:11-03:00",
     "weight": "2.50",
-    "width": null
+    "width": null,
+    "cost": "10.99"
   }
 ]
 ```
@@ -216,7 +222,8 @@ Receive a single Product Variant
   "gender": "female",
   "updated_at": "2013-03-11T09:14:11-03:00",
   "weight": "2.25",
-  "width": null
+  "width": null,
+  "cost": "10.99"
 }
 ```
 
@@ -298,7 +305,8 @@ Create a new Product Variant
   "gender": null,
   "updated_at": "2013-06-01T09:15:11-03:00",
   "weight": null,
-  "width": null
+  "width": null,
+  "cost": null
 }
 ```
 
@@ -331,7 +339,8 @@ Modify an existing Product Variant
   "gender": null,
   "updated_at": "2013-06-01T09:15:11-03:00",
   "weight": "2.75",
-  "width": null
+  "width": null,
+  "cost": "10.99"
 }
 ```
 
@@ -360,7 +369,8 @@ Modify an existing Product Variant
   "gender": null,
   "updated_at": "2013-06-01T12:15:11-03:00",
   "weight": "2.75",
-  "width": null
+  "width": null,
+  "cost": "10.99"
 }
 ```
 
@@ -424,6 +434,7 @@ Indicates that the entire collection has been processed successfully. Returns th
       }
     ],
     "barcode": null,
+    "cost": null,
     "created_at": "2021-11-10T20:40:44+0000",
     "updated_at": "2021-11-10T20:40:44+0000"
   },
@@ -450,6 +461,7 @@ Indicates that the entire collection has been processed successfully. Returns th
       }
     ],
     "barcode": null,
+    "cost": null,
     "created_at": "2021-11-10T20:40:44+0000",
     "updated_at": "2021-11-10T20:40:44+0000"
   }
@@ -636,7 +648,8 @@ If any of the above preconditions is not met, the response:
     "gender": null,
     "updated_at": "2013-06-01T09:15:11-03:00",
     "weight": null,
-    "width": null
+    "width": null,
+    "cost": null
   },
   {
     "id": 144,
@@ -660,7 +673,8 @@ If any of the above preconditions is not met, the response:
     "gender": null,
     "updated_at": "2013-06-01T09:15:11-03:00",
     "weight": null,
-    "width": null
+    "width": null,
+    "cost": null
   }
 ]
 ```
