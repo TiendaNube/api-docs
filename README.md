@@ -3,7 +3,7 @@ Tiendanube/Nuvemshop API
 
 # This documentation is deprecated in this repository
 
-Thinking about the best experience for developers and partners, the documentation has been moved to permanently.
+Thinking about the best experience for developers and partners, the documentation has been moved permanently.
 
 Please access the following link to access the updated documentation
 
