@@ -1,6 +1,19 @@
 Tiendanube/Nuvemshop API
 ====================
 
+# This documentation is deprecated in this repository
+
+Thinking about the best experience for developers and partners, the documentation has been moved permanently.
+
+Please access the following link to access the updated documentation
+
+[https://tiendanube.github.io/api-documentation/](https://tiendanube.github.io/api-documentation/)
+
+------------------
+------------------
+------------------
+------------------
+
 This is a REST-style API that uses JSON for serialization and OAuth 2 for authentication.
 
 Where do I start?
