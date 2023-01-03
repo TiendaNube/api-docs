@@ -44,9 +44,9 @@ Receive a list of all metafield.
 
 | Parameter      | Explanation                                                                                      |
 | -------------- | ------------------------------------------------------------------------------------------------ |
-| owner_id | Entity id to which is associated the metaField.                                                                   |
-| namespace   | The namespace where the metafield was defined.filter.                                                                  |
-| key | Metafield's key.                                                                |
+| owner_id       | Entity id to which is associated the metafield                                                   |
+| namespace      | The namespace where the metafield was defined.                                                   |
+| key            | Metafield's key.                                                                                 |
 | created_at_min | Show Products created after date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))      |
 | created_at_max | Show Products created before date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601))     |
 | updated_at_min | Show Products last updated after date ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)) |
