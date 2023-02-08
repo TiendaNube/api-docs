@@ -217,6 +217,7 @@ LoadCheckoutPaymentContext(function (Checkout, PaymentOptions) {
 
       this.createModal(iframeData, iframeConfigs);
 
+      // This event listens for the modal's response from your domain
       var modalEventHandler = (event) => {
         // the method `parseModalResponse` validate the response because in some cases it was a string
         var response = this.parseModalResponse(event.data)
@@ -232,6 +233,7 @@ LoadCheckoutPaymentContext(function (Checkout, PaymentOptions) {
           // removing event to avoid duplicated messages
           window.removeEventListener("message", modalEventHandler)
 
+          // This method should always be called to proceed with payment or failure
           callback(response.data);
         }
       }
